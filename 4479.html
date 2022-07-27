@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+    <meta name="theme-color" content="#222">
+    <meta name="generator" content="Hexo 4.2.1">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16-next.png">
+    <link rel="mask-icon" href="/images/favicon/safari-pinned-tab.svg" color="#222">
+    <meta name="msapplication-config" content="/images/favicon/browserconfig.xml">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+    <link rel="stylesheet" href="/lib/pace/pace-theme-mac-osx.min.css">
+    <script src="/lib/pace/pace.min.js"></script>
+    <script id="hexo-configurations">
+        var NexT = window.NexT ||
+        {};
+        var CONFIG = {
+            "hostname": "paynewu.com",
+            "root": "/",
+            "scheme": "Gemini",
+            "version": "7.8.0",
+            "exturl": false,
+            "sidebar":
+            {
+                "position": "right",
+                "width": 240,
+                "display": "post",
+                "padding": 18,
+                "offset": 12,
+                "onmobile": false
+            },
+            "copycode":
+            {
+                "enable": true,
+                "show_result": true,
+                "style": "mac"
+            },
+            "back2top":
+            {
+                "enable": true,
+                "sidebar": false,
+                "scrollpercent": true
+            },
+            "bookmark":
+            {
+                "enable": false,
+                "color": "#222",
+                "save": "auto"
+            },
+            "fancybox": false,
+            "mediumzoom": true,
+            "lazyload": false,
+            "pangu": true,
+            "comments":
+            {
+                "style": "tabs",
+                "active": "valine",
+                "storage": true,
+                "lazyload": false,
+                "nav": null
+            },
+            "algolia":
+            {
+                "hits":
+                {
+                    "per_page": 10
+                },
+                "labels":
+                {
+                    "input_placeholder": "Search for Posts",
+                    "hits_empty": "We didn't find any results for the search: ${query}",
+                    "hits_stats": "${hits} results found in ${time} ms"
+                }
+            },
+            "localsearch":
+            {
+                "enable": true,
+                "trigger": "auto",
+                "top_n_per_article": 8,
+                "unescape": false,
+                "preload": false
+            },
+            "motion":
+            {
+                "enable": false,
+                "async": false,
+                "transition":
+                {
+                    "post_block": "bounceDownIn",
+                    "post_header": "slideDownIn",
+                    "post_body": "slideDownIn",
+                    "coll_header": "slideLeftIn",
+                    "sidebar": "slideUpIn"
+                }
+            },
+            "path": "search.xml"
+        };
+
+    </script>
+    <meta name="description" content="Docker swarm部署控制 还记得我之前写过一片文章叫做《Docker快速部署项目，极速搭建分布式》，在那里讲述了如何去使用dockerswarm，如何构建自己的私人镜像仓库。随着最近的业务量的增长，机子加多。对于docker swarm管理难度有上升的趋势。主要的问题有以下几个      物理机配置不同（比如 CPU、内存等）     部署着不同类型的服务（比如 Web服务、Job服务等）">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="docker部署控制">
+    <meta property="og:url" content="https://paynewu.com/4479.html">
+    <meta property="og:site_name" content="吴志鹏｜Payne-Wu">
+    <meta property="og:description" content="Docker swarm部署控制 还记得我之前写过一片文章叫做《Docker快速部署项目，极速搭建分布式》，在那里讲述了如何去使用dockerswarm，如何构建自己的私人镜像仓库。随着最近的业务量的增长，机子加多。对于docker swarm管理难度有上升的趋势。主要的问题有以下几个      物理机配置不同（比如 CPU、内存等）     部署着不同类型的服务（比如 Web服务、Job服务等）">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwgy1glgia65xg6j31jo0b8dgn.jpg">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwgy1glgiv5qw30j31le03i0sr.jpg">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwgy1glmhr7pa7oj31yo07ewfw.jpg">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwgy1glmi66uraij31y405mt9f.jpg">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwgy1glmidvm1g1j31y60pwtcy.jpg">
+    <meta property="article:published_time" content="2020-12-13T15:44:48.000Z">
+    <meta property="article:modified_time" content="2022-07-27T09:58:26.876Z">
+    <meta property="article:author" content="吴志鹏">
+    <meta property="article:tag" content="docker">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:image" content="https://tva1.sinaimg.cn/large/0081Kckwgy1glgia65xg6j31jo0b8dgn.jpg">
+    <link rel="canonical" href="https://paynewu.com/4479.html">
+    <script id="page-configurations">
+        // https://hexo.io/docs/variables.html
+        CONFIG.page = {
+            sidebar: "",
+            isHome: false,
+            isPost: true,
+            lang: 'zh-CN'
+        };
+
+    </script>
+    <title>docker部署控制 | 吴志鹏｜Payne-Wu</title>
+    <meta name="google-site-verification" content="p_bIcnvirkFzG2dYKuNDivKD8-STet5W7D-01woA2fc" />
+    <noscript>
+        <style>
+            .use-motion .brand,
+            .use-motion .menu-item,
+            .sidebar-inner,
+            .use-motion .post-block,
+            .use-motion .pagination,
+            .use-motion .comments,
+            .use-motion .post-header,
+            .use-motion .post-body,
+            .use-motion .collection-header
+            {
+                opacity: initial;
+            }
+
+            .use-motion .site-title,
+            .use-motion .site-subtitle
+            {
+                opacity: initial;
+                top: initial;
+            }
+
+            .use-motion .logo-line-before i
+            {
+                left: initial;
+            }
+
+            .use-motion .logo-line-after i
+            {
+                right: initial;
+            }
+
+        </style>
+    </noscript>
+    <link rel="alternate" href="/atom.xml" title="吴志鹏｜Payne-Wu" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+    <div class="container">
+        <div class="headband"></div>
+        <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+            <div class="header-inner">
+                <div class="site-brand-container">
+                    <div class="site-nav-toggle">
+                        <div class="toggle" aria-label="切换导航栏">
+                            <span class="toggle-line toggle-line-first"></span>
+                            <span class="toggle-line toggle-line-middle"></span>
+                            <span class="toggle-line toggle-line-last"></span>
+                        </div>
+                    </div>
+                    <div class="site-meta">
+                        <a href="/" class="brand" rel="start">
+                            <span class="logo-line-before"><i></i></span>
+                            <h1 class="site-title">吴志鹏｜Payne-Wu </h1>
+                            <span class="logo-line-after"><i></i></span>
+                        </a>
+                    </div>
+                    <div class="site-nav-right">
+                        <div class="toggle popup-trigger">
+                            <i class="fa fa-search fa-fw fa-lg"></i>
+                        </div>
+                    </div>
+                </div>
+                <nav class="site-nav">
+                    <ul id="menu" class="main-menu menu">
+                        <li class="menu-item menu-item-home">
+                            <a href="/" rel="section">首页</a>
+                        </li>
+                        <li class="menu-item menu-item-archives">
+                            <a href="/archives/" rel="section">文章列表</a>
+                        </li>
+                        <li class="menu-item menu-item-tags">
+                            <a href="/tags/" rel="section">Tags Cloud</a>
+                        </li>
+                        <li class="menu-item menu-item-categories">
+                            <a href="/categories/" rel="section">文章集合</a>
+                        </li>
+                        <li class="menu-item menu-item-about">
+                            <a href="/about/" rel="section">关于我啊</a>
+                        </li>
+                        <li class="menu-item menu-item-message">
+                            <a href="/message/" rel="section">留言与我</a>
+                        </li>
+                        <li class="menu-item menu-item-search">
+                            <a role="button" class="popup-trigger">搜索 </a>
+                        </li>
+                    </ul>
+                </nav>
+                <div class="search-pop-overlay">
+                    <div class="popup search-popup">
+                        <div class="search-header">
+                            <span class="search-icon">
+                                <i class="fa fa-search"></i>
+                            </span>
+                            <div class="search-input-container">
+                                <input autocomplete="off" autocapitalize="off" placeholder="搜索..." spellcheck="false" type="search" class="search-input">
+                            </div>
+                            <span class="popup-btn-close">
+                                <i class="fa fa-times-circle"></i>
+                            </span>
+                        </div>
+                        <div id="search-result">
+                            <div id="no-result">
+                                <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="back-to-top">
+            <i class="fa fa-arrow-up"></i>
+            <span>0%</span>
+        </div>
+        <div class="reading-progress-bar"></div>
+        <main class="main">
+            <div class="main-inner">
+                <div class="content-wrap">
+                    <div class="content post posts-expand">
+                        <article itemscope itemtype="http://schema.org/Article" class="post-block single" lang="zh-CN">
+                            <link itemprop="mainEntityOfPage" href="https://paynewu.com/4479.html">
+                            <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <meta itemprop="image" content="/images/favicon/android-chrome-512x512.png">
+                                <meta itemprop="name" content="吴志鹏">
+                                <meta itemprop="description" content="Talk is free，please state clearly">
+                            </span>
+                            <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+                                <meta itemprop="name" content="吴志鹏｜Payne-Wu">
+                            </span>
+                            <header class="post-header">
+                                <h1 class="post-title" itemprop="name headline"> docker部署控制 </h1>
+                                <div class="post-meta">
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-user"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">作者</span>
+                                        <span><a href="/authors/Payne" class="author" itemprop="url" rel="index">Payne</a></span>
+                                    </span>
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-calendar"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">发表于</span>
+                                        <time title="创建时间：2020-12-13 23:44:48" itemprop="dateCreated datePublished" datetime="2020-12-13T23:44:48+08:00">2020-12-13</time>
+                                    </span>
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-folder"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">分类于</span>
+                                        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                                            <a href="/categories/%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%92/" itemprop="url" rel="index"><span itemprop="name">容器编排</span></a>
+                                        </span>
+                                    </span>
+                                    <br>
+                                    <span class="post-meta-item" title="本文字数">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-file-word"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">本文字数：</span>
+                                        <span>1.7k</span>
+                                    </span>
+                                    <span class="post-meta-item" title="阅读时长">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-clock"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                                        <span>2 分钟</span>
+                                    </span>
+                                </div>
+                            </header>
+                            <div class="post-body" itemprop="articleBody">
+                                <h2 id="Docker-swarm部署控制"><a href="#Docker-swarm部署控制" class="headerlink" title="Docker swarm部署控制"></a>Docker swarm部署控制</h2>
+                                <p>还记得我之前写过一片文章叫做<a href="https://mp.weixin.qq.com/s?__biz=Mzg2MzM4NTg3MA==&amp;tempkey=MTA5MF9RcFZ5c1B4QTFmSnZHd2Qxa3hMNWhpLXFoOEJYWVBBaUZyME1sRmVBQnR1QWN3V3FUZ1hfa1BnemdtOWpLY1o0RTlzVnE2OUtRblZPS1ZDV2pDSk9QU3BadDUzLTNJa3RHYmxFQXNqMjQyQ1dSNUlrcDdfTG1scDRTWVg2UDdiLTI5eWo4dE9HSHI4TlVKOVltZEdtVzZObW9NT19GN2I5eF9YbzdBfn4%3D&amp;chksm=4e78226b790fab7d1fb0283f8b6294c40456df7aebf58d947412ed03d0c3fc3aa188de79f130#rd" target="_blank" rel="noopener">《Docker快速部署项目，极速搭建分布式》</a>，在那里讲述了如何去使用docker<br>swarm，如何构建自己的私人镜像仓库。随着最近的业务量的增长，机子加多。对于docker swarm管理难度有上升的趋势。主要的问题有以下几个</p>
+                                <ul>
+                                    <li>物理机配置不同（比如 CPU、内存等）</li>
+                                    <li>部署着不同类型的服务（比如 Web服务、Job服务等）</li>
+                                    <li>Swarm 集群中的节点跨机房，为了内部服务间通信更快，该如何分组部署</li>
+                                    <li>。。。</li>
+                                </ul>
+                                <p>为了解决以上问题,以求更合理、更科学的管理部署所以有了今天这篇文章。</p>
+                                <a id="more"></a>
+                                <p>docker 节点的部署调度一共有三种机制，随机部署、平衡部署、先满部署</p>
+                                <blockquote>
+                                    <p>随机部署：active中随机选择</p>
+                                    <p>平衡部署：尽可能先平均填满所有的节点</p>
+                                    <p>先满部署：与平衡部署相反，先部署至上限，然后在部署对应的</p>
+                                </blockquote>
+                                <p>那么该如何管理呢？下面我介绍几种方式，如下</p>
+                                <ul>
+                                    <li>NodeId</li>
+                                    <li>HOSTNAME</li>
+                                    <li>Node role</li>
+                                    <li>node labels</li>
+                                    <li>engine.labels</li>
+                                </ul>
+                                <p>首先我们查看一下节点列表信息，直接使用<code>docker node ls</code>，即可</p>
+                                <p><img src="https://tva1.sinaimg.cn/large/0081Kckwgy1glgia65xg6j31jo0b8dgn.jpg" alt=""></p>
+                                <p>首先我们先解读一下，docker 的限制指令</p>
+                                <figure class="highlight bash">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="comment"># docker service create --help</span></span><br><span class="line">--constraint list                    Placement constraints</span><br><span class="line">--container-label list               Container labels</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>他们的 后面跟随的参数都是list，具体使用如以下示例</p>
+                                <h3 id="NodeId"><a href="#NodeId" class="headerlink" title="NodeId"></a>NodeId</h3>
+                                <p>根据NodeId来指定部署节点，以下以搭建私人镜像仓库为示例。</p>
+                                <h4 id="docker-service"><a href="#docker-service" class="headerlink" title="docker service"></a>docker service</h4>
+                                <figure class="highlight bash">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">docker service create \</span><br><span class="line">--name registry \</span><br><span class="line">--publish published=5000,target=5000 \</span><br><span class="line">--constraint node.id==ytsyvuhfs60spr361y6irpynm \</span><br><span class="line">registry:2</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p><img src="https://tva1.sinaimg.cn/large/0081Kckwgy1glgiv5qw30j31le03i0sr.jpg" alt=""></p>
+                                <p>命令解读</p>
+                                <figure class="highlight bash">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="comment"># 在docker swarm中创建服务</span></span><br><span class="line">docker service create 	\</span><br><span class="line"><span class="comment"># --name 服务别名</span></span><br><span class="line"><span class="comment"># 指定node的id，ytsyvuhfs60spr361y6irpynm这个是我这里的node.id，你使用的时候需按照需求替换即可</span></span><br><span class="line">--constraint node.id==ytsyvuhfs60spr361y6irpynm \</span><br><span class="line"><span class="comment"># 暴露公开的接口，可以让节点中的其他node可以访问</span></span><br><span class="line">--publish published=5000,target=5000	\</span><br><span class="line"><span class="comment"># 镜像名：版本号</span></span><br><span class="line">registry:2</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>这样我们就实现了指定节点的部署，是不是很简单呢。</p>
+                                <h4 id="docker-stack"><a href="#docker-stack" class="headerlink" title="docker stack"></a>docker stack</h4>
+                                <figure class="highlight yaml">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="comment"># docker-compose.yaml </span></span><br><span class="line"><span class="attr">version:</span> <span class="string">'3'</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">registry:</span></span><br><span class="line">    <span class="string">registry:2</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">target:</span> <span class="number">8080</span></span><br><span class="line">          <span class="bullet">-</span> <span class="attr">published:</span> <span class="number">8080</span></span><br><span class="line">          <span class="bullet">-</span> <span class="attr">protocol:</span> <span class="string">tcp</span></span><br><span class="line">          <span class="bullet">-</span> <span class="attr">mode:</span> <span class="string">ingress</span></span><br><span class="line">    <span class="attr">deploy:</span></span><br><span class="line">      <span class="attr">mode:</span> <span class="string">global</span></span><br><span class="line">      <span class="attr">placement:</span></span><br><span class="line">        <span class="attr">constraints:</span> <span class="comment"># 添加条件约束</span></span><br><span class="line">          <span class="bullet">-</span> <span class="string">node.id==ytsyvuhfs60spr361y6irpynm</span></span><br><span class="line">      <span class="attr">restart_policy:</span></span><br><span class="line">        <span class="attr">condition:</span> <span class="string">on-failure</span></span><br><span class="line">        <span class="attr">max_attempts:</span> <span class="number">3</span></span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h3 id="HOSTNAME"><a href="#HOSTNAME" class="headerlink" title="HOSTNAME"></a>HOSTNAME</h3>
+                                <p>​ 除此之外我们还可以指定hostname 去将应用部署到指定的hostname上，操作与以上差不多。那让我们来实现一下，首先我们需要查看对应节点的信息，在manager节点上使用<code>docker node ls</code>查看，如下</p>
+                                <p><img src="https://tva1.sinaimg.cn/large/0081Kckwgy1glmhr7pa7oj31yo07ewfw.jpg" alt=""></p>
+                                <h4 id="docker-service-1"><a href="#docker-service-1" class="headerlink" title="docker service"></a>docker service</h4>
+                                <p><strong>创建命令如下</strong>,以nginx为例</p>
+                                <figure class="highlight routeros">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">docker<span class="built_in"> service </span>create \</span><br><span class="line">--name nginx \</span><br><span class="line">--constraint node.<span class="attribute">hostname</span>==ecs-dc8a-0003 \</span><br><span class="line">-p 80:80 nginx</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p><img src="https://tva1.sinaimg.cn/large/0081Kckwgy1glmi66uraij31y405mt9f.jpg" alt=""></p>
+                                <p>这样我们就将nginx服务部署至对应的节点了，并且扩容也仅会在此节点进行部署。示例如下</p>
+                                <figure class="highlight routeros">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">docker<span class="built_in"> service </span>scale <span class="attribute">nginx</span>=3</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p><img src="https://tva1.sinaimg.cn/large/0081Kckwgy1glmidvm1g1j31y60pwtcy.jpg" alt=""></p>
+                                <h4 id="docker-stack-1"><a href="#docker-stack-1" class="headerlink" title="docker stack"></a>docker stack</h4>
+                                <figure class="highlight yaml">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="comment"># docker-compose.yaml </span></span><br><span class="line"><span class="attr">version:</span> <span class="string">'3'</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">nginx:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">nginx</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">target:</span> <span class="number">80</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">published:</span> <span class="number">80</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">protocol:</span> <span class="string">tcp</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">mode:</span> <span class="string">ingress</span></span><br><span class="line">    <span class="attr">deploy:</span></span><br><span class="line">      <span class="attr">mode:</span> <span class="string">global</span></span><br><span class="line">      <span class="attr">placement:</span></span><br><span class="line">        <span class="attr">constraints:</span> <span class="comment"># 添加条件约束</span></span><br><span class="line">          <span class="bullet">-</span> <span class="string">node.hostname==ecs-dc8a-0003</span></span><br><span class="line">      <span class="attr">restart_policy:</span></span><br><span class="line">        <span class="attr">condition:</span> <span class="string">on-failure</span></span><br><span class="line">        <span class="attr">max_attempts:</span> <span class="number">3</span></span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h3 id="Node-role"><a href="#Node-role" class="headerlink" title="Node role"></a>Node role</h3>
+                                <p>前面我们了解到了根据<code>node.id</code>,<code>node.hostname</code>进行指定节点的部署，但指定的却是唯一的。那么该如何实现同一类进行随机的部署呢？到这里我们继续深入了解，更具节点关系的进行约束。可部署节点中的关系有leader，work。</p>
+                                <p>例如，我想实现不在主节点上部署，虽然我们可以使用使用限制中的条件，避开。例如这样</p>
+                                <figure class="highlight yaml">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="comment"># 示例</span></span><br><span class="line"><span class="string">docker</span> <span class="string">service</span> <span class="string">create</span> <span class="string">\</span></span><br><span class="line"><span class="string">--name</span> <span class="string">registry</span> <span class="string">\</span></span><br><span class="line"><span class="string">--publish</span> <span class="string">published=5000,target=5000</span> <span class="string">\</span></span><br><span class="line"><span class="string">--constraint</span> <span class="string">node.id!=ytsyvuhfs60spr361y6irpynm</span> <span class="string">\</span> <span class="comment"># 修改处</span></span><br><span class="line"><span class="string">registry:2</span></span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>只需要将<code>==</code>,改为<code>!=</code>,即可。</p>
+                                <h4 id="docker-service-2"><a href="#docker-service-2" class="headerlink" title="docker service"></a>docker service</h4>
+                                <p>但终究还是感觉很不喜欢，其实我们也可以这样,根据节点关系进行约束部署，示例如下</p>
+                                <figure class="highlight sh">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">docker service create \</span><br><span class="line">--name nginx \</span><br><span class="line">--publish published=80,target=80 \</span><br><span class="line">--constraint node.role!=manager nginx</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h4 id="docker-stack-2"><a href="#docker-stack-2" class="headerlink" title="docker stack"></a>docker stack</h4>
+                                <figure class="highlight yaml">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="comment"># docker-compose.yaml </span></span><br><span class="line"><span class="attr">version:</span> <span class="string">'3'</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">nginx:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">nginx</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">target:</span> <span class="number">80</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">published:</span> <span class="number">80</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">protocol:</span> <span class="string">tcp</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">mode:</span> <span class="string">ingress</span></span><br><span class="line">    <span class="attr">deploy:</span></span><br><span class="line">      <span class="attr">mode:</span> <span class="string">global</span></span><br><span class="line">      <span class="attr">placement:</span></span><br><span class="line">        <span class="attr">constraints:</span> <span class="comment"># 添加条件约束</span></span><br><span class="line">          <span class="bullet">-</span> <span class="string">node.role!=manager</span></span><br><span class="line">      <span class="attr">restart_policy:</span></span><br><span class="line">        <span class="attr">condition:</span> <span class="string">on-failure</span></span><br><span class="line">        <span class="attr">max_attempts:</span> <span class="number">3</span></span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h3 id="Node-lables"><a href="#Node-lables" class="headerlink" title="Node lables"></a>Node lables</h3>
+                                <p>讲了这么多，照顾新手的就已经过去了，接下来我们晚点更常用的部署，更具lables，来部署。只要是同一个lable，就会可以被部署到，切后续还可以根据label进行更得心应手的管理，例如加入一个label，进行节点驱逐、然后在新加入lables，扩容</p>
+                                <h4 id="添加标签与检查标签"><a href="#添加标签与检查标签" class="headerlink" title="添加标签与检查标签"></a>添加标签与检查标签</h4>
+                                <figure class="highlight sh">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="comment"># 添加标签</span></span><br><span class="line">docker node update --label-add role=web hostname</span><br><span class="line"><span class="comment"># 检查标签</span></span><br><span class="line">docker node inspect hostname </span><br><span class="line"><span class="comment"># 删除标签</span></span><br><span class="line">docker node update --label-rm role hostname</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>输出如下</p>
+                                <figure class="highlight sh">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="string">"ID"</span>: <span class="string">"ttdku9ch37pknxu7b9sxknimb"</span>,                                                                                   </span><br><span class="line">        <span class="string">"Version"</span>: &#123;                                                                                                         </span><br><span class="line">            <span class="string">"Index"</span>: 852                                                                                                     </span><br><span class="line">        &#125;,                                                                                                                   </span><br><span class="line">        <span class="string">"CreatedAt"</span>: <span class="string">"2020-12-08T11:10:53.322771866Z"</span>,                                                                       </span><br><span class="line">        <span class="string">"UpdatedAt"</span>: <span class="string">"2020-12-13T13:24:57.009816659Z"</span>,                                                                       </span><br><span class="line">        <span class="string">"Spec"</span>: &#123;                                                                                                            </span><br><span class="line">            <span class="string">"Labels"</span>: &#123;                                                                                                      </span><br><span class="line">                <span class="string">"role"</span>: <span class="string">"web"</span>              <span class="comment"># 这样我们就实现了添加标签                                                                                  </span></span><br><span class="line">            &#125;,                                                                                                               </span><br><span class="line">            <span class="string">"Role"</span>: <span class="string">"manager"</span>,                                                                                               </span><br><span class="line">            <span class="string">"Availability"</span>: <span class="string">"active"</span>                                                                                         </span><br><span class="line">        &#125;,                 </span><br><span class="line">        <span class="comment"># 略</span></span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h4 id="docker-Service"><a href="#docker-Service" class="headerlink" title="docker Service"></a>docker Service</h4>
+                                <figure class="highlight bash">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">docker service create \</span><br><span class="line">  --name nginx_2 \</span><br><span class="line">  --constraint <span class="string">'node.labels.role == web'</span> \</span><br><span class="line">  nginx</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h4 id="docker-Stack"><a href="#docker-Stack" class="headerlink" title="docker Stack"></a>docker Stack</h4>
+                                <figure class="highlight csharp">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">version: <span class="string">'3'</span></span><br><span class="line">services:</span><br><span class="line">    mycat:</span><br><span class="line">         image: nginx</span><br><span class="line">         ports:</span><br><span class="line">           - target: <span class="number">8080</span></span><br><span class="line">             published: <span class="number">8080</span></span><br><span class="line">             protocol: tcp</span><br><span class="line">             mode: ingress</span><br><span class="line">         deploy:</span><br><span class="line">           mode: <span class="keyword">global</span></span><br><span class="line">           placement:</span><br><span class="line">              constraints:                      <span class="meta"># 添加条件约束</span></span><br><span class="line">                - node.labels.role==web</span><br><span class="line">           restart_policy:</span><br><span class="line">             condition: <span class="keyword">on</span>-failure</span><br><span class="line">             max_attempts: <span class="number">3</span></span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p><code>constraints</code> 为数组，填写多个约束时，它们之间的关系是 <code>AND</code>。也就是说我们可以进行组合使用</p>
+                                <h3 id="更多请参考下表"><a href="#更多请参考下表" class="headerlink" title="更多请参考下表"></a>更多请参考下表</h3>
+                                <div class="table-container">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th style="text-align:left">node attribute</th>
+                                                <th style="text-align:left">matches</th>
+                                                <th style="text-align:left">example</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td style="text-align:left"><code>node.id</code></td>
+                                                <td style="text-align:left">Node ID</td>
+                                                <td style="text-align:left"><code>node.id==2ivku8v2gvtg4</code></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:left"><code>node.hostname</code></td>
+                                                <td style="text-align:left">Node hostname</td>
+                                                <td style="text-align:left"><code>node.hostname!=node-2</code></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:left"><code>node.role</code></td>
+                                                <td style="text-align:left">Node role (<code>manager</code>/<code>worker</code>)</td>
+                                                <td style="text-align:left"><code>node.role==manager</code></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:left"><code>node.platform.os</code></td>
+                                                <td style="text-align:left">Node operating system</td>
+                                                <td style="text-align:left"><code>node.platform.os==windows</code></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:left"><code>node.platform.arch</code></td>
+                                                <td style="text-align:left">Node architecture</td>
+                                                <td style="text-align:left"><code>node.platform.arch==x86_64</code></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:left"><code>node.labels</code></td>
+                                                <td style="text-align:left">User-defined node labels</td>
+                                                <td style="text-align:left"><code>node.labels.security==high</code></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:left"><code>engine.labels</code></td>
+                                                <td style="text-align:left">Docker Engine’s labels</td>
+                                                <td style="text-align:left"><code>engine.labels.operatingsystem==ubuntu-14.04</code></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <h3 id="推荐阅读"><a href="#推荐阅读" class="headerlink" title="推荐阅读"></a>推荐阅读</h3>
+                                <p><a href="https://docs.docker.com/engine/reference/commandline/service_create/#set-service-mode---mode" target="_blank" rel="noopener">此部分的官方文档</a></p>
+                            </div>
+                            <div class="popular-posts-header">相关文章</div>
+                            <ul class="popular-posts">
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/18864.html" rel="bookmark">Kubernetes集群搭建</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/54288.html" rel="bookmark">docker 底层原理探究</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/2890729769.html" rel="bookmark">docker分层构建</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/1529878275.html" rel="bookmark">kubernetes搭建dashboard</a></div>
+                                </li>
+                            </ul>
+                            <footer class="post-footer">
+                                <div class="post-tags">
+                                    <a href="/tags/docker/" rel="tag"><i class="fa fa-tag"></i> docker</a>
+                                </div>
+                                <div class="post-nav">
+                                    <div class="post-nav-item">
+                                        <a href="/34063.html" rel="prev" title="Golang并发深入了解">
+                                            <i class="fa fa-chevron-left"></i> Golang并发深入了解 </a>
+                                    </div>
+                                    <div class="post-nav-item">
+                                        <a href="/3018.html" rel="next" title="scrapy-splash对接代理"> scrapy-splash对接代理 <i class="fa fa-chevron-right"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </footer>
+                        </article>
+                    </div>
+                    <script>
+                        window.addEventListener('tabs:register', () =>
+                        {
+                            let
+                            {
+                                activeClass
+                            } = CONFIG.comments;
+                            if (CONFIG.comments.storage)
+                            {
+                                activeClass = localStorage.getItem('comments_active') || activeClass;
+                            }
+                            if (activeClass)
+                            {
+                                let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+                                if (activeTab)
+                                {
+                                    activeTab.click();
+                                }
+                            }
+                        });
+                        if (CONFIG.comments.storage)
+                        {
+                            window.addEventListener('tabs:click', event =>
+                            {
+                                if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+                                let commentClass = event.target.classList[1];
+                                localStorage.setItem('comments_active', commentClass);
+                            });
+                        }
+
+                    </script>
+                </div>
+                <div class="toggle sidebar-toggle">
+                    <span class="toggle-line toggle-line-first"></span>
+                    <span class="toggle-line toggle-line-middle"></span>
+                    <span class="toggle-line toggle-line-last"></span>
+                </div>
+                <aside class="sidebar">
+                    <div class="sidebar-inner">
+                        <ul class="sidebar-nav motion-element">
+                            <li class="sidebar-nav-toc"> 文章目录 </li>
+                            <li class="sidebar-nav-overview"> 站点概览 </li>
+                        </ul>
+                        <!--noindex-->
+                        <div class="post-toc-wrap sidebar-panel">
+                            <div class="post-toc motion-element">
+                                <ol class="nav">
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#Docker-swarm部署控制"><span class="nav-number">1.</span> <span class="nav-text">Docker swarm部署控制</span></a>
+                                        <ol class="nav-child">
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#NodeId"><span class="nav-number">1.1.</span> <span class="nav-text">NodeId</span></a>
+                                                <ol class="nav-child">
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#docker-service"><span class="nav-number">1.1.1.</span> <span class="nav-text">docker service</span></a></li>
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#docker-stack"><span class="nav-number">1.1.2.</span> <span class="nav-text">docker stack</span></a></li>
+                                                </ol>
+                                            </li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#HOSTNAME"><span class="nav-number">1.2.</span> <span class="nav-text">HOSTNAME</span></a>
+                                                <ol class="nav-child">
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#docker-service-1"><span class="nav-number">1.2.1.</span> <span class="nav-text">docker service</span></a></li>
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#docker-stack-1"><span class="nav-number">1.2.2.</span> <span class="nav-text">docker stack</span></a></li>
+                                                </ol>
+                                            </li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#Node-role"><span class="nav-number">1.3.</span> <span class="nav-text">Node role</span></a>
+                                                <ol class="nav-child">
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#docker-service-2"><span class="nav-number">1.3.1.</span> <span class="nav-text">docker service</span></a></li>
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#docker-stack-2"><span class="nav-number">1.3.2.</span> <span class="nav-text">docker stack</span></a></li>
+                                                </ol>
+                                            </li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#Node-lables"><span class="nav-number">1.4.</span> <span class="nav-text">Node lables</span></a>
+                                                <ol class="nav-child">
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#添加标签与检查标签"><span class="nav-number">1.4.1.</span> <span class="nav-text">添加标签与检查标签</span></a></li>
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#docker-Service"><span class="nav-number">1.4.2.</span> <span class="nav-text">docker Service</span></a></li>
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#docker-Stack"><span class="nav-number">1.4.3.</span> <span class="nav-text">docker Stack</span></a></li>
+                                                </ol>
+                                            </li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#更多请参考下表"><span class="nav-number">1.5.</span> <span class="nav-text">更多请参考下表</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#推荐阅读"><span class="nav-number">1.6.</span> <span class="nav-text">推荐阅读</span></a></li>
+                                        </ol>
+                                    </li>
+                                </ol>
+                            </div>
+                        </div>
+                        <!--/noindex-->
+                        <div class="site-overview-wrap sidebar-panel">
+                            <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <img class="site-author-image" itemprop="image" alt="吴志鹏" src="/images/favicon/android-chrome-512x512.png">
+                                <p class="site-author-name" itemprop="name">吴志鹏</p>
+                                <div class="site-description" itemprop="description">Talk is free，please state clearly</div>
+                            </div>
+                            <div class="site-state-wrap motion-element">
+                                <nav class="site-state">
+                                    <div class="site-state-item site-state-posts">
+                                        <a href="/archives/">
+                                            <span class="site-state-item-count">136</span>
+                                            <span class="site-state-item-name">日志</span>
+                                        </a>
+                                    </div>
+                                    <div class="site-state-item site-state-categories">
+                                        <a href="/categories/">
+                                            <span class="site-state-item-count">158</span>
+                                            <span class="site-state-item-name">分类</span></a>
+                                    </div>
+                                    <div class="site-state-item site-state-tags">
+                                        <a href="/tags/">
+                                            <span class="site-state-item-count">89</span>
+                                            <span class="site-state-item-name">标签</span></a>
+                                    </div>
+                                </nav>
+                            </div>
+                            <div class="links-of-author motion-element">
+                                <span class="links-of-author-item">
+                                    <a href="https://github.com/Payne-Wu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Payne-Wu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="mailto:wuzhipeng1289690157@gmail.com" title="E-Mail → mailto:wuzhipeng1289690157@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="https://www.zhihu.com/people/wu-zhi-peng-72-78" title="ZhiHu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;wu-zhi-peng-72-78" rel="noopener" target="_blank"><i class="fa fa-magic fa-fw"></i>ZhiHu</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="https://weibo.com/u/6987234483" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;6987234483" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+                <div id="sidebar-dimmer"></div>
+            </div>
+        </main>
+        <footer class="footer">
+            <div class="footer-inner">
+                <div class="copyright"> &copy; <span itemprop="copyrightYear">2022</span>
+                    <span class="with-love">
+                        <i class="fa fa-heart"></i>
+                    </span>
+                    <span class="author" itemprop="copyrightHolder">PayneWu</span>
+                    <span class="post-meta-divider">|</span>
+                    <span class="post-meta-item-icon">
+                        <i class="fa fa-chart-area"></i>
+                    </span>
+                    <span title="站点总字数">255k</span>
+                    <span class="post-meta-divider">|</span>
+                    <span class="post-meta-item-icon">
+                        <i class="fa fa-coffee"></i>
+                    </span>
+                    <span title="站点阅读时长">3:51</span>
+                </div>
+                <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">湘ICP备2021019893号-1 </a>
+                </div>
+                <div style="display: none;">
+                    <script src="//s95.cnzz.com/z_stat.php?id=true&web_id=true"></script>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+    <script src="/js/utils.js"></script>
+    <script src="/.js"></script>
+    <script src="/js/schemes/pisces.js"></script>
+    <script src="/.js"></script>
+    <script src="/js/next-boot.js"></script>
+    <script src="/.js"></script>
+    <script>
+        (function ()
+        {
+            var canonicalURL, curProtocol;
+            //Get the <link> tag
+            var x = document.getElementsByTagName("link");
+            //Find the last canonical URL
+            if (x.length > 0)
+            {
+                for (i = 0; i < x.length; i++)
+                {
+                    if (x[i].rel.toLowerCase() == 'canonical' && x[i].href)
+                    {
+                        canonicalURL = x[i].href;
+                    }
+                }
+            }
+            //Get protocol
+            if (!canonicalURL)
+            {
+                curProtocol = window.location.protocol.split(':')[0];
+            }
+            else
+            {
+                curProtocol = canonicalURL.split(':')[0];
+            }
+            //Get current URL if the canonical URL does not exist
+            if (!canonicalURL) canonicalURL = window.location.href;
+            //Assign script content. Replace current URL with the canonical URL
+            ! function ()
+            {
+                var e = /([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,
+                    r = canonicalURL,
+                    t = document.referrer;
+                if (!e.test(r))
+                {
+                    var n = (String(curProtocol).toLowerCase() === 'https') ? "https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif" : "//api.share.baidu.com/s.gif";
+                    t ? (n += "?r=" + encodeURIComponent(document.referrer), r && (n += "&l=" + r)) : r && (n += "?l=" + r);
+                    var i = new Image;
+                    i.src = n
+                }
+            }(window);
+        })();
+
+    </script>
+    <script src="/js/local-search.js"></script>
+    <script src="/.js"></script>
+</body>
+
+</html>

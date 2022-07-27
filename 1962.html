@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+    <meta name="theme-color" content="#222">
+    <meta name="generator" content="Hexo 4.2.1">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16-next.png">
+    <link rel="mask-icon" href="/images/favicon/safari-pinned-tab.svg" color="#222">
+    <meta name="msapplication-config" content="/images/favicon/browserconfig.xml">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+    <link rel="stylesheet" href="/lib/pace/pace-theme-mac-osx.min.css">
+    <script src="/lib/pace/pace.min.js"></script>
+    <script id="hexo-configurations">
+        var NexT = window.NexT ||
+        {};
+        var CONFIG = {
+            "hostname": "paynewu.com",
+            "root": "/",
+            "scheme": "Gemini",
+            "version": "7.8.0",
+            "exturl": false,
+            "sidebar":
+            {
+                "position": "right",
+                "width": 240,
+                "display": "post",
+                "padding": 18,
+                "offset": 12,
+                "onmobile": false
+            },
+            "copycode":
+            {
+                "enable": true,
+                "show_result": true,
+                "style": "mac"
+            },
+            "back2top":
+            {
+                "enable": true,
+                "sidebar": false,
+                "scrollpercent": true
+            },
+            "bookmark":
+            {
+                "enable": false,
+                "color": "#222",
+                "save": "auto"
+            },
+            "fancybox": false,
+            "mediumzoom": true,
+            "lazyload": false,
+            "pangu": true,
+            "comments":
+            {
+                "style": "tabs",
+                "active": "valine",
+                "storage": true,
+                "lazyload": false,
+                "nav": null
+            },
+            "algolia":
+            {
+                "hits":
+                {
+                    "per_page": 10
+                },
+                "labels":
+                {
+                    "input_placeholder": "Search for Posts",
+                    "hits_empty": "We didn't find any results for the search: ${query}",
+                    "hits_stats": "${hits} results found in ${time} ms"
+                }
+            },
+            "localsearch":
+            {
+                "enable": true,
+                "trigger": "auto",
+                "top_n_per_article": 8,
+                "unescape": false,
+                "preload": false
+            },
+            "motion":
+            {
+                "enable": false,
+                "async": false,
+                "transition":
+                {
+                    "post_block": "bounceDownIn",
+                    "post_header": "slideDownIn",
+                    "post_body": "slideDownIn",
+                    "coll_header": "slideLeftIn",
+                    "sidebar": "slideUpIn"
+                }
+            },
+            "path": "search.xml"
+        };
+
+    </script>
+    <meta name="description" content="接口是一种类型 最初的int、string、bool,再到稍微复杂的Array、Map、Slice。他们都称之为基础数据类型，以及到多维度符合类型的结构体。以及今日咱们所需要学习的接口。 在Go语言编程中，Go(强类型语言)，也就是说必须是一种具体的类型，当我们需要只关注能调用它的什么方法，而不关注它是什么类型,该怎么办呢？ Go语言中为了解决类似上面的问题，就设计了接口这个概念。接口区别于我们之">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Golang-接口(interface)">
+    <meta property="og:url" content="https://paynewu.com/1962.html">
+    <meta property="og:site_name" content="吴志鹏｜Payne-Wu">
+    <meta property="og:description" content="接口是一种类型 最初的int、string、bool,再到稍微复杂的Array、Map、Slice。他们都称之为基础数据类型，以及到多维度符合类型的结构体。以及今日咱们所需要学习的接口。 在Go语言编程中，Go(强类型语言)，也就是说必须是一种具体的类型，当我们需要只关注能调用它的什么方法，而不关注它是什么类型,该怎么办呢？ Go语言中为了解决类似上面的问题，就设计了接口这个概念。接口区别于我们之">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="article:published_time" content="2020-11-26T13:57:37.000Z">
+    <meta property="article:modified_time" content="2022-07-27T09:58:26.872Z">
+    <meta property="article:author" content="吴志鹏">
+    <meta property="article:tag" content="Go">
+    <meta name="twitter:card" content="summary">
+    <link rel="canonical" href="https://paynewu.com/1962.html">
+    <script id="page-configurations">
+        // https://hexo.io/docs/variables.html
+        CONFIG.page = {
+            sidebar: "",
+            isHome: false,
+            isPost: true,
+            lang: 'zh-CN'
+        };
+
+    </script>
+    <title>Golang-接口(interface) | 吴志鹏｜Payne-Wu</title>
+    <meta name="google-site-verification" content="p_bIcnvirkFzG2dYKuNDivKD8-STet5W7D-01woA2fc" />
+    <noscript>
+        <style>
+            .use-motion .brand,
+            .use-motion .menu-item,
+            .sidebar-inner,
+            .use-motion .post-block,
+            .use-motion .pagination,
+            .use-motion .comments,
+            .use-motion .post-header,
+            .use-motion .post-body,
+            .use-motion .collection-header
+            {
+                opacity: initial;
+            }
+
+            .use-motion .site-title,
+            .use-motion .site-subtitle
+            {
+                opacity: initial;
+                top: initial;
+            }
+
+            .use-motion .logo-line-before i
+            {
+                left: initial;
+            }
+
+            .use-motion .logo-line-after i
+            {
+                right: initial;
+            }
+
+        </style>
+    </noscript>
+    <link rel="alternate" href="/atom.xml" title="吴志鹏｜Payne-Wu" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+    <div class="container">
+        <div class="headband"></div>
+        <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+            <div class="header-inner">
+                <div class="site-brand-container">
+                    <div class="site-nav-toggle">
+                        <div class="toggle" aria-label="切换导航栏">
+                            <span class="toggle-line toggle-line-first"></span>
+                            <span class="toggle-line toggle-line-middle"></span>
+                            <span class="toggle-line toggle-line-last"></span>
+                        </div>
+                    </div>
+                    <div class="site-meta">
+                        <a href="/" class="brand" rel="start">
+                            <span class="logo-line-before"><i></i></span>
+                            <h1 class="site-title">吴志鹏｜Payne-Wu </h1>
+                            <span class="logo-line-after"><i></i></span>
+                        </a>
+                    </div>
+                    <div class="site-nav-right">
+                        <div class="toggle popup-trigger">
+                            <i class="fa fa-search fa-fw fa-lg"></i>
+                        </div>
+                    </div>
+                </div>
+                <nav class="site-nav">
+                    <ul id="menu" class="main-menu menu">
+                        <li class="menu-item menu-item-home">
+                            <a href="/" rel="section">首页</a>
+                        </li>
+                        <li class="menu-item menu-item-archives">
+                            <a href="/archives/" rel="section">文章列表</a>
+                        </li>
+                        <li class="menu-item menu-item-tags">
+                            <a href="/tags/" rel="section">Tags Cloud</a>
+                        </li>
+                        <li class="menu-item menu-item-categories">
+                            <a href="/categories/" rel="section">文章集合</a>
+                        </li>
+                        <li class="menu-item menu-item-about">
+                            <a href="/about/" rel="section">关于我啊</a>
+                        </li>
+                        <li class="menu-item menu-item-message">
+                            <a href="/message/" rel="section">留言与我</a>
+                        </li>
+                        <li class="menu-item menu-item-search">
+                            <a role="button" class="popup-trigger">搜索 </a>
+                        </li>
+                    </ul>
+                </nav>
+                <div class="search-pop-overlay">
+                    <div class="popup search-popup">
+                        <div class="search-header">
+                            <span class="search-icon">
+                                <i class="fa fa-search"></i>
+                            </span>
+                            <div class="search-input-container">
+                                <input autocomplete="off" autocapitalize="off" placeholder="搜索..." spellcheck="false" type="search" class="search-input">
+                            </div>
+                            <span class="popup-btn-close">
+                                <i class="fa fa-times-circle"></i>
+                            </span>
+                        </div>
+                        <div id="search-result">
+                            <div id="no-result">
+                                <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="back-to-top">
+            <i class="fa fa-arrow-up"></i>
+            <span>0%</span>
+        </div>
+        <div class="reading-progress-bar"></div>
+        <main class="main">
+            <div class="main-inner">
+                <div class="content-wrap">
+                    <div class="content post posts-expand">
+                        <article itemscope itemtype="http://schema.org/Article" class="post-block single" lang="zh-CN">
+                            <link itemprop="mainEntityOfPage" href="https://paynewu.com/1962.html">
+                            <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <meta itemprop="image" content="/images/favicon/android-chrome-512x512.png">
+                                <meta itemprop="name" content="吴志鹏">
+                                <meta itemprop="description" content="Talk is free，please state clearly">
+                            </span>
+                            <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+                                <meta itemprop="name" content="吴志鹏｜Payne-Wu">
+                            </span>
+                            <header class="post-header">
+                                <h1 class="post-title" itemprop="name headline"> Golang-接口(interface) </h1>
+                                <div class="post-meta">
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-user"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">作者</span>
+                                        <span><a href="/authors/Payne" class="author" itemprop="url" rel="index">Payne</a></span>
+                                    </span>
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-calendar"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">发表于</span>
+                                        <time title="创建时间：2020-11-26 21:57:37" itemprop="dateCreated datePublished" datetime="2020-11-26T21:57:37+08:00">2020-11-26</time>
+                                    </span>
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-folder"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">分类于</span>
+                                        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                                            <a href="/categories/Go/" itemprop="url" rel="index"><span itemprop="name">Go</span></a>
+                                        </span>
+                                    </span>
+                                    <br>
+                                    <span class="post-meta-item" title="本文字数">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-file-word"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">本文字数：</span>
+                                        <span>752</span>
+                                    </span>
+                                    <span class="post-meta-item" title="阅读时长">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-clock"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                                        <span>1 分钟</span>
+                                    </span>
+                                </div>
+                            </header>
+                            <div class="post-body" itemprop="articleBody">
+                                <p><strong>接口是一种类型</strong></p>
+                                <p>最初的<code>int</code>、<code>string</code>、<code>bool</code>,再到稍微复杂的<code>Array</code>、<code>Map</code>、<code>Slice</code>。他们都称之为基础数据类型，以及到多维度符合类型的<code>结构体</code>。以及今日咱们所需要学习的<code>接口</code>。</p>
+                                <p>在Go语言编程中，Go(强类型语言)，也就是说必须是一种具体的类型，当我们需要只关注能调用它的什么方法，而不关注它是什么类型,该怎么办呢？</p>
+                                <p>Go语言中为了解决类似上面的问题，就设计了接口这个概念。接口区别于我们之前所有的具体类型，接口是一种抽象的类型。当你看到一个接口类型的值时，你不知道它是什么，唯一知道的是通过它的方法能做什么。</p>
+                                <p><strong>疑问：只关心调用的函数，而不关注其类型</strong></p>
+                                <a id="more"></a>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> person <span class="keyword">struct</span>&#123;&#125;</span><br><span class="line"><span class="keyword">type</span> dog <span class="keyword">struct</span>&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(p person)</span> <span class="title">speak</span><span class="params">()</span></span> &#123;</span><br><span class="line">	fmt.Println(<span class="string">"shit~"</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(d dog)</span> <span class="title">speak</span><span class="params">()</span></span> &#123;</span><br><span class="line">	fmt.Println(<span class="string">"汪汪汪~"</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">do</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="comment">// 接受一个参数，进来什么，什么就要speak</span></span><br><span class="line">	x.speak()</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h3 id="接口的定义"><a href="#接口的定义" class="headerlink" title="接口的定义"></a>接口的定义</h3>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="keyword">type</span> 接口类型名 <span class="keyword">interface</span>&#123;</span><br><span class="line">    方法名<span class="number">1</span>( 参数列表<span class="number">1</span>，参数列表<span class="number">2</span> ... ) (返回值列表<span class="number">1</span>,返回值列表<span class="number">2</span> ...)</span><br><span class="line">    方法名<span class="number">2</span>( 参数列表<span class="number">1</span>，参数列表<span class="number">2</span> ...) (返回值列表<span class="number">1</span>,返回值列表<span class="number">2</span> ...)</span><br><span class="line">   	... ...</span><br><span class="line">&#125;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <blockquote>
+                                    <ul>
+                                        <li>接口名：使用<code>type</code>将接口定义为自定义的类型名。Go语言的接口在命名时，一般会在单词后面添加<code>er</code>，如有写操作的接口叫<code>Writer</code>，有字符串功能的接口叫<code>Stringer</code>等。接口名最好要能突出该接口的类型含义。</li>
+                                        <li>方法名：当方法名首字母是大写且这个接口类型名首字母也是大写时，这个方法可以被接口所在的包（package）之外的代码访问。</li>
+                                        <li>参数列表、返回值列表：参数列表和返回值列表中的参数变量名可以省略。</li>
+                                    </ul>
+                                </blockquote>
+                                <p>那么为了解决以上<a href="#jump_1">问题</a>，我们可以定义接口。实现如下</p>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 接口</span></span><br><span class="line"><span class="keyword">type</span> speak <span class="keyword">interface</span> &#123;</span><br><span class="line">	speak()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 结构体</span></span><br><span class="line"><span class="keyword">type</span> person <span class="keyword">struct</span>&#123;&#125;</span><br><span class="line"><span class="keyword">type</span> dog <span class="keyword">struct</span>&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 结构体person的实现</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(p person)</span> <span class="title">speak</span><span class="params">()</span></span> &#123;</span><br><span class="line">	fmt.Println(<span class="string">"shit~"</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 结构体dog 实现</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(d dog)</span> <span class="title">speak</span><span class="params">()</span></span> &#123;</span><br><span class="line">	fmt.Println(<span class="string">"汪汪汪~"</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">do</span><span class="params">(s speak)</span></span> &#123;</span><br><span class="line">	<span class="comment">// 接受一个参数，进来什么，什么就调用它的speak</span></span><br><span class="line">	s.speak()</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> p1 person</span><br><span class="line">	<span class="keyword">var</span> d1 dog</span><br><span class="line"></span><br><span class="line">	do(p1)</span><br><span class="line">	do(d1)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// shit~</span></span><br><span class="line"><span class="comment">// 汪汪汪~</span></span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h3 id="实现接口的条件"><a href="#实现接口的条件" class="headerlink" title="实现接口的条件"></a>实现接口的条件</h3>
+                                <p>一个变量如果实现了接口中全部的方法，那么此变量就实现了这个接口。</p>
+                                <p>接口是一个<strong>需要实现的类型(方法列表)</strong>。</p>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 接口</span></span><br><span class="line"><span class="keyword">type</span> speak <span class="keyword">interface</span> &#123;</span><br><span class="line">	speak()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 结构体</span></span><br><span class="line"><span class="keyword">type</span> person <span class="keyword">struct</span>&#123;&#125;</span><br><span class="line"><span class="keyword">type</span> dog <span class="keyword">struct</span>&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 结构体person的实现</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(p person)</span> <span class="title">speak</span><span class="params">()</span></span> &#123;</span><br><span class="line">	fmt.Println(<span class="string">"shit~"</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 结构体dog 实现</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(d dog)</span> <span class="title">speak</span><span class="params">()</span></span> &#123;</span><br><span class="line">	fmt.Println(<span class="string">"汪汪汪~"</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">do</span><span class="params">(s speak)</span></span> &#123;</span><br><span class="line">	<span class="comment">// 接受一个参数，进来什么，什么就调用它的speak</span></span><br><span class="line">	s.speak()</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> p1 person</span><br><span class="line">	<span class="keyword">var</span> d1 dog</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 定义一个接口类型：speak的变量speaks</span></span><br><span class="line">	<span class="keyword">var</span> speaks speak</span><br><span class="line">	speaks = d1</span><br><span class="line">	speaks = p1</span><br><span class="line">	fmt.Print(speaks)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// &#123;&#125;</span></span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h3 id="接口类型变量"><a href="#接口类型变量" class="headerlink" title="接口类型变量"></a>接口类型变量</h3>
+                                <p>接口类型变量能够存储所有实现了该接口的实例。</p>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> say <span class="keyword">interface</span> &#123;</span><br><span class="line">	say()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> cats <span class="keyword">struct</span>&#123;&#125;</span><br><span class="line"><span class="keyword">type</span> dogs <span class="keyword">struct</span>&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(c cats)</span> <span class="title">say</span><span class="params">()</span></span> &#123;</span><br><span class="line">	fmt.Println(<span class="string">"Fish~"</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(d dogs)</span> <span class="title">say</span><span class="params">()</span></span> &#123;</span><br><span class="line">	fmt.Print(<span class="string">"Shit~"</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">sayer</span><span class="params">(s say)</span></span> &#123;</span><br><span class="line">	<span class="comment">// 接受一个参数，进来什么，什么就调用它的speak</span></span><br><span class="line">	s.say()</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> x say</span><br><span class="line">	a := cats&#123;&#125;</span><br><span class="line">	b := dogs&#123;&#125;</span><br><span class="line">	x = a</span><br><span class="line">	x.say()</span><br><span class="line">	x = b</span><br><span class="line">	x.say()</span><br><span class="line">&#125;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h3 id="值的接受者与指针接收者实现接口"><a href="#值的接受者与指针接收者实现接口" class="headerlink" title="值的接受者与指针接收者实现接口"></a>值的接受者与指针接收者实现接口</h3>
+                                <h4 id="值的接受者实现接口"><a href="#值的接受者实现接口" class="headerlink" title="值的接受者实现接口"></a>值的接受者实现接口</h4>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> moving <span class="keyword">interface</span> &#123;</span><br><span class="line">	move()</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">type</span> dog <span class="keyword">struct</span>&#123;&#125;</span><br><span class="line"><span class="keyword">type</span> cat <span class="keyword">struct</span>&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(d dog)</span> <span class="title">move</span><span class="params">()</span></span> &#123;</span><br><span class="line">	fmt.Println(<span class="string">"丁丁～"</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(c cat)</span> <span class="title">move</span><span class="params">()</span></span> &#123;</span><br><span class="line">	fmt.Println(<span class="string">"喵呜～"</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">move</span><span class="params">(m moving)</span></span> &#123;</span><br><span class="line">	<span class="comment">// 接受一个参数，进来什么，什么就调用它的speak</span></span><br><span class="line">	m.move()</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> x moving</span><br><span class="line">	a := dog&#123;&#125;</span><br><span class="line">	b := &amp;cat&#123;&#125;</span><br><span class="line">	x = a</span><br><span class="line">	x.move()</span><br><span class="line">	x = b</span><br><span class="line">	x.move()</span><br><span class="line">&#125;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>从上面的代码中我们可以发现，使用值接收者实现接口之后，不管是dog结构体还是结构体指针<em>dog类型的变量都可以赋值给该接口变量。因为Go语言中有对指针类型变量求值的语法糖，cat指针<code>x</code>内部会自动求值`(</em> ** x)`</p>
+                                <h4 id="指针接收者实现接口"><a href="#指针接收者实现接口" class="headerlink" title="指针接收者实现接口"></a>指针接收者实现接口</h4>
+                                <p>同样的代码我们再来测试一下使用指针接收者有什么区别：</p>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> moving <span class="keyword">interface</span> &#123;</span><br><span class="line">	move()</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">type</span> dog <span class="keyword">struct</span>&#123;&#125;</span><br><span class="line"><span class="keyword">type</span> cat <span class="keyword">struct</span>&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(d dog)</span> <span class="title">move</span><span class="params">()</span></span> &#123;</span><br><span class="line">	fmt.Println(<span class="string">"丁丁～"</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(c *cat)</span> <span class="title">move</span><span class="params">()</span></span> &#123;</span><br><span class="line">	fmt.Println(<span class="string">"喵呜～"</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">move</span><span class="params">(m moving)</span></span> &#123;</span><br><span class="line">	<span class="comment">// 接受一个参数，进来什么，什么就调用它的speak</span></span><br><span class="line">	m.move()</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> x moving</span><br><span class="line">	a := dog&#123;&#125; <span class="comment">// a是dog类型</span></span><br><span class="line">	x = a      <span class="comment">// 可以接收dog类型</span></span><br><span class="line">	x.move()</span><br><span class="line">	b := cat&#123;&#125;</span><br><span class="line">	x = b <span class="comment">// 不可以接受指针类型</span></span><br><span class="line">	x.move()</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// # command-line-arguments</span></span><br><span class="line"><span class="comment">// ./pointer.go:28:4: cannot use b (type cat) as type moving in assignment:</span></span><br><span class="line"><span class="comment">// cat does not implement moving (move method has pointer receiver)</span></span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                            </div>
+                            <div class="popular-posts-header">相关文章</div>
+                            <ul class="popular-posts">
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/62372.html" rel="bookmark">Golang-Array</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/17571.html" rel="bookmark">Golang-Defer详解</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/3744.html" rel="bookmark">Golang-Map</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/45903.html" rel="bookmark">Golang-匿名函数与闭包</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/1506.html" rel="bookmark">Golang-结构体实现学生管理系统</a></div>
+                                </li>
+                            </ul>
+                            <footer class="post-footer">
+                                <div class="post-tags">
+                                    <a href="/tags/Go/" rel="tag"><i class="fa fa-tag"></i> Go</a>
+                                </div>
+                                <div class="post-nav">
+                                    <div class="post-nav-item">
+                                        <a href="/1506.html" rel="prev" title="Golang-结构体实现学生管理系统">
+                                            <i class="fa fa-chevron-left"></i> Golang-结构体实现学生管理系统 </a>
+                                    </div>
+                                    <div class="post-nav-item">
+                                        <a href="/1627.html" rel="next" title="使用Golang操作文件的那些事儿"> 使用Golang操作文件的那些事儿 <i class="fa fa-chevron-right"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </footer>
+                        </article>
+                    </div>
+                    <script>
+                        window.addEventListener('tabs:register', () =>
+                        {
+                            let
+                            {
+                                activeClass
+                            } = CONFIG.comments;
+                            if (CONFIG.comments.storage)
+                            {
+                                activeClass = localStorage.getItem('comments_active') || activeClass;
+                            }
+                            if (activeClass)
+                            {
+                                let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+                                if (activeTab)
+                                {
+                                    activeTab.click();
+                                }
+                            }
+                        });
+                        if (CONFIG.comments.storage)
+                        {
+                            window.addEventListener('tabs:click', event =>
+                            {
+                                if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+                                let commentClass = event.target.classList[1];
+                                localStorage.setItem('comments_active', commentClass);
+                            });
+                        }
+
+                    </script>
+                </div>
+                <div class="toggle sidebar-toggle">
+                    <span class="toggle-line toggle-line-first"></span>
+                    <span class="toggle-line toggle-line-middle"></span>
+                    <span class="toggle-line toggle-line-last"></span>
+                </div>
+                <aside class="sidebar">
+                    <div class="sidebar-inner">
+                        <ul class="sidebar-nav motion-element">
+                            <li class="sidebar-nav-toc"> 文章目录 </li>
+                            <li class="sidebar-nav-overview"> 站点概览 </li>
+                        </ul>
+                        <!--noindex-->
+                        <div class="post-toc-wrap sidebar-panel">
+                            <div class="post-toc motion-element">
+                                <ol class="nav">
+                                    <li class="nav-item nav-level-3"><a class="nav-link" href="#接口的定义"><span class="nav-number">1.</span> <span class="nav-text">接口的定义</span></a></li>
+                                    <li class="nav-item nav-level-3"><a class="nav-link" href="#实现接口的条件"><span class="nav-number">2.</span> <span class="nav-text">实现接口的条件</span></a></li>
+                                    <li class="nav-item nav-level-3"><a class="nav-link" href="#接口类型变量"><span class="nav-number">3.</span> <span class="nav-text">接口类型变量</span></a></li>
+                                    <li class="nav-item nav-level-3"><a class="nav-link" href="#值的接受者与指针接收者实现接口"><span class="nav-number">4.</span> <span class="nav-text">值的接受者与指针接收者实现接口</span></a>
+                                        <ol class="nav-child">
+                                            <li class="nav-item nav-level-4"><a class="nav-link" href="#值的接受者实现接口"><span class="nav-number">4.1.</span> <span class="nav-text">值的接受者实现接口</span></a></li>
+                                            <li class="nav-item nav-level-4"><a class="nav-link" href="#指针接收者实现接口"><span class="nav-number">4.2.</span> <span class="nav-text">指针接收者实现接口</span></a></li>
+                                        </ol>
+                                    </li>
+                                </ol>
+                            </div>
+                        </div>
+                        <!--/noindex-->
+                        <div class="site-overview-wrap sidebar-panel">
+                            <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <img class="site-author-image" itemprop="image" alt="吴志鹏" src="/images/favicon/android-chrome-512x512.png">
+                                <p class="site-author-name" itemprop="name">吴志鹏</p>
+                                <div class="site-description" itemprop="description">Talk is free，please state clearly</div>
+                            </div>
+                            <div class="site-state-wrap motion-element">
+                                <nav class="site-state">
+                                    <div class="site-state-item site-state-posts">
+                                        <a href="/archives/">
+                                            <span class="site-state-item-count">136</span>
+                                            <span class="site-state-item-name">日志</span>
+                                        </a>
+                                    </div>
+                                    <div class="site-state-item site-state-categories">
+                                        <a href="/categories/">
+                                            <span class="site-state-item-count">158</span>
+                                            <span class="site-state-item-name">分类</span></a>
+                                    </div>
+                                    <div class="site-state-item site-state-tags">
+                                        <a href="/tags/">
+                                            <span class="site-state-item-count">89</span>
+                                            <span class="site-state-item-name">标签</span></a>
+                                    </div>
+                                </nav>
+                            </div>
+                            <div class="links-of-author motion-element">
+                                <span class="links-of-author-item">
+                                    <a href="https://github.com/Payne-Wu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Payne-Wu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="mailto:wuzhipeng1289690157@gmail.com" title="E-Mail → mailto:wuzhipeng1289690157@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="https://www.zhihu.com/people/wu-zhi-peng-72-78" title="ZhiHu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;wu-zhi-peng-72-78" rel="noopener" target="_blank"><i class="fa fa-magic fa-fw"></i>ZhiHu</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="https://weibo.com/u/6987234483" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;6987234483" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+                <div id="sidebar-dimmer"></div>
+            </div>
+        </main>
+        <footer class="footer">
+            <div class="footer-inner">
+                <div class="copyright"> &copy; <span itemprop="copyrightYear">2022</span>
+                    <span class="with-love">
+                        <i class="fa fa-heart"></i>
+                    </span>
+                    <span class="author" itemprop="copyrightHolder">PayneWu</span>
+                    <span class="post-meta-divider">|</span>
+                    <span class="post-meta-item-icon">
+                        <i class="fa fa-chart-area"></i>
+                    </span>
+                    <span title="站点总字数">255k</span>
+                    <span class="post-meta-divider">|</span>
+                    <span class="post-meta-item-icon">
+                        <i class="fa fa-coffee"></i>
+                    </span>
+                    <span title="站点阅读时长">3:51</span>
+                </div>
+                <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">湘ICP备2021019893号-1 </a>
+                </div>
+                <div style="display: none;">
+                    <script src="//s95.cnzz.com/z_stat.php?id=true&web_id=true"></script>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+    <script src="/js/utils.js"></script>
+    <script src="/.js"></script>
+    <script src="/js/schemes/pisces.js"></script>
+    <script src="/.js"></script>
+    <script src="/js/next-boot.js"></script>
+    <script src="/.js"></script>
+    <script>
+        (function ()
+        {
+            var canonicalURL, curProtocol;
+            //Get the <link> tag
+            var x = document.getElementsByTagName("link");
+            //Find the last canonical URL
+            if (x.length > 0)
+            {
+                for (i = 0; i < x.length; i++)
+                {
+                    if (x[i].rel.toLowerCase() == 'canonical' && x[i].href)
+                    {
+                        canonicalURL = x[i].href;
+                    }
+                }
+            }
+            //Get protocol
+            if (!canonicalURL)
+            {
+                curProtocol = window.location.protocol.split(':')[0];
+            }
+            else
+            {
+                curProtocol = canonicalURL.split(':')[0];
+            }
+            //Get current URL if the canonical URL does not exist
+            if (!canonicalURL) canonicalURL = window.location.href;
+            //Assign script content. Replace current URL with the canonical URL
+            ! function ()
+            {
+                var e = /([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,
+                    r = canonicalURL,
+                    t = document.referrer;
+                if (!e.test(r))
+                {
+                    var n = (String(curProtocol).toLowerCase() === 'https') ? "https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif" : "//api.share.baidu.com/s.gif";
+                    t ? (n += "?r=" + encodeURIComponent(document.referrer), r && (n += "&l=" + r)) : r && (n += "?l=" + r);
+                    var i = new Image;
+                    i.src = n
+                }
+            }(window);
+        })();
+
+    </script>
+    <script src="/js/local-search.js"></script>
+    <script src="/.js"></script>
+</body>
+
+</html>

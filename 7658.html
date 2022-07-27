@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+    <meta name="theme-color" content="#222">
+    <meta name="generator" content="Hexo 4.2.1">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16-next.png">
+    <link rel="mask-icon" href="/images/favicon/safari-pinned-tab.svg" color="#222">
+    <meta name="msapplication-config" content="/images/favicon/browserconfig.xml">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+    <link rel="stylesheet" href="/lib/pace/pace-theme-mac-osx.min.css">
+    <script src="/lib/pace/pace.min.js"></script>
+    <script id="hexo-configurations">
+        var NexT = window.NexT ||
+        {};
+        var CONFIG = {
+            "hostname": "paynewu.com",
+            "root": "/",
+            "scheme": "Gemini",
+            "version": "7.8.0",
+            "exturl": false,
+            "sidebar":
+            {
+                "position": "right",
+                "width": 240,
+                "display": "post",
+                "padding": 18,
+                "offset": 12,
+                "onmobile": false
+            },
+            "copycode":
+            {
+                "enable": true,
+                "show_result": true,
+                "style": "mac"
+            },
+            "back2top":
+            {
+                "enable": true,
+                "sidebar": false,
+                "scrollpercent": true
+            },
+            "bookmark":
+            {
+                "enable": false,
+                "color": "#222",
+                "save": "auto"
+            },
+            "fancybox": false,
+            "mediumzoom": true,
+            "lazyload": false,
+            "pangu": true,
+            "comments":
+            {
+                "style": "tabs",
+                "active": "valine",
+                "storage": true,
+                "lazyload": false,
+                "nav": null
+            },
+            "algolia":
+            {
+                "hits":
+                {
+                    "per_page": 10
+                },
+                "labels":
+                {
+                    "input_placeholder": "Search for Posts",
+                    "hits_empty": "We didn't find any results for the search: ${query}",
+                    "hits_stats": "${hits} results found in ${time} ms"
+                }
+            },
+            "localsearch":
+            {
+                "enable": true,
+                "trigger": "auto",
+                "top_n_per_article": 8,
+                "unescape": false,
+                "preload": false
+            },
+            "motion":
+            {
+                "enable": false,
+                "async": false,
+                "transition":
+                {
+                    "post_block": "bounceDownIn",
+                    "post_header": "slideDownIn",
+                    "post_body": "slideDownIn",
+                    "coll_header": "slideLeftIn",
+                    "sidebar": "slideUpIn"
+                }
+            },
+            "path": "search.xml"
+        };
+
+    </script>
+    <meta name="description" content="Tampermonkey Tampermonkey 是一款免费的浏览器扩展和最为流行的用户脚本管理器，虽然有些受支持的浏览器拥有原生的用户脚本支持，但 Tampermonkey 将在您的用户脚本管理方面提供更多的便利。它提供了诸如便捷脚本安装、自动更新检查、标签中的脚本运行状况速览、内置的编辑器等众多功能， 同时Tampermonkey还有可能正常运行原本并不兼容的脚本。">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Tampermonkey安装与使用">
+    <meta property="og:url" content="https://paynewu.com/7658.html">
+    <meta property="og:site_name" content="吴志鹏｜Payne-Wu">
+    <meta property="og:description" content="Tampermonkey Tampermonkey 是一款免费的浏览器扩展和最为流行的用户脚本管理器，虽然有些受支持的浏览器拥有原生的用户脚本支持，但 Tampermonkey 将在您的用户脚本管理方面提供更多的便利。它提供了诸如便捷脚本安装、自动更新检查、标签中的脚本运行状况速览、内置的编辑器等众多功能， 同时Tampermonkey还有可能正常运行原本并不兼容的脚本。">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNgy1gr4arkuzzmj30yd08jdge.jpg">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNgy1gr4ay74m2aj30kd0fkt95.jpg">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNgy1gr4ayxb6y3j31fo0mgwgp.jpg">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNgy1gr4baf3mybj31fj0i3gmi.jpg">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNgy1gr4c8ojzwij30x204njre.jpg">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNgy1gr4c9uenmkj30wy04nglk.jpg">
+    <meta property="article:published_time" content="2021-06-03T10:52:47.000Z">
+    <meta property="article:modified_time" content="2022-07-27T09:58:26.876Z">
+    <meta property="article:author" content="吴志鹏">
+    <meta property="article:tag" content="Tampermonkey">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:image" content="https://tva1.sinaimg.cn/large/008i3skNgy1gr4arkuzzmj30yd08jdge.jpg">
+    <link rel="canonical" href="https://paynewu.com/7658.html">
+    <script id="page-configurations">
+        // https://hexo.io/docs/variables.html
+        CONFIG.page = {
+            sidebar: "",
+            isHome: false,
+            isPost: true,
+            lang: 'zh-CN'
+        };
+
+    </script>
+    <title>Tampermonkey安装与使用 | 吴志鹏｜Payne-Wu</title>
+    <meta name="google-site-verification" content="p_bIcnvirkFzG2dYKuNDivKD8-STet5W7D-01woA2fc" />
+    <noscript>
+        <style>
+            .use-motion .brand,
+            .use-motion .menu-item,
+            .sidebar-inner,
+            .use-motion .post-block,
+            .use-motion .pagination,
+            .use-motion .comments,
+            .use-motion .post-header,
+            .use-motion .post-body,
+            .use-motion .collection-header
+            {
+                opacity: initial;
+            }
+
+            .use-motion .site-title,
+            .use-motion .site-subtitle
+            {
+                opacity: initial;
+                top: initial;
+            }
+
+            .use-motion .logo-line-before i
+            {
+                left: initial;
+            }
+
+            .use-motion .logo-line-after i
+            {
+                right: initial;
+            }
+
+        </style>
+    </noscript>
+    <link rel="alternate" href="/atom.xml" title="吴志鹏｜Payne-Wu" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+    <div class="container">
+        <div class="headband"></div>
+        <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+            <div class="header-inner">
+                <div class="site-brand-container">
+                    <div class="site-nav-toggle">
+                        <div class="toggle" aria-label="切换导航栏">
+                            <span class="toggle-line toggle-line-first"></span>
+                            <span class="toggle-line toggle-line-middle"></span>
+                            <span class="toggle-line toggle-line-last"></span>
+                        </div>
+                    </div>
+                    <div class="site-meta">
+                        <a href="/" class="brand" rel="start">
+                            <span class="logo-line-before"><i></i></span>
+                            <h1 class="site-title">吴志鹏｜Payne-Wu </h1>
+                            <span class="logo-line-after"><i></i></span>
+                        </a>
+                    </div>
+                    <div class="site-nav-right">
+                        <div class="toggle popup-trigger">
+                            <i class="fa fa-search fa-fw fa-lg"></i>
+                        </div>
+                    </div>
+                </div>
+                <nav class="site-nav">
+                    <ul id="menu" class="main-menu menu">
+                        <li class="menu-item menu-item-home">
+                            <a href="/" rel="section">首页</a>
+                        </li>
+                        <li class="menu-item menu-item-archives">
+                            <a href="/archives/" rel="section">文章列表</a>
+                        </li>
+                        <li class="menu-item menu-item-tags">
+                            <a href="/tags/" rel="section">Tags Cloud</a>
+                        </li>
+                        <li class="menu-item menu-item-categories">
+                            <a href="/categories/" rel="section">文章集合</a>
+                        </li>
+                        <li class="menu-item menu-item-about">
+                            <a href="/about/" rel="section">关于我啊</a>
+                        </li>
+                        <li class="menu-item menu-item-message">
+                            <a href="/message/" rel="section">留言与我</a>
+                        </li>
+                        <li class="menu-item menu-item-search">
+                            <a role="button" class="popup-trigger">搜索 </a>
+                        </li>
+                    </ul>
+                </nav>
+                <div class="search-pop-overlay">
+                    <div class="popup search-popup">
+                        <div class="search-header">
+                            <span class="search-icon">
+                                <i class="fa fa-search"></i>
+                            </span>
+                            <div class="search-input-container">
+                                <input autocomplete="off" autocapitalize="off" placeholder="搜索..." spellcheck="false" type="search" class="search-input">
+                            </div>
+                            <span class="popup-btn-close">
+                                <i class="fa fa-times-circle"></i>
+                            </span>
+                        </div>
+                        <div id="search-result">
+                            <div id="no-result">
+                                <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="back-to-top">
+            <i class="fa fa-arrow-up"></i>
+            <span>0%</span>
+        </div>
+        <div class="reading-progress-bar"></div>
+        <main class="main">
+            <div class="main-inner">
+                <div class="content-wrap">
+                    <div class="content post posts-expand">
+                        <article itemscope itemtype="http://schema.org/Article" class="post-block single" lang="zh-CN">
+                            <link itemprop="mainEntityOfPage" href="https://paynewu.com/7658.html">
+                            <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <meta itemprop="image" content="/images/favicon/android-chrome-512x512.png">
+                                <meta itemprop="name" content="吴志鹏">
+                                <meta itemprop="description" content="Talk is free，please state clearly">
+                            </span>
+                            <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+                                <meta itemprop="name" content="吴志鹏｜Payne-Wu">
+                            </span>
+                            <header class="post-header">
+                                <h1 class="post-title" itemprop="name headline"> Tampermonkey安装与使用 </h1>
+                                <div class="post-meta">
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-user"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">作者</span>
+                                        <span><a href="/authors/Payne" class="author" itemprop="url" rel="index">Payne</a></span>
+                                    </span>
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-calendar"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">发表于</span>
+                                        <time title="创建时间：2021-06-03 18:52:47" itemprop="dateCreated datePublished" datetime="2021-06-03T18:52:47+08:00">2021-06-03</time>
+                                    </span>
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-folder"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">分类于</span>
+                                        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                                            <a href="/categories/Tampermonkey/" itemprop="url" rel="index"><span itemprop="name">Tampermonkey</span></a>
+                                        </span>
+                                    </span>
+                                    <br>
+                                    <span class="post-meta-item" title="本文字数">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-file-word"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">本文字数：</span>
+                                        <span>3.1k</span>
+                                    </span>
+                                    <span class="post-meta-item" title="阅读时长">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-clock"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                                        <span>3 分钟</span>
+                                    </span>
+                                </div>
+                            </header>
+                            <div class="post-body" itemprop="articleBody">
+                                <h2 id="Tampermonkey"><a href="#Tampermonkey" class="headerlink" title="Tampermonkey"></a>Tampermonkey</h2>
+                                <p><strong>Tampermonkey</strong> 是一款免费的浏览器扩展和最为流行的用户脚本管理器，虽然有些受支持的浏览器拥有原生的用户脚本支持，但 Tampermonkey 将在您的用户脚本管理方面提供更多的便利。<br>它提供了诸如便捷脚本安装、自动更新检查、标签中的脚本运行状况速览、内置的编辑器等众多功能， 同时Tampermonkey还有可能正常运行原本并不兼容的脚本。</p>
+                                <a id="more"></a>
+                                <h3 id="Tampermonkey的安装"><a href="#Tampermonkey的安装" class="headerlink" title="Tampermonkey的安装"></a>Tampermonkey的安装</h3>
+                                <h4 id="方式一-Chrome商店直接下载"><a href="#方式一-Chrome商店直接下载" class="headerlink" title="方式一 Chrome商店直接下载"></a>方式一 Chrome商店直接下载</h4>
+                                <p>Chrome商店 -&gt; 搜索 Tampermonkey -&gt; Tampermonkey 安装即可</p>
+                                <p><img src="https://tva1.sinaimg.cn/large/008i3skNgy1gr4arkuzzmj30yd08jdge.jpg" alt=""></p>
+                                <p>一般情况下是无法下载的，除非你能。。。</p>
+                                <h4 id="方式二：第三方网站进行插件文件下载"><a href="#方式二：第三方网站进行插件文件下载" class="headerlink" title="方式二：第三方网站进行插件文件下载"></a>方式二：第三方网站进行插件文件下载</h4>
+                                <p>进入<a href="https://www.crx4chrome.com/crx/755/进行安装文件的下载，下载完成后。打开拓展程序(Chrome用户选项框" target="_blank" rel="noopener">https://www.crx4chrome.com/crx/755/进行安装文件的下载，下载完成后。打开拓展程序(Chrome用户选项框</a> -&gt; 更多工具 -&gt; 拓展程序)</p>
+                                <p><img src="https://tva1.sinaimg.cn/large/008i3skNgy1gr4ay74m2aj30kd0fkt95.jpg" alt=""></p>
+                                <p>进入如下图所示的界面</p>
+                                <p><img src="https://tva1.sinaimg.cn/large/008i3skNgy1gr4ayxb6y3j31fo0mgwgp.jpg" alt=""></p>
+                                <p>打开右上角的 <strong>开发者模式</strong>，将已经下载的文件拖拽至上图所示的界面。即可完成安装。</p>
+                                <h3 id="使用第三方脚本"><a href="#使用第三方脚本" class="headerlink" title="使用第三方脚本"></a>使用第三方脚本</h3>
+                                <p>进入greasyfork <a href="https://greasyfork.org/zh-CN/scripts" target="_blank" rel="noopener">https://greasyfork.org/zh-CN/scripts</a> 获取需要的插件脚本即可</p>
+                                <h3 id="自定义开发脚本"><a href="#自定义开发脚本" class="headerlink" title="自定义开发脚本"></a>自定义开发脚本</h3>
+                                <p>鼠标点击<strong>Tampermonkey</strong>图标呼出其选项卡，点击添加脚本。即可进入新建脚本界面。</p>
+                                <p><img src="https://tva1.sinaimg.cn/large/008i3skNgy1gr4baf3mybj31fj0i3gmi.jpg" alt=""></p>
+                                <h4 id="语法规则"><a href="#语法规则" class="headerlink" title="语法规则"></a>语法规则</h4>
+                                <figure class="highlight javascript">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="comment">// ==UserScript==</span></span><br><span class="line"><span class="comment">// @key value</span></span><br><span class="line"><span class="comment">// ==/UserScript==</span></span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h4 id="字段释意："><a href="#字段释意：" class="headerlink" title="字段释意："></a>字段释意：</h4>
+                                <h5 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h5>
+                                <p>@name：脚本的名字(自定义)</p>
+                                <p>@author 作者。该脚本的作者。可使用默认的you，或者你的名字</p>
+                                <p>@description 脚本描述（类似于编程中的注释，阐述该脚本的作用等）</p>
+                                <h5 id="命名空间"><a href="#命名空间" class="headerlink" title="命名空间"></a>命名空间</h5>
+                                <p>@namespace 脚本的命名空间(通常使用默认<a href="http://tampermonkey.net/，也可指定" target="_blank" rel="noopener">http://tampermonkey.net/，也可指定</a>)</p>
+                                <p>@homepage, @homepageURL, @website and @source 在选项页面使用的作者主页，用于从脚本名称链接到给定页面。如果@namespace 标记以“<a href="http://”开头，则其内容也将用于此目的。" target="_blank" rel="noopener">http://”开头，则其内容也将用于此目的。</a></p>
+                                <h5 id="版本控制"><a href="#版本控制" class="headerlink" title="版本控制"></a>版本控制</h5>
+                                <p>@version 脚本版本号</p>
+                                <p>@updateURL：用户脚本的更新 URL。 注意：需要一个@version 标签才能使更新检查工作</p>
+                                <p>@downloadURL：URL定义检测到更新时下载脚本的 URL。如果使用值 none，则不会进行更新检查。</p>
+                                <p>@supportURL 定义用户可以报告问题并获得个人支持的 URL。</p>
+                                <h5 id="访问限制"><a href="#访问限制" class="headerlink" title="访问限制"></a>访问限制</h5>
+                                <p>@include</p>
+                                <p>脚本允许运行的页面，可以是多个标签实例。 支持正则语句</p>
+                                <blockquote>
+                                    <p>注意：</p>
+                                    <p>@include 不支持 URL 哈希参数，必须匹配没有哈希参数的路径并使用</p>
+                                </blockquote>
+                                <p>示例：</p>
+                                <figure class="highlight javascript">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="comment">// ==UserScript==</span></span><br><span class="line"><span class="comment">// @name         New Userscript</span></span><br><span class="line"><span class="comment">// @namespace    http://tampermonkey.net/</span></span><br><span class="line"><span class="comment">// @version      0.1</span></span><br><span class="line"><span class="comment">// @description  try to take over the world!</span></span><br><span class="line"><span class="comment">// @author       You</span></span><br><span class="line"><span class="comment">// @include      https://www.tampermonkey.net/documentation.php?ext=dhdg</span></span><br><span class="line"><span class="comment">// @icon         https://www.google.com/s2/favicons?domain=tampermonkey.net</span></span><br><span class="line"><span class="comment">// @grant        none</span></span><br><span class="line"><span class="comment">// ==/UserScript==</span></span><br><span class="line"></span><br><span class="line">(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line"><span class="meta">    'use strict'</span>;</span><br><span class="line">    <span class="comment">// Your code here...</span></span><br><span class="line">    alert(<span class="string">'HEllo'</span>)</span><br><span class="line">&#125;)();</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>保存后，当我们访问<a href="https://www.tampermonkey.net/documentation.php?ext=dhdg的时候将会弹出Hello。如下图所示" target="_blank" rel="noopener">https://www.tampermonkey.net/documentation.php?ext=dhdg的时候将会弹出Hello。如下图所示</a></p>
+                                <p><img src="https://tva1.sinaimg.cn/large/008i3skNgy1gr4c8ojzwij30x204njre.jpg" alt=""></p>
+                                <p>当@match 为 <strong>*</strong> 时，当访问任何一个页面都会alter出对应的内容来。如下图所示</p>
+                                <p><img src="https://tva1.sinaimg.cn/large/008i3skNgy1gr4c9uenmkj30wy04nglk.jpg" alt=""></p>
+                                <p>@match</p>
+                                <p>@match 与 @include 非常相似，然而@match更安全。它对 * 字符的含义设置了更严格的规则。</p>
+                                <p>@match 与 @include他们都是匹配基于一组由匹配模式定义的 URL。匹配模式本质上是以允许的方案开头的 URL。匹配模式本质上是以允许的方案（http、https、file 或 ftp，并且可以包含“*”字符）开头的<br>URL。特殊模式匹配以允许的方案开头的任何 URL。</p>
+                                <p>‘<em>‘ 的含义取决于它是在方案、主机还是路径部分。如果方案是 </em>，则它匹配 http 或 https，而不匹配 file、ftp 或 urn。如果主机只是 <em>，那么它匹配任何主机。如果主机是 </em>.<em>hostname</em><br>，则它匹配指定的主机或其任何子域。在路径部分，每个 ‘*’ 匹配 0 个或多个字符。</p>
+                                <blockquote>
+                                    <p>@match 与 @include区别请参考</p>
+                                    <p><a href="https://wiki.greasespot.net/Metadata_Block#.40match" target="_blank" rel="noopener">https://wiki.greasespot.net/Metadata_Block#.40match</a></p>
+                                    <p>匹配规则</p>
+                                    <p><a href="https://developer.chrome.com/docs/extensions/mv3/match_patterns/" target="_blank" rel="noopener">https://developer.chrome.com/docs/extensions/mv3/match_patterns/</a></p>
+                                </blockquote>
+                                <p><strong>简单来说推荐使用@match</strong></p>
+                                <p>@exclude</p>
+                                <p>不匹配，相当于访问黑名单。如果访问了@exclude中与之匹配的内容则不执行自定义的JavaScript代码</p>
+                                <p>@exclude优先权大于match和@include。如果二者都匹配了，那么默认执行@exclude规则。也就是说即是’白名单‘也是’黑名单‘那么默认为’黑名单‘</p>
+                                <h5 id="第三方链接"><a href="#第三方链接" class="headerlink" title="第三方链接"></a>第三方链接</h5>
+                                <p>@require</p>
+                                <p>指向在脚本本身开始运行之前加载和执行的 JavaScript 文件。</p>
+                                <blockquote>
+                                    <p>脚本中可以有任意数量的@require 键。每个 @require 在安装脚本时下载一次，并与脚本一起存储在用户的硬盘驱动器上。指定的 URL 可能与安装脚本的 URL 相关。</p>
+                                </blockquote>
+                                <p>@resource</p>
+                                <p>预加载可由脚本通过 GM_getResourceURL 和 GM_getResourceText 访问的资源。</p>
+                                <blockquote>
+                                    <p>虽然 resourceName 是非语义的，但它应该符合 JavaScript 标识符限制。每个@resource 必须有一个唯一的名称。</p>
+                                    <p>每个@resource 在安装脚本时下载一次，并与脚本一起存储在用户的硬盘驱动器上。指定的 URL 可能与安装脚本的 URL 相关。</p>
+                                    <p>这些命名资源可以分别通过<a href="https://wiki.greasespot.net/GM_getResourceText" target="_blank" rel="noopener">GM_getResourceText</a>和<a href="https://wiki.greasespot.net/GM_getResourceURL" target="_blank" rel="noopener">GM_getResourceURL</a>访问。</p>
+                                </blockquote>
+                                <p>@connect</p>
+                                <p>此标签定义域（无顶级域），包括允许通过 GM_xmlhttpRequest 检索的子域</p>
+                                <blockquote>
+                                    <p>可以简单的理解为发送请求。GET、POST、HEAD</p>
+                                </blockquote>
+                                <p>@run-at</p>
+                                <p>定义脚本被注入的时刻，与其他脚本处理程序相反， <strong>@run-at</strong> 定义了脚本想要运行的第一个可能时刻。这意味着可能会发生，使用 <strong>@require</strong><br>标签的脚本可能会在文档加载后执行，导致获取所需脚本需要很长时间。无论如何，在给定注入时刻之后发生的所有 DOMNodeInserted 和 DOMContentLoaded 事件都被缓存并在注入时传递给脚本。</p>
+                                <p>@run-at document-start 脚本将尽快注入。 @run-at document-body 如果 body 元素存在，脚本将被注入 @run-at document-end 该脚本将在调度 DOMContentLoaded<br>事件时或之后注入。 @run-at document-idle 脚本将在 DOMContentLoaded 事件被调度后注入。如果没有给出@run-at 标签，这是默认值。 @run-at context-menu<br>如果在浏览器上下文菜单中单击该脚本（仅限基于 Chrome 的桌面浏览器），则会注入该脚本。</p>
+                                <blockquote>
+                                    <p>建议使用@run-at document-start</p>
+                                </blockquote>
+                                <p>@grant</p>
+                                <p>@grant 用于将 GM_* 函数、unsafeWindow 对象和一些强大的窗口函数列入白名单。如果没有给出@grant 标签，TM 猜测脚本需要。</p>
+                                <figure class="highlight pgsql">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">// @<span class="keyword">grant</span> GM_setValue</span><br><span class="line">// @<span class="keyword">grant</span> GM_getValue</span><br><span class="line">// @<span class="keyword">grant</span> GM_setClipboard</span><br><span class="line">// @<span class="keyword">grant</span> unsafeWindow</span><br><span class="line">// @<span class="keyword">grant</span> <span class="keyword">window</span>.<span class="keyword">close</span></span><br><span class="line">// @<span class="keyword">grant</span> <span class="keyword">window</span>.focus</span><br><span class="line">// @<span class="keyword">grant</span> <span class="keyword">window</span>.onurlchange</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>由于关闭和聚焦选项卡是一项强大的功能，因此也需要将其添加到 @grant 语句中。</p>
+                                <p>如果脚本在单页应用程序上运行，那么它可以使用 window.onurlchange 来监听 URL 更改：</p>
+                                <figure class="highlight coffeescript">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="regexp">//</span> ==UserScript==...</span><br><span class="line"><span class="regexp">//</span> @grant <span class="built_in">window</span>.onurlchange</span><br><span class="line"><span class="regexp">//</span> ==/UserScript==<span class="keyword">if</span> (<span class="built_in">window</span>.onurlchange === <span class="literal">null</span>) &#123;  </span><br><span class="line"><span class="regexp">//</span> feature <span class="keyword">is</span> supported  <span class="built_in">window</span>.addEventListener(<span class="string">'urlchange'</span>, <span class="function"><span class="params">(info)</span> =&gt;</span> ...);</span><br><span class="line">&#125;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>如果@grant 后跟“none”，则沙箱将被禁用，脚本将直接在页面上下文中运行。在此模式下，没有 GM_* 功能，但 GM_info 属性将可用。</p>
+                                <figure class="highlight pgsql">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">// @<span class="keyword">grant</span> <span class="keyword">none</span></span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <blockquote>
+                                    <p>推荐使用@grant none</p>
+                                </blockquote>
+                                <p>@noframes</p>
+                                <p>此标记使脚本在主页上运行，但不在 iframe 上运行。</p>
+                                <div align="center">
+                                    <font color=red size=5px style="font-family: cursive"> Reference </font>
+                                </div>
+                                <ul>
+                                    <li>Tampermonkey官方地址：<a href="https://www.tampermonkey.net/" target="_blank" rel="noopener">https://www.tampermonkey.net/</a></li>
+                                    <li>
+                                        <p>Tampermonkey官方文档：<a href="https://www.tampermonkey.net/documentation.php?ext=dhdg" target="_blank" rel="noopener">https://www.tampermonkey.net/documentation.php?ext=dhdg</a></p>
+                                    </li>
+                                    <li>
+                                        <p><a href="https://wiki.greasespot.net/Metadata_Block#.40match" target="_blank" rel="noopener">https://wiki.greasespot.net/Metadata_Block#.40match</a></p>
+                                    </li>
+                                </ul>
+                            </div>
+                            <footer class="post-footer">
+                                <div class="post-tags">
+                                    <a href="/tags/Tampermonkey/" rel="tag"><i class="fa fa-tag"></i> Tampermonkey</a>
+                                </div>
+                                <div class="post-nav">
+                                    <div class="post-nav-item">
+                                        <a href="/10849.html" rel="prev" title="爬虫:有什么让人眼前一亮的调试习惯与技巧">
+                                            <i class="fa fa-chevron-left"></i> 爬虫:有什么让人眼前一亮的调试习惯与技巧 </a>
+                                    </div>
+                                    <div class="post-nav-item">
+                                        <a href="/38075.html" rel="next" title="Redis:在集合中复制键"> Redis:在集合中复制键 <i class="fa fa-chevron-right"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </footer>
+                        </article>
+                    </div>
+                    <script>
+                        window.addEventListener('tabs:register', () =>
+                        {
+                            let
+                            {
+                                activeClass
+                            } = CONFIG.comments;
+                            if (CONFIG.comments.storage)
+                            {
+                                activeClass = localStorage.getItem('comments_active') || activeClass;
+                            }
+                            if (activeClass)
+                            {
+                                let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+                                if (activeTab)
+                                {
+                                    activeTab.click();
+                                }
+                            }
+                        });
+                        if (CONFIG.comments.storage)
+                        {
+                            window.addEventListener('tabs:click', event =>
+                            {
+                                if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+                                let commentClass = event.target.classList[1];
+                                localStorage.setItem('comments_active', commentClass);
+                            });
+                        }
+
+                    </script>
+                </div>
+                <div class="toggle sidebar-toggle">
+                    <span class="toggle-line toggle-line-first"></span>
+                    <span class="toggle-line toggle-line-middle"></span>
+                    <span class="toggle-line toggle-line-last"></span>
+                </div>
+                <aside class="sidebar">
+                    <div class="sidebar-inner">
+                        <ul class="sidebar-nav motion-element">
+                            <li class="sidebar-nav-toc"> 文章目录 </li>
+                            <li class="sidebar-nav-overview"> 站点概览 </li>
+                        </ul>
+                        <!--noindex-->
+                        <div class="post-toc-wrap sidebar-panel">
+                            <div class="post-toc motion-element">
+                                <ol class="nav">
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#Tampermonkey"><span class="nav-number">1.</span> <span class="nav-text">Tampermonkey</span></a>
+                                        <ol class="nav-child">
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#Tampermonkey的安装"><span class="nav-number">1.1.</span> <span class="nav-text">Tampermonkey的安装</span></a>
+                                                <ol class="nav-child">
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#方式一-Chrome商店直接下载"><span class="nav-number">1.1.1.</span> <span class="nav-text">方式一 Chrome商店直接下载</span></a></li>
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#方式二：第三方网站进行插件文件下载"><span class="nav-number">1.1.2.</span> <span class="nav-text">方式二：第三方网站进行插件文件下载</span></a></li>
+                                                </ol>
+                                            </li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#使用第三方脚本"><span class="nav-number">1.2.</span> <span class="nav-text">使用第三方脚本</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#自定义开发脚本"><span class="nav-number">1.3.</span> <span class="nav-text">自定义开发脚本</span></a>
+                                                <ol class="nav-child">
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#语法规则"><span class="nav-number">1.3.1.</span> <span class="nav-text">语法规则</span></a></li>
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#字段释意："><span class="nav-number">1.3.2.</span> <span class="nav-text">字段释意：</span></a>
+                                                        <ol class="nav-child">
+                                                            <li class="nav-item nav-level-5"><a class="nav-link" href="#基本信息"><span class="nav-number">1.3.2.1.</span> <span class="nav-text">基本信息</span></a></li>
+                                                            <li class="nav-item nav-level-5"><a class="nav-link" href="#命名空间"><span class="nav-number">1.3.2.2.</span> <span class="nav-text">命名空间</span></a></li>
+                                                            <li class="nav-item nav-level-5"><a class="nav-link" href="#版本控制"><span class="nav-number">1.3.2.3.</span> <span class="nav-text">版本控制</span></a></li>
+                                                            <li class="nav-item nav-level-5"><a class="nav-link" href="#访问限制"><span class="nav-number">1.3.2.4.</span> <span class="nav-text">访问限制</span></a></li>
+                                                            <li class="nav-item nav-level-5"><a class="nav-link" href="#第三方链接"><span class="nav-number">1.3.2.5.</span> <span class="nav-text">第三方链接</span></a></li>
+                                                        </ol>
+                                                    </li>
+                                                </ol>
+                                            </li>
+                                        </ol>
+                                    </li>
+                                </ol>
+                            </div>
+                        </div>
+                        <!--/noindex-->
+                        <div class="site-overview-wrap sidebar-panel">
+                            <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <img class="site-author-image" itemprop="image" alt="吴志鹏" src="/images/favicon/android-chrome-512x512.png">
+                                <p class="site-author-name" itemprop="name">吴志鹏</p>
+                                <div class="site-description" itemprop="description">Talk is free，please state clearly</div>
+                            </div>
+                            <div class="site-state-wrap motion-element">
+                                <nav class="site-state">
+                                    <div class="site-state-item site-state-posts">
+                                        <a href="/archives/">
+                                            <span class="site-state-item-count">136</span>
+                                            <span class="site-state-item-name">日志</span>
+                                        </a>
+                                    </div>
+                                    <div class="site-state-item site-state-categories">
+                                        <a href="/categories/">
+                                            <span class="site-state-item-count">158</span>
+                                            <span class="site-state-item-name">分类</span></a>
+                                    </div>
+                                    <div class="site-state-item site-state-tags">
+                                        <a href="/tags/">
+                                            <span class="site-state-item-count">89</span>
+                                            <span class="site-state-item-name">标签</span></a>
+                                    </div>
+                                </nav>
+                            </div>
+                            <div class="links-of-author motion-element">
+                                <span class="links-of-author-item">
+                                    <a href="https://github.com/Payne-Wu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Payne-Wu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="mailto:wuzhipeng1289690157@gmail.com" title="E-Mail → mailto:wuzhipeng1289690157@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="https://www.zhihu.com/people/wu-zhi-peng-72-78" title="ZhiHu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;wu-zhi-peng-72-78" rel="noopener" target="_blank"><i class="fa fa-magic fa-fw"></i>ZhiHu</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="https://weibo.com/u/6987234483" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;6987234483" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+                <div id="sidebar-dimmer"></div>
+            </div>
+        </main>
+        <footer class="footer">
+            <div class="footer-inner">
+                <div class="copyright"> &copy; <span itemprop="copyrightYear">2022</span>
+                    <span class="with-love">
+                        <i class="fa fa-heart"></i>
+                    </span>
+                    <span class="author" itemprop="copyrightHolder">PayneWu</span>
+                    <span class="post-meta-divider">|</span>
+                    <span class="post-meta-item-icon">
+                        <i class="fa fa-chart-area"></i>
+                    </span>
+                    <span title="站点总字数">255k</span>
+                    <span class="post-meta-divider">|</span>
+                    <span class="post-meta-item-icon">
+                        <i class="fa fa-coffee"></i>
+                    </span>
+                    <span title="站点阅读时长">3:51</span>
+                </div>
+                <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">湘ICP备2021019893号-1 </a>
+                </div>
+                <div style="display: none;">
+                    <script src="//s95.cnzz.com/z_stat.php?id=true&web_id=true"></script>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+    <script src="/js/utils.js"></script>
+    <script src="/.js"></script>
+    <script src="/js/schemes/pisces.js"></script>
+    <script src="/.js"></script>
+    <script src="/js/next-boot.js"></script>
+    <script src="/.js"></script>
+    <script>
+        (function ()
+        {
+            var canonicalURL, curProtocol;
+            //Get the <link> tag
+            var x = document.getElementsByTagName("link");
+            //Find the last canonical URL
+            if (x.length > 0)
+            {
+                for (i = 0; i < x.length; i++)
+                {
+                    if (x[i].rel.toLowerCase() == 'canonical' && x[i].href)
+                    {
+                        canonicalURL = x[i].href;
+                    }
+                }
+            }
+            //Get protocol
+            if (!canonicalURL)
+            {
+                curProtocol = window.location.protocol.split(':')[0];
+            }
+            else
+            {
+                curProtocol = canonicalURL.split(':')[0];
+            }
+            //Get current URL if the canonical URL does not exist
+            if (!canonicalURL) canonicalURL = window.location.href;
+            //Assign script content. Replace current URL with the canonical URL
+            ! function ()
+            {
+                var e = /([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,
+                    r = canonicalURL,
+                    t = document.referrer;
+                if (!e.test(r))
+                {
+                    var n = (String(curProtocol).toLowerCase() === 'https') ? "https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif" : "//api.share.baidu.com/s.gif";
+                    t ? (n += "?r=" + encodeURIComponent(document.referrer), r && (n += "&l=" + r)) : r && (n += "?l=" + r);
+                    var i = new Image;
+                    i.src = n
+                }
+            }(window);
+        })();
+
+    </script>
+    <script src="/js/local-search.js"></script>
+    <script src="/.js"></script>
+</body>
+
+</html>

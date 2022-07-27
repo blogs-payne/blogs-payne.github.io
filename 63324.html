@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+    <meta name="theme-color" content="#222">
+    <meta name="generator" content="Hexo 4.2.1">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16-next.png">
+    <link rel="mask-icon" href="/images/favicon/safari-pinned-tab.svg" color="#222">
+    <meta name="msapplication-config" content="/images/favicon/browserconfig.xml">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+    <link rel="stylesheet" href="/lib/pace/pace-theme-mac-osx.min.css">
+    <script src="/lib/pace/pace.min.js"></script>
+    <script id="hexo-configurations">
+        var NexT = window.NexT ||
+        {};
+        var CONFIG = {
+            "hostname": "paynewu.com",
+            "root": "/",
+            "scheme": "Gemini",
+            "version": "7.8.0",
+            "exturl": false,
+            "sidebar":
+            {
+                "position": "right",
+                "width": 240,
+                "display": "post",
+                "padding": 18,
+                "offset": 12,
+                "onmobile": false
+            },
+            "copycode":
+            {
+                "enable": true,
+                "show_result": true,
+                "style": "mac"
+            },
+            "back2top":
+            {
+                "enable": true,
+                "sidebar": false,
+                "scrollpercent": true
+            },
+            "bookmark":
+            {
+                "enable": false,
+                "color": "#222",
+                "save": "auto"
+            },
+            "fancybox": false,
+            "mediumzoom": true,
+            "lazyload": false,
+            "pangu": true,
+            "comments":
+            {
+                "style": "tabs",
+                "active": "valine",
+                "storage": true,
+                "lazyload": false,
+                "nav": null
+            },
+            "algolia":
+            {
+                "hits":
+                {
+                    "per_page": 10
+                },
+                "labels":
+                {
+                    "input_placeholder": "Search for Posts",
+                    "hits_empty": "We didn't find any results for the search: ${query}",
+                    "hits_stats": "${hits} results found in ${time} ms"
+                }
+            },
+            "localsearch":
+            {
+                "enable": true,
+                "trigger": "auto",
+                "top_n_per_article": 8,
+                "unescape": false,
+                "preload": false
+            },
+            "motion":
+            {
+                "enable": false,
+                "async": false,
+                "transition":
+                {
+                    "post_block": "bounceDownIn",
+                    "post_header": "slideDownIn",
+                    "post_body": "slideDownIn",
+                    "coll_header": "slideLeftIn",
+                    "sidebar": "slideUpIn"
+                }
+            },
+            "path": "search.xml"
+        };
+
+    </script>
+    <meta name="description" content="在做爬虫的时候，很多时候都会遇到较成熟成体系的安全产品。更好的”认识”它，对于解决有至关重要的帮助。以下一起来了解一下网站常见防护产品及特征      声明：本节不涉猎任何实际的产品破解，仅介绍其特征与辨别方式或思路。以下仅根据个人现所了解暂划分为一线、二线等。  一线      学习的对象，自研产品。安全系数高，分析较困难  ali、akamai、jd、pdd、google(含无感验证码)、各大">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="常见安全产品(pc)">
+    <meta property="og:url" content="https://paynewu.com/63324.html">
+    <meta property="og:site_name" content="吴志鹏｜Payne-Wu">
+    <meta property="og:description" content="在做爬虫的时候，很多时候都会遇到较成熟成体系的安全产品。更好的”认识”它，对于解决有至关重要的帮助。以下一起来了解一下网站常见防护产品及特征      声明：本节不涉猎任何实际的产品破解，仅介绍其特征与辨别方式或思路。以下仅根据个人现所了解暂划分为一线、二线等。  一线      学习的对象，自研产品。安全系数高，分析较困难  ali、akamai、jd、pdd、google(含无感验证码)、各大">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNgy1gtseloz24yj61d60naaca02.jpg">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNgy1gsd76unofcj30sp02qt8m.jpg">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNgy1gsd8b8qfa3j305y00i0si.jpg">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNgy1gsd6qt4brnj311b02qjrj.jpg">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNgy1gsd6wykikcj31lf0u0n36.jpg">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNgy1gsd8xpb30oj30vc0g1afq.jpg">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNgy1gsdbgkbq35j30ix0bjwet.jpg">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNgy1gsdbfu2amkj31ae02maa0.jpg">
+    <meta property="article:published_time" content="2021-07-11T13:36:28.000Z">
+    <meta property="article:modified_time" content="2022-07-27T09:58:26.880Z">
+    <meta property="article:author" content="吴志鹏">
+    <meta property="article:tag" content="Crawler">
+    <meta property="article:tag" content="爬虫">
+    <meta property="article:tag" content="Web Spider">
+    <meta property="article:tag" content="数据采集">
+    <meta property="article:tag" content="JS">
+    <meta property="article:tag" content="Chrome">
+    <meta property="article:tag" content="JavaScript">
+    <meta property="article:tag" content="技巧">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:image" content="https://tva1.sinaimg.cn/large/008i3skNgy1gtseloz24yj61d60naaca02.jpg">
+    <link rel="canonical" href="https://paynewu.com/63324.html">
+    <script id="page-configurations">
+        // https://hexo.io/docs/variables.html
+        CONFIG.page = {
+            sidebar: "",
+            isHome: false,
+            isPost: true,
+            lang: 'zh-CN'
+        };
+
+    </script>
+    <title>常见安全产品(pc) | 吴志鹏｜Payne-Wu</title>
+    <meta name="google-site-verification" content="p_bIcnvirkFzG2dYKuNDivKD8-STet5W7D-01woA2fc" />
+    <noscript>
+        <style>
+            .use-motion .brand,
+            .use-motion .menu-item,
+            .sidebar-inner,
+            .use-motion .post-block,
+            .use-motion .pagination,
+            .use-motion .comments,
+            .use-motion .post-header,
+            .use-motion .post-body,
+            .use-motion .collection-header
+            {
+                opacity: initial;
+            }
+
+            .use-motion .site-title,
+            .use-motion .site-subtitle
+            {
+                opacity: initial;
+                top: initial;
+            }
+
+            .use-motion .logo-line-before i
+            {
+                left: initial;
+            }
+
+            .use-motion .logo-line-after i
+            {
+                right: initial;
+            }
+
+        </style>
+    </noscript>
+    <link rel="alternate" href="/atom.xml" title="吴志鹏｜Payne-Wu" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+    <div class="container">
+        <div class="headband"></div>
+        <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+            <div class="header-inner">
+                <div class="site-brand-container">
+                    <div class="site-nav-toggle">
+                        <div class="toggle" aria-label="切换导航栏">
+                            <span class="toggle-line toggle-line-first"></span>
+                            <span class="toggle-line toggle-line-middle"></span>
+                            <span class="toggle-line toggle-line-last"></span>
+                        </div>
+                    </div>
+                    <div class="site-meta">
+                        <a href="/" class="brand" rel="start">
+                            <span class="logo-line-before"><i></i></span>
+                            <h1 class="site-title">吴志鹏｜Payne-Wu </h1>
+                            <span class="logo-line-after"><i></i></span>
+                        </a>
+                    </div>
+                    <div class="site-nav-right">
+                        <div class="toggle popup-trigger">
+                            <i class="fa fa-search fa-fw fa-lg"></i>
+                        </div>
+                    </div>
+                </div>
+                <nav class="site-nav">
+                    <ul id="menu" class="main-menu menu">
+                        <li class="menu-item menu-item-home">
+                            <a href="/" rel="section">首页</a>
+                        </li>
+                        <li class="menu-item menu-item-archives">
+                            <a href="/archives/" rel="section">文章列表</a>
+                        </li>
+                        <li class="menu-item menu-item-tags">
+                            <a href="/tags/" rel="section">Tags Cloud</a>
+                        </li>
+                        <li class="menu-item menu-item-categories">
+                            <a href="/categories/" rel="section">文章集合</a>
+                        </li>
+                        <li class="menu-item menu-item-about">
+                            <a href="/about/" rel="section">关于我啊</a>
+                        </li>
+                        <li class="menu-item menu-item-message">
+                            <a href="/message/" rel="section">留言与我</a>
+                        </li>
+                        <li class="menu-item menu-item-search">
+                            <a role="button" class="popup-trigger">搜索 </a>
+                        </li>
+                    </ul>
+                </nav>
+                <div class="search-pop-overlay">
+                    <div class="popup search-popup">
+                        <div class="search-header">
+                            <span class="search-icon">
+                                <i class="fa fa-search"></i>
+                            </span>
+                            <div class="search-input-container">
+                                <input autocomplete="off" autocapitalize="off" placeholder="搜索..." spellcheck="false" type="search" class="search-input">
+                            </div>
+                            <span class="popup-btn-close">
+                                <i class="fa fa-times-circle"></i>
+                            </span>
+                        </div>
+                        <div id="search-result">
+                            <div id="no-result">
+                                <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="back-to-top">
+            <i class="fa fa-arrow-up"></i>
+            <span>0%</span>
+        </div>
+        <div class="reading-progress-bar"></div>
+        <main class="main">
+            <div class="main-inner">
+                <div class="content-wrap">
+                    <div class="content post posts-expand">
+                        <article itemscope itemtype="http://schema.org/Article" class="post-block single" lang="zh-CN">
+                            <link itemprop="mainEntityOfPage" href="https://paynewu.com/63324.html">
+                            <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <meta itemprop="image" content="/images/favicon/android-chrome-512x512.png">
+                                <meta itemprop="name" content="吴志鹏">
+                                <meta itemprop="description" content="Talk is free，please state clearly">
+                            </span>
+                            <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+                                <meta itemprop="name" content="吴志鹏｜Payne-Wu">
+                            </span>
+                            <header class="post-header">
+                                <h1 class="post-title" itemprop="name headline"> 常见安全产品(pc) </h1>
+                                <div class="post-meta">
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-user"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">作者</span>
+                                        <span><a href="/authors/Payne" class="author" itemprop="url" rel="index">Payne</a></span>
+                                    </span>
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-calendar"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">发表于</span>
+                                        <time title="创建时间：2021-07-11 21:36:28" itemprop="dateCreated datePublished" datetime="2021-07-11T21:36:28+08:00">2021-07-11</time>
+                                    </span>
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-folder"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">分类于</span>
+                                        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                                            <a href="/categories/%E7%88%AC%E8%99%AB/" itemprop="url" rel="index"><span itemprop="name">爬虫</span></a>
+                                        </span> ， <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                                            <a href="/categories/%E7%88%AC%E8%99%AB/Crawler/" itemprop="url" rel="index"><span itemprop="name">Crawler</span></a>
+                                        </span> ， <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                                            <a href="/categories/%E7%88%AC%E8%99%AB/Crawler/JavaScript/" itemprop="url" rel="index"><span itemprop="name">JavaScript</span></a>
+                                        </span> ， <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                                            <a href="/categories/%E7%88%AC%E8%99%AB/Crawler/JavaScript/%E6%8A%80%E5%B7%A7/" itemprop="url" rel="index"><span itemprop="name">技巧</span></a>
+                                        </span> ， <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                                            <a href="/categories/%E7%88%AC%E8%99%AB/Crawler/JavaScript/%E6%8A%80%E5%B7%A7/JS/" itemprop="url" rel="index"><span itemprop="name">JS</span></a>
+                                        </span>
+                                    </span>
+                                    <br>
+                                    <span class="post-meta-item" title="本文字数">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-file-word"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">本文字数：</span>
+                                        <span>2.2k</span>
+                                    </span>
+                                    <span class="post-meta-item" title="阅读时长">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-clock"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                                        <span>2 分钟</span>
+                                    </span>
+                                </div>
+                            </header>
+                            <div class="post-body" itemprop="articleBody">
+                                <p>在做爬虫的时候，很多时候都会遇到较成熟成体系的安全产品。更好的”认识”它，对于解决有至关重要的帮助。以下一起来了解一下网站常见防护产品及特征</p>
+                                <blockquote>
+                                    <p>声明：本节不涉猎任何实际的产品破解，仅介绍其特征与辨别方式或思路。以下仅根据个人现所了解暂划分为一线、二线等。</p>
+                                </blockquote>
+                                <h3 id="一线"><a href="#一线" class="headerlink" title="一线"></a>一线</h3>
+                                <blockquote>
+                                    <p>学习的对象，自研产品。安全系数高，分析较困难</p>
+                                </blockquote>
+                                <p>ali、akamai、jd、pdd、google(含无感验证码)、各大银行支付接口</p>
+                                <h4 id="ali滑块"><a href="#ali滑块" class="headerlink" title="ali滑块"></a>ali滑块</h4>
+                                <p>阿里云验证码: <a href="https://help.aliyun.com/product/28308.html" target="_blank" rel="noopener">https://help.aliyun.com/product/28308.html</a></p>
+                                <p>控制台中有g.alicdn.com字样，其中/后为版本号</p>
+                                <h4 id="akamai"><a href="#akamai" class="headerlink" title="akamai"></a>akamai</h4>
+                                <blockquote>
+                                    <p>主要在tls指纹进行相关加密</p>
+                                </blockquote>
+                                <h4 id="jd"><a href="#jd" class="headerlink" title="jd"></a>jd</h4>
+                                <blockquote>
+                                    <p>自写的虚拟机</p>
+                                </blockquote>
+                                <h4 id="pdd"><a href="#pdd" class="headerlink" title="pdd"></a>pdd</h4>
+                                <blockquote>
+                                    <p>Web pack 打包 + 风控</p>
+                                </blockquote>
+                                <h4 id="google-含无感验证码"><a href="#google-含无感验证码" class="headerlink" title="google(含无感验证码)"></a>google(含无感验证码)</h4>
+                                <p>5s 盾 + 谷歌验证码</p>
+                                <p>绕过方案与线索</p>
+                                <ul>
+                                    <li>5秒盾 <a href="https://mp.weixin.qq.com/s/zwmatF3yTgSyS0gz8sinaA" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/zwmatF3yTgSyS0gz8sinaA</a></li>
+                                    <li>谷歌验证码打码绕过方案<a href="https://cuiqingcai.com/30026.html" target="_blank" rel="noopener">https://cuiqingcai.com/30026.html</a></li>
+                                </ul>
+                                <p><img src="https://tva1.sinaimg.cn/large/008i3skNgy1gtseloz24yj61d60naaca02.jpg" alt="image-20210825014317964"></p>
+                                <h3 id="二线"><a href="#二线" class="headerlink" title="二线"></a>二线</h3>
+                                <blockquote>
+                                    <p>可敬的对象</p>
+                                </blockquote>
+                                <p>加密与代码保护：瑞数信息（瑞数）、创宇超防（加速乐）、</p>
+                                <p>验证码：极验、数美、五秒盾、易盾、顶象</p>
+                                <h4 id="加密与代码保护"><a href="#加密与代码保护" class="headerlink" title="加密与代码保护"></a>加密与代码保护</h4>
+                                <h5 id="瑞数信息（瑞数）"><a href="#瑞数信息（瑞数）" class="headerlink" title="瑞数信息（瑞数）"></a>瑞数信息（瑞数）</h5>
+                                <ol>
+                                    <li>未带cookie访问首先是一段神奇的页面，如下图所示</li>
+                                </ol>
+                                <p>特征：</p>
+                                <p>1.</p>
+                                <p>一长段的：content。有点类似于ob的大数组</p>
+                                <p>script标签中带有 r=“m”的字样</p>
+                                <p>执行加密函数1，函数名为 <code>_$xx(xxx)</code></p>
+                                <p>执行加密函数2（实际加密处）</p>
+                                <ol>
+                                    <li>无比恶心的乱码</li>
+                                </ol>
+                                <p><img src="https://tva1.sinaimg.cn/large/008i3skNgy1gsd76unofcj30sp02qt8m.jpg" alt="ddddd"></p>
+                                <ol>
+                                    <li>
+                                        <p>动态js</p>
+                                    </li>
+                                    <li>
+                                        <p>版本号</p>
+                                        <p><img src="https://tva1.sinaimg.cn/large/008i3skNgy1gsd8b8qfa3j305y00i0si.jpg" alt=""></p>
+                                    </li>
+                                </ol>
+                                <p>首数字开头的编号，编号常见的有4、5、6代</p>
+                                <h5 id="创宇超防（加速乐）"><a href="#创宇超防（加速乐）" class="headerlink" title="创宇超防（加速乐）"></a>创宇超防（加速乐）</h5>
+                                <ol>
+                                    <li>未带cookies访问，先是一段神奇的JS，设置cookie。如下图所示</li>
+                                </ol>
+                                <p>实际内容如下图所示</p>
+                                <p><img src="https://tva1.sinaimg.cn/large/008i3skNgy1gsd6qt4brnj311b02qjrj.jpg" alt=""></p>
+                                <ol>
+                                    <li>
+                                        <p>魔改ob</p>
+                                        <p>用于cookies拼接</p>
+                                        <p><img src="https://tva1.sinaimg.cn/large/008i3skNgy1gsd6wykikcj31lf0u0n36.jpg" alt=""></p>
+                                    </li>
+                                </ol>
+                                <h4 id="验证码"><a href="#验证码" class="headerlink" title="验证码"></a>验证码</h4>
+                                <h5 id="极验"><a href="#极验" class="headerlink" title="极验"></a>极验</h5>
+                                <p>geetest(极验)官网：<a href="https://www.geetest.com/" target="_blank" rel="noopener">https://www.geetest.com/</a></p>
+                                <p>demo：<a href="https://www.geetest.com/demo/" target="_blank" rel="noopener">https://www.geetest.com/demo/</a></p>
+                                <!---------->
+                                <h5 id="数美"><a href="#数美" class="headerlink" title="数美"></a>数美</h5>
+                                <p>官网：<a href="https://www.ishumei.com/" target="_blank" rel="noopener">https://www.ishumei.com/</a></p>
+                                <p>体验：<a href="https://www.ishumei.com/trial/captcha.html" target="_blank" rel="noopener">https://www.ishumei.com/trial/captcha.html</a></p>
+                                <h5 id="网易易盾"><a href="#网易易盾" class="headerlink" title="网易易盾"></a>网易易盾</h5>
+                                <p>官网：<a href="https://dun.163.com/" target="_blank" rel="noopener">https://dun.163.com/</a></p>
+                                <p>Demo：<a href="https://dun.163.com/trial/space-inference" target="_blank" rel="noopener">https://dun.163.com/trial/space-inference</a></p>
+                                <h5 id="Vaptcha"><a href="#Vaptcha" class="headerlink" title="Vaptcha"></a>Vaptcha</h5>
+                                <p><a href="https://www.vaptcha.com/" target="_blank" rel="noopener">https://www.vaptcha.com/</a></p>
+                                <p><img src="https://tva1.sinaimg.cn/large/008i3skNgy1gsd8xpb30oj30vc0g1afq.jpg" alt=""></p>
+                                <h5 id="顶象"><a href="#顶象" class="headerlink" title="顶象"></a>顶象</h5>
+                                <h3 id="三线"><a href="#三线" class="headerlink" title="三线"></a>三线</h3>
+                                <blockquote>
+                                    <p>主要来源于开源框架</p>
+                                </blockquote>
+                                <p>Ob混淆系（obfuscator、sojson、Jsaham）、Jsfuck、JJEncode、AAEncode、eval等、</p>
+                                <p>obfuscator: <a href="https://obfuscator.io/" target="_blank" rel="noopener">https://obfuscator.io/</a></p>
+                                <p>sojson：<a href="https://www.sojson.com/jsjiemi.html" target="_blank" rel="noopener">https://www.sojson.com/jsjiemi.html</a></p>
+                                <p>Jsaham：<a href="http://www.jshaman.com/#section2" target="_blank" rel="noopener">http://www.jshaman.com/#section2</a></p>
+                                <p>jstuck:<a href="http://www.jsfuck.com/" target="_blank" rel="noopener">http://www.jsfuck.com/</a> GitHub:<a href="https://github.com/aemkei/jsfuck" target="_blank" rel="noopener">https://github.com/aemkei/jsfuck</a></p>
+                                <p>JJEncode:<a href="http://www.atoolbox.net/Tool.php?Id=704" target="_blank" rel="noopener">http://www.atoolbox.net/Tool.php?Id=704</a></p>
+                                <p>JJEncode:<a href="http://www.atoolbox.net/Tool.php?Id=703" target="_blank" rel="noopener">http://www.atoolbox.net/Tool.php?Id=703</a></p>
+                                <p>Eval:<a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/eval" target="_blank" rel="noopener">https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/eval</a>;</p>
+                                <p>分析：eval换为console.log()(前提：console.log未改写)</p>
+                                <h4 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h4>
+                                <h5 id="ob系列"><a href="#ob系列" class="headerlink" title="ob系列"></a>ob系列</h5>
+                                <p>特点</p>
+                                <ol>
+                                    <li>大数组</li>
+                                    <li>数据移位（常见regex内存检测，建议不format绕过或remove regex）</li>
+                                    <li>解密函数（常见regex内存检测，建议不format绕过或remove regex）</li>
+                                    <li>定时器setInterval() 、setTimeout() + 无限debugger （可能含有）</li>
+                                    <li><strong>业务代码 + 控制流平坦化：（ob强度90%取决于此代码强度、这里是加密前的逻辑）</strong></li>
+                                    <li>控制流平坦化 + 无限debugger + 僵尸代码注入（一般不含有业务逻辑）</li>
+                                </ol>
+                                <p>Example:</p>
+                                <ol>
+                                    <li>找到实际处（ob）</li>
+                                    <li>找前三段（数组、数组移位、解密函数），剪切出去</li>
+                                    <li>格式化控制流平坦化、实际逻辑。放回前剪切出去的内容</li>
+                                    <li>定位加密函数</li>
+                                </ol>
+                                <h5 id="Jsfuck、JJEncode、AAEncode"><a href="#Jsfuck、JJEncode、AAEncode" class="headerlink" title="Jsfuck、JJEncode、AAEncode"></a>Jsfuck、JJEncode、AAEncode</h5>
+                                <p>配合eval类型防护：</p>
+                                <blockquote>
+                                    <ol>
+                                        <li>直接放控制台console执行(报非unsafe错误)；点击错位堆栈直接完成脱壳</li>
+                                    </ol>
+                                </blockquote>
+                                <p><img src="https://tva1.sinaimg.cn/large/008i3skNgy1gsdbgkbq35j30ix0bjwet.jpg" alt=""></p>
+                                <p><img src="https://tva1.sinaimg.cn/large/008i3skNgy1gsdbfu2amkj31ae02maa0.jpg" alt=""></p>
+                                <blockquote>
+                                    <p>2.控制台不报错，构建强制报错。删除一些代码（为了不干扰原本代码，建议删除括号或加无意义代码）</p>
+                                    <p>3。控制台报unsafe错误，自写html文件运行。参考以上</p>
+                                </blockquote>
+                                <p>混淆部分数字：</p>
+                                <h3 id="四线"><a href="#四线" class="headerlink" title="四线"></a>四线</h3>
+                                <blockquote>
+                                    <p>工程化工具、各种加密函数魔改、辅助作用</p>
+                                </blockquote>
+                                <p>webpack、vue、react、angular</p>
+                                <p>webpack：<a href="https://webpack.docschina.org/" target="_blank" rel="noopener">https://webpack.docschina.org/</a></p>
+                                <p>关键点：加载器（也叫分发器）</p>
+                                <p>经典绕过方案：点位插桩</p>
+                                <p>扣取思路：找到加载器、扣出加载器构建自己的加载器（网站与关键参数（函数））、补环境</p>
+                                <h3 id="验证码汇总"><a href="#验证码汇总" class="headerlink" title="验证码汇总"></a>验证码汇总</h3>
+                                <p><a href="https://help.aliyun.com/product/28308.html" target="_blank" rel="noopener">ali</a></p>
+                                <p><a href="https://007.qq.com/" target="_blank" rel="noopener">tencent</a></p>
+                                <p><a href="https://www.google.com/recaptcha/about/" target="_blank" rel="noopener">reCAPTCHA (google.com)</a></p>
+                                <p><a href="https://dun.163.com/trial/sense" target="_blank" rel="noopener">163</a>:<a href="https://dun.163.com/" target="_blank" rel="noopener">网易易盾-数字内容风控-内容安全|业务安全|移动安全 (163.com)</a></p>
+                                <p><a href="http://cdn.dingxiang-inc.com/ctu-group/captcha-ui/demo/" target="_blank" rel="noopener">dingxiang</a>：<a href="https://www.dingxiang-inc.com/" target="_blank" rel="noopener">顶象-业务安全引领者，让数字世界无风险 (<br>dingxiang-inc.com)</a></p>
+                                <p><a href="https://www.geetest.com/demo/" target="_blank" rel="noopener">geetest</a></p>
+                                <p><a href="https://www.vaptcha.com/" target="_blank" rel="noopener">vaptcha</a></p>
+                                <p><a href="https://www.ishumei.com/trial/captcha.html" target="_blank" rel="noopener">ishumei</a></p>
+                                <p><a href="http://www.yescaptcha.com/" target="_blank" rel="noopener">yescaptch</a></p>
+                                <p><a href="https://2captcha.com/" target="_blank" rel="noopener">2captcha</a></p>
+                            </div>
+                            <div class="popular-posts-header">相关文章</div>
+                            <ul class="popular-posts">
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/2341116369.html" rel="bookmark">js调试小笔记</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/38968.html" rel="bookmark">浏览器指纹在反爬虫领域的应用</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/10849.html" rel="bookmark">爬虫:有什么让人眼前一亮的调试习惯与技巧</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/358032656.html" rel="bookmark">反爬虫常见策略总结</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/42803.html" rel="bookmark">爬虫优化之道</a></div>
+                                </li>
+                            </ul>
+                            <footer class="post-footer">
+                                <div class="post-tags">
+                                    <a href="/tags/Crawler/" rel="tag"><i class="fa fa-tag"></i> Crawler</a>
+                                    <a href="/tags/%E7%88%AC%E8%99%AB/" rel="tag"><i class="fa fa-tag"></i> 爬虫</a>
+                                    <a href="/tags/Web-Spider/" rel="tag"><i class="fa fa-tag"></i> Web Spider</a>
+                                    <a href="/tags/%E6%95%B0%E6%8D%AE%E9%87%87%E9%9B%86/" rel="tag"><i class="fa fa-tag"></i> 数据采集</a>
+                                    <a href="/tags/JS/" rel="tag"><i class="fa fa-tag"></i> JS</a>
+                                    <a href="/tags/Chrome/" rel="tag"><i class="fa fa-tag"></i> Chrome</a>
+                                    <a href="/tags/JavaScript/" rel="tag"><i class="fa fa-tag"></i> JavaScript</a>
+                                    <a href="/tags/%E6%8A%80%E5%B7%A7/" rel="tag"><i class="fa fa-tag"></i> 技巧</a>
+                                </div>
+                                <div class="post-nav">
+                                    <div class="post-nav-item">
+                                        <a href="/14277.html" rel="prev" title="网页调试干扰总结">
+                                            <i class="fa fa-chevron-left"></i> 网页调试干扰总结 </a>
+                                    </div>
+                                    <div class="post-nav-item">
+                                        <a href="/15990.html" rel="next" title="认识设备指纹"> 认识设备指纹 <i class="fa fa-chevron-right"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </footer>
+                        </article>
+                    </div>
+                    <script>
+                        window.addEventListener('tabs:register', () =>
+                        {
+                            let
+                            {
+                                activeClass
+                            } = CONFIG.comments;
+                            if (CONFIG.comments.storage)
+                            {
+                                activeClass = localStorage.getItem('comments_active') || activeClass;
+                            }
+                            if (activeClass)
+                            {
+                                let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+                                if (activeTab)
+                                {
+                                    activeTab.click();
+                                }
+                            }
+                        });
+                        if (CONFIG.comments.storage)
+                        {
+                            window.addEventListener('tabs:click', event =>
+                            {
+                                if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+                                let commentClass = event.target.classList[1];
+                                localStorage.setItem('comments_active', commentClass);
+                            });
+                        }
+
+                    </script>
+                </div>
+                <div class="toggle sidebar-toggle">
+                    <span class="toggle-line toggle-line-first"></span>
+                    <span class="toggle-line toggle-line-middle"></span>
+                    <span class="toggle-line toggle-line-last"></span>
+                </div>
+                <aside class="sidebar">
+                    <div class="sidebar-inner">
+                        <ul class="sidebar-nav motion-element">
+                            <li class="sidebar-nav-toc"> 文章目录 </li>
+                            <li class="sidebar-nav-overview"> 站点概览 </li>
+                        </ul>
+                        <!--noindex-->
+                        <div class="post-toc-wrap sidebar-panel">
+                            <div class="post-toc motion-element">
+                                <ol class="nav">
+                                    <li class="nav-item nav-level-3"><a class="nav-link" href="#一线"><span class="nav-number">1.</span> <span class="nav-text">一线</span></a>
+                                        <ol class="nav-child">
+                                            <li class="nav-item nav-level-4"><a class="nav-link" href="#ali滑块"><span class="nav-number">1.1.</span> <span class="nav-text">ali滑块</span></a></li>
+                                            <li class="nav-item nav-level-4"><a class="nav-link" href="#akamai"><span class="nav-number">1.2.</span> <span class="nav-text">akamai</span></a></li>
+                                            <li class="nav-item nav-level-4"><a class="nav-link" href="#jd"><span class="nav-number">1.3.</span> <span class="nav-text">jd</span></a></li>
+                                            <li class="nav-item nav-level-4"><a class="nav-link" href="#pdd"><span class="nav-number">1.4.</span> <span class="nav-text">pdd</span></a></li>
+                                            <li class="nav-item nav-level-4"><a class="nav-link" href="#google-含无感验证码"><span class="nav-number">1.5.</span> <span class="nav-text">google(含无感验证码)</span></a></li>
+                                        </ol>
+                                    </li>
+                                    <li class="nav-item nav-level-3"><a class="nav-link" href="#二线"><span class="nav-number">2.</span> <span class="nav-text">二线</span></a>
+                                        <ol class="nav-child">
+                                            <li class="nav-item nav-level-4"><a class="nav-link" href="#加密与代码保护"><span class="nav-number">2.1.</span> <span class="nav-text">加密与代码保护</span></a>
+                                                <ol class="nav-child">
+                                                    <li class="nav-item nav-level-5"><a class="nav-link" href="#瑞数信息（瑞数）"><span class="nav-number">2.1.1.</span> <span class="nav-text">瑞数信息（瑞数）</span></a></li>
+                                                    <li class="nav-item nav-level-5"><a class="nav-link" href="#创宇超防（加速乐）"><span class="nav-number">2.1.2.</span> <span class="nav-text">创宇超防（加速乐）</span></a></li>
+                                                </ol>
+                                            </li>
+                                            <li class="nav-item nav-level-4"><a class="nav-link" href="#验证码"><span class="nav-number">2.2.</span> <span class="nav-text">验证码</span></a>
+                                                <ol class="nav-child">
+                                                    <li class="nav-item nav-level-5"><a class="nav-link" href="#极验"><span class="nav-number">2.2.1.</span> <span class="nav-text">极验</span></a></li>
+                                                    <li class="nav-item nav-level-5"><a class="nav-link" href="#数美"><span class="nav-number">2.2.2.</span> <span class="nav-text">数美</span></a></li>
+                                                    <li class="nav-item nav-level-5"><a class="nav-link" href="#网易易盾"><span class="nav-number">2.2.3.</span> <span class="nav-text">网易易盾</span></a></li>
+                                                    <li class="nav-item nav-level-5"><a class="nav-link" href="#Vaptcha"><span class="nav-number">2.2.4.</span> <span class="nav-text">Vaptcha</span></a></li>
+                                                    <li class="nav-item nav-level-5"><a class="nav-link" href="#顶象"><span class="nav-number">2.2.5.</span> <span class="nav-text">顶象</span></a></li>
+                                                </ol>
+                                            </li>
+                                        </ol>
+                                    </li>
+                                    <li class="nav-item nav-level-3"><a class="nav-link" href="#三线"><span class="nav-number">3.</span> <span class="nav-text">三线</span></a>
+                                        <ol class="nav-child">
+                                            <li class="nav-item nav-level-4"><a class="nav-link" href="#分析"><span class="nav-number">3.1.</span> <span class="nav-text">分析</span></a>
+                                                <ol class="nav-child">
+                                                    <li class="nav-item nav-level-5"><a class="nav-link" href="#ob系列"><span class="nav-number">3.1.1.</span> <span class="nav-text">ob系列</span></a></li>
+                                                    <li class="nav-item nav-level-5"><a class="nav-link" href="#Jsfuck、JJEncode、AAEncode"><span class="nav-number">3.1.2.</span> <span class="nav-text">Jsfuck、JJEncode、AAEncode</span></a></li>
+                                                </ol>
+                                            </li>
+                                        </ol>
+                                    </li>
+                                    <li class="nav-item nav-level-3"><a class="nav-link" href="#四线"><span class="nav-number">4.</span> <span class="nav-text">四线</span></a></li>
+                                    <li class="nav-item nav-level-3"><a class="nav-link" href="#验证码汇总"><span class="nav-number">5.</span> <span class="nav-text">验证码汇总</span></a></li>
+                                </ol>
+                            </div>
+                        </div>
+                        <!--/noindex-->
+                        <div class="site-overview-wrap sidebar-panel">
+                            <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <img class="site-author-image" itemprop="image" alt="吴志鹏" src="/images/favicon/android-chrome-512x512.png">
+                                <p class="site-author-name" itemprop="name">吴志鹏</p>
+                                <div class="site-description" itemprop="description">Talk is free，please state clearly</div>
+                            </div>
+                            <div class="site-state-wrap motion-element">
+                                <nav class="site-state">
+                                    <div class="site-state-item site-state-posts">
+                                        <a href="/archives/">
+                                            <span class="site-state-item-count">136</span>
+                                            <span class="site-state-item-name">日志</span>
+                                        </a>
+                                    </div>
+                                    <div class="site-state-item site-state-categories">
+                                        <a href="/categories/">
+                                            <span class="site-state-item-count">158</span>
+                                            <span class="site-state-item-name">分类</span></a>
+                                    </div>
+                                    <div class="site-state-item site-state-tags">
+                                        <a href="/tags/">
+                                            <span class="site-state-item-count">89</span>
+                                            <span class="site-state-item-name">标签</span></a>
+                                    </div>
+                                </nav>
+                            </div>
+                            <div class="links-of-author motion-element">
+                                <span class="links-of-author-item">
+                                    <a href="https://github.com/Payne-Wu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Payne-Wu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="mailto:wuzhipeng1289690157@gmail.com" title="E-Mail → mailto:wuzhipeng1289690157@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="https://www.zhihu.com/people/wu-zhi-peng-72-78" title="ZhiHu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;wu-zhi-peng-72-78" rel="noopener" target="_blank"><i class="fa fa-magic fa-fw"></i>ZhiHu</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="https://weibo.com/u/6987234483" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;6987234483" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+                <div id="sidebar-dimmer"></div>
+            </div>
+        </main>
+        <footer class="footer">
+            <div class="footer-inner">
+                <div class="copyright"> &copy; <span itemprop="copyrightYear">2022</span>
+                    <span class="with-love">
+                        <i class="fa fa-heart"></i>
+                    </span>
+                    <span class="author" itemprop="copyrightHolder">PayneWu</span>
+                    <span class="post-meta-divider">|</span>
+                    <span class="post-meta-item-icon">
+                        <i class="fa fa-chart-area"></i>
+                    </span>
+                    <span title="站点总字数">255k</span>
+                    <span class="post-meta-divider">|</span>
+                    <span class="post-meta-item-icon">
+                        <i class="fa fa-coffee"></i>
+                    </span>
+                    <span title="站点阅读时长">3:51</span>
+                </div>
+                <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">湘ICP备2021019893号-1 </a>
+                </div>
+                <div style="display: none;">
+                    <script src="//s95.cnzz.com/z_stat.php?id=true&web_id=true"></script>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+    <script src="/js/utils.js"></script>
+    <script src="/.js"></script>
+    <script src="/js/schemes/pisces.js"></script>
+    <script src="/.js"></script>
+    <script src="/js/next-boot.js"></script>
+    <script src="/.js"></script>
+    <script>
+        (function ()
+        {
+            var canonicalURL, curProtocol;
+            //Get the <link> tag
+            var x = document.getElementsByTagName("link");
+            //Find the last canonical URL
+            if (x.length > 0)
+            {
+                for (i = 0; i < x.length; i++)
+                {
+                    if (x[i].rel.toLowerCase() == 'canonical' && x[i].href)
+                    {
+                        canonicalURL = x[i].href;
+                    }
+                }
+            }
+            //Get protocol
+            if (!canonicalURL)
+            {
+                curProtocol = window.location.protocol.split(':')[0];
+            }
+            else
+            {
+                curProtocol = canonicalURL.split(':')[0];
+            }
+            //Get current URL if the canonical URL does not exist
+            if (!canonicalURL) canonicalURL = window.location.href;
+            //Assign script content. Replace current URL with the canonical URL
+            ! function ()
+            {
+                var e = /([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,
+                    r = canonicalURL,
+                    t = document.referrer;
+                if (!e.test(r))
+                {
+                    var n = (String(curProtocol).toLowerCase() === 'https') ? "https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif" : "//api.share.baidu.com/s.gif";
+                    t ? (n += "?r=" + encodeURIComponent(document.referrer), r && (n += "&l=" + r)) : r && (n += "?l=" + r);
+                    var i = new Image;
+                    i.src = n
+                }
+            }(window);
+        })();
+
+    </script>
+    <script src="/js/local-search.js"></script>
+    <script src="/.js"></script>
+</body>
+
+</html>

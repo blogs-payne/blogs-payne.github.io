@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+    <meta name="theme-color" content="#222">
+    <meta name="generator" content="Hexo 4.2.1">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16-next.png">
+    <link rel="mask-icon" href="/images/favicon/safari-pinned-tab.svg" color="#222">
+    <meta name="msapplication-config" content="/images/favicon/browserconfig.xml">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+    <link rel="stylesheet" href="/lib/pace/pace-theme-mac-osx.min.css">
+    <script src="/lib/pace/pace.min.js"></script>
+    <script id="hexo-configurations">
+        var NexT = window.NexT ||
+        {};
+        var CONFIG = {
+            "hostname": "paynewu.com",
+            "root": "/",
+            "scheme": "Gemini",
+            "version": "7.8.0",
+            "exturl": false,
+            "sidebar":
+            {
+                "position": "right",
+                "width": 240,
+                "display": "post",
+                "padding": 18,
+                "offset": 12,
+                "onmobile": false
+            },
+            "copycode":
+            {
+                "enable": true,
+                "show_result": true,
+                "style": "mac"
+            },
+            "back2top":
+            {
+                "enable": true,
+                "sidebar": false,
+                "scrollpercent": true
+            },
+            "bookmark":
+            {
+                "enable": false,
+                "color": "#222",
+                "save": "auto"
+            },
+            "fancybox": false,
+            "mediumzoom": true,
+            "lazyload": false,
+            "pangu": true,
+            "comments":
+            {
+                "style": "tabs",
+                "active": "valine",
+                "storage": true,
+                "lazyload": false,
+                "nav": null
+            },
+            "algolia":
+            {
+                "hits":
+                {
+                    "per_page": 10
+                },
+                "labels":
+                {
+                    "input_placeholder": "Search for Posts",
+                    "hits_empty": "We didn't find any results for the search: ${query}",
+                    "hits_stats": "${hits} results found in ${time} ms"
+                }
+            },
+            "localsearch":
+            {
+                "enable": true,
+                "trigger": "auto",
+                "top_n_per_article": 8,
+                "unescape": false,
+                "preload": false
+            },
+            "motion":
+            {
+                "enable": false,
+                "async": false,
+                "transition":
+                {
+                    "post_block": "bounceDownIn",
+                    "post_header": "slideDownIn",
+                    "post_body": "slideDownIn",
+                    "coll_header": "slideLeftIn",
+                    "sidebar": "slideUpIn"
+                }
+            },
+            "path": "search.xml"
+        };
+
+    </script>
+    <meta name="description" content="Sekiro简介      开抄！以下来自sekiro官方文档 https:&#x2F;&#x2F;sekiro.virjar.com&#x2F;sekiro-doc&#x2F;index.html  SEKIRO 是一个android下的API服务暴露框架，可以用在app逆向、app数据抓取、android群控等场景。同时Sekiro也是目前公开方案唯一稳定的JSRPC框架。      对网络环境要求低，sekiro 使用长链接管理服">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="kubernetes部署sekiro集群">
+    <meta property="og:url" content="https://paynewu.com/655772200.html">
+    <meta property="og:site_name" content="吴志鹏｜Payne-Wu">
+    <meta property="og:description" content="Sekiro简介      开抄！以下来自sekiro官方文档 https:&#x2F;&#x2F;sekiro.virjar.com&#x2F;sekiro-doc&#x2F;index.html  SEKIRO 是一个android下的API服务暴露框架，可以用在app逆向、app数据抓取、android群控等场景。同时Sekiro也是目前公开方案唯一稳定的JSRPC框架。      对网络环境要求低，sekiro 使用长链接管理服">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24egy1h1434e1lltj20ws02mjro.jpg">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24egy1h143bhpa1bj21h80h8tc1.jpg">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24egy1h143oadhvcj20u809wt90.jpg">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24egy1h14440ycgvj21l80mkgmj.jpg">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24egy1h144c38mn9j20p80ce3yz.jpg">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24egy1h144qrtmxlj214009edgc.jpg">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24egy1h144u1tj0yj217w07egm8.jpg">
+    <meta property="article:published_time" content="2022-04-09T19:12:18.000Z">
+    <meta property="article:modified_time" content="2022-07-27T09:58:26.880Z">
+    <meta property="article:author" content="吴志鹏">
+    <meta property="article:tag" content="sekiro">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:image" content="https://tva1.sinaimg.cn/large/e6c9d24egy1h1434e1lltj20ws02mjro.jpg">
+    <link rel="canonical" href="https://paynewu.com/655772200.html">
+    <script id="page-configurations">
+        // https://hexo.io/docs/variables.html
+        CONFIG.page = {
+            sidebar: "",
+            isHome: false,
+            isPost: true,
+            lang: 'zh-CN'
+        };
+
+    </script>
+    <title>kubernetes部署sekiro集群 | 吴志鹏｜Payne-Wu</title>
+    <meta name="google-site-verification" content="p_bIcnvirkFzG2dYKuNDivKD8-STet5W7D-01woA2fc" />
+    <noscript>
+        <style>
+            .use-motion .brand,
+            .use-motion .menu-item,
+            .sidebar-inner,
+            .use-motion .post-block,
+            .use-motion .pagination,
+            .use-motion .comments,
+            .use-motion .post-header,
+            .use-motion .post-body,
+            .use-motion .collection-header
+            {
+                opacity: initial;
+            }
+
+            .use-motion .site-title,
+            .use-motion .site-subtitle
+            {
+                opacity: initial;
+                top: initial;
+            }
+
+            .use-motion .logo-line-before i
+            {
+                left: initial;
+            }
+
+            .use-motion .logo-line-after i
+            {
+                right: initial;
+            }
+
+        </style>
+    </noscript>
+    <link rel="alternate" href="/atom.xml" title="吴志鹏｜Payne-Wu" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+    <div class="container">
+        <div class="headband"></div>
+        <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+            <div class="header-inner">
+                <div class="site-brand-container">
+                    <div class="site-nav-toggle">
+                        <div class="toggle" aria-label="切换导航栏">
+                            <span class="toggle-line toggle-line-first"></span>
+                            <span class="toggle-line toggle-line-middle"></span>
+                            <span class="toggle-line toggle-line-last"></span>
+                        </div>
+                    </div>
+                    <div class="site-meta">
+                        <a href="/" class="brand" rel="start">
+                            <span class="logo-line-before"><i></i></span>
+                            <h1 class="site-title">吴志鹏｜Payne-Wu </h1>
+                            <span class="logo-line-after"><i></i></span>
+                        </a>
+                    </div>
+                    <div class="site-nav-right">
+                        <div class="toggle popup-trigger">
+                            <i class="fa fa-search fa-fw fa-lg"></i>
+                        </div>
+                    </div>
+                </div>
+                <nav class="site-nav">
+                    <ul id="menu" class="main-menu menu">
+                        <li class="menu-item menu-item-home">
+                            <a href="/" rel="section">首页</a>
+                        </li>
+                        <li class="menu-item menu-item-archives">
+                            <a href="/archives/" rel="section">文章列表</a>
+                        </li>
+                        <li class="menu-item menu-item-tags">
+                            <a href="/tags/" rel="section">Tags Cloud</a>
+                        </li>
+                        <li class="menu-item menu-item-categories">
+                            <a href="/categories/" rel="section">文章集合</a>
+                        </li>
+                        <li class="menu-item menu-item-about">
+                            <a href="/about/" rel="section">关于我啊</a>
+                        </li>
+                        <li class="menu-item menu-item-message">
+                            <a href="/message/" rel="section">留言与我</a>
+                        </li>
+                        <li class="menu-item menu-item-search">
+                            <a role="button" class="popup-trigger">搜索 </a>
+                        </li>
+                    </ul>
+                </nav>
+                <div class="search-pop-overlay">
+                    <div class="popup search-popup">
+                        <div class="search-header">
+                            <span class="search-icon">
+                                <i class="fa fa-search"></i>
+                            </span>
+                            <div class="search-input-container">
+                                <input autocomplete="off" autocapitalize="off" placeholder="搜索..." spellcheck="false" type="search" class="search-input">
+                            </div>
+                            <span class="popup-btn-close">
+                                <i class="fa fa-times-circle"></i>
+                            </span>
+                        </div>
+                        <div id="search-result">
+                            <div id="no-result">
+                                <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="back-to-top">
+            <i class="fa fa-arrow-up"></i>
+            <span>0%</span>
+        </div>
+        <div class="reading-progress-bar"></div>
+        <main class="main">
+            <div class="main-inner">
+                <div class="content-wrap">
+                    <div class="content post posts-expand">
+                        <article itemscope itemtype="http://schema.org/Article" class="post-block single" lang="zh-CN">
+                            <link itemprop="mainEntityOfPage" href="https://paynewu.com/655772200.html">
+                            <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <meta itemprop="image" content="/images/favicon/android-chrome-512x512.png">
+                                <meta itemprop="name" content="吴志鹏">
+                                <meta itemprop="description" content="Talk is free，please state clearly">
+                            </span>
+                            <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+                                <meta itemprop="name" content="吴志鹏｜Payne-Wu">
+                            </span>
+                            <header class="post-header">
+                                <h1 class="post-title" itemprop="name headline"> kubernetes部署sekiro集群 </h1>
+                                <div class="post-meta">
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-user"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">作者</span>
+                                        <span><a href="/authors/Payne" class="author" itemprop="url" rel="index">Payne</a></span>
+                                    </span>
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-calendar"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">发表于</span>
+                                        <time title="创建时间：2022-04-10 03:12:18" itemprop="dateCreated datePublished" datetime="2022-04-10T03:12:18+08:00">2022-04-10</time>
+                                    </span>
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-folder"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">分类于</span>
+                                        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                                            <a href="/categories/sekiro/" itemprop="url" rel="index"><span itemprop="name">sekiro</span></a>
+                                        </span> ， <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                                            <a href="/categories/sekiro/rpc/" itemprop="url" rel="index"><span itemprop="name">rpc</span></a>
+                                        </span> ， <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                                            <a href="/categories/sekiro/rpc/spider/" itemprop="url" rel="index"><span itemprop="name">spider</span></a>
+                                        </span>
+                                    </span>
+                                    <br>
+                                    <span class="post-meta-item" title="本文字数">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-file-word"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">本文字数：</span>
+                                        <span>3.6k</span>
+                                    </span>
+                                    <span class="post-meta-item" title="阅读时长">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-clock"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                                        <span>3 分钟</span>
+                                    </span>
+                                </div>
+                            </header>
+                            <div class="post-body" itemprop="articleBody">
+                                <h2 id="Sekiro简介"><a href="#Sekiro简介" class="headerlink" title="Sekiro简介"></a>Sekiro简介</h2>
+                                <blockquote>
+                                    <p>开抄！以下来自sekiro官方文档 <a href="https://sekiro.virjar.com/sekiro-doc/index.html" target="_blank" rel="noopener">https://sekiro.virjar.com/sekiro-doc/index.html</a></p>
+                                </blockquote>
+                                <p>SEKIRO 是一个android下的API服务暴露框架，可以用在app逆向、app数据抓取、android群控等场景。同时Sekiro也是目前公开方案唯一稳定的JSRPC框架。</p>
+                                <ol>
+                                    <li>对网络环境要求低，sekiro 使用长链接管理服务（可以理解为每个APP内置内网穿透功能），使得 Android 手机可以分布于全国各地，甚至全球各地。手机掺合在普通用户群体，方便实现反抓突破，更加适合获取下沉数据。</li>
+                                    <li>不依赖 hook 框架，就曾经的 Hermes 系统来说，和 xposed 框架深度集成，在当今 hook 框架遍地开花的环境下，框架无法方便迁移。所以在 Sekiro 的设计中，只提供了 RPC 功能了。</li>
+                                    <li>纯异步调用，在 Hermes 和其他曾经出现过的框架中，基本都是同步调用。虽然说签名计算可以达到上百 QPS，但是如果用来做业务方法调用的话，由于调用过程穿透到目标 app 的服务器，会有大量请求占用线程。系统吞吐存在上线(<br>hermes 系统达到 2000QPS 的时候，基本无法横向扩容和性能优化了)。但是 Sekiro 全程使用 NIO，理论上其吞吐可以把资源占满。</li>
+                                    <li>client 实时状态，在 Hermes 系统我使用 http 进行调用转发，通过手机上报心跳感知手机存活状态。心跳时间至少 20s，这导致服务器调度层面对手机在线状态感知不及时，请求过大的时候大量转发调用由于 client 掉线<br>timeout。在 Sekiro 长链接管理下，手机掉线可以实时感知。不再出现由于框架层面机制导致 timeout<br>5.<br>群控能力，一台Sekiro服务器可以轻松管理上万个手机节点或者浏览器节点，且保证他们的RPC调用没有资源干扰。你不需要关心这些节点的物理网络拓扑结构。不需要管理这些手机什么时候上线和下线。如果你是用naohttpd方案，你可能需要为手机提供一个内网环境，然后配置一套内网穿透。一个内网一个机房，你需要管理哪些机房有哪些手机。当你的手机达到一百台之后，对应的物理网络环境就将会比较复杂，且需要开发一个独立系统管理了。如果你使用的时FridaRPC方案，你可能还需要为每几个手机配置一台电脑。然后电脑再配置内网穿透，这让大批量机器管理的拓扑结构更加复杂。这也会导致手机天然集中在一个机房，存在IP、基站、Wi-Fi、定位等环境本身对抗。</li>
+                                    <li>多语言扩展能力。Sekiro的客户端lib库，目前已知存在Android(java)、IOS(objective-c)、js(浏览器)<br>、易语言等多种客户端（不是所有的都是Sekiro官方实现）。Sekiro本身提供一个二进制协议（非常简单的二进制协议规则），只要你的语言支持socket(应该所有语言都支持)<br>，那么你就可以轻松为Sekiro实现对应客户端。接入Sekiro，享受Sekiro本身统一机群管理的好处。在Sekiro的roadmap中，我们会基于frida<br>Socket实现frida的客户端，完成Frida分析阶段的代码平滑迁移到Sekiro的生产环境。尽请期待<br>7.<br>客户端接入异步友好。Sekiro全程异步IO设计，这一方面保证整个框架的性能，另一方面更加贴近一般的app或者浏览器本身的异步环境。如果rpc调用用在签名计算上面，大部分签名仅仅是一个算法或者一个so的函数调用。那么同步调用就可以达到非常高的并发。但是如果你想通过rpc调用业务的API（如直接根据参数调用最网络框架的上层API，把参数编解码、加解密都，逻辑拼装都看作黑盒）。此时普通同步调用将会非常麻烦和非常消耗客户端性能。异步转同步的lock信号量机制、同步线程等待导致的线程资源占用和处理任务挤压等风险。FridaRPC支持异步，但是由于他的跨语言问题，并不好去构造异步的callback。目前nanohttpd或者FridaPRC，均大部分情况用在简单的签名函数计算上面。而Sekiro大部分用在上游业务逻辑的直接RPC场景上。</li>
+                                    <li>API友好（仅对AndroidAPI），我们为了编程方面和代码优雅，封装了一套开箱即用的API，基于SekiroAPI开发需求将会是非常快乐的。</li>
+                                </ol>
+                                <p>简而言之呢，Sekiro是一个virjar开发的一款强大稳定的rpc服务暴露框架</p>
+                                <h2 id="Kubernetes上部署"><a href="#Kubernetes上部署" class="headerlink" title="Kubernetes上部署"></a>Kubernetes上部署</h2>
+                                <p>首先，我们需要有一个 Kubernetes 集群，可以自己搭建，也可以使用 Minikube 或者用阿里云、腾讯云、Azure 等服务商直接提供的 Kubernetes 服务。 另外我们需要能使用 <code>kubectl</code> 连接和控制当前的集群，</p>
+                                <ul>
+                                    <li>搭建 Kubernetes 集群：<a href="https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/" target="_blank" rel="noopener">https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/</a></li>
+                                    <li>
+                                        <p>Minikube：<a href="https://kubernetes.io/docs/tutorials/hello-minikube/" target="_blank" rel="noopener">https://kubernetes.io/docs/tutorials/hello-minikube/</a></p>
+                                    </li>
+                                    <li>
+                                        <p>基于Kubeadmin实现Kubernetes 集群搭建： <a href="https://paynewu.com/18864.html">https://paynewu.com/18864.html</a></p>
+                                    </li>
+                                </ul>
+                                <p>上面的内容准备就绪之后，就可以开始 Kubernetes 搭建。搭建完成之后就开始部署Sekiro吧</p>
+                                <p>在Kubernetes中容器环境部署那就离不开image，Sekiro的image为</p>
+                                <figure class="highlight bash">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">registry.cn-beijing.aliyuncs.com/virjar/sekiro-server:latest</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <blockquote>
+                                    <p>无论是Docker、还是podman、亦或者是其他的容器。现成的景象就用这个</p>
+                                </blockquote>
+                                <p>Kubernetes部署服务的常用的有三种形式</p>
+                                <ul>
+                                    <li>kubectl cli部署</li>
+                                    <li>基于YAML文件格式部署</li>
+                                    <li>基于JSON文件格式部署</li>
+                                </ul>
+                                <h3 id="部署服务"><a href="#部署服务" class="headerlink" title="部署服务"></a>部署服务</h3>
+                                <p>首先为此创建一个名为<code>crawleruntil</code> 的 namespace</p>
+                                <figure class="highlight bash">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">kubectl create namespace crawleruntil</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p><img src="https://tva1.sinaimg.cn/large/e6c9d24egy1h1434e1lltj20ws02mjro.jpg" alt="image-20220410033511352"></p>
+                                <blockquote>
+                                    <p>因为我已经有<code>crawleruntil</code>这个namespace以及其他的服务，为了方便就不删了在演示了，将图中的sekiro即可</p>
+                                </blockquote>
+                                <p>至此已经完成四分之一了，接下来进行Sekiro的部署，yaml文件如下</p>
+                                <figure class="highlight yaml">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">apps/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Deployment</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">sekiro</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">crawleruntil</span></span><br><span class="line">  <span class="attr">labels:</span></span><br><span class="line">    <span class="attr">app:</span> <span class="string">sekiro</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">replicas:</span> <span class="number">3</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">matchLabels:</span></span><br><span class="line">      <span class="attr">app:</span> <span class="string">sekiro</span></span><br><span class="line">  <span class="attr">template:</span></span><br><span class="line">    <span class="attr">metadata:</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">app:</span> <span class="string">sekiro</span></span><br><span class="line">    <span class="attr">spec:</span></span><br><span class="line">      <span class="attr">containers:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">sekiro</span></span><br><span class="line">          <span class="attr">image:</span> <span class="string">registry.cn-beijing.aliyuncs.com/virjar/sekiro-server:latest</span></span><br><span class="line">          <span class="attr">imagePullPolicy:</span> <span class="string">Always</span></span><br><span class="line">          <span class="attr">ports:</span></span><br><span class="line">            <span class="bullet">-</span> <span class="attr">containerPort:</span> <span class="number">5601</span></span><br><span class="line">            <span class="bullet">-</span> <span class="attr">containerPort:</span> <span class="number">5602</span></span><br><span class="line">            <span class="bullet">-</span> <span class="attr">containerPort:</span> <span class="number">5603</span></span><br><span class="line">          <span class="attr">resources:</span></span><br><span class="line">            <span class="attr">requests:</span></span><br><span class="line">              <span class="attr">memory:</span> <span class="string">"1Gi"</span></span><br><span class="line">              <span class="attr">cpu:</span> <span class="string">"0.5"</span></span><br><span class="line">            <span class="attr">limits:</span></span><br><span class="line">              <span class="attr">memory:</span> <span class="string">"2Gi"</span></span><br><span class="line">              <span class="attr">cpu:</span> <span class="string">"1"</span></span><br><span class="line">      <span class="attr">restartPolicy:</span> <span class="string">Always</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Service</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">sekiro</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">crawleruntil</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">app:</span> <span class="string">sekiro</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">ClusterIP</span></span><br><span class="line">  <span class="attr">ports:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">port:</span> <span class="number">5601</span></span><br><span class="line">      <span class="attr">name:</span> <span class="string">nio</span></span><br><span class="line">      <span class="attr">targetPort:</span> <span class="number">5601</span></span><br><span class="line">      <span class="attr">protocol:</span> <span class="string">TCP</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">port:</span> <span class="number">5602</span></span><br><span class="line">      <span class="attr">name:</span> <span class="string">server</span></span><br><span class="line">      <span class="attr">targetPort:</span> <span class="number">5602</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">port:</span> <span class="number">5603</span></span><br><span class="line">      <span class="attr">name:</span> <span class="string">ws</span></span><br><span class="line">      <span class="attr">targetPort:</span> <span class="number">5603</span></span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>将其复制到服务器上，然后使用命令<code>kubectl apply -f 此文件名</code>，当然<code>kubectl create -f 此文件名</code>也可以大差不差。</p>
+                                <p>稍等几秒甚至是一两分钟，看看</p>
+                                <p><img src="https://tva1.sinaimg.cn/large/e6c9d24egy1h143bhpa1bj21h80h8tc1.jpg" alt="image-20220410034203246"></p>
+                                <p>确认使用<code>kubectl get all -n crawleruntil</code> 中显示的内容中有STATUS均为<code>Running</code>, 代表就部署成功了</p>
+                                <p>当然这还并不足以使服务可用，因为sekiro它运行在容器内的网络，暂时还无法在本地、或者远程反问服务。此时就需要将服务暴露出去。以便于使用</p>
+                                <h3 id="服务暴露"><a href="#服务暴露" class="headerlink" title="服务暴露"></a>服务暴露</h3>
+                                <p>暴露服务有NotePort, LoadBalance， 此外externalIPs也可以使各类service对外提供服务。当然最推荐的还是<code>Ingress</code>, 关于Ingress是什么感兴趣的请自行搜索。</p>
+                                <p>首先先需要部署ingress collector，请搜索。部署完成后可采用如下YAML进行ingress服务暴露</p>
+                                <figure class="highlight yaml">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="comment"># https</span></span><br><span class="line"></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">networking.k8s.io/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Ingress</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">sekiro-ingress</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">crawleruntil</span></span><br><span class="line">  <span class="attr">annotations:</span></span><br><span class="line">    <span class="attr">kubernetes.io/ingress.class:</span> <span class="string">traefik</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">rules:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">http:</span></span><br><span class="line">        <span class="attr">paths:</span></span><br><span class="line">          <span class="bullet">-</span> <span class="attr">pathType:</span> <span class="string">Prefix</span></span><br><span class="line">            <span class="attr">path:</span> <span class="string">/</span></span><br><span class="line">            <span class="attr">backend:</span></span><br><span class="line">              <span class="attr">service:</span></span><br><span class="line">                <span class="attr">name:</span> <span class="string">sekiro</span></span><br><span class="line">                <span class="attr">port:</span></span><br><span class="line">                  <span class="attr">name:</span> <span class="string">server</span></span><br><span class="line">          <span class="bullet">-</span> <span class="attr">pathType:</span> <span class="string">Prefix</span></span><br><span class="line">            <span class="attr">path:</span> <span class="string">/asyncInvoke</span></span><br><span class="line">            <span class="attr">backend:</span></span><br><span class="line">              <span class="attr">service:</span></span><br><span class="line">                <span class="attr">name:</span> <span class="string">sekiro</span></span><br><span class="line">                <span class="attr">port:</span></span><br><span class="line">                  <span class="attr">name:</span> <span class="string">nio</span></span><br><span class="line">          <span class="bullet">-</span> <span class="attr">pathType:</span> <span class="string">Prefix</span></span><br><span class="line">            <span class="attr">path:</span> <span class="string">/websocket</span></span><br><span class="line">            <span class="attr">backend:</span></span><br><span class="line">              <span class="attr">service:</span></span><br><span class="line">                <span class="attr">name:</span> <span class="string">sekiro</span></span><br><span class="line">                <span class="attr">port:</span></span><br><span class="line">                  <span class="attr">name:</span> <span class="string">ws</span></span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>此时访问你外网地址, 就会发现。（80需要有权限打开访问哦）</p>
+                                <p><img src="https://tva1.sinaimg.cn/large/e6c9d24egy1h143oadhvcj20u809wt90.jpg" alt="image-20220410035421312"></p>
+                                <p>ok，部署完成了！ sekiro就可以食用啦。</p>
+                                <p>以上明显还不够，主要是两个问题</p>
+                                <p>没有身份验证： 那么就意味着任何人都可以调用你的这个接口，岂不是…</p>
+                                <p>某些网页端的JS有证书，这样部署的sekiro无法使用此场景，需要为之加上tls证书。</p>
+                                <h3 id="Ingress-网页添加认证"><a href="#Ingress-网页添加认证" class="headerlink" title="Ingress 网页添加认证"></a>Ingress 网页添加认证</h3>
+                                <p>想偷懒的可以直接使用这三条命令。认证令牌创建一步到位</p>
+                                <figure class="highlight bash">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">yum -y install httpd</span><br><span class="line"><span class="built_in">echo</span> `<span class="built_in">echo</span> $(hostname) | base64` | htpasswd -ic ./auth  `<span class="built_in">echo</span> $(<span class="built_in">echo</span> $(hostname) | base64)`</span><br><span class="line">kubectl create secret generic basic-auth-secret --from-file auth --namespace=crawleruntil</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>我这里默认采用机器的hostname base64后的字符为用户名与密码。</p>
+                                <figure class="highlight bash">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="built_in">echo</span> `<span class="built_in">echo</span> $(hostname) | base64` ：密码改这里面的内容</span><br><span class="line">./auth  `<span class="built_in">echo</span> $(<span class="built_in">echo</span> $(hostname) | base64)`： 用户名这里面的内容</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>然后直接使用<code>kubectl create secret generic basic-auth-secret --from-file auth --namespace=crawleruntil</code></p>
+                                <p>创建一个名为<code>basic-auth-secret</code> <code>generic</code>类型的secret。</p>
+                                <blockquote>
+                                    <p>注意需要将namespace 指定为crawleruntil，实现同意命名空间</p>
+                                </blockquote>
+                                <p>将它挂到Ingress上去，</p>
+                                <p>Ingress YAML如下</p>
+                                <figure class="highlight yaml">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="comment"># https</span></span><br><span class="line"></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">networking.k8s.io/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Ingress</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">sekiro-ingress</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">crawleruntil</span></span><br><span class="line">  <span class="attr">annotations:</span></span><br><span class="line">    <span class="attr">kubernetes.io/ingress.class:</span> <span class="string">traefik</span></span><br><span class="line">    <span class="attr">traefik.ingress.kubernetes.io/auth-type:</span> <span class="string">"basic"</span></span><br><span class="line">    <span class="attr">traefik.ingress.kubernetes.io/auth-secret:</span> <span class="string">"basic-auth-secret"</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">rules:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">http:</span></span><br><span class="line">        <span class="attr">paths:</span></span><br><span class="line">          <span class="bullet">-</span> <span class="attr">pathType:</span> <span class="string">Prefix</span></span><br><span class="line">            <span class="attr">path:</span> <span class="string">/</span></span><br><span class="line">            <span class="attr">backend:</span></span><br><span class="line">              <span class="attr">service:</span></span><br><span class="line">                <span class="attr">name:</span> <span class="string">sekiro</span></span><br><span class="line">                <span class="attr">port:</span></span><br><span class="line">                  <span class="attr">name:</span> <span class="string">server</span></span><br><span class="line">          <span class="bullet">-</span> <span class="attr">pathType:</span> <span class="string">Prefix</span></span><br><span class="line">            <span class="attr">path:</span> <span class="string">/asyncInvoke</span></span><br><span class="line">            <span class="attr">backend:</span></span><br><span class="line">              <span class="attr">service:</span></span><br><span class="line">                <span class="attr">name:</span> <span class="string">sekiro</span></span><br><span class="line">                <span class="attr">port:</span></span><br><span class="line">                  <span class="attr">name:</span> <span class="string">nio</span></span><br><span class="line">          <span class="bullet">-</span> <span class="attr">pathType:</span> <span class="string">Prefix</span></span><br><span class="line">            <span class="attr">path:</span> <span class="string">/websocket</span></span><br><span class="line">            <span class="attr">backend:</span></span><br><span class="line">              <span class="attr">service:</span></span><br><span class="line">                <span class="attr">name:</span> <span class="string">sekiro</span></span><br><span class="line">                <span class="attr">port:</span></span><br><span class="line">                  <span class="attr">name:</span> <span class="string">ws</span></span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>打开一个<strong>无痕浏览器</strong>，此时你就可以发现</p>
+                                <p><img src="https://tva1.sinaimg.cn/large/e6c9d24egy1h14440ycgvj21l80mkgmj.jpg" alt="image-20220410040928885"></p>
+                                <p>这玩意需要认证了，cool～</p>
+                                <h3 id="域名解析与TLS网络证书"><a href="#域名解析与TLS网络证书" class="headerlink" title="域名解析与TLS网络证书"></a>域名解析与TLS网络证书</h3>
+                                <p>域名：首先你得需要有域名，这个去阿里云、腾讯云、华为云还是等等买就是咯。</p>
+                                <p>证书：将你申请点TLS证书下载到本地，具体请搜索</p>
+                                <p>创建证书的secret, 如下</p>
+                                <figure class="highlight bash">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">kubectl create secret tls tls-sekiro-paynewu-com --key sekiro.paynewu.com.key --cert=sekiro.paynewu.com_bundle.crt --namespace crawleruntil</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>最终的Ingress YAML如下</p>
+                                <figure class="highlight yaml">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">networking.k8s.io/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Ingress</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">sekiro-ingress</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">crawleruntil</span></span><br><span class="line">  <span class="attr">annotations:</span></span><br><span class="line">    <span class="attr">kubernetes.io/ingress.class:</span> <span class="string">traefik</span></span><br><span class="line">    <span class="attr">traefik.ingress.kubernetes.io/auth-type:</span> <span class="string">"basic"</span></span><br><span class="line">    <span class="attr">traefik.ingress.kubernetes.io/auth-secret:</span> <span class="string">"basic-auth-secret"</span></span><br><span class="line">    <span class="attr">traefik.frontend.rule.type:</span> <span class="string">PathPrefixStrip</span></span><br><span class="line">    <span class="attr">traefik.ingress.kubernetes.io/redirect-entry-point:</span> <span class="string">https</span></span><br><span class="line">    <span class="attr">traefik.backend.circuitbreaker:</span> <span class="string">"NetworkErrorRatio() &gt; 0.5"</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">tls:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">hosts:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="string">sekiro.paynewu.com</span></span><br><span class="line">      <span class="attr">secretName:</span> <span class="string">tls-sekiro-paynewu-com</span></span><br><span class="line">  <span class="attr">rules:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">host:</span> <span class="string">sekiro.paynewu.com</span></span><br><span class="line">      <span class="attr">http:</span></span><br><span class="line">        <span class="attr">paths:</span></span><br><span class="line">          <span class="bullet">-</span> <span class="attr">pathType:</span> <span class="string">Prefix</span></span><br><span class="line">            <span class="attr">path:</span> <span class="string">/</span></span><br><span class="line">            <span class="attr">backend:</span></span><br><span class="line">              <span class="attr">service:</span></span><br><span class="line">                <span class="attr">name:</span> <span class="string">sekiro</span></span><br><span class="line">                <span class="attr">port:</span></span><br><span class="line">                  <span class="attr">name:</span> <span class="string">server</span></span><br><span class="line">          <span class="bullet">-</span> <span class="attr">pathType:</span> <span class="string">Prefix</span></span><br><span class="line">            <span class="attr">path:</span> <span class="string">/asyncInvoke</span></span><br><span class="line">            <span class="attr">backend:</span></span><br><span class="line">              <span class="attr">service:</span></span><br><span class="line">                <span class="attr">name:</span> <span class="string">sekiro</span></span><br><span class="line">                <span class="attr">port:</span></span><br><span class="line">                  <span class="attr">name:</span> <span class="string">nio</span></span><br><span class="line">          <span class="bullet">-</span> <span class="attr">pathType:</span> <span class="string">Prefix</span></span><br><span class="line">            <span class="attr">path:</span> <span class="string">/websocket</span></span><br><span class="line">            <span class="attr">backend:</span></span><br><span class="line">              <span class="attr">service:</span></span><br><span class="line">                <span class="attr">name:</span> <span class="string">sekiro</span></span><br><span class="line">                <span class="attr">port:</span></span><br><span class="line">                  <span class="attr">name:</span> <span class="string">ws</span></span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>根路径</p>
+                                <p><img src="https://tva1.sinaimg.cn/large/e6c9d24egy1h144c38mn9j20p80ce3yz.jpg" alt="image-20220410041714078"></p>
+                                <p><img src="https://tva1.sinaimg.cn/large/e6c9d24egy1h144qrtmxlj214009edgc.jpg" alt="image-20220410043120299"></p>
+                                <h3 id="注入验证"><a href="#注入验证" class="headerlink" title="注入验证"></a>注入验证</h3>
+                                <p>将 <a href="https://sekiro.virjar.com/sekiro-doc/assets/sekiro_web_client.js" target="_blank" rel="noopener">https://sekiro.virjar.com/sekiro-doc/assets/sekiro_web_client.js</a> 中的文件复制到控制台，执行</p>
+                                <p>然后在控制台调用</p>
+                                <figure class="highlight shell">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">var client = new SekiroClient("wss://域名/websocket?group=ws-group-test&amp;clientId=" + guid());</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>校验</p>
+                                <p><img src="https://tva1.sinaimg.cn/large/e6c9d24egy1h144u1tj0yj217w07egm8.jpg" alt="image-20220410043429585"></p>
+                                <p>完成～</p>
+                                <h2 id="Referer"><a href="#Referer" class="headerlink" title="Referer"></a>Referer</h2>
+                                <p><a href="https://github.com/virjar/sekiro" target="_blank" rel="noopener">Sekiro GitHub</a></p>
+                                <p>其他部署都可以看看邱佬的</p>
+                                <ul>
+                                    <li><a href="https://mp.weixin.qq.com/s/m0M_-vlaqFuVufEX6XOwRQ" target="_blank" rel="noopener">linunx/win10搭建sekiro服务+web/app注入实战</a>（上）</li>
+                                    <li><a href="https://mp.weixin.qq.com/s/Y1KAs3_PHLmV16BjDPyBZQ" target="_blank" rel="noopener">linunx/win10搭建sekiro服务+web/app注入实战</a>（下）</li>
+                                    <li><a href="https://mp.weixin.qq.com/s/XKA3dk_s5EqWOTep1SvI4g" target="_blank" rel="noopener">sekiro服务器配置nginx反向代理升级为https</a></li>
+                                </ul>
+                                <p><a href="https://doc.traefik.io/traefik/v1.7/user-guide/kubernetes/#basic-authentication" target="_blank" rel="noopener">basic-authentication</a></p>
+                                <p><a href="https://doc.traefik.io/traefik/v1.7/configuration/backends/kubernetes/#security-headers-annotations" target="_blank" rel="noopener">security-headers-annotations</a></p>
+                            </div>
+                            <footer class="post-footer">
+                                <div class="post-tags">
+                                    <a href="/tags/sekiro/" rel="tag"><i class="fa fa-tag"></i> sekiro</a>
+                                </div>
+                                <div class="post-nav">
+                                    <div class="post-nav-item">
+                                        <a href="/1872139441.html" rel="prev" title="HomeBrew使用技巧">
+                                            <i class="fa fa-chevron-left"></i> HomeBrew使用技巧 </a>
+                                    </div>
+                                    <div class="post-nav-item">
+                                        <a href="/2145839287.html" rel="next" title="Linux command多版本设置"> Linux command多版本设置 <i class="fa fa-chevron-right"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </footer>
+                        </article>
+                    </div>
+                    <script>
+                        window.addEventListener('tabs:register', () =>
+                        {
+                            let
+                            {
+                                activeClass
+                            } = CONFIG.comments;
+                            if (CONFIG.comments.storage)
+                            {
+                                activeClass = localStorage.getItem('comments_active') || activeClass;
+                            }
+                            if (activeClass)
+                            {
+                                let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+                                if (activeTab)
+                                {
+                                    activeTab.click();
+                                }
+                            }
+                        });
+                        if (CONFIG.comments.storage)
+                        {
+                            window.addEventListener('tabs:click', event =>
+                            {
+                                if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+                                let commentClass = event.target.classList[1];
+                                localStorage.setItem('comments_active', commentClass);
+                            });
+                        }
+
+                    </script>
+                </div>
+                <div class="toggle sidebar-toggle">
+                    <span class="toggle-line toggle-line-first"></span>
+                    <span class="toggle-line toggle-line-middle"></span>
+                    <span class="toggle-line toggle-line-last"></span>
+                </div>
+                <aside class="sidebar">
+                    <div class="sidebar-inner">
+                        <ul class="sidebar-nav motion-element">
+                            <li class="sidebar-nav-toc"> 文章目录 </li>
+                            <li class="sidebar-nav-overview"> 站点概览 </li>
+                        </ul>
+                        <!--noindex-->
+                        <div class="post-toc-wrap sidebar-panel">
+                            <div class="post-toc motion-element">
+                                <ol class="nav">
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#Sekiro简介"><span class="nav-number">1.</span> <span class="nav-text">Sekiro简介</span></a></li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#Kubernetes上部署"><span class="nav-number">2.</span> <span class="nav-text">Kubernetes上部署</span></a>
+                                        <ol class="nav-child">
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#部署服务"><span class="nav-number">2.1.</span> <span class="nav-text">部署服务</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#服务暴露"><span class="nav-number">2.2.</span> <span class="nav-text">服务暴露</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#Ingress-网页添加认证"><span class="nav-number">2.3.</span> <span class="nav-text">Ingress 网页添加认证</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#域名解析与TLS网络证书"><span class="nav-number">2.4.</span> <span class="nav-text">域名解析与TLS网络证书</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#注入验证"><span class="nav-number">2.5.</span> <span class="nav-text">注入验证</span></a></li>
+                                        </ol>
+                                    </li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#Referer"><span class="nav-number">3.</span> <span class="nav-text">Referer</span></a></li>
+                                </ol>
+                            </div>
+                        </div>
+                        <!--/noindex-->
+                        <div class="site-overview-wrap sidebar-panel">
+                            <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <img class="site-author-image" itemprop="image" alt="吴志鹏" src="/images/favicon/android-chrome-512x512.png">
+                                <p class="site-author-name" itemprop="name">吴志鹏</p>
+                                <div class="site-description" itemprop="description">Talk is free，please state clearly</div>
+                            </div>
+                            <div class="site-state-wrap motion-element">
+                                <nav class="site-state">
+                                    <div class="site-state-item site-state-posts">
+                                        <a href="/archives/">
+                                            <span class="site-state-item-count">136</span>
+                                            <span class="site-state-item-name">日志</span>
+                                        </a>
+                                    </div>
+                                    <div class="site-state-item site-state-categories">
+                                        <a href="/categories/">
+                                            <span class="site-state-item-count">158</span>
+                                            <span class="site-state-item-name">分类</span></a>
+                                    </div>
+                                    <div class="site-state-item site-state-tags">
+                                        <a href="/tags/">
+                                            <span class="site-state-item-count">89</span>
+                                            <span class="site-state-item-name">标签</span></a>
+                                    </div>
+                                </nav>
+                            </div>
+                            <div class="links-of-author motion-element">
+                                <span class="links-of-author-item">
+                                    <a href="https://github.com/Payne-Wu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Payne-Wu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="mailto:wuzhipeng1289690157@gmail.com" title="E-Mail → mailto:wuzhipeng1289690157@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="https://www.zhihu.com/people/wu-zhi-peng-72-78" title="ZhiHu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;wu-zhi-peng-72-78" rel="noopener" target="_blank"><i class="fa fa-magic fa-fw"></i>ZhiHu</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="https://weibo.com/u/6987234483" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;6987234483" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+                <div id="sidebar-dimmer"></div>
+            </div>
+        </main>
+        <footer class="footer">
+            <div class="footer-inner">
+                <div class="copyright"> &copy; <span itemprop="copyrightYear">2022</span>
+                    <span class="with-love">
+                        <i class="fa fa-heart"></i>
+                    </span>
+                    <span class="author" itemprop="copyrightHolder">PayneWu</span>
+                    <span class="post-meta-divider">|</span>
+                    <span class="post-meta-item-icon">
+                        <i class="fa fa-chart-area"></i>
+                    </span>
+                    <span title="站点总字数">255k</span>
+                    <span class="post-meta-divider">|</span>
+                    <span class="post-meta-item-icon">
+                        <i class="fa fa-coffee"></i>
+                    </span>
+                    <span title="站点阅读时长">3:51</span>
+                </div>
+                <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">湘ICP备2021019893号-1 </a>
+                </div>
+                <div style="display: none;">
+                    <script src="//s95.cnzz.com/z_stat.php?id=true&web_id=true"></script>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+    <script src="/js/utils.js"></script>
+    <script src="/.js"></script>
+    <script src="/js/schemes/pisces.js"></script>
+    <script src="/.js"></script>
+    <script src="/js/next-boot.js"></script>
+    <script src="/.js"></script>
+    <script>
+        (function ()
+        {
+            var canonicalURL, curProtocol;
+            //Get the <link> tag
+            var x = document.getElementsByTagName("link");
+            //Find the last canonical URL
+            if (x.length > 0)
+            {
+                for (i = 0; i < x.length; i++)
+                {
+                    if (x[i].rel.toLowerCase() == 'canonical' && x[i].href)
+                    {
+                        canonicalURL = x[i].href;
+                    }
+                }
+            }
+            //Get protocol
+            if (!canonicalURL)
+            {
+                curProtocol = window.location.protocol.split(':')[0];
+            }
+            else
+            {
+                curProtocol = canonicalURL.split(':')[0];
+            }
+            //Get current URL if the canonical URL does not exist
+            if (!canonicalURL) canonicalURL = window.location.href;
+            //Assign script content. Replace current URL with the canonical URL
+            ! function ()
+            {
+                var e = /([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,
+                    r = canonicalURL,
+                    t = document.referrer;
+                if (!e.test(r))
+                {
+                    var n = (String(curProtocol).toLowerCase() === 'https') ? "https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif" : "//api.share.baidu.com/s.gif";
+                    t ? (n += "?r=" + encodeURIComponent(document.referrer), r && (n += "&l=" + r)) : r && (n += "?l=" + r);
+                    var i = new Image;
+                    i.src = n
+                }
+            }(window);
+        })();
+
+    </script>
+    <script src="/js/local-search.js"></script>
+    <script src="/.js"></script>
+</body>
+
+</html>

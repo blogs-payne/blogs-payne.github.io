@@ -1,0 +1,1185 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+    <meta name="theme-color" content="#222">
+    <meta name="generator" content="Hexo 4.2.1">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16-next.png">
+    <link rel="mask-icon" href="/images/favicon/safari-pinned-tab.svg" color="#222">
+    <meta name="msapplication-config" content="/images/favicon/browserconfig.xml">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+    <link rel="stylesheet" href="/lib/pace/pace-theme-mac-osx.min.css">
+    <script src="/lib/pace/pace.min.js"></script>
+    <script id="hexo-configurations">
+        var NexT = window.NexT ||
+        {};
+        var CONFIG = {
+            "hostname": "paynewu.com",
+            "root": "/",
+            "scheme": "Gemini",
+            "version": "7.8.0",
+            "exturl": false,
+            "sidebar":
+            {
+                "position": "right",
+                "width": 240,
+                "display": "post",
+                "padding": 18,
+                "offset": 12,
+                "onmobile": false
+            },
+            "copycode":
+            {
+                "enable": true,
+                "show_result": true,
+                "style": "mac"
+            },
+            "back2top":
+            {
+                "enable": true,
+                "sidebar": false,
+                "scrollpercent": true
+            },
+            "bookmark":
+            {
+                "enable": false,
+                "color": "#222",
+                "save": "auto"
+            },
+            "fancybox": false,
+            "mediumzoom": true,
+            "lazyload": false,
+            "pangu": true,
+            "comments":
+            {
+                "style": "tabs",
+                "active": "valine",
+                "storage": true,
+                "lazyload": false,
+                "nav": null
+            },
+            "algolia":
+            {
+                "hits":
+                {
+                    "per_page": 10
+                },
+                "labels":
+                {
+                    "input_placeholder": "Search for Posts",
+                    "hits_empty": "We didn't find any results for the search: ${query}",
+                    "hits_stats": "${hits} results found in ${time} ms"
+                }
+            },
+            "localsearch":
+            {
+                "enable": true,
+                "trigger": "auto",
+                "top_n_per_article": 8,
+                "unescape": false,
+                "preload": false
+            },
+            "motion":
+            {
+                "enable": false,
+                "async": false,
+                "transition":
+                {
+                    "post_block": "bounceDownIn",
+                    "post_header": "slideDownIn",
+                    "post_body": "slideDownIn",
+                    "coll_header": "slideLeftIn",
+                    "sidebar": "slideUpIn"
+                }
+            },
+            "path": "search.xml"
+        };
+
+    </script>
+    <meta name="description" content="mysql用户管理      DCL（Data Control Language，数据控制语言）：用于定义数据库的访问权限和安全级别，主要包含GRANT、REVOKE、COMMIT和ROLLBACK等语句。  mysql用户管理主要涉及到用户的增删改查与权限管理 mysql中存在4个控制权限的表，分别为user表，db表，tables_priv表，columns_priv表 权限表的验证过程">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="MySQL的SQL使用之下">
+    <meta property="og:url" content="https://paynewu.com/3191410054.html">
+    <meta property="og:site_name" content="吴志鹏｜Payne-Wu">
+    <meta property="og:description" content="mysql用户管理      DCL（Data Control Language，数据控制语言）：用于定义数据库的访问权限和安全级别，主要包含GRANT、REVOKE、COMMIT和ROLLBACK等语句。  mysql用户管理主要涉及到用户的增删改查与权限管理 mysql中存在4个控制权限的表，分别为user表，db表，tables_priv表，columns_priv表 权限表的验证过程">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="article:published_time" content="2021-09-02T13:46:39.000Z">
+    <meta property="article:modified_time" content="2022-07-27T09:58:26.876Z">
+    <meta property="article:author" content="吴志鹏">
+    <meta property="article:tag" content="MySQL">
+    <meta property="article:tag" content="数据库">
+    <meta name="twitter:card" content="summary">
+    <link rel="canonical" href="https://paynewu.com/3191410054.html">
+    <script id="page-configurations">
+        // https://hexo.io/docs/variables.html
+        CONFIG.page = {
+            sidebar: "",
+            isHome: false,
+            isPost: true,
+            lang: 'zh-CN'
+        };
+
+    </script>
+    <title>MySQL的SQL使用之下 | 吴志鹏｜Payne-Wu</title>
+    <meta name="google-site-verification" content="p_bIcnvirkFzG2dYKuNDivKD8-STet5W7D-01woA2fc" />
+    <noscript>
+        <style>
+            .use-motion .brand,
+            .use-motion .menu-item,
+            .sidebar-inner,
+            .use-motion .post-block,
+            .use-motion .pagination,
+            .use-motion .comments,
+            .use-motion .post-header,
+            .use-motion .post-body,
+            .use-motion .collection-header
+            {
+                opacity: initial;
+            }
+
+            .use-motion .site-title,
+            .use-motion .site-subtitle
+            {
+                opacity: initial;
+                top: initial;
+            }
+
+            .use-motion .logo-line-before i
+            {
+                left: initial;
+            }
+
+            .use-motion .logo-line-after i
+            {
+                right: initial;
+            }
+
+        </style>
+    </noscript>
+    <link rel="alternate" href="/atom.xml" title="吴志鹏｜Payne-Wu" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+    <div class="container">
+        <div class="headband"></div>
+        <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+            <div class="header-inner">
+                <div class="site-brand-container">
+                    <div class="site-nav-toggle">
+                        <div class="toggle" aria-label="切换导航栏">
+                            <span class="toggle-line toggle-line-first"></span>
+                            <span class="toggle-line toggle-line-middle"></span>
+                            <span class="toggle-line toggle-line-last"></span>
+                        </div>
+                    </div>
+                    <div class="site-meta">
+                        <a href="/" class="brand" rel="start">
+                            <span class="logo-line-before"><i></i></span>
+                            <h1 class="site-title">吴志鹏｜Payne-Wu </h1>
+                            <span class="logo-line-after"><i></i></span>
+                        </a>
+                    </div>
+                    <div class="site-nav-right">
+                        <div class="toggle popup-trigger">
+                            <i class="fa fa-search fa-fw fa-lg"></i>
+                        </div>
+                    </div>
+                </div>
+                <nav class="site-nav">
+                    <ul id="menu" class="main-menu menu">
+                        <li class="menu-item menu-item-home">
+                            <a href="/" rel="section">首页</a>
+                        </li>
+                        <li class="menu-item menu-item-archives">
+                            <a href="/archives/" rel="section">文章列表</a>
+                        </li>
+                        <li class="menu-item menu-item-tags">
+                            <a href="/tags/" rel="section">Tags Cloud</a>
+                        </li>
+                        <li class="menu-item menu-item-categories">
+                            <a href="/categories/" rel="section">文章集合</a>
+                        </li>
+                        <li class="menu-item menu-item-about">
+                            <a href="/about/" rel="section">关于我啊</a>
+                        </li>
+                        <li class="menu-item menu-item-message">
+                            <a href="/message/" rel="section">留言与我</a>
+                        </li>
+                        <li class="menu-item menu-item-search">
+                            <a role="button" class="popup-trigger">搜索 </a>
+                        </li>
+                    </ul>
+                </nav>
+                <div class="search-pop-overlay">
+                    <div class="popup search-popup">
+                        <div class="search-header">
+                            <span class="search-icon">
+                                <i class="fa fa-search"></i>
+                            </span>
+                            <div class="search-input-container">
+                                <input autocomplete="off" autocapitalize="off" placeholder="搜索..." spellcheck="false" type="search" class="search-input">
+                            </div>
+                            <span class="popup-btn-close">
+                                <i class="fa fa-times-circle"></i>
+                            </span>
+                        </div>
+                        <div id="search-result">
+                            <div id="no-result">
+                                <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="back-to-top">
+            <i class="fa fa-arrow-up"></i>
+            <span>0%</span>
+        </div>
+        <div class="reading-progress-bar"></div>
+        <main class="main">
+            <div class="main-inner">
+                <div class="content-wrap">
+                    <div class="content post posts-expand">
+                        <article itemscope itemtype="http://schema.org/Article" class="post-block single" lang="zh-CN">
+                            <link itemprop="mainEntityOfPage" href="https://paynewu.com/3191410054.html">
+                            <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <meta itemprop="image" content="/images/favicon/android-chrome-512x512.png">
+                                <meta itemprop="name" content="吴志鹏">
+                                <meta itemprop="description" content="Talk is free，please state clearly">
+                            </span>
+                            <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+                                <meta itemprop="name" content="吴志鹏｜Payne-Wu">
+                            </span>
+                            <header class="post-header">
+                                <h1 class="post-title" itemprop="name headline"> MySQL的SQL使用之下 </h1>
+                                <div class="post-meta">
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-user"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">作者</span>
+                                        <span><a href="/authors/Payne" class="author" itemprop="url" rel="index">Payne</a></span>
+                                    </span>
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-calendar"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">发表于</span>
+                                        <time title="创建时间：2021-09-02 21:46:39" itemprop="dateCreated datePublished" datetime="2021-09-02T21:46:39+08:00">2021-09-02</time>
+                                    </span>
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-folder"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">分类于</span>
+                                        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                                            <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a>
+                                        </span> ， <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                                            <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/MySQL/" itemprop="url" rel="index"><span itemprop="name">MySQL</span></a>
+                                        </span>
+                                    </span>
+                                    <br>
+                                    <span class="post-meta-item" title="本文字数">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-file-word"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">本文字数：</span>
+                                        <span>3.1k</span>
+                                    </span>
+                                    <span class="post-meta-item" title="阅读时长">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-clock"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                                        <span>3 分钟</span>
+                                    </span>
+                                </div>
+                            </header>
+                            <div class="post-body" itemprop="articleBody">
+                                <h2 id="mysql用户管理"><a href="#mysql用户管理" class="headerlink" title="mysql用户管理"></a>mysql用户管理</h2>
+                                <blockquote>
+                                    <p>DCL（Data Control Language，数据控制语言）：用于定义数据库的访问权限和安全级别，主要包含GRANT、REVOKE、COMMIT和ROLLBACK等语句。</p>
+                                </blockquote>
+                                <p><strong>mysql用户管理主要涉及到用户的增删改查与权限管理</strong></p>
+                                <p>mysql中存在4个控制权限的表，分别为user表，db表，tables_priv表，columns_priv表</p>
+                                <p><strong>权限表的验证过程</strong></p>
+                                <ol>
+                                    <li>先从user表中的Host,User,Password这3个字段中判断连接的ip、用户名、密码是否存在，存在则通过验证。</li>
+                                    <li>通过身份认证后，进行权限分配，按照user，db，tables_priv，columns_priv的顺序进行验证。即先检查全局权限表user，如果user中对应的权限为Y，则此用户对所有数据库的权限都为Y，将不再检查db,<br>tables_priv,columns_priv；如果为N，则到db表中检查此用户对应的具体数据库，并得到db中为Y的权限；如果db中为N，则检查tables_priv中此数据库对应的具体表，取得表中的权限Y，以此类推。</li>
+                                </ol>
+                                <p><strong>MySQL 权限级别</strong><br>全局性的管理权限： 作用于整个MySQL实例级别 数据库级别的权限： 作用于某个指定的数据库上或者所有的数据库上 数据库对象级别的权限：作用于指定的数据库对象上（表、视图等）或者所有的数据库对象上</p>
+                                <h3 id="用户操作"><a href="#用户操作" class="headerlink" title="用户操作"></a>用户操作</h3>
+                                <figure class="highlight plain">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"># 创建用户</span><br><span class="line">create user user_name@&#39;host&#39; identified by &#39;password&#39;;</span><br><span class="line"># example: </span><br><span class="line"># create user acs@&#39;10.0.0.%&#39; identified by &#39;123123&#39;;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <figure class="highlight plain">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"># 删除用户</span><br><span class="line">drop user user_name@&#39;host&#39;;</span><br><span class="line"># example:</span><br><span class="line"># drop user acs@&#39;10.0.0.%&#39;</span><br><span class="line"># DELETE FROM &#96;user&#96; WHERE &#96;user&#96;.&#96;Host&#96; &#x3D; &#39;10.0.0.%&#39; AND &#96;user&#96;.&#96;User&#96; &#x3D; &#39;acs&#39;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <figure class="highlight plain">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"># 修改用户</span><br><span class="line">alter user user_name@&#39;host&#39; identified by &#39;password&#39;;</span><br><span class="line"># example</span><br><span class="line">## 修改密码</span><br><span class="line">alter user acs@&#39;10.0.0.%&#39; identified by &#39;321312312123&#39;;</span><br><span class="line">## 修改 host</span><br><span class="line">UPDATE &#96;user&#96;</span><br><span class="line">SET &#96;Host&#96; &#x3D; &#39;%&#39;</span><br><span class="line">WHERE &#96;user&#96;.&#96;Host&#96; &#x3D; &#39;10.0.0.%&#39;</span><br><span class="line">  AND &#96;user&#96;.&#96;User&#96; &#x3D; &#39;acs&#39;</span><br><span class="line">## 修改权限</span><br><span class="line">UPDATE &#96;user&#96;</span><br><span class="line">SET &#96;Select_priv&#96; &#x3D; &#39;Y&#39;</span><br><span class="line">WHERE &#96;user&#96;.&#96;Host&#96; &#x3D; &#39;%&#39;</span><br><span class="line">  AND &#96;user&#96;.&#96;User&#96; &#x3D; &#39;acs&#39;</span><br><span class="line">UPDATE &#96;user&#96;</span><br><span class="line">SET &#96;Select_priv&#96; &#x3D; &#39;Y&#39;,</span><br><span class="line">    &#96;Delete_priv&#96; &#x3D; &#39;Y&#39;</span><br><span class="line">WHERE &#96;user&#96;.&#96;Host&#96; &#x3D; &#39;%&#39;</span><br><span class="line">  AND &#96;user&#96;.&#96;User&#96; &#x3D; &#39;acs&#39;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <figure class="highlight plain">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"># 删除用户</span><br><span class="line">drop user user_name@&#39;host&#39;;</span><br><span class="line"># example</span><br><span class="line">drop user acs@&#39;%&#39;</span><br><span class="line">DELETE</span><br><span class="line">FROM &#96;user&#96;</span><br><span class="line">WHERE &#96;user&#96;.&#96;Host&#96; &#x3D; &#39;10.0.0.%&#39;</span><br><span class="line">  AND &#96;user&#96;.&#96;User&#96; &#x3D; &#39;acs&#39;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <blockquote>
+                                    <p>user_name：用户名</p>
+                                    <p>host ：可允许连接ip(Localhost代表本机， 127.0.0.1代表ipv4本机地址， ::1代表ipv6的本机地址,)</p>
+                                    <p>password：用户密码</p>
+                                </blockquote>
+                                <h2 id="权限管理"><a href="#权限管理" class="headerlink" title="权限管理"></a>权限管理</h2>
+                                <p>权限可细分为操作权限与操作范围</p>
+                                <p>常用权限介绍</p>
+                                <figure class="highlight dart">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">ALL:	SELECT,INSERT, UPDATE, DELETE, CREATE, DROP, RELOAD, SHUTDOWN, PROCESS, FILE, REFERENCES, INDEX, ALTER, SHOW DATABASES, SUPER, CREATE TEMPORARY TABLES, LOCK TABLES, EXECUTE, REPLICATION SLAVE, REPLICATION CLIENT, CREATE VIEW, SHOW VIEW, CREATE ROUTINE, ALTER ROUTINE, CREATE USER, EVENT, TRIGGER, CREATE TABLESPACE</span><br><span class="line">ALL : 所有权限，一般是普通管理员拥有的</span><br><span class="line"><span class="keyword">with</span> grant option：给别的用户授权的功能</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>权限作用范围</p>
+                                <figure class="highlight dart">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">*.*               ----&gt;所有：管理员用户</span><br><span class="line">dbname.*          ----&gt;指定库下所有：开发和应用用户</span><br><span class="line">dbname.t1			----&gt;指定表</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p><strong>开发人员用户授权流程</strong></p>
+                                <ol>
+                                    <li>你从哪来</li>
+                                    <li>对谁操作</li>
+                                    <li>权限</li>
+                                    <li>密码要求</li>
+                                </ol>
+                                <h3 id="权限"><a href="#权限" class="headerlink" title="权限"></a>权限</h3>
+                                <p>可以使用GRANT给用户添加权限，权限会自动叠加，不会覆盖之前授予的权限，比如你先给用户添加一个SELECT权限，后来又给用户添加了一个INSERT权限，那么该用户就同时拥有了SELECT和INSERT权限</p>
+                                <figure class="highlight plain">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"># 查看MYSQL有哪些用户</span><br><span class="line">select user, host</span><br><span class="line">from mysql.user;</span><br><span class="line"># 查看权限</span><br><span class="line">show grants for user_name@&#39;host&#39;;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <figure class="highlight plain">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"># 授权</span><br><span class="line">grant 权限 on 权限范围 to 用户 identified by 密码 with grant option;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p><strong>all privileges：</strong>表示将所有权限授予给用户。也可指定具体的权限，如：SELECT、CREATE、DROP等。<br><strong>on：</strong>表示这些权限对哪些数据库和表生效，格式：数据库名.表名，这里写“<em>”表示所有数据库，所有表。如果我要指定将权限应用到test库的user表中，可以这么写：test.user<br><strong>to：</strong>将权限授予哪个用户。格式：”用户名”@”登录IP或域名”。%表示没有限制，在任何主机都可以登录。比如：”payne”@”192.168.0%”，表示yangxin这个用户只能在192.168.0IP段登录<br><strong>•identified by：</strong>指定用户的登录密码<br><em>*•with grant option：</em></em>表示允许用户将自己的权限授权给其它用户</p>
+                                <figure class="highlight plain">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"># 收回权限</span><br><span class="line">revoke delete on 权限范围 from 用户@‘host’</span><br><span class="line">revoke delete on app.* from app@&#39;10.0.0.%&#39;；</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h3 id="如何授权"><a href="#如何授权" class="headerlink" title="如何授权"></a>如何授权</h3>
+                                <p>用户的权限一定是与业务分离不开的，但通常普通用户会</p>
+                                <ul>
+                                    <li>禁用删除权限</li>
+                                    <li>规定范围</li>
+                                </ul>
+                                <h2 id="如何做好用户管理"><a href="#如何做好用户管理" class="headerlink" title="如何做好用户管理"></a>如何做好用户管理</h2>
+                                <ul>
+                                    <li>密码系数足够高</li>
+                                    <li>root禁用远程登录</li>
+                                    <li>分级别，类似于公司管理。</li>
+                                </ul>
+                                <h2 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h2>
+                                <figure class="highlight plain">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">8.0在grant命令添加新特性</span><br><span class="line">建用户和授权分开了</span><br><span class="line">grant 不再支持自动创建用户了，不支持改密码</span><br><span class="line">授权之前，必须要提前创建用户。</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <ul>
+                                    <li>执行Grant,revoke,set password,rename user命令修改权限之后， MySQL会自动将修改后的权限信息同步加载到系统内存中</li>
+                                    <li>如果执行insert/update/delete操作上述的系统权限表之后，则必须再执行刷新权限命令才能同步到系统内存中，刷新权限命令包括： <code>flush privileges</code>/mysqladmin flush-privileges /<br>mysqladmin reload</li>
+                                    <li>如果是修改tables和columns级别的权限，则客户端的下次操作新权限就会生效</li>
+                                    <li>如果是修改database级别的权限，则新权限在客户端执行use database命令后生效</li>
+                                    <li>如果是修改global级别的权限，则需要重新创建连接新权限才能生效</li>
+                                    <li>如果是修改global级别的权限，则需要重新创建连接新权限才能生效 (例如修改密码)</li>
+                                </ul>
+                                <p>mysql user表</p>
+                                <div class="table-container">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th style="text-align:left"><strong>名字</strong></th>
+                                                <th style="text-align:left"><strong>类型</strong></th>
+                                                <th style="text-align:left">Null</th>
+                                                <th style="text-align:left">主键</th>
+                                                <th style="text-align:left">默认</th>
+                                                <th style="text-align:left"></th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td style="text-align:left">Host</td>
+                                                <td style="text-align:left">char(255)</td>
+                                                <td style="text-align:left">NO</td>
+                                                <td style="text-align:left">PRI</td>
+                                                <td style="text-align:left"></td>
+                                                <td style="text-align:left"></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:left">User</td>
+                                                <td style="text-align:left">char(32)</td>
+                                                <td style="text-align:left">NO</td>
+                                                <td style="text-align:left">PRI</td>
+                                                <td style="text-align:left"></td>
+                                                <td style="text-align:left"></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:left">Select_priv</td>
+                                                <td style="text-align:left">enum(‘N’,’Y’)</td>
+                                                <td style="text-align:left">NO</td>
+                                                <td style="text-align:left"></td>
+                                                <td style="text-align:left">N</td>
+                                                <td style="text-align:left"></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:left">Insert_priv</td>
+                                                <td style="text-align:left">enum(‘N’,’Y’)</td>
+                                                <td style="text-align:left">NO</td>
+                                                <td style="text-align:left"></td>
+                                                <td style="text-align:left">N</td>
+                                                <td style="text-align:left"></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:left">Update_priv</td>
+                                                <td style="text-align:left">enum(‘N’,’Y’)</td>
+                                                <td style="text-align:left">NO</td>
+                                                <td style="text-align:left"></td>
+                                                <td style="text-align:left">N</td>
+                                                <td style="text-align:left"></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:left">Delete_priv</td>
+                                                <td style="text-align:left">enum(‘N’,’Y’)</td>
+                                                <td style="text-align:left">NO</td>
+                                                <td style="text-align:left"></td>
+                                                <td style="text-align:left">N</td>
+                                                <td style="text-align:left"></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:left">Create_priv</td>
+                                                <td style="text-align:left">enum(‘N’,’Y’)</td>
+                                                <td style="text-align:left">NO</td>
+                                                <td style="text-align:left"></td>
+                                                <td style="text-align:left">N</td>
+                                                <td style="text-align:left"></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:left">Drop_priv</td>
+                                                <td style="text-align:left">enum(‘N’,’Y’)</td>
+                                                <td style="text-align:left">NO</td>
+                                                <td style="text-align:left"></td>
+                                                <td style="text-align:left">N</td>
+                                                <td style="text-align:left"></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:left">Reload_priv</td>
+                                                <td style="text-align:left">enum(‘N’,’Y’)</td>
+                                                <td style="text-align:left">NO</td>
+                                                <td style="text-align:left"></td>
+                                                <td style="text-align:left">N</td>
+                                                <td style="text-align:left"></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:left">Shutdown_priv</td>
+                                                <td style="text-align:left">enum(‘N’,’Y’)</td>
+                                                <td style="text-align:left">NO</td>
+                                                <td style="text-align:left"></td>
+                                                <td style="text-align:left">N</td>
+                                                <td style="text-align:left"></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:left">Process_priv</td>
+                                                <td style="text-align:left">enum(‘N’,’Y’)</td>
+                                                <td style="text-align:left">NO</td>
+                                                <td style="text-align:left"></td>
+                                                <td style="text-align:left">N</td>
+                                                <td style="text-align:left"></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:left">File_priv</td>
+                                                <td style="text-align:left">enum(‘N’,’Y’)</td>
+                                                <td style="text-align:left">NO</td>
+                                                <td style="text-align:left"></td>
+                                                <td style="text-align:left">N</td>
+                                                <td style="text-align:left"></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:left">Grant_priv</td>
+                                                <td style="text-align:left">enum(‘N’,’Y’)</td>
+                                                <td style="text-align:left">NO</td>
+                                                <td style="text-align:left"></td>
+                                                <td style="text-align:left">N</td>
+                                                <td style="text-align:left"></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:left">References_priv</td>
+                                                <td style="text-align:left">enum(‘N’,’Y’)</td>
+                                                <td style="text-align:left">NO</td>
+                                                <td style="text-align:left"></td>
+                                                <td style="text-align:left">N</td>
+                                                <td style="text-align:left"></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:left">Index_priv</td>
+                                                <td style="text-align:left">enum(‘N’,’Y’)</td>
+                                                <td style="text-align:left">NO</td>
+                                                <td style="text-align:left"></td>
+                                                <td style="text-align:left">N</td>
+                                                <td style="text-align:left"></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:left">Alter_priv</td>
+                                                <td style="text-align:left">enum(‘N’,’Y’)</td>
+                                                <td style="text-align:left">NO</td>
+                                                <td style="text-align:left"></td>
+                                                <td style="text-align:left">N</td>
+                                                <td style="text-align:left"></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:left">Show_db_priv</td>
+                                                <td style="text-align:left">enum(‘N’,’Y’)</td>
+                                                <td style="text-align:left">NO</td>
+                                                <td style="text-align:left"></td>
+                                                <td style="text-align:left">N</td>
+                                                <td style="text-align:left"></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:left">Super_priv</td>
+                                                <td style="text-align:left">enum(‘N’,’Y’)</td>
+                                                <td style="text-align:left">NO</td>
+                                                <td style="text-align:left"></td>
+                                                <td style="text-align:left">N</td>
+                                                <td style="text-align:left"></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:left">Create_tmp_table_priv</td>
+                                                <td style="text-align:left">enum(‘N’,’Y’)</td>
+                                                <td style="text-align:left">NO</td>
+                                                <td style="text-align:left"></td>
+                                                <td style="text-align:left">N</td>
+                                                <td style="text-align:left"></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:left">Lock_tables_priv</td>
+                                                <td style="text-align:left">enum(‘N’,’Y’)</td>
+                                                <td style="text-align:left">NO</td>
+                                                <td style="text-align:left"></td>
+                                                <td style="text-align:left">N</td>
+                                                <td style="text-align:left"></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:left">Execute_priv</td>
+                                                <td style="text-align:left">enum(‘N’,’Y’)</td>
+                                                <td style="text-align:left">NO</td>
+                                                <td style="text-align:left"></td>
+                                                <td style="text-align:left">N</td>
+                                                <td style="text-align:left"></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:left">Repl_slave_priv</td>
+                                                <td style="text-align:left">enum(‘N’,’Y’)</td>
+                                                <td style="text-align:left">NO</td>
+                                                <td style="text-align:left"></td>
+                                                <td style="text-align:left">N</td>
+                                                <td style="text-align:left"></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:left">Repl_client_priv</td>
+                                                <td style="text-align:left">enum(‘N’,’Y’)</td>
+                                                <td style="text-align:left">NO</td>
+                                                <td style="text-align:left"></td>
+                                                <td style="text-align:left">N</td>
+                                                <td style="text-align:left"></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:left">Create_view_priv</td>
+                                                <td style="text-align:left">enum(‘N’,’Y’)</td>
+                                                <td style="text-align:left">NO</td>
+                                                <td style="text-align:left"></td>
+                                                <td style="text-align:left">N</td>
+                                                <td style="text-align:left"></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:left">Show_view_priv</td>
+                                                <td style="text-align:left">enum(‘N’,’Y’)</td>
+                                                <td style="text-align:left">NO</td>
+                                                <td style="text-align:left"></td>
+                                                <td style="text-align:left">N</td>
+                                                <td style="text-align:left"></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:left">Create_routine_priv</td>
+                                                <td style="text-align:left">enum(‘N’,’Y’)</td>
+                                                <td style="text-align:left">NO</td>
+                                                <td style="text-align:left"></td>
+                                                <td style="text-align:left">N</td>
+                                                <td style="text-align:left"></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:left">Alter_routine_priv</td>
+                                                <td style="text-align:left">enum(‘N’,’Y’)</td>
+                                                <td style="text-align:left">NO</td>
+                                                <td style="text-align:left"></td>
+                                                <td style="text-align:left">N</td>
+                                                <td style="text-align:left"></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:left">Create_user_priv</td>
+                                                <td style="text-align:left">enum(‘N’,’Y’)</td>
+                                                <td style="text-align:left">NO</td>
+                                                <td style="text-align:left"></td>
+                                                <td style="text-align:left">N</td>
+                                                <td style="text-align:left"></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:left">Event_priv</td>
+                                                <td style="text-align:left">enum(‘N’,’Y’)</td>
+                                                <td style="text-align:left">NO</td>
+                                                <td style="text-align:left"></td>
+                                                <td style="text-align:left">N</td>
+                                                <td style="text-align:left"></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:left">Trigger_priv</td>
+                                                <td style="text-align:left">enum(‘N’,’Y’)</td>
+                                                <td style="text-align:left">NO</td>
+                                                <td style="text-align:left"></td>
+                                                <td style="text-align:left">N</td>
+                                                <td style="text-align:left"></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:left">Create_tablespace_priv</td>
+                                                <td style="text-align:left">enum(‘N’,’Y’)</td>
+                                                <td style="text-align:left">NO</td>
+                                                <td style="text-align:left"></td>
+                                                <td style="text-align:left">N</td>
+                                                <td style="text-align:left"></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:left">ssl_type</td>
+                                                <td style="text-align:left">enum(‘’,’ANY’,’X509’,’SPECIFIED’)</td>
+                                                <td style="text-align:left">NO</td>
+                                                <td style="text-align:left"></td>
+                                                <td style="text-align:left"></td>
+                                                <td style="text-align:left"></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:left">ssl_cipher</td>
+                                                <td style="text-align:left">blob</td>
+                                                <td style="text-align:left">NO</td>
+                                                <td style="text-align:left"></td>
+                                                <td style="text-align:left"><em>NULL</em></td>
+                                                <td style="text-align:left"></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:left">x509_issuer</td>
+                                                <td style="text-align:left">blob</td>
+                                                <td style="text-align:left">NO</td>
+                                                <td style="text-align:left"></td>
+                                                <td style="text-align:left"><em>NULL</em></td>
+                                                <td style="text-align:left"></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:left">x509_subject</td>
+                                                <td style="text-align:left">blob</td>
+                                                <td style="text-align:left">NO</td>
+                                                <td style="text-align:left"></td>
+                                                <td style="text-align:left"><em>NULL</em></td>
+                                                <td style="text-align:left"></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:left">max_questions</td>
+                                                <td style="text-align:left">int unsigned</td>
+                                                <td style="text-align:left">NO</td>
+                                                <td style="text-align:left"></td>
+                                                <td style="text-align:left">0</td>
+                                                <td style="text-align:left"></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:left">max_updates</td>
+                                                <td style="text-align:left">int unsigned</td>
+                                                <td style="text-align:left">NO</td>
+                                                <td style="text-align:left"></td>
+                                                <td style="text-align:left">0</td>
+                                                <td style="text-align:left"></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:left">max_connections</td>
+                                                <td style="text-align:left">int unsigned</td>
+                                                <td style="text-align:left">NO</td>
+                                                <td style="text-align:left"></td>
+                                                <td style="text-align:left">0</td>
+                                                <td style="text-align:left"></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:left">max_user_connections</td>
+                                                <td style="text-align:left">int unsigned</td>
+                                                <td style="text-align:left">NO</td>
+                                                <td style="text-align:left"></td>
+                                                <td style="text-align:left">0</td>
+                                                <td style="text-align:left"></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:left">plugin</td>
+                                                <td style="text-align:left">char(64)</td>
+                                                <td style="text-align:left">NO</td>
+                                                <td style="text-align:left"></td>
+                                                <td style="text-align:left">caching_sha2_password</td>
+                                                <td style="text-align:left"></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:left">authentication_string</td>
+                                                <td style="text-align:left">text</td>
+                                                <td style="text-align:left">YES</td>
+                                                <td style="text-align:left"></td>
+                                                <td style="text-align:left"><em>NULL</em></td>
+                                                <td style="text-align:left"></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:left">password_expired</td>
+                                                <td style="text-align:left">enum(‘N’,’Y’)</td>
+                                                <td style="text-align:left">NO</td>
+                                                <td style="text-align:left"></td>
+                                                <td style="text-align:left">N</td>
+                                                <td style="text-align:left"></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:left">password_last_changed</td>
+                                                <td style="text-align:left">timestamp</td>
+                                                <td style="text-align:left">YES</td>
+                                                <td style="text-align:left"></td>
+                                                <td style="text-align:left"><em>NULL</em></td>
+                                                <td style="text-align:left"></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:left">password_lifetime</td>
+                                                <td style="text-align:left">smallint unsigned</td>
+                                                <td style="text-align:left">YES</td>
+                                                <td style="text-align:left"></td>
+                                                <td style="text-align:left"><em>NULL</em></td>
+                                                <td style="text-align:left"></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:left">account_locked</td>
+                                                <td style="text-align:left">enum(‘N’,’Y’)</td>
+                                                <td style="text-align:left">NO</td>
+                                                <td style="text-align:left"></td>
+                                                <td style="text-align:left">N</td>
+                                                <td style="text-align:left"></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:left">Create_role_priv</td>
+                                                <td style="text-align:left">enum(‘N’,’Y’)</td>
+                                                <td style="text-align:left">NO</td>
+                                                <td style="text-align:left"></td>
+                                                <td style="text-align:left">N</td>
+                                                <td style="text-align:left"></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:left">Drop_role_priv</td>
+                                                <td style="text-align:left">enum(‘N’,’Y’)</td>
+                                                <td style="text-align:left">NO</td>
+                                                <td style="text-align:left"></td>
+                                                <td style="text-align:left">N</td>
+                                                <td style="text-align:left"></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:left">Password_reuse_history</td>
+                                                <td style="text-align:left">smallint unsigned</td>
+                                                <td style="text-align:left">YES</td>
+                                                <td style="text-align:left"></td>
+                                                <td style="text-align:left"><em>NULL</em></td>
+                                                <td style="text-align:left"></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:left">Password_reuse_time</td>
+                                                <td style="text-align:left">smallint unsigned</td>
+                                                <td style="text-align:left">YES</td>
+                                                <td style="text-align:left"></td>
+                                                <td style="text-align:left"><em>NULL</em></td>
+                                                <td style="text-align:left"></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:left">Password_require_current</td>
+                                                <td style="text-align:left">enum(‘N’,’Y’)</td>
+                                                <td style="text-align:left">YES</td>
+                                                <td style="text-align:left"></td>
+                                                <td style="text-align:left"><em>NULL</em></td>
+                                                <td style="text-align:left"></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:left">User_attributes</td>
+                                                <td style="text-align:left">json</td>
+                                                <td style="text-align:left">YES</td>
+                                                <td style="text-align:left"></td>
+                                                <td style="text-align:left"><em>NULL</em></td>
+                                                <td style="text-align:left"></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="popular-posts-header">相关文章</div>
+                            <ul class="popular-posts">
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/507251385.html" rel="bookmark">MySQL优化</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/1336292242.html" rel="bookmark">MySQL存储引擎</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/1376532068.html" rel="bookmark">MySQL数据库一些概念</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/1647551827.html" rel="bookmark">MySQL数据库体系结构</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/1196530272.html" rel="bookmark">MySQL数据类型</a></div>
+                                </li>
+                            </ul>
+                            <footer class="post-footer">
+                                <div class="post-tags">
+                                    <a href="/tags/MySQL/" rel="tag"><i class="fa fa-tag"></i> MySQL</a>
+                                    <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="tag"><i class="fa fa-tag"></i> 数据库</a>
+                                </div>
+                                <div class="post-nav">
+                                    <div class="post-nav-item">
+                                        <a href="/2890729769.html" rel="prev" title="docker分层构建">
+                                            <i class="fa fa-chevron-left"></i> docker分层构建 </a>
+                                    </div>
+                                    <div class="post-nav-item">
+                                        <a href="/2760374101.html" rel="next" title="kubernetes NFS实践"> kubernetes NFS实践 <i class="fa fa-chevron-right"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </footer>
+                        </article>
+                    </div>
+                    <script>
+                        window.addEventListener('tabs:register', () =>
+                        {
+                            let
+                            {
+                                activeClass
+                            } = CONFIG.comments;
+                            if (CONFIG.comments.storage)
+                            {
+                                activeClass = localStorage.getItem('comments_active') || activeClass;
+                            }
+                            if (activeClass)
+                            {
+                                let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+                                if (activeTab)
+                                {
+                                    activeTab.click();
+                                }
+                            }
+                        });
+                        if (CONFIG.comments.storage)
+                        {
+                            window.addEventListener('tabs:click', event =>
+                            {
+                                if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+                                let commentClass = event.target.classList[1];
+                                localStorage.setItem('comments_active', commentClass);
+                            });
+                        }
+
+                    </script>
+                </div>
+                <div class="toggle sidebar-toggle">
+                    <span class="toggle-line toggle-line-first"></span>
+                    <span class="toggle-line toggle-line-middle"></span>
+                    <span class="toggle-line toggle-line-last"></span>
+                </div>
+                <aside class="sidebar">
+                    <div class="sidebar-inner">
+                        <ul class="sidebar-nav motion-element">
+                            <li class="sidebar-nav-toc"> 文章目录 </li>
+                            <li class="sidebar-nav-overview"> 站点概览 </li>
+                        </ul>
+                        <!--noindex-->
+                        <div class="post-toc-wrap sidebar-panel">
+                            <div class="post-toc motion-element">
+                                <ol class="nav">
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#mysql用户管理"><span class="nav-number">1.</span> <span class="nav-text">mysql用户管理</span></a>
+                                        <ol class="nav-child">
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#用户操作"><span class="nav-number">1.1.</span> <span class="nav-text">用户操作</span></a></li>
+                                        </ol>
+                                    </li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#权限管理"><span class="nav-number">2.</span> <span class="nav-text">权限管理</span></a>
+                                        <ol class="nav-child">
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#权限"><span class="nav-number">2.1.</span> <span class="nav-text">权限</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#如何授权"><span class="nav-number">2.2.</span> <span class="nav-text">如何授权</span></a></li>
+                                        </ol>
+                                    </li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#如何做好用户管理"><span class="nav-number">3.</span> <span class="nav-text">如何做好用户管理</span></a></li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#注意"><span class="nav-number">4.</span> <span class="nav-text">注意</span></a></li>
+                                </ol>
+                            </div>
+                        </div>
+                        <!--/noindex-->
+                        <div class="site-overview-wrap sidebar-panel">
+                            <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <img class="site-author-image" itemprop="image" alt="吴志鹏" src="/images/favicon/android-chrome-512x512.png">
+                                <p class="site-author-name" itemprop="name">吴志鹏</p>
+                                <div class="site-description" itemprop="description">Talk is free，please state clearly</div>
+                            </div>
+                            <div class="site-state-wrap motion-element">
+                                <nav class="site-state">
+                                    <div class="site-state-item site-state-posts">
+                                        <a href="/archives/">
+                                            <span class="site-state-item-count">136</span>
+                                            <span class="site-state-item-name">日志</span>
+                                        </a>
+                                    </div>
+                                    <div class="site-state-item site-state-categories">
+                                        <a href="/categories/">
+                                            <span class="site-state-item-count">158</span>
+                                            <span class="site-state-item-name">分类</span></a>
+                                    </div>
+                                    <div class="site-state-item site-state-tags">
+                                        <a href="/tags/">
+                                            <span class="site-state-item-count">89</span>
+                                            <span class="site-state-item-name">标签</span></a>
+                                    </div>
+                                </nav>
+                            </div>
+                            <div class="links-of-author motion-element">
+                                <span class="links-of-author-item">
+                                    <a href="https://github.com/Payne-Wu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Payne-Wu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="mailto:wuzhipeng1289690157@gmail.com" title="E-Mail → mailto:wuzhipeng1289690157@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="https://www.zhihu.com/people/wu-zhi-peng-72-78" title="ZhiHu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;wu-zhi-peng-72-78" rel="noopener" target="_blank"><i class="fa fa-magic fa-fw"></i>ZhiHu</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="https://weibo.com/u/6987234483" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;6987234483" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+                <div id="sidebar-dimmer"></div>
+            </div>
+        </main>
+        <footer class="footer">
+            <div class="footer-inner">
+                <div class="copyright"> &copy; <span itemprop="copyrightYear">2022</span>
+                    <span class="with-love">
+                        <i class="fa fa-heart"></i>
+                    </span>
+                    <span class="author" itemprop="copyrightHolder">PayneWu</span>
+                    <span class="post-meta-divider">|</span>
+                    <span class="post-meta-item-icon">
+                        <i class="fa fa-chart-area"></i>
+                    </span>
+                    <span title="站点总字数">255k</span>
+                    <span class="post-meta-divider">|</span>
+                    <span class="post-meta-item-icon">
+                        <i class="fa fa-coffee"></i>
+                    </span>
+                    <span title="站点阅读时长">3:51</span>
+                </div>
+                <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">湘ICP备2021019893号-1 </a>
+                </div>
+                <div style="display: none;">
+                    <script src="//s95.cnzz.com/z_stat.php?id=true&web_id=true"></script>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+    <script src="/js/utils.js"></script>
+    <script src="/.js"></script>
+    <script src="/js/schemes/pisces.js"></script>
+    <script src="/.js"></script>
+    <script src="/js/next-boot.js"></script>
+    <script src="/.js"></script>
+    <script>
+        (function ()
+        {
+            var canonicalURL, curProtocol;
+            //Get the <link> tag
+            var x = document.getElementsByTagName("link");
+            //Find the last canonical URL
+            if (x.length > 0)
+            {
+                for (i = 0; i < x.length; i++)
+                {
+                    if (x[i].rel.toLowerCase() == 'canonical' && x[i].href)
+                    {
+                        canonicalURL = x[i].href;
+                    }
+                }
+            }
+            //Get protocol
+            if (!canonicalURL)
+            {
+                curProtocol = window.location.protocol.split(':')[0];
+            }
+            else
+            {
+                curProtocol = canonicalURL.split(':')[0];
+            }
+            //Get current URL if the canonical URL does not exist
+            if (!canonicalURL) canonicalURL = window.location.href;
+            //Assign script content. Replace current URL with the canonical URL
+            ! function ()
+            {
+                var e = /([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,
+                    r = canonicalURL,
+                    t = document.referrer;
+                if (!e.test(r))
+                {
+                    var n = (String(curProtocol).toLowerCase() === 'https') ? "https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif" : "//api.share.baidu.com/s.gif";
+                    t ? (n += "?r=" + encodeURIComponent(document.referrer), r && (n += "&l=" + r)) : r && (n += "?l=" + r);
+                    var i = new Image;
+                    i.src = n
+                }
+            }(window);
+        })();
+
+    </script>
+    <script src="/js/local-search.js"></script>
+    <script src="/.js"></script>
+</body>
+
+</html>

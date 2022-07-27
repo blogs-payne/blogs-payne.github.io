@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+    <meta name="theme-color" content="#222">
+    <meta name="generator" content="Hexo 4.2.1">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16-next.png">
+    <link rel="mask-icon" href="/images/favicon/safari-pinned-tab.svg" color="#222">
+    <meta name="msapplication-config" content="/images/favicon/browserconfig.xml">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+    <link rel="stylesheet" href="/lib/pace/pace-theme-mac-osx.min.css">
+    <script src="/lib/pace/pace.min.js"></script>
+    <script id="hexo-configurations">
+        var NexT = window.NexT ||
+        {};
+        var CONFIG = {
+            "hostname": "paynewu.com",
+            "root": "/",
+            "scheme": "Gemini",
+            "version": "7.8.0",
+            "exturl": false,
+            "sidebar":
+            {
+                "position": "right",
+                "width": 240,
+                "display": "post",
+                "padding": 18,
+                "offset": 12,
+                "onmobile": false
+            },
+            "copycode":
+            {
+                "enable": true,
+                "show_result": true,
+                "style": "mac"
+            },
+            "back2top":
+            {
+                "enable": true,
+                "sidebar": false,
+                "scrollpercent": true
+            },
+            "bookmark":
+            {
+                "enable": false,
+                "color": "#222",
+                "save": "auto"
+            },
+            "fancybox": false,
+            "mediumzoom": true,
+            "lazyload": false,
+            "pangu": true,
+            "comments":
+            {
+                "style": "tabs",
+                "active": "valine",
+                "storage": true,
+                "lazyload": false,
+                "nav": null
+            },
+            "algolia":
+            {
+                "hits":
+                {
+                    "per_page": 10
+                },
+                "labels":
+                {
+                    "input_placeholder": "Search for Posts",
+                    "hits_empty": "We didn't find any results for the search: ${query}",
+                    "hits_stats": "${hits} results found in ${time} ms"
+                }
+            },
+            "localsearch":
+            {
+                "enable": true,
+                "trigger": "auto",
+                "top_n_per_article": 8,
+                "unescape": false,
+                "preload": false
+            },
+            "motion":
+            {
+                "enable": false,
+                "async": false,
+                "transition":
+                {
+                    "post_block": "bounceDownIn",
+                    "post_header": "slideDownIn",
+                    "post_body": "slideDownIn",
+                    "coll_header": "slideLeftIn",
+                    "sidebar": "slideUpIn"
+                }
+            },
+            "path": "search.xml"
+        };
+
+    </script>
+    <meta name="description" content="Go语言中有丰富的数据类型，除了基本的整型、浮点型、布尔型、字符串外，还有数组、切片、结构体、函数、map、通道（channel）等。Go 语言的基本类型和其他语言大同小异。 基本数据类型 整形 整型分为以下两个大类：      按长度分为：int8、int16、int32、int64无符号整型：uint8、uint16、uint32、uint64              uint8就是我们熟知">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Golang基础数据类型">
+    <meta property="og:url" content="https://paynewu.com/11541.html">
+    <meta property="og:site_name" content="吴志鹏｜Payne-Wu">
+    <meta property="og:description" content="Go语言中有丰富的数据类型，除了基本的整型、浮点型、布尔型、字符串外，还有数组、切片、结构体、函数、map、通道（channel）等。Go 语言的基本类型和其他语言大同小异。 基本数据类型 整形 整型分为以下两个大类：      按长度分为：int8、int16、int32、int64无符号整型：uint8、uint16、uint32、uint64              uint8就是我们熟知">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="article:published_time" content="2020-11-21T14:13:59.000Z">
+    <meta property="article:modified_time" content="2022-07-27T09:58:26.872Z">
+    <meta property="article:author" content="吴志鹏">
+    <meta property="article:tag" content="Go">
+    <meta name="twitter:card" content="summary">
+    <link rel="canonical" href="https://paynewu.com/11541.html">
+    <script id="page-configurations">
+        // https://hexo.io/docs/variables.html
+        CONFIG.page = {
+            sidebar: "",
+            isHome: false,
+            isPost: true,
+            lang: 'zh-CN'
+        };
+
+    </script>
+    <title>Golang基础数据类型 | 吴志鹏｜Payne-Wu</title>
+    <meta name="google-site-verification" content="p_bIcnvirkFzG2dYKuNDivKD8-STet5W7D-01woA2fc" />
+    <noscript>
+        <style>
+            .use-motion .brand,
+            .use-motion .menu-item,
+            .sidebar-inner,
+            .use-motion .post-block,
+            .use-motion .pagination,
+            .use-motion .comments,
+            .use-motion .post-header,
+            .use-motion .post-body,
+            .use-motion .collection-header
+            {
+                opacity: initial;
+            }
+
+            .use-motion .site-title,
+            .use-motion .site-subtitle
+            {
+                opacity: initial;
+                top: initial;
+            }
+
+            .use-motion .logo-line-before i
+            {
+                left: initial;
+            }
+
+            .use-motion .logo-line-after i
+            {
+                right: initial;
+            }
+
+        </style>
+    </noscript>
+    <link rel="alternate" href="/atom.xml" title="吴志鹏｜Payne-Wu" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+    <div class="container">
+        <div class="headband"></div>
+        <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+            <div class="header-inner">
+                <div class="site-brand-container">
+                    <div class="site-nav-toggle">
+                        <div class="toggle" aria-label="切换导航栏">
+                            <span class="toggle-line toggle-line-first"></span>
+                            <span class="toggle-line toggle-line-middle"></span>
+                            <span class="toggle-line toggle-line-last"></span>
+                        </div>
+                    </div>
+                    <div class="site-meta">
+                        <a href="/" class="brand" rel="start">
+                            <span class="logo-line-before"><i></i></span>
+                            <h1 class="site-title">吴志鹏｜Payne-Wu </h1>
+                            <span class="logo-line-after"><i></i></span>
+                        </a>
+                    </div>
+                    <div class="site-nav-right">
+                        <div class="toggle popup-trigger">
+                            <i class="fa fa-search fa-fw fa-lg"></i>
+                        </div>
+                    </div>
+                </div>
+                <nav class="site-nav">
+                    <ul id="menu" class="main-menu menu">
+                        <li class="menu-item menu-item-home">
+                            <a href="/" rel="section">首页</a>
+                        </li>
+                        <li class="menu-item menu-item-archives">
+                            <a href="/archives/" rel="section">文章列表</a>
+                        </li>
+                        <li class="menu-item menu-item-tags">
+                            <a href="/tags/" rel="section">Tags Cloud</a>
+                        </li>
+                        <li class="menu-item menu-item-categories">
+                            <a href="/categories/" rel="section">文章集合</a>
+                        </li>
+                        <li class="menu-item menu-item-about">
+                            <a href="/about/" rel="section">关于我啊</a>
+                        </li>
+                        <li class="menu-item menu-item-message">
+                            <a href="/message/" rel="section">留言与我</a>
+                        </li>
+                        <li class="menu-item menu-item-search">
+                            <a role="button" class="popup-trigger">搜索 </a>
+                        </li>
+                    </ul>
+                </nav>
+                <div class="search-pop-overlay">
+                    <div class="popup search-popup">
+                        <div class="search-header">
+                            <span class="search-icon">
+                                <i class="fa fa-search"></i>
+                            </span>
+                            <div class="search-input-container">
+                                <input autocomplete="off" autocapitalize="off" placeholder="搜索..." spellcheck="false" type="search" class="search-input">
+                            </div>
+                            <span class="popup-btn-close">
+                                <i class="fa fa-times-circle"></i>
+                            </span>
+                        </div>
+                        <div id="search-result">
+                            <div id="no-result">
+                                <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="back-to-top">
+            <i class="fa fa-arrow-up"></i>
+            <span>0%</span>
+        </div>
+        <div class="reading-progress-bar"></div>
+        <main class="main">
+            <div class="main-inner">
+                <div class="content-wrap">
+                    <div class="content post posts-expand">
+                        <article itemscope itemtype="http://schema.org/Article" class="post-block single" lang="zh-CN">
+                            <link itemprop="mainEntityOfPage" href="https://paynewu.com/11541.html">
+                            <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <meta itemprop="image" content="/images/favicon/android-chrome-512x512.png">
+                                <meta itemprop="name" content="吴志鹏">
+                                <meta itemprop="description" content="Talk is free，please state clearly">
+                            </span>
+                            <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+                                <meta itemprop="name" content="吴志鹏｜Payne-Wu">
+                            </span>
+                            <header class="post-header">
+                                <h1 class="post-title" itemprop="name headline"> Golang基础数据类型 </h1>
+                                <div class="post-meta">
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-user"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">作者</span>
+                                        <span><a href="/authors/Payne" class="author" itemprop="url" rel="index">Payne</a></span>
+                                    </span>
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-calendar"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">发表于</span>
+                                        <time title="创建时间：2020-11-21 22:13:59" itemprop="dateCreated datePublished" datetime="2020-11-21T22:13:59+08:00">2020-11-21</time>
+                                    </span>
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-folder"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">分类于</span>
+                                        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                                            <a href="/categories/Go/" itemprop="url" rel="index"><span itemprop="name">Go</span></a>
+                                        </span>
+                                    </span>
+                                    <br>
+                                    <span class="post-meta-item" title="本文字数">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-file-word"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">本文字数：</span>
+                                        <span>3.4k</span>
+                                    </span>
+                                    <span class="post-meta-item" title="阅读时长">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-clock"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                                        <span>3 分钟</span>
+                                    </span>
+                                </div>
+                            </header>
+                            <div class="post-body" itemprop="articleBody">
+                                <p>Go语言中有丰富的数据类型，除了基本的整型、浮点型、布尔型、字符串外，还有数组、切片、结构体、函数、map、通道（channel）等。Go 语言的基本类型和其他语言大同小异。</p>
+                                <h2 id="基本数据类型"><a href="#基本数据类型" class="headerlink" title="基本数据类型"></a>基本数据类型</h2>
+                                <h3 id="整形"><a href="#整形" class="headerlink" title="整形"></a>整形</h3>
+                                <p>整型分为以下两个大类：</p>
+                                <blockquote>
+                                    <p>按长度分为：int8、int16、int32、int64<br>无符号整型：uint8、uint16、uint32、uint64</p>
+                                    <ul>
+                                        <li><code>uint8</code>就是我们熟知的<code>byte</code>型</li>
+                                        <li><code>int16</code>对应C语言中的<code>short</code>型，</li>
+                                        <li><code>int64</code>对应C语言中的<code>long</code>型。</li>
+                                    </ul>
+                                </blockquote>
+                                <p>取值范围如下所示：</p>
+                                <div class="table-container">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th style="text-align:center">类型</th>
+                                                <th style="text-align:center">取值范围</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td style="text-align:center">int</td>
+                                                <td style="text-align:center">取值范围为您操作系统的位数字，如果是64位操作系统。为int64</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center">int8</td>
+                                                <td style="text-align:center">有符号 8位整型 ( 2^8 + 1 到 2^8 -1)[-255, 255]</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center">int16</td>
+                                                <td style="text-align:center">有符号 16位整型 ( 2^16 + 1 到 2^16 -1)[-65535, 6535]</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center">int32</td>
+                                                <td style="text-align:center">有符号 16位整型 ( 2^32 + 1 到 2^32 -1)[-4294967295, 4294967295]</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center">int64</td>
+                                                <td style="text-align:center">有符号 16位整型 ( 2^64 + 1 到 2^64 -1)[-18446744073709551615, 18446744073709551615]</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center">uint</td>
+                                                <td style="text-align:center">取值范围为您操作系统的位数字，如果是64位操作系统。为int64</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center">uint8</td>
+                                                <td style="text-align:center">无符号 8位整型 (0 到 255)</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center">uint16</td>
+                                                <td style="text-align:center">无符号 16位整型 (0 到 65535)</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center">uint32</td>
+                                                <td style="text-align:center">无符号 32位整型 (0 到 4294967295)</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center">uint64</td>
+                                                <td style="text-align:center">无符号 64位整型 (0 到 18446744073709551615)</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <p>特殊整形</p>
+                                <figure class="highlight sh">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">uintptr	<span class="comment"># 无符号整型，用于存放一个指针</span></span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <blockquote>
+                                    <p><strong>注意：</strong> 在使用<code>int</code>和 <code>uint</code>类型时，不能假定它是32位或64位的整型，而是考虑<code>int</code>和<code>uint</code>可能在不同平台上的差异。</p>
+                                    <p><strong>注意事项</strong> 获取对象的长度的内建<code>len()</code>函数返回的长度可以根据不同平台的字节长度进行变化。实际使用中，切片或 map 的元素数量等都可以用<code>int</code>来表示。在涉及到二进制传输、读写文件的结构描述时，为了保持文件的结构不会受到不同编译目标平台字节长度的影响，不要使用<code>int</code>和 <code>uint</code>。</p>
+                                </blockquote>
+                                <p>数字字面量语法（Number literals syntax</p>
+                                <blockquote>
+                                    <p>Go1.13版本之后引入了数字字面量语法，这样便于开发者以二进制、八进制或十六进制浮点数的格式定义数字，例如：</p>
+                                    <ul>
+                                        <li>
+                                            <p><code>v := 0b00101101</code>， 代表二进制的 101101，相当于十进制的 45。</p>
+                                        </li>
+                                        <li>
+                                            <p><code>v := 0o377</code>，代表八进制的 377，相当于十进制的 255。</p>
+                                        </li>
+                                        <li>
+                                            <p><code>v := 0x1p-2</code>，代表十六进制的 1 除以 2²，也就是 0.25。</p>
+                                        </li>
+                                    </ul>
+                                    <p>我们可以用 <code>_</code> 来分隔数字，比如说： <code>v := 123_456</code> 表示 v 的值等于 123456。</p>
+                                </blockquote>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"> </span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="comment">// 十进制</span></span><br><span class="line">	<span class="keyword">var</span> a <span class="keyword">int</span> = <span class="number">10</span></span><br><span class="line">	fmt.Printf(<span class="string">"%d \n"</span>, a)  <span class="comment">// 10</span></span><br><span class="line">	fmt.Printf(<span class="string">"%b \n"</span>, a)  <span class="comment">// 1010  占位符%b表示二进制</span></span><br><span class="line"> </span><br><span class="line">	<span class="comment">// 八进制  以0开头</span></span><br><span class="line">	<span class="keyword">var</span> b <span class="keyword">int</span> = <span class="number">077</span></span><br><span class="line">	fmt.Printf(<span class="string">"%o \n"</span>, b)  <span class="comment">// 77</span></span><br><span class="line"> </span><br><span class="line">	<span class="comment">// 十六进制  以0x开头</span></span><br><span class="line">	<span class="keyword">var</span> c <span class="keyword">int</span> = <span class="number">0xff</span></span><br><span class="line">	fmt.Printf(<span class="string">"%x \n"</span>, c)  <span class="comment">// ff</span></span><br><span class="line">	fmt.Printf(<span class="string">"%X \n"</span>, c)  <span class="comment">// FF</span></span><br><span class="line">&#125;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h3 id="浮点型"><a href="#浮点型" class="headerlink" title="浮点型"></a>浮点型</h3>
+                                <p>Go语言支持两种浮点型数：<code>float32</code>和<code>float64</code>。</p>
+                                <p>这两种浮点型数据格式遵循<code>IEEE 754</code>标准：</p>
+                                <p><code>float32</code> 的浮点数的最大范围约为 <code>3.4e38</code>，可以使用常量定义：<code>math.MaxFloat32</code>。</p>
+                                <p><code>float64</code> 的浮点数的最大范围约为 <code>1.8e308</code>，可以使用一个常量定义：<code>math.MaxFloat64</code>。</p>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">        <span class="string">"fmt"</span></span><br><span class="line">        <span class="string">"math"</span></span><br><span class="line">)</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>  &#123;</span><br><span class="line">	fmt.Printf(<span class="string">"%f\n"</span>, math.Pi)	<span class="comment">// 3.141593</span></span><br><span class="line">	fmt.Printf(<span class="string">"%.2f\n"</span>, math.Pi)	<span class="comment">// 3.14</span></span><br><span class="line">&#125;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h3 id="复数"><a href="#复数" class="headerlink" title="复数"></a>复数</h3>
+                                <p>complex64和complex128</p>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>  &#123;</span><br><span class="line">	<span class="keyword">var</span> c1 <span class="keyword">complex64</span></span><br><span class="line">	c1 = <span class="number">1</span> + <span class="number">2i</span></span><br><span class="line">	<span class="keyword">var</span> c2 <span class="keyword">complex128</span></span><br><span class="line">	c2 = <span class="number">2</span> + <span class="number">3i</span></span><br><span class="line">	fmt.Println(c1)</span><br><span class="line">	fmt.Println(c2)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 复数有实部和虚部，complex64的实部和虚部为32位，complex128的实部和虚部为64位。</span></span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h3 id="布尔值"><a href="#布尔值" class="headerlink" title="布尔值"></a>布尔值</h3>
+                                <p>Go语言中以<code>bool</code>类型进行声明布尔型数据</p>
+                                <p>布尔型数据只有<code>true（真）</code>和<code>false（假）</code>两个值。</p>
+                                <p><strong>注意：</strong></p>
+                                <ul>
+                                    <li>
+                                        <p>布尔类型变量的默认值为<code>false</code>。</p>
+                                    </li>
+                                    <li>
+                                        <p>Go 语言中不允许将整型强制转换为布尔型.</p>
+                                    </li>
+                                    <li>
+                                        <p>布尔型无法参与数值运算，也无法与其他类型进行转换。</p>
+                                    </li>
+                                </ul>
+                                <h3 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h3>
+                                <blockquote>
+                                    <p>Go语言中的字符串以原生数据类型出现，使用字符串就像使用其他原生数据类型（int、bool、float32、float64 等）一样。</p>
+                                    <p> Go 语言里的字符串的内部实现使用<code>UTF-8</code>编码。</p>
+                                </blockquote>
+                                <p>字符串的值为<code>双引号(&quot;&quot;)</code>中的内容，可以在Go语言的源码中直接添加非ASCII码字符，例如：</p>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="keyword">var</span> a <span class="keyword">string</span> = <span class="string">"你好,nihao"</span></span><br><span class="line"><span class="keyword">var</span> b <span class="keyword">string</span> = <span class="string">"Hello，你好"</span></span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h3 id="byte和rune类型"><a href="#byte和rune类型" class="headerlink" title="byte和rune类型"></a>byte和rune类型</h3>
+                                <p>组成每个字符串的元素叫做“字符”，可以通过遍历或者单个获取字符串元素获得字符。 字符用单引号（’ ‘）包裹起来，如：</p>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="keyword">var</span> a := <span class="string">'一'</span></span><br><span class="line"><span class="keyword">var</span> b := <span class="string">'x'</span></span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>Go 语言的字符有以下两种：</p>
+                                <ol>
+                                    <li><code>uint8</code>类型，或者叫 byte 型，代表了<code>ASCII码</code>的一个字符。</li>
+                                    <li><code>rune</code>类型，代表一个 <code>UTF-8字符</code>。</li>
+                                </ol>
+                                <p>当需要处理中文、日文或者其他复合字符时，则需要用到<code>rune</code>类型。<code>rune</code>类型实际是一个<code>int32</code>。</p>
+                                <p>Go 使用了特殊的 rune 类型来处理 Unicode，让基于 Unicode 的文本处理更为方便，也可以使用 byte 型进行默认字符串处理，性能和扩展性都有照顾。</p>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	s := <span class="string">"hello,世界"</span></span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="built_in">len</span>(s); i++ &#123; <span class="comment">//byte</span></span><br><span class="line">		fmt.Printf(<span class="string">"%v(%c) "</span>, s[i], s[i])</span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Println()</span><br><span class="line">	<span class="keyword">for</span> _, r := <span class="keyword">range</span> s &#123; <span class="comment">//rune</span></span><br><span class="line">		fmt.Printf(<span class="string">"%v(%c) "</span>, r, r)</span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Println()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//104(h) 101(e) 108(l) 108(l) 111(o) 44(,) 228(ä) 184(¸) 150() 231(ç) 149() 140() </span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//104(h) 101(e) 108(l) 108(l) 111(o) 44(,) 19990(世) 30028(界)</span></span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <blockquote>
+                                    <p>因为UTF8编码下一个中文汉字由3~4个字节组成，所以我们不能简单的按照字节去遍历一个包含中文的字符串，否则就会出现上面输出中第一行的结果。</p>
+                                    <p>字符串底层是一个byte数组，所以可以和<code>[]byte</code>类型相互转换。字符串是不能修改的 字符串是由byte字节组成，所以字符串的长度是byte字节的长度。 rune类型用来表示utf8字符，一个rune字符由一个或多个byte组成。</p>
+                                </blockquote>
+                                <h3 id="修改字符串"><a href="#修改字符串" class="headerlink" title="修改字符串"></a>修改字符串</h3>
+                                <p>要修改字符串，需要先将其转换成<code>[]rune</code>或<code>[]byte</code>，完成后再转换为<code>string</code>。无论哪种转换，都会重新分配内存，并复制字节数组。</p>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">changeString</span><span class="params">()</span></span> &#123;</span><br><span class="line">	s1 := <span class="string">"big"</span></span><br><span class="line">	<span class="comment">// 强制类型转换</span></span><br><span class="line">	byteS1 := []<span class="keyword">byte</span>(s1)</span><br><span class="line">	byteS1[<span class="number">0</span>] = <span class="string">'p'</span></span><br><span class="line">	fmt.Println(<span class="keyword">string</span>(byteS1))</span><br><span class="line"></span><br><span class="line">	s2 := <span class="string">"白萝卜"</span></span><br><span class="line">	runeS2 := []<span class="keyword">rune</span>(s2)</span><br><span class="line">	runeS2[<span class="number">0</span>] = <span class="string">'红'</span></span><br><span class="line">	fmt.Println(<span class="keyword">string</span>(runeS2))</span><br><span class="line">&#125;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h2 id="类型检查"><a href="#类型检查" class="headerlink" title="类型检查"></a>类型检查</h2>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">	<span class="comment">// "math"</span></span><br><span class="line">	<span class="string">"reflect"</span>		<span class="comment">// 内建包，提供类型检查函数</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> a <span class="keyword">int64</span> = <span class="number">1</span></span><br><span class="line">	fmt.Println(reflect.TypeOf(a))	<span class="comment">// int64</span></span><br><span class="line">	fmt.Printf(<span class="string">"%T"</span>, a) <span class="comment">// int64</span></span><br><span class="line">	<span class="keyword">var</span> b = <span class="string">"a"</span></span><br><span class="line">	fmt.Println(reflect.TypeOf(b)) <span class="comment">// string</span></span><br><span class="line">	fmt.Printf(<span class="string">"%T"</span>, b)            <span class="comment">// string</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// reflect.TypeOf()	源码示例</span></span><br><span class="line"><span class="comment">// TypeOf returns the reflection Type that represents the dynamic type of i.</span></span><br><span class="line"><span class="comment">// If i is a nil interface value, TypeOf returns nil.</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">TypeOf</span><span class="params">(i <span class="keyword">interface</span>&#123;&#125;)</span> <span class="title">Type</span></span> &#123;</span><br><span class="line">	eface := *(*emptyInterface)(unsafe.Pointer(&amp;i))</span><br><span class="line">	<span class="keyword">return</span> toType(eface.typ)</span><br><span class="line">&#125;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h2 id="类型转换"><a href="#类型转换" class="headerlink" title="类型转换"></a>类型转换</h2>
+                                <p>Go语言中只有强制类型转换，没有隐式类型转换。该语法只能在两个类型之间支持相互转换的时候使用。</p>
+                                <p>强制类型转换的基本语法如下：</p>
+                                <figure class="highlight bash">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">Type(表达式)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Type表示目标转换类型。表达式包括变量、复杂算子和函数返回值等.</span></span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>比如计算直角三角形的斜边长时使用math包的Sqrt()函数，该函数接收的是float64类型的参数，而变量a和b都是int类型的，这个时候就需要将a和b强制类型转换为float64类型。</p>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">sqrtDemo</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> a, b = <span class="number">3</span>, <span class="number">4</span></span><br><span class="line">	<span class="keyword">var</span> c <span class="keyword">int</span></span><br><span class="line">	<span class="comment">// math.Sqrt()接收的参数是float64类型，需要强制转换</span></span><br><span class="line">	c = <span class="keyword">int</span>(math.Sqrt(<span class="keyword">float64</span>(a*a + b*b)))</span><br><span class="line">	fmt.Println(c)</span><br><span class="line">&#125;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>对于数字类型之间，可以通过强制转换的方式，如以下代码所示：</p>
+                                <figure class="highlight css">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="selector-tag">package</span> <span class="selector-tag">main</span></span><br><span class="line"></span><br><span class="line"><span class="selector-tag">import</span> "<span class="selector-tag">fmt</span>"</span><br><span class="line"></span><br><span class="line"><span class="selector-tag">func</span> <span class="selector-tag">main</span>() &#123;</span><br><span class="line"></span><br><span class="line">	<span class="attribute">i </span>:= <span class="number">10</span></span><br><span class="line">	f64 := <span class="number">10.102</span></span><br><span class="line">	i2f:=<span class="built_in">float64</span>(i)</span><br><span class="line">	f2i:=<span class="built_in">int</span>(f64)</span><br><span class="line">	f3 := <span class="built_in">float64</span>(f2i)</span><br><span class="line">	fmt.<span class="built_in">Println</span>(i2f,f2i, f3) // <span class="number">10</span> <span class="number">10</span> <span class="number">10</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>这种使用方式比简单，采用“类型（要转换的变量）”格式即可。采用强制转换的方式转换数字类型，可能会丢失一些精度，比如浮点型转为整型时，小数点部分会全部丢失.</p>
+                                <p>把变量转换为相应的类型后，就可以对相同类型的变量进行各种表达式运算和赋值了。</p>
+                                <h4 id="字符串和数字互转"><a href="#字符串和数字互转" class="headerlink" title="字符串和数字互转"></a>字符串和数字互转</h4>
+                                <p>Go 语言是强类型的语言，也就是说不同类型的变量是无法相互使用和计算的，这也是为了保证Go 程序的健壮性，所以不同类型的变量在进行赋值或者计算前，需要先进行类型转换。涉及类型转换的知识点非常多，这里我先介绍这些基础类型之间的转换</p>
+                                <p>以字符串和数字互转这种最常见的情况为例，如下面的代码所示：</p>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">	<span class="string">"strconv"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Human <span class="keyword">struct</span> &#123;</span><br><span class="line">	Age       <span class="keyword">int</span></span><br><span class="line">	Name, sex <span class="keyword">string</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	i := <span class="number">10</span></span><br><span class="line">	<span class="comment">// 通过包 strconv 的 Itoa 函数可以把一个 int 类型转为 string，Atoi 函数则用来把 string 转为 int。</span></span><br><span class="line">	i2s:=strconv.Itoa(i)</span><br><span class="line"></span><br><span class="line">	s2i,err:=strconv.Atoi(i2s)</span><br><span class="line"></span><br><span class="line">	<span class="comment">//fmt.Println(i2s,s2i,err)</span></span><br><span class="line">	fmt.Printf(<span class="string">"i2s: type:%T, value:%v\n"</span>, i2s, i2s)  <span class="comment">// i2s: type:string, value:10</span></span><br><span class="line">	fmt.Printf(<span class="string">"s2i: type:%T, value:%v, err:%v"</span>, s2i, s2i, err)  <span class="comment">// s2i: type:int, value:10, &lt;nil&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h2 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h2>
+                                <h3 id="占位的相关用法"><a href="#占位的相关用法" class="headerlink" title="占位的相关用法"></a>占位的相关用法</h3>
+                                <p>golang 的fmt 包实现了格式化I/O函数，类似于C的 printf 和 scanf。Python中的print等</p>
+                                <h4 id="普通占位符"><a href="#普通占位符" class="headerlink" title="普通占位符"></a>普通占位符</h4>
+                                <div class="table-container">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th style="text-align:left">占位符</th>
+                                                <th style="text-align:center">说明</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td style="text-align:left">%v</td>
+                                                <td style="text-align:center">相应值的默认格式。</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:left">%+v</td>
+                                                <td style="text-align:center">打印结构体时，会添加字段名</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:left">%#v</td>
+                                                <td style="text-align:center">相应值的Go语法表示</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:left">%T</td>
+                                                <td style="text-align:center">相应值的类型的Go语法表示</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:left">%%</td>
+                                                <td style="text-align:center">字面上的百分号，并非值的占位符</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:left">布尔占位符 (%t)</td>
+                                                <td style="text-align:center">true 或 false</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 自定义类型</span></span><br><span class="line"><span class="keyword">type</span> Human <span class="keyword">struct</span> &#123;</span><br><span class="line">	Age       <span class="keyword">int</span></span><br><span class="line">	Name, sex <span class="keyword">string</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	people := Human&#123;Name: <span class="string">"Payne"</span>, Age: <span class="number">20</span>, sex: <span class="string">"male"</span>&#125;</span><br><span class="line">	fmt.Printf(<span class="string">"%v"</span>, people)  <span class="comment">// &#123;20 Payne male&#125;</span></span><br><span class="line">	fmt.Printf(<span class="string">"%+v"</span>, people) <span class="comment">// &#123;20 Payne male&#125;&#123;Age:20 Name:Payne sex:male&#125;</span></span><br><span class="line">	fmt.Printf(<span class="string">"%#v"</span>, people) <span class="comment">// &#123;20 Payne male&#125;&#123;Age:20 Name:Payne sex:male&#125;main.Human&#123;Age:20, Name:"Payne", sex:"male"&#125;</span></span><br><span class="line">	fmt.Printf(<span class="string">"%T"</span>, people)  <span class="comment">// main.Human</span></span><br><span class="line">	<span class="comment">//fmt.Printf("%%")  // main.Humanß</span></span><br><span class="line">&#125;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h4 id="整数占位符"><a href="#整数占位符" class="headerlink" title="整数占位符"></a>整数占位符</h4>
+                                <div class="table-container">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th style="text-align:center">占位符</th>
+                                                <th style="text-align:center">说明</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td style="text-align:center">%b</td>
+                                                <td style="text-align:center">二进制表示</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center">%o</td>
+                                                <td style="text-align:center">八进制表示</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center">%d</td>
+                                                <td style="text-align:center">十进制表示</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center">%x</td>
+                                                <td style="text-align:center">十六进制表示(小写)</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center">%X</td>
+                                                <td style="text-align:center">十六进制表示(大写)</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center">%f</td>
+                                                <td style="text-align:center">有小数点而无指数，例如 123.456浮点数</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center">%c</td>
+                                                <td style="text-align:center">相应Unicode码点所表示的字符</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center">%q</td>
+                                                <td style="text-align:center">单引号围绕的字符字面值，由Go语法安全地转义</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center">%U</td>
+                                                <td style="text-align:center">Unicode格式：U+1234，等同于 “U+%04X”</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="comment">// 定义十进制变量a</span></span><br><span class="line">	<span class="comment">//a := 542</span></span><br><span class="line">	<span class="comment">// 数字</span></span><br><span class="line">	<span class="comment">//fmt.Printf(" Binary: %d,\n Octal: %o,\n Decimal:%d,\n Hex: %x,\n Uppercase_hexadecimal:%X", a, a, a, a, a)</span></span><br><span class="line">	<span class="comment">/*</span></span><br><span class="line"><span class="comment">	 Binary: 542,</span></span><br><span class="line"><span class="comment">	 Octal: 1036,</span></span><br><span class="line"><span class="comment">	 Decimal:542,</span></span><br><span class="line"><span class="comment">	 Hex: 21e,</span></span><br><span class="line"><span class="comment">	 Uppercase_hexadecimal:21E</span></span><br><span class="line"><span class="comment">	*/</span></span><br><span class="line">	fmt.Printf(<span class="string">"%c"</span>, <span class="number">0x3E2E</span>) <span class="comment">// 㸮</span></span><br><span class="line">	fmt.Printf(<span class="string">"%q"</span>, <span class="number">0x3E2E</span>) <span class="comment">// '㸮'</span></span><br><span class="line">  fmt.Printf(<span class="string">"%f\n"</span>, <span class="number">100.1000201</span>)     <span class="comment">// 100.100020</span></span><br><span class="line">	fmt.Printf(<span class="string">"%.1f\n"</span>, <span class="number">100.1000201</span>)   <span class="comment">// 100.1</span></span><br><span class="line">	fmt.Printf(<span class="string">"%.2f\n"</span>, <span class="number">100.1000201</span>)   <span class="comment">// 100.10</span></span><br><span class="line">	fmt.Printf(<span class="string">"%.3f\n"</span>, <span class="number">100.1000201</span>)   <span class="comment">// 100.100</span></span><br><span class="line">	fmt.Printf(<span class="string">"%.4f\n"</span>, <span class="number">100.1000201</span>)   <span class="comment">// 100.1000</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h4 id="浮点数和复数的组成部分（实部和虚部）"><a href="#浮点数和复数的组成部分（实部和虚部）" class="headerlink" title="浮点数和复数的组成部分（实部和虚部）"></a>浮点数和复数的组成部分（实部和虚部）</h4>
+                                <div class="table-container">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th style="text-align:center">占位符</th>
+                                                <th style="text-align:center">说明</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td style="text-align:center">%e</td>
+                                                <td style="text-align:center">科学计数法，例如 -1234.456e+78</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center">%E</td>
+                                                <td style="text-align:center">科学计数法，例如 -1234.456E+78</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center">%g</td>
+                                                <td style="text-align:center">根据情况选择 %e 或 %f 以产生更紧凑的（无末尾的0）输出</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center">%G</td>
+                                                <td style="text-align:center">根据情况选择 %E 或 %f 以产生更紧凑的（无末尾的0）输出</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">	<span class="string">"math"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	a := math.Pow(<span class="number">20</span>, <span class="number">3</span>) <span class="comment">// 8000</span></span><br><span class="line">	fmt.Printf(<span class="string">"%e\n"</span>, a) <span class="comment">// 8.000000e+03</span></span><br><span class="line">	fmt.Printf(<span class="string">"%E\n"</span>, a) <span class="comment">// 8.000000E+03</span></span><br><span class="line">	fmt.Printf(<span class="string">"%g\n"</span>, <span class="number">10.20</span>)    <span class="comment">// 10.2</span></span><br><span class="line">	fmt.Printf(<span class="string">"%G\n"</span>, <span class="number">10.20</span>+<span class="number">2i</span>) <span class="comment">// (10.2+2i)</span></span><br><span class="line">&#125;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h4 id="字符串与字节切片"><a href="#字符串与字节切片" class="headerlink" title="字符串与字节切片"></a>字符串与字节切片</h4>
+                                <div class="table-container">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th style="text-align:left">占位符</th>
+                                                <th style="text-align:center">说明</th>
+                                                <th style="text-align:center">举例</th>
+                                                <th style="text-align:center">输出</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td style="text-align:left">%s</td>
+                                                <td style="text-align:center">输出字符串表示（string类型或[]byte)</td>
+                                                <td style="text-align:center">Printf(“%s”, []byte(“Go语言”))</td>
+                                                <td style="text-align:center">Go语言</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:left">%q</td>
+                                                <td style="text-align:center">双引号围绕的字符串，由Go语法安全地转义</td>
+                                                <td style="text-align:center">Printf(“%q”, “Go语言”)</td>
+                                                <td style="text-align:center">“Go语言”</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:left">%x</td>
+                                                <td style="text-align:center">十六进制，小写字母，每字节两个字符</td>
+                                                <td style="text-align:center">Printf(“%x”, “golang”)</td>
+                                                <td style="text-align:center">676f6c616e67</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:left">%X</td>
+                                                <td style="text-align:center">十六进制，大写字母，每字节两个字符</td>
+                                                <td style="text-align:center">Printf(“%X”, “golang”)</td>
+                                                <td style="text-align:center">676F6C616E67</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <figure class="highlight reasonml">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line">func main<span class="literal">()</span> &#123;</span><br><span class="line">	<span class="comment">//a := "golang编程语言"</span></span><br><span class="line">	fmt.<span class="constructor">Printf(<span class="string">"%s\n"</span>, []<span class="params">byte</span>(<span class="params">a</span>)</span>)     <span class="comment">// golang编程语言</span></span><br><span class="line">	fmt.<span class="constructor">Printf(<span class="string">"%q\n"</span>, []<span class="params">byte</span>(<span class="params">a</span>)</span>)     <span class="comment">// golang编程语言</span></span><br><span class="line">	fmt.<span class="constructor">Printf(<span class="string">"%x\n"</span>, []<span class="params">byte</span>(<span class="params">a</span>)</span>)     <span class="comment">// 676f6c616e67e7bc96e7a88be8afade8a880</span></span><br><span class="line">	fmt.<span class="constructor">Printf(<span class="string">"%X\n"</span>, []<span class="params">byte</span>(<span class="params">a</span>)</span>)     <span class="comment">// 676F6C616E67E7BC96E7A88BE8AFADE8A880</span></span><br><span class="line">&#125;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h4 id="6-指针"><a href="#6-指针" class="headerlink" title="6)指针"></a>6)指针</h4>
+                                <div class="table-container">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th style="text-align:left">占位符</th>
+                                                <th style="text-align:center">说明</th>
+                                                <th style="text-align:center">举例</th>
+                                                <th style="text-align:center">输出</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td style="text-align:left">%p</td>
+                                                <td style="text-align:center">十六进制表示，前缀 0x</td>
+                                                <td style="text-align:center">Printf(“%p”, &amp;people)</td>
+                                                <td style="text-align:center">0x4f57f0</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="comment">// 地址值</span></span><br><span class="line">	a := <span class="number">10</span></span><br><span class="line">	<span class="keyword">var</span> b []<span class="keyword">int</span></span><br><span class="line">	fmt.Printf(<span class="string">"%p\n"</span>, &amp;a)    <span class="comment">// 0xc000014080</span></span><br><span class="line">	fmt.Printf(<span class="string">"%p\n"</span>, &amp;b)    <span class="comment">// 0xc0000a6020</span></span><br><span class="line">&#125;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h3 id="Strings"><a href="#Strings" class="headerlink" title="Strings"></a>Strings</h3>
+                                <p>Strings 包 讲到基础类型，尤其是字符串，不得不提 Go SDK 为我们提供的一个标准包<br>strings。它是用于处理字符串的工具包，里面有很多常用的函数，帮助我们对字符串进行操作，比如查找字符串、去除字符串的空格、拆分字符串、判断字符串是否有某个前缀或者后缀等。掌握好它，有利于我们的高效编程。</p>
+                                <p>以下代码是我写的关于 strings<br>包的一些例子，你自己可以根据<a href="https://golang.google.cn/pkg/strings/" target="_blank" rel="noopener">strings 文档</a>或者$GOPATH/src/stringls.go.以及自己写一些示例，多练习熟悉它们。</p>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">	<span class="string">"strings"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	s1 := <span class="string">"Hello World"</span></span><br><span class="line">	<span class="comment">//判断s1的前缀是否是H</span></span><br><span class="line">	fmt.Println(strings.HasPrefix(s1,<span class="string">"H"</span>)) <span class="comment">// true</span></span><br><span class="line">	<span class="comment">//在s1中查找字符串o</span></span><br><span class="line">	fmt.Println(strings.Index(s1,<span class="string">"o"</span>))     <span class="comment">// 4</span></span><br><span class="line">	<span class="comment">//把s1全部转为大写</span></span><br><span class="line">	fmt.Println(strings.ToUpper(s1))              <span class="comment">// HELLO WORLD</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">// s1 中是否包含某一个或一段字符串</span></span><br><span class="line">	fmt.Println(strings.Contains(s1, <span class="string">"ee "</span>)) <span class="comment">// false</span></span><br><span class="line">	fmt.Println(strings.Contins(s1, <span class="string">"e"</span>))   <span class="comment">// true</span></span><br><span class="line">&#125;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h2 id="referer"><a href="#referer" class="headerlink" title="referer"></a>referer</h2>
+                                <p><a href="https://golang.google.cn/src/fmt/doc.go" target="_blank" rel="noopener"><code>fmt</code></a></p>
+                            </div>
+                            <div class="popular-posts-header">相关文章</div>
+                            <ul class="popular-posts">
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/62372.html" rel="bookmark">Golang-Array</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/17571.html" rel="bookmark">Golang-Defer详解</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/3744.html" rel="bookmark">Golang-Map</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/45903.html" rel="bookmark">Golang-匿名函数与闭包</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/1962.html" rel="bookmark">Golang-接口(interface)</a></div>
+                                </li>
+                            </ul>
+                            <footer class="post-footer">
+                                <div class="post-tags">
+                                    <a href="/tags/Go/" rel="tag"><i class="fa fa-tag"></i> Go</a>
+                                </div>
+                                <div class="post-nav">
+                                    <div class="post-nav-item">
+                                        <a href="/29980.html" rel="prev" title="Golang常量-变量-匿名变量">
+                                            <i class="fa fa-chevron-left"></i> Golang常量-变量-匿名变量 </a>
+                                    </div>
+                                    <div class="post-nav-item">
+                                        <a href="/18957.html" rel="next" title="Golang基础指令"> Golang基础指令 <i class="fa fa-chevron-right"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </footer>
+                        </article>
+                    </div>
+                    <script>
+                        window.addEventListener('tabs:register', () =>
+                        {
+                            let
+                            {
+                                activeClass
+                            } = CONFIG.comments;
+                            if (CONFIG.comments.storage)
+                            {
+                                activeClass = localStorage.getItem('comments_active') || activeClass;
+                            }
+                            if (activeClass)
+                            {
+                                let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+                                if (activeTab)
+                                {
+                                    activeTab.click();
+                                }
+                            }
+                        });
+                        if (CONFIG.comments.storage)
+                        {
+                            window.addEventListener('tabs:click', event =>
+                            {
+                                if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+                                let commentClass = event.target.classList[1];
+                                localStorage.setItem('comments_active', commentClass);
+                            });
+                        }
+
+                    </script>
+                </div>
+                <div class="toggle sidebar-toggle">
+                    <span class="toggle-line toggle-line-first"></span>
+                    <span class="toggle-line toggle-line-middle"></span>
+                    <span class="toggle-line toggle-line-last"></span>
+                </div>
+                <aside class="sidebar">
+                    <div class="sidebar-inner">
+                        <ul class="sidebar-nav motion-element">
+                            <li class="sidebar-nav-toc"> 文章目录 </li>
+                            <li class="sidebar-nav-overview"> 站点概览 </li>
+                        </ul>
+                        <!--noindex-->
+                        <div class="post-toc-wrap sidebar-panel">
+                            <div class="post-toc motion-element">
+                                <ol class="nav">
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#基本数据类型"><span class="nav-number">1.</span> <span class="nav-text">基本数据类型</span></a>
+                                        <ol class="nav-child">
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#整形"><span class="nav-number">1.1.</span> <span class="nav-text">整形</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#浮点型"><span class="nav-number">1.2.</span> <span class="nav-text">浮点型</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#复数"><span class="nav-number">1.3.</span> <span class="nav-text">复数</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#布尔值"><span class="nav-number">1.4.</span> <span class="nav-text">布尔值</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#字符串"><span class="nav-number">1.5.</span> <span class="nav-text">字符串</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#byte和rune类型"><span class="nav-number">1.6.</span> <span class="nav-text">byte和rune类型</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#修改字符串"><span class="nav-number">1.7.</span> <span class="nav-text">修改字符串</span></a></li>
+                                        </ol>
+                                    </li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#类型检查"><span class="nav-number">2.</span> <span class="nav-text">类型检查</span></a></li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#类型转换"><span class="nav-number">3.</span> <span class="nav-text">类型转换</span></a>
+                                        <ol class="nav-child">
+                                            <li class="nav-item nav-level-4"><a class="nav-link" href="#字符串和数字互转"><span class="nav-number">3.0.1.</span> <span class="nav-text">字符串和数字互转</span></a></li>
+                                        </ol>
+                                    </li>
+                                </ol>
+                                </li>
+                                <li class="nav-item nav-level-2"><a class="nav-link" href="#补充"><span class="nav-number">4.</span> <span class="nav-text">补充</span></a>
+                                    <ol class="nav-child">
+                                        <li class="nav-item nav-level-3"><a class="nav-link" href="#占位的相关用法"><span class="nav-number">4.1.</span> <span class="nav-text">占位的相关用法</span></a>
+                                            <ol class="nav-child">
+                                                <li class="nav-item nav-level-4"><a class="nav-link" href="#普通占位符"><span class="nav-number">4.1.1.</span> <span class="nav-text">普通占位符</span></a></li>
+                                                <li class="nav-item nav-level-4"><a class="nav-link" href="#整数占位符"><span class="nav-number">4.1.2.</span> <span class="nav-text">整数占位符</span></a></li>
+                                                <li class="nav-item nav-level-4"><a class="nav-link" href="#浮点数和复数的组成部分（实部和虚部）"><span class="nav-number">4.1.3.</span> <span class="nav-text">浮点数和复数的组成部分（实部和虚部）</span></a></li>
+                                                <li class="nav-item nav-level-4"><a class="nav-link" href="#字符串与字节切片"><span class="nav-number">4.1.4.</span> <span class="nav-text">字符串与字节切片</span></a></li>
+                                                <li class="nav-item nav-level-4"><a class="nav-link" href="#6-指针"><span class="nav-number">4.1.5.</span> <span class="nav-text">6)指针</span></a></li>
+                                            </ol>
+                                        </li>
+                                        <li class="nav-item nav-level-3"><a class="nav-link" href="#Strings"><span class="nav-number">4.2.</span> <span class="nav-text">Strings</span></a></li>
+                                    </ol>
+                                </li>
+                                <li class="nav-item nav-level-2"><a class="nav-link" href="#referer"><span class="nav-number">5.</span> <span class="nav-text">referer</span></a></li>
+                                </ol>
+                            </div>
+                        </div>
+                        <!--/noindex-->
+                        <div class="site-overview-wrap sidebar-panel">
+                            <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <img class="site-author-image" itemprop="image" alt="吴志鹏" src="/images/favicon/android-chrome-512x512.png">
+                                <p class="site-author-name" itemprop="name">吴志鹏</p>
+                                <div class="site-description" itemprop="description">Talk is free，please state clearly</div>
+                            </div>
+                            <div class="site-state-wrap motion-element">
+                                <nav class="site-state">
+                                    <div class="site-state-item site-state-posts">
+                                        <a href="/archives/">
+                                            <span class="site-state-item-count">136</span>
+                                            <span class="site-state-item-name">日志</span>
+                                        </a>
+                                    </div>
+                                    <div class="site-state-item site-state-categories">
+                                        <a href="/categories/">
+                                            <span class="site-state-item-count">158</span>
+                                            <span class="site-state-item-name">分类</span></a>
+                                    </div>
+                                    <div class="site-state-item site-state-tags">
+                                        <a href="/tags/">
+                                            <span class="site-state-item-count">89</span>
+                                            <span class="site-state-item-name">标签</span></a>
+                                    </div>
+                                </nav>
+                            </div>
+                            <div class="links-of-author motion-element">
+                                <span class="links-of-author-item">
+                                    <a href="https://github.com/Payne-Wu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Payne-Wu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="mailto:wuzhipeng1289690157@gmail.com" title="E-Mail → mailto:wuzhipeng1289690157@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="https://www.zhihu.com/people/wu-zhi-peng-72-78" title="ZhiHu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;wu-zhi-peng-72-78" rel="noopener" target="_blank"><i class="fa fa-magic fa-fw"></i>ZhiHu</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="https://weibo.com/u/6987234483" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;6987234483" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+                <div id="sidebar-dimmer"></div>
+            </div>
+        </main>
+        <footer class="footer">
+            <div class="footer-inner">
+                <div class="copyright"> &copy; <span itemprop="copyrightYear">2022</span>
+                    <span class="with-love">
+                        <i class="fa fa-heart"></i>
+                    </span>
+                    <span class="author" itemprop="copyrightHolder">PayneWu</span>
+                    <span class="post-meta-divider">|</span>
+                    <span class="post-meta-item-icon">
+                        <i class="fa fa-chart-area"></i>
+                    </span>
+                    <span title="站点总字数">255k</span>
+                    <span class="post-meta-divider">|</span>
+                    <span class="post-meta-item-icon">
+                        <i class="fa fa-coffee"></i>
+                    </span>
+                    <span title="站点阅读时长">3:51</span>
+                </div>
+                <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">湘ICP备2021019893号-1 </a>
+                </div>
+                <div style="display: none;">
+                    <script src="//s95.cnzz.com/z_stat.php?id=true&web_id=true"></script>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+    <script src="/js/utils.js"></script>
+    <script src="/.js"></script>
+    <script src="/js/schemes/pisces.js"></script>
+    <script src="/.js"></script>
+    <script src="/js/next-boot.js"></script>
+    <script src="/.js"></script>
+    <script>
+        (function ()
+        {
+            var canonicalURL, curProtocol;
+            //Get the <link> tag
+            var x = document.getElementsByTagName("link");
+            //Find the last canonical URL
+            if (x.length > 0)
+            {
+                for (i = 0; i < x.length; i++)
+                {
+                    if (x[i].rel.toLowerCase() == 'canonical' && x[i].href)
+                    {
+                        canonicalURL = x[i].href;
+                    }
+                }
+            }
+            //Get protocol
+            if (!canonicalURL)
+            {
+                curProtocol = window.location.protocol.split(':')[0];
+            }
+            else
+            {
+                curProtocol = canonicalURL.split(':')[0];
+            }
+            //Get current URL if the canonical URL does not exist
+            if (!canonicalURL) canonicalURL = window.location.href;
+            //Assign script content. Replace current URL with the canonical URL
+            ! function ()
+            {
+                var e = /([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,
+                    r = canonicalURL,
+                    t = document.referrer;
+                if (!e.test(r))
+                {
+                    var n = (String(curProtocol).toLowerCase() === 'https') ? "https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif" : "//api.share.baidu.com/s.gif";
+                    t ? (n += "?r=" + encodeURIComponent(document.referrer), r && (n += "&l=" + r)) : r && (n += "?l=" + r);
+                    var i = new Image;
+                    i.src = n
+                }
+            }(window);
+        })();
+
+    </script>
+    <script src="/js/local-search.js"></script>
+    <script src="/.js"></script>
+</body>
+
+</html>

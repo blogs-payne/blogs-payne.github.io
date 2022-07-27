@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+    <meta name="theme-color" content="#222">
+    <meta name="generator" content="Hexo 4.2.1">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16-next.png">
+    <link rel="mask-icon" href="/images/favicon/safari-pinned-tab.svg" color="#222">
+    <meta name="msapplication-config" content="/images/favicon/browserconfig.xml">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+    <link rel="stylesheet" href="/lib/pace/pace-theme-mac-osx.min.css">
+    <script src="/lib/pace/pace.min.js"></script>
+    <script id="hexo-configurations">
+        var NexT = window.NexT ||
+        {};
+        var CONFIG = {
+            "hostname": "paynewu.com",
+            "root": "/",
+            "scheme": "Gemini",
+            "version": "7.8.0",
+            "exturl": false,
+            "sidebar":
+            {
+                "position": "right",
+                "width": 240,
+                "display": "post",
+                "padding": 18,
+                "offset": 12,
+                "onmobile": false
+            },
+            "copycode":
+            {
+                "enable": true,
+                "show_result": true,
+                "style": "mac"
+            },
+            "back2top":
+            {
+                "enable": true,
+                "sidebar": false,
+                "scrollpercent": true
+            },
+            "bookmark":
+            {
+                "enable": false,
+                "color": "#222",
+                "save": "auto"
+            },
+            "fancybox": false,
+            "mediumzoom": true,
+            "lazyload": false,
+            "pangu": true,
+            "comments":
+            {
+                "style": "tabs",
+                "active": "valine",
+                "storage": true,
+                "lazyload": false,
+                "nav": null
+            },
+            "algolia":
+            {
+                "hits":
+                {
+                    "per_page": 10
+                },
+                "labels":
+                {
+                    "input_placeholder": "Search for Posts",
+                    "hits_empty": "We didn't find any results for the search: ${query}",
+                    "hits_stats": "${hits} results found in ${time} ms"
+                }
+            },
+            "localsearch":
+            {
+                "enable": true,
+                "trigger": "auto",
+                "top_n_per_article": 8,
+                "unescape": false,
+                "preload": false
+            },
+            "motion":
+            {
+                "enable": false,
+                "async": false,
+                "transition":
+                {
+                    "post_block": "bounceDownIn",
+                    "post_header": "slideDownIn",
+                    "post_body": "slideDownIn",
+                    "coll_header": "slideLeftIn",
+                    "sidebar": "slideUpIn"
+                }
+            },
+            "path": "search.xml"
+        };
+
+    </script>
+    <meta name="description" content="Hi，许久不见，我是Payne啊。 ok，那么我们先说说核心本质吧，其核心本质个人认为依旧是伪装。就像爬虫为对面对反爬虫反制，从而添加特征，不断的逼近像真人。 自然在参数、环境还原这里也是。 无论是一下的补环境、扣代码、手动还原，也都是在模拟生成加密逻辑。 补环境 补环境的定义 补环境顾名思义就是，将获取到的关键JS在通过修补环境的方法在本地或服务器上能够正常运行获取到正确的返回值，从而完成参数的">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="JS逆向算法还原常用技巧">
+    <meta property="og:url" content="https://paynewu.com/1413352655.html">
+    <meta property="og:site_name" content="吴志鹏｜Payne-Wu">
+    <meta property="og:description" content="Hi，许久不见，我是Payne啊。 ok，那么我们先说说核心本质吧，其核心本质个人认为依旧是伪装。就像爬虫为对面对反爬虫反制，从而添加特征，不断的逼近像真人。 自然在参数、环境还原这里也是。 无论是一下的补环境、扣代码、手动还原，也都是在模拟生成加密逻辑。 补环境 补环境的定义 补环境顾名思义就是，将获取到的关键JS在通过修补环境的方法在本地或服务器上能够正常运行获取到正确的返回值，从而完成参数的">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNgy1gxnrxih3bqj308v07mweo.jpg">
+    <meta property="article:published_time" content="2021-12-23T07:19:04.000Z">
+    <meta property="article:modified_time" content="2022-07-27T09:58:26.876Z">
+    <meta property="article:author" content="吴志鹏">
+    <meta property="article:tag" content="Crawler">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:image" content="https://tva1.sinaimg.cn/large/008i3skNgy1gxnrxih3bqj308v07mweo.jpg">
+    <link rel="canonical" href="https://paynewu.com/1413352655.html">
+    <script id="page-configurations">
+        // https://hexo.io/docs/variables.html
+        CONFIG.page = {
+            sidebar: "",
+            isHome: false,
+            isPost: true,
+            lang: 'zh-CN'
+        };
+
+    </script>
+    <title>JS逆向算法还原常用技巧 | 吴志鹏｜Payne-Wu</title>
+    <meta name="google-site-verification" content="p_bIcnvirkFzG2dYKuNDivKD8-STet5W7D-01woA2fc" />
+    <noscript>
+        <style>
+            .use-motion .brand,
+            .use-motion .menu-item,
+            .sidebar-inner,
+            .use-motion .post-block,
+            .use-motion .pagination,
+            .use-motion .comments,
+            .use-motion .post-header,
+            .use-motion .post-body,
+            .use-motion .collection-header
+            {
+                opacity: initial;
+            }
+
+            .use-motion .site-title,
+            .use-motion .site-subtitle
+            {
+                opacity: initial;
+                top: initial;
+            }
+
+            .use-motion .logo-line-before i
+            {
+                left: initial;
+            }
+
+            .use-motion .logo-line-after i
+            {
+                right: initial;
+            }
+
+        </style>
+    </noscript>
+    <link rel="alternate" href="/atom.xml" title="吴志鹏｜Payne-Wu" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+    <div class="container">
+        <div class="headband"></div>
+        <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+            <div class="header-inner">
+                <div class="site-brand-container">
+                    <div class="site-nav-toggle">
+                        <div class="toggle" aria-label="切换导航栏">
+                            <span class="toggle-line toggle-line-first"></span>
+                            <span class="toggle-line toggle-line-middle"></span>
+                            <span class="toggle-line toggle-line-last"></span>
+                        </div>
+                    </div>
+                    <div class="site-meta">
+                        <a href="/" class="brand" rel="start">
+                            <span class="logo-line-before"><i></i></span>
+                            <h1 class="site-title">吴志鹏｜Payne-Wu </h1>
+                            <span class="logo-line-after"><i></i></span>
+                        </a>
+                    </div>
+                    <div class="site-nav-right">
+                        <div class="toggle popup-trigger">
+                            <i class="fa fa-search fa-fw fa-lg"></i>
+                        </div>
+                    </div>
+                </div>
+                <nav class="site-nav">
+                    <ul id="menu" class="main-menu menu">
+                        <li class="menu-item menu-item-home">
+                            <a href="/" rel="section">首页</a>
+                        </li>
+                        <li class="menu-item menu-item-archives">
+                            <a href="/archives/" rel="section">文章列表</a>
+                        </li>
+                        <li class="menu-item menu-item-tags">
+                            <a href="/tags/" rel="section">Tags Cloud</a>
+                        </li>
+                        <li class="menu-item menu-item-categories">
+                            <a href="/categories/" rel="section">文章集合</a>
+                        </li>
+                        <li class="menu-item menu-item-about">
+                            <a href="/about/" rel="section">关于我啊</a>
+                        </li>
+                        <li class="menu-item menu-item-message">
+                            <a href="/message/" rel="section">留言与我</a>
+                        </li>
+                        <li class="menu-item menu-item-search">
+                            <a role="button" class="popup-trigger">搜索 </a>
+                        </li>
+                    </ul>
+                </nav>
+                <div class="search-pop-overlay">
+                    <div class="popup search-popup">
+                        <div class="search-header">
+                            <span class="search-icon">
+                                <i class="fa fa-search"></i>
+                            </span>
+                            <div class="search-input-container">
+                                <input autocomplete="off" autocapitalize="off" placeholder="搜索..." spellcheck="false" type="search" class="search-input">
+                            </div>
+                            <span class="popup-btn-close">
+                                <i class="fa fa-times-circle"></i>
+                            </span>
+                        </div>
+                        <div id="search-result">
+                            <div id="no-result">
+                                <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="back-to-top">
+            <i class="fa fa-arrow-up"></i>
+            <span>0%</span>
+        </div>
+        <div class="reading-progress-bar"></div>
+        <main class="main">
+            <div class="main-inner">
+                <div class="content-wrap">
+                    <div class="content post posts-expand">
+                        <article itemscope itemtype="http://schema.org/Article" class="post-block single" lang="zh-CN">
+                            <link itemprop="mainEntityOfPage" href="https://paynewu.com/1413352655.html">
+                            <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <meta itemprop="image" content="/images/favicon/android-chrome-512x512.png">
+                                <meta itemprop="name" content="吴志鹏">
+                                <meta itemprop="description" content="Talk is free，please state clearly">
+                            </span>
+                            <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+                                <meta itemprop="name" content="吴志鹏｜Payne-Wu">
+                            </span>
+                            <header class="post-header">
+                                <h1 class="post-title" itemprop="name headline"> JS逆向算法还原常用技巧 </h1>
+                                <div class="post-meta">
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-user"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">作者</span>
+                                        <span><a href="/authors/Payne" class="author" itemprop="url" rel="index">Payne</a></span>
+                                    </span>
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-calendar"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">发表于</span>
+                                        <time title="创建时间：2021-12-23 15:19:04" itemprop="dateCreated datePublished" datetime="2021-12-23T15:19:04+08:00">2021-12-23</time>
+                                    </span>
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-folder"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">分类于</span>
+                                        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                                            <a href="/categories/JavaScript/" itemprop="url" rel="index"><span itemprop="name">JavaScript</span></a>
+                                        </span> ， <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                                            <a href="/categories/JavaScript/%E6%8A%80%E5%B7%A7/" itemprop="url" rel="index"><span itemprop="name">技巧</span></a>
+                                        </span> ， <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                                            <a href="/categories/JavaScript/%E6%8A%80%E5%B7%A7/JS/" itemprop="url" rel="index"><span itemprop="name">JS</span></a>
+                                        </span>
+                                    </span>
+                                    <br>
+                                    <span class="post-meta-item" title="本文字数">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-file-word"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">本文字数：</span>
+                                        <span>715</span>
+                                    </span>
+                                    <span class="post-meta-item" title="阅读时长">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-clock"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                                        <span>1 分钟</span>
+                                    </span>
+                                </div>
+                            </header>
+                            <div class="post-body" itemprop="articleBody">
+                                <p>Hi，许久不见，我是Payne啊。</p>
+                                <p>ok，那么我们先说说核心本质吧，其核心本质个人认为依旧是伪装。就像爬虫为对面对反爬虫反制，从而添加特征，不断的逼近<strong>像</strong>真人。</p>
+                                <p>自然在参数、环境还原这里也是。</p>
+                                <p>无论是一下的<strong>补环境</strong>、<strong>扣代码</strong>、<strong>手动还原</strong>，也都是在模拟生成加密逻辑。</p>
+                                <h2 id="补环境"><a href="#补环境" class="headerlink" title="补环境"></a>补环境</h2>
+                                <h3 id="补环境的定义"><a href="#补环境的定义" class="headerlink" title="补环境的定义"></a>补环境的定义</h3>
+                                <p>补环境顾名思义就是，将获取到的关键JS在通过<strong>修补环境</strong>的方法在本地或服务器上能够正常运行获取到正确的返回值，从而完成参数的加密模拟。</p>
+                                <p>当然大部分情况下补环境与抠代码密不可分（一般是扣代码，然后在补环境），扣代码移步第二部分</p>
+                                <h3 id="核心本质"><a href="#核心本质" class="headerlink" title="核心本质"></a>核心本质</h3>
+                                <p>无论是缺啥补啥的前的构建错误，还是使用代理监控运行。都是在做链路追踪。在补环境这里是秉承着遇河搭桥，缺啥补啥思路。</p>
+                                <p>常用的方法一般有两个：</p>
+                                <blockquote>
+                                    <p>假设获取到了核心的JS代码后</p>
+                                </blockquote>
+                                <p>一种是使用运行，从而构建错误实现报错，然后通过补方法、对象来fix。从而完成补环境，（当然这是必须的）。</p>
+                                <p>当完成以上的操作后，遇见风控、遇见伏点。可以正常通过运行，但无法获取到正确的参数。此时使用<code>Proxy</code>来监听实现监测，协助调试。</p>
+                                <h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3>
+                                <p>是方法写空方法<code>arguments</code>看传参，对象写空对象<code>Proxy</code>来相助，进行链路追踪，完成模拟</p>
+                                <figure class="highlight javascript">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="built_in">window</span> = global;</span><br><span class="line"><span class="built_in">document</span> = &#123;</span><br><span class="line">    location: &#123;<span class="string">'protocol'</span>: <span class="string">'https:'</span>&#125;,</span><br><span class="line">    referrer: <span class="string">''</span>,</span><br><span class="line">    getElementById: <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"getElementById:"</span>, <span class="built_in">arguments</span>);</span><br><span class="line">    &#125;,</span><br><span class="line">    getElementsByClassName: <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"getElementsByClassName:"</span>, <span class="built_in">arguments</span>);</span><br><span class="line">    &#125;,</span><br><span class="line">    getElementsByName: <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"getElementsByName:"</span>, <span class="built_in">arguments</span>);</span><br><span class="line">    &#125;,</span><br><span class="line">    getElementsByTagName: <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"getElementsByTagName:"</span>, <span class="built_in">arguments</span>);</span><br><span class="line">    &#125;,</span><br><span class="line">    getElementsByTagNameNS: <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"getElementsByTagNameNS:"</span>, <span class="built_in">arguments</span>);</span><br><span class="line">    &#125;,</span><br><span class="line">    createElement: <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"createElement:"</span>, <span class="built_in">arguments</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;;</span><br><span class="line">navigator = &#123;</span><br><span class="line">    appCodeName: <span class="string">"Mozilla"</span>,</span><br><span class="line">    appName: <span class="string">"Netscape"</span>,</span><br><span class="line">    appVersion: <span class="string">"5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36"</span>,</span><br><span class="line">    language: <span class="string">"zh-CN"</span>,</span><br><span class="line">    languages: (<span class="number">2</span>)[<span class="string">'zh-CN'</span>, <span class="string">'zh'</span>],</span><br><span class="line">    platform: <span class="string">"MacIntel"</span>,</span><br><span class="line">    product: <span class="string">"Gecko"</span>,</span><br><span class="line">    productSub: <span class="string">"20030107"</span>,</span><br><span class="line">    userAgent: <span class="string">"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36"</span>,</span><br><span class="line">    vendor: <span class="string">"Google Inc."</span>,</span><br><span class="line">&#125;;</span><br><span class="line">screen = &#123;</span><br><span class="line">    availHeight: <span class="number">1055</span>,</span><br><span class="line">    availLeft: <span class="number">0</span>,</span><br><span class="line">    availTop: <span class="number">25</span>,</span><br><span class="line">    availWidth: <span class="number">1920</span>,</span><br><span class="line">    colorDepth: <span class="number">24</span>,</span><br><span class="line">    height: <span class="number">1080</span>,</span><br><span class="line">    pixelDepth: <span class="number">24</span>,</span><br><span class="line">    width: <span class="number">1920</span>,</span><br><span class="line">&#125;;</span><br><span class="line">location = &#123;</span><br><span class="line">    href: <span class="string">'https://www.xxx.com/website-login/captcha?redirectPath=https%3A%2F%2Fwww.xxx.com%2Fdiscovery%2Fitem%2F618bf8f60000000001027ccd'</span>,</span><br><span class="line">    hostname: <span class="string">'www.xxx.com'</span>,</span><br><span class="line">    host: <span class="string">'www.xxx.com'</span>,</span><br><span class="line">&#125;;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3>
+                                <ol>
+                                    <li>缺啥补啥：通过本地运行实现错误</li>
+                                </ol>
+                                <p>Proxy</p>
+                                <p>空对象：使用proxy代理，空方法：使用其中的<code>arguments</code>，获取传入参数</p>
+                                <p>获取DOM节点：当做<code>[ ]</code>处理</p>
+                                <p>创建DOM节点：当作<code>{ }</code>处理</p>
+                                <figure class="highlight javascript">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">null_function = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="built_in">arguments</span>)</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 代理</span></span><br><span class="line"><span class="keyword">const</span> proxy = <span class="function">(<span class="params">obj, obj_name</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Proxy</span>(obj, &#123;</span><br><span class="line">        <span class="keyword">get</span>: (target, key) =&gt; &#123;</span><br><span class="line">            <span class="built_in">console</span>.log(obj_name, <span class="string">"Getting"</span>, key)</span><br><span class="line">            <span class="keyword">return</span> target[key];</span><br><span class="line">        &#125;,</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//吐环境</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">proxy</span>(<span class="params">proxy_array</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; proxy_array; i++) &#123;</span><br><span class="line">        <span class="built_in">eval</span>(proxy_array[i] + <span class="string">' = new Proxy('</span> + proxy_array[i] + <span class="string">',&#123; '</span> +</span><br><span class="line">            <span class="string">'get(target,key)&#123; '</span> +</span><br><span class="line">            <span class="string">'debugger;'</span> +</span><br><span class="line">            <span class="string">'console.log("====================")'</span> +</span><br><span class="line">            <span class="string">'console.log("获取了",'</span> + proxy_array[i] + <span class="string">' 的key属性"); '</span> +</span><br><span class="line">            <span class="string">'console.log("====================")'</span> +</span><br><span class="line">            <span class="string">'return target[key]; &#125;'</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//常用的proxy_array</span></span><br><span class="line"><span class="keyword">var</span> proxy_array = [<span class="string">"window"</span>, <span class="string">"document"</span>, <span class="string">"location"</span>, <span class="string">"navigator"</span>]</span><br><span class="line">proxy(proxy_array)</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h2 id="抠代码"><a href="#抠代码" class="headerlink" title="抠代码"></a>抠代码</h2>
+                                <p>找到关键入口，抠下来🐶～。</p>
+                                <p>重在调试，不再抠（抠就是复制粘贴）</p>
+                                <p>小技巧：</p>
+                                <p>打开浏览器的设置，找到如下所示的<code>code filding</code> 勾选打开。JS代码收缩复制一气呵成，妙啊～</p>
+                                <p><img src="https://tva1.sinaimg.cn/large/008i3skNgy1gxnrxih3bqj308v07mweo.jpg" alt="image-20211223145757359"></p>
+                                <h2 id="手动还原"><a href="#手动还原" class="headerlink" title="手动还原"></a>手动还原</h2>
+                                <p>通过调试查看算法实现过程，结合加密库复现。</p>
+                                <blockquote>
+                                    <p>Tip: 可以但没必要，手撕随爽，但可不要贪杯哦</p>
+                                </blockquote>
+                            </div>
+                            <div class="popular-posts-header">相关文章</div>
+                            <ul class="popular-posts">
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/2341116369.html" rel="bookmark">js调试小笔记</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/358032656.html" rel="bookmark">反爬虫常见策略总结</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/63324.html" rel="bookmark">常见安全产品(pc)</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/38968.html" rel="bookmark">浏览器指纹在反爬虫领域的应用</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/10849.html" rel="bookmark">爬虫:有什么让人眼前一亮的调试习惯与技巧</a></div>
+                                </li>
+                            </ul>
+                            <footer class="post-footer">
+                                <div class="post-tags">
+                                    <a href="/tags/Crawler/" rel="tag"><i class="fa fa-tag"></i> Crawler</a>
+                                </div>
+                                <div class="post-nav">
+                                    <div class="post-nav-item">
+                                        <a href="/1032104040.html" rel="prev" title="使用迭代器优化pymysql大量查询">
+                                            <i class="fa fa-chevron-left"></i> 使用迭代器优化pymysql大量查询 </a>
+                                    </div>
+                                    <div class="post-nav-item">
+                                        <a href="/3057642135.html" rel="next" title="算法-复杂度分析"> 算法-复杂度分析 <i class="fa fa-chevron-right"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </footer>
+                        </article>
+                    </div>
+                    <script>
+                        window.addEventListener('tabs:register', () =>
+                        {
+                            let
+                            {
+                                activeClass
+                            } = CONFIG.comments;
+                            if (CONFIG.comments.storage)
+                            {
+                                activeClass = localStorage.getItem('comments_active') || activeClass;
+                            }
+                            if (activeClass)
+                            {
+                                let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+                                if (activeTab)
+                                {
+                                    activeTab.click();
+                                }
+                            }
+                        });
+                        if (CONFIG.comments.storage)
+                        {
+                            window.addEventListener('tabs:click', event =>
+                            {
+                                if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+                                let commentClass = event.target.classList[1];
+                                localStorage.setItem('comments_active', commentClass);
+                            });
+                        }
+
+                    </script>
+                </div>
+                <div class="toggle sidebar-toggle">
+                    <span class="toggle-line toggle-line-first"></span>
+                    <span class="toggle-line toggle-line-middle"></span>
+                    <span class="toggle-line toggle-line-last"></span>
+                </div>
+                <aside class="sidebar">
+                    <div class="sidebar-inner">
+                        <ul class="sidebar-nav motion-element">
+                            <li class="sidebar-nav-toc"> 文章目录 </li>
+                            <li class="sidebar-nav-overview"> 站点概览 </li>
+                        </ul>
+                        <!--noindex-->
+                        <div class="post-toc-wrap sidebar-panel">
+                            <div class="post-toc motion-element">
+                                <ol class="nav">
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#补环境"><span class="nav-number">1.</span> <span class="nav-text">补环境</span></a>
+                                        <ol class="nav-child">
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#补环境的定义"><span class="nav-number">1.1.</span> <span class="nav-text">补环境的定义</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#核心本质"><span class="nav-number">1.2.</span> <span class="nav-text">核心本质</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#实现"><span class="nav-number">1.3.</span> <span class="nav-text">实现</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#小结"><span class="nav-number">1.4.</span> <span class="nav-text">小结</span></a></li>
+                                        </ol>
+                                    </li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#抠代码"><span class="nav-number">2.</span> <span class="nav-text">抠代码</span></a></li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#手动还原"><span class="nav-number">3.</span> <span class="nav-text">手动还原</span></a></li>
+                                </ol>
+                            </div>
+                        </div>
+                        <!--/noindex-->
+                        <div class="site-overview-wrap sidebar-panel">
+                            <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <img class="site-author-image" itemprop="image" alt="吴志鹏" src="/images/favicon/android-chrome-512x512.png">
+                                <p class="site-author-name" itemprop="name">吴志鹏</p>
+                                <div class="site-description" itemprop="description">Talk is free，please state clearly</div>
+                            </div>
+                            <div class="site-state-wrap motion-element">
+                                <nav class="site-state">
+                                    <div class="site-state-item site-state-posts">
+                                        <a href="/archives/">
+                                            <span class="site-state-item-count">136</span>
+                                            <span class="site-state-item-name">日志</span>
+                                        </a>
+                                    </div>
+                                    <div class="site-state-item site-state-categories">
+                                        <a href="/categories/">
+                                            <span class="site-state-item-count">158</span>
+                                            <span class="site-state-item-name">分类</span></a>
+                                    </div>
+                                    <div class="site-state-item site-state-tags">
+                                        <a href="/tags/">
+                                            <span class="site-state-item-count">89</span>
+                                            <span class="site-state-item-name">标签</span></a>
+                                    </div>
+                                </nav>
+                            </div>
+                            <div class="links-of-author motion-element">
+                                <span class="links-of-author-item">
+                                    <a href="https://github.com/Payne-Wu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Payne-Wu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="mailto:wuzhipeng1289690157@gmail.com" title="E-Mail → mailto:wuzhipeng1289690157@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="https://www.zhihu.com/people/wu-zhi-peng-72-78" title="ZhiHu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;wu-zhi-peng-72-78" rel="noopener" target="_blank"><i class="fa fa-magic fa-fw"></i>ZhiHu</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="https://weibo.com/u/6987234483" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;6987234483" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+                <div id="sidebar-dimmer"></div>
+            </div>
+        </main>
+        <footer class="footer">
+            <div class="footer-inner">
+                <div class="copyright"> &copy; <span itemprop="copyrightYear">2022</span>
+                    <span class="with-love">
+                        <i class="fa fa-heart"></i>
+                    </span>
+                    <span class="author" itemprop="copyrightHolder">PayneWu</span>
+                    <span class="post-meta-divider">|</span>
+                    <span class="post-meta-item-icon">
+                        <i class="fa fa-chart-area"></i>
+                    </span>
+                    <span title="站点总字数">255k</span>
+                    <span class="post-meta-divider">|</span>
+                    <span class="post-meta-item-icon">
+                        <i class="fa fa-coffee"></i>
+                    </span>
+                    <span title="站点阅读时长">3:51</span>
+                </div>
+                <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">湘ICP备2021019893号-1 </a>
+                </div>
+                <div style="display: none;">
+                    <script src="//s95.cnzz.com/z_stat.php?id=true&web_id=true"></script>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+    <script src="/js/utils.js"></script>
+    <script src="/.js"></script>
+    <script src="/js/schemes/pisces.js"></script>
+    <script src="/.js"></script>
+    <script src="/js/next-boot.js"></script>
+    <script src="/.js"></script>
+    <script>
+        (function ()
+        {
+            var canonicalURL, curProtocol;
+            //Get the <link> tag
+            var x = document.getElementsByTagName("link");
+            //Find the last canonical URL
+            if (x.length > 0)
+            {
+                for (i = 0; i < x.length; i++)
+                {
+                    if (x[i].rel.toLowerCase() == 'canonical' && x[i].href)
+                    {
+                        canonicalURL = x[i].href;
+                    }
+                }
+            }
+            //Get protocol
+            if (!canonicalURL)
+            {
+                curProtocol = window.location.protocol.split(':')[0];
+            }
+            else
+            {
+                curProtocol = canonicalURL.split(':')[0];
+            }
+            //Get current URL if the canonical URL does not exist
+            if (!canonicalURL) canonicalURL = window.location.href;
+            //Assign script content. Replace current URL with the canonical URL
+            ! function ()
+            {
+                var e = /([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,
+                    r = canonicalURL,
+                    t = document.referrer;
+                if (!e.test(r))
+                {
+                    var n = (String(curProtocol).toLowerCase() === 'https') ? "https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif" : "//api.share.baidu.com/s.gif";
+                    t ? (n += "?r=" + encodeURIComponent(document.referrer), r && (n += "&l=" + r)) : r && (n += "?l=" + r);
+                    var i = new Image;
+                    i.src = n
+                }
+            }(window);
+        })();
+
+    </script>
+    <script src="/js/local-search.js"></script>
+    <script src="/.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+    <meta name="theme-color" content="#222">
+    <meta name="generator" content="Hexo 4.2.1">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16-next.png">
+    <link rel="mask-icon" href="/images/favicon/safari-pinned-tab.svg" color="#222">
+    <meta name="msapplication-config" content="/images/favicon/browserconfig.xml">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+    <link rel="stylesheet" href="/lib/pace/pace-theme-mac-osx.min.css">
+    <script src="/lib/pace/pace.min.js"></script>
+    <script id="hexo-configurations">
+        var NexT = window.NexT ||
+        {};
+        var CONFIG = {
+            "hostname": "paynewu.com",
+            "root": "/",
+            "scheme": "Gemini",
+            "version": "7.8.0",
+            "exturl": false,
+            "sidebar":
+            {
+                "position": "right",
+                "width": 240,
+                "display": "post",
+                "padding": 18,
+                "offset": 12,
+                "onmobile": false
+            },
+            "copycode":
+            {
+                "enable": true,
+                "show_result": true,
+                "style": "mac"
+            },
+            "back2top":
+            {
+                "enable": true,
+                "sidebar": false,
+                "scrollpercent": true
+            },
+            "bookmark":
+            {
+                "enable": false,
+                "color": "#222",
+                "save": "auto"
+            },
+            "fancybox": false,
+            "mediumzoom": true,
+            "lazyload": false,
+            "pangu": true,
+            "comments":
+            {
+                "style": "tabs",
+                "active": "valine",
+                "storage": true,
+                "lazyload": false,
+                "nav": null
+            },
+            "algolia":
+            {
+                "hits":
+                {
+                    "per_page": 10
+                },
+                "labels":
+                {
+                    "input_placeholder": "Search for Posts",
+                    "hits_empty": "We didn't find any results for the search: ${query}",
+                    "hits_stats": "${hits} results found in ${time} ms"
+                }
+            },
+            "localsearch":
+            {
+                "enable": true,
+                "trigger": "auto",
+                "top_n_per_article": 8,
+                "unescape": false,
+                "preload": false
+            },
+            "motion":
+            {
+                "enable": false,
+                "async": false,
+                "transition":
+                {
+                    "post_block": "bounceDownIn",
+                    "post_header": "slideDownIn",
+                    "post_body": "slideDownIn",
+                    "coll_header": "slideLeftIn",
+                    "sidebar": "slideUpIn"
+                }
+            },
+            "path": "search.xml"
+        };
+
+    </script>
+    <meta name="description" content="Kafka 发行版本 Apache Kafka Apache Kafka 是最“正宗”的 Kafka，也应该最熟悉的发行版。 自 Kafka 开源伊始，它便在 Apache 基金会孵化并最终毕业成为顶级项目，它也被称为社区版 Kafka。咱们专栏就是以这个版本的 Kafka作为模板来学习的。更重要的是，它是后面其他所有发行版的基础。也就是说，后面提到的发行版要么是原封不动地继承了 Apache K">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Kafka发行版本与版本号">
+    <meta property="og:url" content="https://paynewu.com/2037230795.html">
+    <meta property="og:site_name" content="吴志鹏｜Payne-Wu">
+    <meta property="og:description" content="Kafka 发行版本 Apache Kafka Apache Kafka 是最“正宗”的 Kafka，也应该最熟悉的发行版。 自 Kafka 开源伊始，它便在 Apache 基金会孵化并最终毕业成为顶级项目，它也被称为社区版 Kafka。咱们专栏就是以这个版本的 Kafka作为模板来学习的。更重要的是，它是后面其他所有发行版的基础。也就是说，后面提到的发行版要么是原封不动地继承了 Apache K">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24egy1h0qywsepyjj21660eignb.jpg">
+    <meta property="article:published_time" content="2022-03-29T10:57:28.000Z">
+    <meta property="article:modified_time" content="2022-07-27T09:58:26.876Z">
+    <meta property="article:author" content="吴志鹏">
+    <meta property="article:tag" content="Apache Kafka">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:image" content="https://tva1.sinaimg.cn/large/e6c9d24egy1h0qywsepyjj21660eignb.jpg">
+    <link rel="canonical" href="https://paynewu.com/2037230795.html">
+    <script id="page-configurations">
+        // https://hexo.io/docs/variables.html
+        CONFIG.page = {
+            sidebar: "",
+            isHome: false,
+            isPost: true,
+            lang: 'zh-CN'
+        };
+
+    </script>
+    <title>Kafka发行版本与版本号 | 吴志鹏｜Payne-Wu</title>
+    <meta name="google-site-verification" content="p_bIcnvirkFzG2dYKuNDivKD8-STet5W7D-01woA2fc" />
+    <noscript>
+        <style>
+            .use-motion .brand,
+            .use-motion .menu-item,
+            .sidebar-inner,
+            .use-motion .post-block,
+            .use-motion .pagination,
+            .use-motion .comments,
+            .use-motion .post-header,
+            .use-motion .post-body,
+            .use-motion .collection-header
+            {
+                opacity: initial;
+            }
+
+            .use-motion .site-title,
+            .use-motion .site-subtitle
+            {
+                opacity: initial;
+                top: initial;
+            }
+
+            .use-motion .logo-line-before i
+            {
+                left: initial;
+            }
+
+            .use-motion .logo-line-after i
+            {
+                right: initial;
+            }
+
+        </style>
+    </noscript>
+    <link rel="alternate" href="/atom.xml" title="吴志鹏｜Payne-Wu" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+    <div class="container">
+        <div class="headband"></div>
+        <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+            <div class="header-inner">
+                <div class="site-brand-container">
+                    <div class="site-nav-toggle">
+                        <div class="toggle" aria-label="切换导航栏">
+                            <span class="toggle-line toggle-line-first"></span>
+                            <span class="toggle-line toggle-line-middle"></span>
+                            <span class="toggle-line toggle-line-last"></span>
+                        </div>
+                    </div>
+                    <div class="site-meta">
+                        <a href="/" class="brand" rel="start">
+                            <span class="logo-line-before"><i></i></span>
+                            <h1 class="site-title">吴志鹏｜Payne-Wu </h1>
+                            <span class="logo-line-after"><i></i></span>
+                        </a>
+                    </div>
+                    <div class="site-nav-right">
+                        <div class="toggle popup-trigger">
+                            <i class="fa fa-search fa-fw fa-lg"></i>
+                        </div>
+                    </div>
+                </div>
+                <nav class="site-nav">
+                    <ul id="menu" class="main-menu menu">
+                        <li class="menu-item menu-item-home">
+                            <a href="/" rel="section">首页</a>
+                        </li>
+                        <li class="menu-item menu-item-archives">
+                            <a href="/archives/" rel="section">文章列表</a>
+                        </li>
+                        <li class="menu-item menu-item-tags">
+                            <a href="/tags/" rel="section">Tags Cloud</a>
+                        </li>
+                        <li class="menu-item menu-item-categories">
+                            <a href="/categories/" rel="section">文章集合</a>
+                        </li>
+                        <li class="menu-item menu-item-about">
+                            <a href="/about/" rel="section">关于我啊</a>
+                        </li>
+                        <li class="menu-item menu-item-message">
+                            <a href="/message/" rel="section">留言与我</a>
+                        </li>
+                        <li class="menu-item menu-item-search">
+                            <a role="button" class="popup-trigger">搜索 </a>
+                        </li>
+                    </ul>
+                </nav>
+                <div class="search-pop-overlay">
+                    <div class="popup search-popup">
+                        <div class="search-header">
+                            <span class="search-icon">
+                                <i class="fa fa-search"></i>
+                            </span>
+                            <div class="search-input-container">
+                                <input autocomplete="off" autocapitalize="off" placeholder="搜索..." spellcheck="false" type="search" class="search-input">
+                            </div>
+                            <span class="popup-btn-close">
+                                <i class="fa fa-times-circle"></i>
+                            </span>
+                        </div>
+                        <div id="search-result">
+                            <div id="no-result">
+                                <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="back-to-top">
+            <i class="fa fa-arrow-up"></i>
+            <span>0%</span>
+        </div>
+        <div class="reading-progress-bar"></div>
+        <main class="main">
+            <div class="main-inner">
+                <div class="content-wrap">
+                    <div class="content post posts-expand">
+                        <article itemscope itemtype="http://schema.org/Article" class="post-block single" lang="zh-CN">
+                            <link itemprop="mainEntityOfPage" href="https://paynewu.com/2037230795.html">
+                            <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <meta itemprop="image" content="/images/favicon/android-chrome-512x512.png">
+                                <meta itemprop="name" content="吴志鹏">
+                                <meta itemprop="description" content="Talk is free，please state clearly">
+                            </span>
+                            <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+                                <meta itemprop="name" content="吴志鹏｜Payne-Wu">
+                            </span>
+                            <header class="post-header">
+                                <h1 class="post-title" itemprop="name headline"> Kafka发行版本与版本号 </h1>
+                                <div class="post-meta">
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-user"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">作者</span>
+                                        <span><a href="/authors/Payne" class="author" itemprop="url" rel="index">Payne</a></span>
+                                    </span>
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-calendar"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">发表于</span>
+                                        <time title="创建时间：2022-03-29 18:57:28" itemprop="dateCreated datePublished" datetime="2022-03-29T18:57:28+08:00">2022-03-29</time>
+                                    </span>
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-folder"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">分类于</span>
+                                        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                                            <a href="/categories/Apache-Kafka/" itemprop="url" rel="index"><span itemprop="name">Apache Kafka</span></a>
+                                        </span> ， <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                                            <a href="/categories/Apache-Kafka/MQ/" itemprop="url" rel="index"><span itemprop="name">MQ</span></a>
+                                        </span> ， <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                                            <a href="/categories/Apache-Kafka/MQ/Kafka/" itemprop="url" rel="index"><span itemprop="name">Kafka</span></a>
+                                        </span>
+                                    </span>
+                                    <br>
+                                    <span class="post-meta-item" title="本文字数">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-file-word"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">本文字数：</span>
+                                        <span>4.3k</span>
+                                    </span>
+                                    <span class="post-meta-item" title="阅读时长">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-clock"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                                        <span>4 分钟</span>
+                                    </span>
+                                </div>
+                            </header>
+                            <div class="post-body" itemprop="articleBody">
+                                <h2 id="Kafka-发行版本"><a href="#Kafka-发行版本" class="headerlink" title="Kafka 发行版本"></a>Kafka 发行版本</h2>
+                                <h3 id="Apache-Kafka"><a href="#Apache-Kafka" class="headerlink" title="Apache Kafka"></a>Apache Kafka</h3>
+                                <p>Apache Kafka 是最“正宗”的 Kafka，也应该最熟悉的发行版。</p>
+                                <p>自 Kafka 开源伊始，它便在 Apache 基金会孵化并最终毕业成为顶级项目，它也被称为社区版 Kafka。咱们专栏就是以这个版本的 Kafka<br>作为模板来学习的。更重要的是，它是后面其他所有发行版的基础。也就是说，后面提到的发行版要么是原封不动地继承了 Apache Kafka，要么是在此之上扩展了新功能，总之 Apache Kafka 是我们学习和使用 Kafka 的基础</p>
+                                <h4 id="优"><a href="#优" class="headerlink" title="优"></a>优</h4>
+                                <p>对 Apache Kafka 而言，它现在依然是开发人数最多、版本迭代速度最快的 Kafka。在 2018 年度 Apache 基金会邮件列表开发者数量最多的 Top 5 排行榜中，Kafka 社区邮件组排名第二位。如果你使用 Apache<br>Kafka 碰到任何问题并提交问题到社区，社区都会比较及时地响应你。这对于我们 Kafka 普通使用者来说无疑是非常友好的。</p>
+                                <h4 id="劣"><a href="#劣" class="headerlink" title="劣"></a><strong>劣</strong></h4>
+                                <p><em>Apache Kafka</em> 的劣势在于它仅仅提供最最基础的组件，特别是对于前面提到的 <em>Kafka Connect</em> 而言，社区版 <em>Kafka</em><br>只提供一种连接器，即读写磁盘文件的连接器，而没有与其他外部系统交互的连接器，在实际使用过程中需要自行编写代码实现，这是它的一个劣势。</p>
+                                <p>另外 <em>Apache Kafka</em> 没有提供任何监控框架或工具。显然在线上环境不加监控肯定是不可行的，你必然需要借助第三方的监控框架实现对 <em>Kafka</em> 的监控。好消息是目前有一些开源的监控框架可以帮助用于监控 <em>Kafka</em>（比如 <em><br>Kafka manager</em>）。</p>
+                                <blockquote>
+                                    <p>总而言之，如果仅仅需要一个消息引擎系统亦或是简单的流处理应用场景，同时需要对系统有较大把控度，那么推荐你使用 Apache Kafka。</p>
+                                </blockquote>
+                                <h3 id="Confluent-Kafka"><a href="#Confluent-Kafka" class="headerlink" title="Confluent Kafka"></a>Confluent Kafka</h3>
+                                <p>它主要从事商业化 Kafka 工具开发，并在此基础上发布了 Confluent Kafka。Confluent Kafka 提供了一些 Apache Kafka 没有的高级特性，</p>
+                                <p>比如跨数据中心备份、Schema 注册中心以及集群监控工具等。</p>
+                                <h4 id="优-1"><a href="#优-1" class="headerlink" title="优"></a>优</h4>
+                                <p>Confluent Kafka 目前分为免费版和企业版两种。</p>
+                                <p>前者和 Apache Kafka 非常相像，除了常规的组件之外，免费版还包含 Schema 注册中心和 REST proxy 两大功能。</p>
+                                <p>前者是帮助你集中管理 Kafka 消息格式以实现数据前向 / 后向兼容；</p>
+                                <p>后者用开放 HTTP 接口的方式允许你通过网络访问 Kafka 的各种功能，这两个都是 Apache Kafka 所没有的。</p>
+                                <p>除此之外，免费版包含了更多的连接器，它们都是 Confluent 公司开发并认证过的，可以免费使用它们。</p>
+                                <p>至于企业版，它提供的功能就更多了。最有用的当属跨数据中心备份和集群监控两大功能了。</p>
+                                <p>多个数据中心之间数据的同步以及对集群的监控历来是 Kafka 的痛点，Confluent Kafka 企业版提供了强大的解决方案帮助你“干掉”它们</p>
+                                <h4 id="劣-1"><a href="#劣-1" class="headerlink" title="劣"></a>劣</h4>
+                                <p>Confluent 公司暂时没有发展国内业务的计划，相关的资料以及技术支持都很欠缺，很多国内 Confluent Kafka 使用者甚至无法找到对应的中文文档，因此目前 Confluent Kafka 在国内的普及率是比较低的。</p>
+                                <blockquote>
+                                    <p>如果需要用到 Kafka 的一些高级特性，那么推荐使用 Confluent Kafka。</p>
+                                </blockquote>
+                                <h3 id="Cloudera-Hortonworks-Kafka"><a href="#Cloudera-Hortonworks-Kafka" class="headerlink" title="Cloudera/Hortonworks Kafka"></a>Cloudera/Hortonworks Kafka</h3>
+                                <p>Cloudera 提供的 CDH 和 Hortonworks 提供的 HDP 是非常著名的大数据平台，里面集成了目前主流的大数据框架，能够帮助用户实现从分布式存储、集群调度、流处理到机器学习、实时数据库等全方位的数据处理。</p>
+                                <p>很多创业公司在搭建数据平台时首选就是这两个产品。不管是 CDH 还是 HDP 里面都集成了 Apache Kafka，因此把这两款产品中的 Kafka 称为 CDH Kafka 和 HDP Kafka。</p>
+                                <h4 id="优-2"><a href="#优-2" class="headerlink" title="优"></a>优</h4>
+                                <p>大数据平台天然集成了 Apache Kafka，通过便捷化的界面操作将 Kafka 的安装、运维、管理、监控全部统一在控制台中。所有的操作都可以在前端 UI 界面上完成，而不必去执行复杂的 Kafka 命令。</p>
+                                <h4 id="劣-2"><a href="#劣-2" class="headerlink" title="劣"></a>劣</h4>
+                                <p>这样做的结果是直接降低了你对 Kafka 集群的掌控程度。</p>
+                                <p>另一个弊端在于它的滞后性。</p>
+                                <p>由于它有自己的发布周期，因此是否能及时地包含最新版本的 Kafka 就成为了一个问题。比如 CDH 6.1.0 版本发布时 Apache Kafka 已经演进到了 2.1.0 版本，但 CDH 中的 Kafka 依然是 2.0.0<br>版本，显然那些在 Kafka 2.1.0 中修复的 Bug 只能等到 CDH 下次版本更新时才有可能被真正修复。</p>
+                                <h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3>
+                                <ul>
+                                    <li>
+                                        <p>Apache Kafka，也称社区版 Kafka。</p>
+                                        <ul>
+                                            <li>优势在于迭代速度快，社区响应度高，使用它可以让你有更高的把控度</li>
+                                            <li>缺陷在于仅提供基础核心组件，缺失一些高级的特性。</li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <p>Confluent Kafka，Confluent 公司提供的 Kafka。</p>
+                                        <ul>
+                                            <li>优势在于集成了很多高级特性且由 Kafka 原班人马打造，质量上有保证</li>
+                                            <li>缺陷在于相关文档资料不全，普及率较低，没有太多可供参考的范例。</li>
+                                        </ul>
+                                    </li>
+                                    <li>CDH/HDP Kafka，大数据云公司提供的 Kafka，内嵌 Apache Kafka。<ul>
+                                            <li>优势在于操作简单，节省运维成本</li>
+                                            <li>缺陷在于把控度低，演进速度较慢。</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                                <h2 id="kafka-版本号"><a href="#kafka-版本号" class="headerlink" title="kafka 版本号"></a>kafka 版本号</h2>
+                                <h3 id="Kafka-版本命名"><a href="#Kafka-版本命名" class="headerlink" title="Kafka 版本命名"></a>Kafka 版本命名</h3>
+                                <p><img src="https://tva1.sinaimg.cn/large/e6c9d24egy1h0qywsepyjj21660eignb.jpg" alt="image-20220329191711226"></p>
+                                <p>其中前半部分为 Scala语言版本，后才为kafka版本，如上图所示</p>
+                                <blockquote>
+                                    <p>他们均符合x.y.z 命名规范</p>
+                                </blockquote>
+                                <h3 id="Kafka-版本演进"><a href="#Kafka-版本演进" class="headerlink" title="Kafka 版本演进"></a>Kafka 版本演进</h3>
+                                <p>Kafka 目前总共演进了 7 个大版本，分别是 0.7.x、0.8.x、0.9.x、0.10.x、0.11.x、1.x 、 2.x，3.x 其中的小版本和 Patch 版本很</p>
+                                <p>多。</p>
+                                <blockquote>
+                                    <p>本文书写 时最新版本为 3.10（2022-03-29）</p>
+                                </blockquote>
+                                <h4 id="0-7-x版本"><a href="#0-7-x版本" class="headerlink" title="0.7.x版本"></a>0.7.x版本</h4>
+                                <p>很老的Kafka版本，它只有基本的<strong>消息队列</strong>功能，连消息副本机制都没有，不建议使用。</p>
+                                <h4 id="0-8-x版本"><a href="#0-8-x版本" class="headerlink" title="0.8.x版本"></a>0.8.x版本</h4>
+                                <p>两个重要特性，</p>
+                                <p>一个是Kafka 0.8.0增加了副本机制，</p>
+                                <p>另一个是Kafka 0.8.2.0引入了新版本Producer API。</p>
+                                <p>新旧版本Producer API如下：</p>
+                                <figure class="highlight dart">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="comment">//旧版本Producer</span></span><br><span class="line">kafka.javaapi.producer.Producer&lt;K,V&gt; </span><br><span class="line"></span><br><span class="line"><span class="comment">//新版本Producer</span></span><br><span class="line">org.apache.kafka.clients.producer.KafkaProducer&lt;K,V&gt;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>与旧版本相比，新版本Producer<br>API有点不同，一是连接Kafka方式上，旧版本的生产者及消费者API连接的是Zookeeper，而新版本则连接的是Broker；二是新版Producer采用异步方式发送消息，比之前同步发送消息的性能有所提升。但此时的新版Producer<br>API尚不稳定，不建议生产使用。</p>
+                                <h4 id="0-9-x版本"><a href="#0-9-x版本" class="headerlink" title="0.9.x版本"></a>0.9.x版本</h4>
+                                <p>Kafka 0.9 是一个重大的版本迭代，增加了非常多的新特性，主要体现在三个方面：</p>
+                                <ul>
+                                    <li><strong>安全方面</strong>：在0.9.0之前，Kafka安全方面的考虑几乎为0。Kafka 0.9.0 在安全认证、授权管理、数据加密等方面都得到了支持，包括支持Kerberos等。</li>
+                                    <li><strong>新版本Consumer API</strong>：Kafka 0.9.0 重写并提供了新版消费端API，使用方式也是从连接Zookeeper切到了连接Broker，但是此时新版Consumer<br>API也不太稳定、存在不少Bug，生产使用可能会比较痛苦；而0.9.0版本的Producer API已经比较稳定了，生产使用问题不大。</li>
+                                    <li><strong>Kafka Connect</strong>：Kafka 0.9.0 引入了新的组件 Kafka Connect ，用于实现Kafka与其他外部系统之间的数据抽取。</li>
+                                </ul>
+                                <h4 id="0-10-x版本"><a href="#0-10-x版本" class="headerlink" title="0.10.x版本"></a>0.10.x版本</h4>
+                                <p>Kafka 0.10 是一个重要的大版本，因为Kafka 0.10.0.0 引入了 Kafka Streams，使得Kafka不再仅是一个消息引擎，而是往一个分布式流处理平台方向发展。0.10 大版本包含两个小版本：0.10.1 和<br>0.10.2，它们的主要功能变更都是在 Kafka Streams 组件上。</p>
+                                <p>值得一提的是，自 0.10.2.2 版本起，新版本 Consumer API 已经比较稳定了，而且 Producer API 的性能也得到了提升，因此对于使用 0.10.x 大版本的用户，建议使用或升级到 Kafka 0.10.2.2<br>版本。</p>
+                                <h4 id="0-11-x版本"><a href="#0-11-x版本" class="headerlink" title="0.11.x版本"></a>0.11.x版本</h4>
+                                <p>Kafka 0.11 是一个里程碑式的大版本，主要有两个大的变更，一是Kafka从这个版本开始支持 <strong>Exactly-Once 语义</strong><br>即精准一次语义，主要是实现了Producer端的消息幂等性，以及事务特性，这对于Kafka流式处理具有非常大的意义。</p>
+                                <p>另一个重大变更是<strong>Kafka消息格式的重构</strong>，Kafka 0.11主要为了实现Producer幂等性与事务特性，重构了投递消息的数据结构。这一点非常值得关注，因为Kafka<br>0.11之后的消息格式发生了变化，所以我们要特别注意Kafka不同版本间消息格式不兼容的问题。</p>
+                                <h4 id="1-x版本"><a href="#1-x版本" class="headerlink" title="1.x版本"></a>1.x版本</h4>
+                                <p>Kafka 1.x 更多的是Kafka Streams方面的改进，以及Kafka Connect的改进与功能完善等。但仍有两个重要特性，一是Kafka 1.0.0实现了<strong>磁盘的故障转移</strong><br>，当Broker的某一块磁盘损坏时数据会自动转移到其他正常的磁盘上，Broker还会正常工作，这在之前版本中则会直接导致Broker宕机，因此Kafka的可用性与可靠性得到了提升；</p>
+                                <p>二是Kafka 1.1.0开始支持<strong>副本跨路径迁移</strong><br>，分区副本可以在同一Broker不同磁盘目录间进行移动，这对于磁盘的<a href="https://cloud.tencent.com/product/clb?from=10680" target="_blank" rel="noopener">负载均衡</a>非常有意义。</p>
+                                <h4 id="2-x版本"><a href="#2-x版本" class="headerlink" title="2.x版本"></a>2.x版本</h4>
+                                <p>Kafka 2.x 更多的也是Kafka Streams、Connect方面的性能提升与功能完善，以及安全方面的增强等。一个使用特性，Kafka<br>2.1.0开始支持ZStandard的压缩方式，提升了消息的压缩比，显著减少了磁盘空间与网络io消耗。</p>
+                                <h4 id="3-x版本"><a href="#3-x版本" class="headerlink" title="3.x版本"></a>3.x版本</h4>
+                                <ul>
+                                    <li>不再支持 Java 8 和 Scala 2.12</li>
+                                    <li>Kafka Raft 支持元数据主题的快照以及自我管理的仲裁中的其他改进</li>
+                                    <li>为默认启用的 Kafka 生产者提供更强的交付保证</li>
+                                    <li>弃用消息格式 v0 和 v1</li>
+                                    <li>OffsetFetch 和 FindCoordinator 请求的优化</li>
+                                    <li>更灵活的 Mirror Maker 2 配置和 Mirror Maker 1 的弃用</li>
+                                    <li>能够在 Kafka Connect 中的一次调用中重新启动连接器的任务</li>
+                                    <li>现在默认启用连接器日志上下文和连接器客户端覆盖</li>
+                                    <li>Kafka Streams 中时间戳同步的增强语义</li>
+                                    <li>改进了 Stream 的 TaskId 的公共 API</li>
+                                    <li>Kafka 中的默认 serde 变为 null</li>
+                                </ul>
+                                <h3 id="Kafka版本建议"><a href="#Kafka版本建议" class="headerlink" title="Kafka版本建议"></a>Kafka版本建议</h3>
+                                <ol>
+                                    <li>遵循一个基本原则，Kafka客户端版本和服务端版本应该保持一致，否则可能会遇到一些问题。</li>
+                                    <li>根据是否用到了Kafka的一些新特性来选择，假如要用到Kafka生产端的消息幂等性，那么建议选择Kafka 0.11 或之后的版本。</li>
+                                    <li>选择一个自己熟悉且稳定的版本，如果说没有比较熟悉的版本，建议选择一个较新且稳定、使用比较广泛的版本。</li>
+                                </ol>
+                                <h2 id="referer"><a href="#referer" class="headerlink" title="referer"></a>referer</h2>
+                                <p><a href="https://cloud.tencent.com/developer/article/1596747" target="_blank" rel="noopener">Apache Kafka 版本演进及特性介绍</a></p>
+                                <p><a href="https://archive.apache.org/dist/kafka/3.0.0/RELEASE_NOTES.html" target="_blank" rel="noopener">RELEASE_NOTES</a></p>
+                            </div>
+                            <div class="popular-posts-header">相关文章</div>
+                            <ul class="popular-posts">
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/532288655.html" rel="bookmark">Apache Kafka认识</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/3780016964.html" rel="bookmark">Kafka线上部署</a></div>
+                                </li>
+                            </ul>
+                            <footer class="post-footer">
+                                <div class="post-tags">
+                                    <a href="/tags/Apache-Kafka/" rel="tag"><i class="fa fa-tag"></i> Apache Kafka</a>
+                                </div>
+                                <div class="post-nav">
+                                    <div class="post-nav-item">
+                                        <a href="/2370345191.html" rel="prev" title="中国节假日订阅">
+                                            <i class="fa fa-chevron-left"></i> 中国节假日订阅 </a>
+                                    </div>
+                                    <div class="post-nav-item">
+                                        <a href="/3780016964.html" rel="next" title="Kafka线上部署"> Kafka线上部署 <i class="fa fa-chevron-right"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </footer>
+                        </article>
+                    </div>
+                    <script>
+                        window.addEventListener('tabs:register', () =>
+                        {
+                            let
+                            {
+                                activeClass
+                            } = CONFIG.comments;
+                            if (CONFIG.comments.storage)
+                            {
+                                activeClass = localStorage.getItem('comments_active') || activeClass;
+                            }
+                            if (activeClass)
+                            {
+                                let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+                                if (activeTab)
+                                {
+                                    activeTab.click();
+                                }
+                            }
+                        });
+                        if (CONFIG.comments.storage)
+                        {
+                            window.addEventListener('tabs:click', event =>
+                            {
+                                if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+                                let commentClass = event.target.classList[1];
+                                localStorage.setItem('comments_active', commentClass);
+                            });
+                        }
+
+                    </script>
+                </div>
+                <div class="toggle sidebar-toggle">
+                    <span class="toggle-line toggle-line-first"></span>
+                    <span class="toggle-line toggle-line-middle"></span>
+                    <span class="toggle-line toggle-line-last"></span>
+                </div>
+                <aside class="sidebar">
+                    <div class="sidebar-inner">
+                        <ul class="sidebar-nav motion-element">
+                            <li class="sidebar-nav-toc"> 文章目录 </li>
+                            <li class="sidebar-nav-overview"> 站点概览 </li>
+                        </ul>
+                        <!--noindex-->
+                        <div class="post-toc-wrap sidebar-panel">
+                            <div class="post-toc motion-element">
+                                <ol class="nav">
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#Kafka-发行版本"><span class="nav-number">1.</span> <span class="nav-text">Kafka 发行版本</span></a>
+                                        <ol class="nav-child">
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#Apache-Kafka"><span class="nav-number">1.1.</span> <span class="nav-text">Apache Kafka</span></a>
+                                                <ol class="nav-child">
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#优"><span class="nav-number">1.1.1.</span> <span class="nav-text">优</span></a></li>
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#劣"><span class="nav-number">1.1.2.</span> <span class="nav-text">劣</span></a></li>
+                                                </ol>
+                                            </li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#Confluent-Kafka"><span class="nav-number">1.2.</span> <span class="nav-text">Confluent Kafka</span></a>
+                                                <ol class="nav-child">
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#优-1"><span class="nav-number">1.2.1.</span> <span class="nav-text">优</span></a></li>
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#劣-1"><span class="nav-number">1.2.2.</span> <span class="nav-text">劣</span></a></li>
+                                                </ol>
+                                            </li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#Cloudera-Hortonworks-Kafka"><span class="nav-number">1.3.</span> <span class="nav-text">Cloudera&#x2F;Hortonworks Kafka</span></a>
+                                                <ol class="nav-child">
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#优-2"><span class="nav-number">1.3.1.</span> <span class="nav-text">优</span></a></li>
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#劣-2"><span class="nav-number">1.3.2.</span> <span class="nav-text">劣</span></a></li>
+                                                </ol>
+                                            </li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#小结"><span class="nav-number">1.4.</span> <span class="nav-text">小结</span></a></li>
+                                        </ol>
+                                    </li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#kafka-版本号"><span class="nav-number">2.</span> <span class="nav-text">kafka 版本号</span></a>
+                                        <ol class="nav-child">
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#Kafka-版本命名"><span class="nav-number">2.1.</span> <span class="nav-text">Kafka 版本命名</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#Kafka-版本演进"><span class="nav-number">2.2.</span> <span class="nav-text">Kafka 版本演进</span></a>
+                                                <ol class="nav-child">
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#0-7-x版本"><span class="nav-number">2.2.1.</span> <span class="nav-text">0.7.x版本</span></a></li>
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#0-8-x版本"><span class="nav-number">2.2.2.</span> <span class="nav-text">0.8.x版本</span></a></li>
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#0-9-x版本"><span class="nav-number">2.2.3.</span> <span class="nav-text">0.9.x版本</span></a></li>
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#0-10-x版本"><span class="nav-number">2.2.4.</span> <span class="nav-text">0.10.x版本</span></a></li>
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#0-11-x版本"><span class="nav-number">2.2.5.</span> <span class="nav-text">0.11.x版本</span></a></li>
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#1-x版本"><span class="nav-number">2.2.6.</span> <span class="nav-text">1.x版本</span></a></li>
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#2-x版本"><span class="nav-number">2.2.7.</span> <span class="nav-text">2.x版本</span></a></li>
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#3-x版本"><span class="nav-number">2.2.8.</span> <span class="nav-text">3.x版本</span></a></li>
+                                                </ol>
+                                            </li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#Kafka版本建议"><span class="nav-number">2.3.</span> <span class="nav-text">Kafka版本建议</span></a></li>
+                                        </ol>
+                                    </li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#referer"><span class="nav-number">3.</span> <span class="nav-text">referer</span></a></li>
+                                </ol>
+                            </div>
+                        </div>
+                        <!--/noindex-->
+                        <div class="site-overview-wrap sidebar-panel">
+                            <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <img class="site-author-image" itemprop="image" alt="吴志鹏" src="/images/favicon/android-chrome-512x512.png">
+                                <p class="site-author-name" itemprop="name">吴志鹏</p>
+                                <div class="site-description" itemprop="description">Talk is free，please state clearly</div>
+                            </div>
+                            <div class="site-state-wrap motion-element">
+                                <nav class="site-state">
+                                    <div class="site-state-item site-state-posts">
+                                        <a href="/archives/">
+                                            <span class="site-state-item-count">136</span>
+                                            <span class="site-state-item-name">日志</span>
+                                        </a>
+                                    </div>
+                                    <div class="site-state-item site-state-categories">
+                                        <a href="/categories/">
+                                            <span class="site-state-item-count">158</span>
+                                            <span class="site-state-item-name">分类</span></a>
+                                    </div>
+                                    <div class="site-state-item site-state-tags">
+                                        <a href="/tags/">
+                                            <span class="site-state-item-count">89</span>
+                                            <span class="site-state-item-name">标签</span></a>
+                                    </div>
+                                </nav>
+                            </div>
+                            <div class="links-of-author motion-element">
+                                <span class="links-of-author-item">
+                                    <a href="https://github.com/Payne-Wu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Payne-Wu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="mailto:wuzhipeng1289690157@gmail.com" title="E-Mail → mailto:wuzhipeng1289690157@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="https://www.zhihu.com/people/wu-zhi-peng-72-78" title="ZhiHu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;wu-zhi-peng-72-78" rel="noopener" target="_blank"><i class="fa fa-magic fa-fw"></i>ZhiHu</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="https://weibo.com/u/6987234483" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;6987234483" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+                <div id="sidebar-dimmer"></div>
+            </div>
+        </main>
+        <footer class="footer">
+            <div class="footer-inner">
+                <div class="copyright"> &copy; <span itemprop="copyrightYear">2022</span>
+                    <span class="with-love">
+                        <i class="fa fa-heart"></i>
+                    </span>
+                    <span class="author" itemprop="copyrightHolder">PayneWu</span>
+                    <span class="post-meta-divider">|</span>
+                    <span class="post-meta-item-icon">
+                        <i class="fa fa-chart-area"></i>
+                    </span>
+                    <span title="站点总字数">255k</span>
+                    <span class="post-meta-divider">|</span>
+                    <span class="post-meta-item-icon">
+                        <i class="fa fa-coffee"></i>
+                    </span>
+                    <span title="站点阅读时长">3:51</span>
+                </div>
+                <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">湘ICP备2021019893号-1 </a>
+                </div>
+                <div style="display: none;">
+                    <script src="//s95.cnzz.com/z_stat.php?id=true&web_id=true"></script>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+    <script src="/js/utils.js"></script>
+    <script src="/.js"></script>
+    <script src="/js/schemes/pisces.js"></script>
+    <script src="/.js"></script>
+    <script src="/js/next-boot.js"></script>
+    <script src="/.js"></script>
+    <script>
+        (function ()
+        {
+            var canonicalURL, curProtocol;
+            //Get the <link> tag
+            var x = document.getElementsByTagName("link");
+            //Find the last canonical URL
+            if (x.length > 0)
+            {
+                for (i = 0; i < x.length; i++)
+                {
+                    if (x[i].rel.toLowerCase() == 'canonical' && x[i].href)
+                    {
+                        canonicalURL = x[i].href;
+                    }
+                }
+            }
+            //Get protocol
+            if (!canonicalURL)
+            {
+                curProtocol = window.location.protocol.split(':')[0];
+            }
+            else
+            {
+                curProtocol = canonicalURL.split(':')[0];
+            }
+            //Get current URL if the canonical URL does not exist
+            if (!canonicalURL) canonicalURL = window.location.href;
+            //Assign script content. Replace current URL with the canonical URL
+            ! function ()
+            {
+                var e = /([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,
+                    r = canonicalURL,
+                    t = document.referrer;
+                if (!e.test(r))
+                {
+                    var n = (String(curProtocol).toLowerCase() === 'https') ? "https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif" : "//api.share.baidu.com/s.gif";
+                    t ? (n += "?r=" + encodeURIComponent(document.referrer), r && (n += "&l=" + r)) : r && (n += "?l=" + r);
+                    var i = new Image;
+                    i.src = n
+                }
+            }(window);
+        })();
+
+    </script>
+    <script src="/js/local-search.js"></script>
+    <script src="/.js"></script>
+</body>
+
+</html>

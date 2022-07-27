@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+    <meta name="theme-color" content="#222">
+    <meta name="generator" content="Hexo 4.2.1">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16-next.png">
+    <link rel="mask-icon" href="/images/favicon/safari-pinned-tab.svg" color="#222">
+    <meta name="msapplication-config" content="/images/favicon/browserconfig.xml">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+    <link rel="stylesheet" href="/lib/pace/pace-theme-mac-osx.min.css">
+    <script src="/lib/pace/pace.min.js"></script>
+    <script id="hexo-configurations">
+        var NexT = window.NexT ||
+        {};
+        var CONFIG = {
+            "hostname": "paynewu.com",
+            "root": "/",
+            "scheme": "Gemini",
+            "version": "7.8.0",
+            "exturl": false,
+            "sidebar":
+            {
+                "position": "right",
+                "width": 240,
+                "display": "post",
+                "padding": 18,
+                "offset": 12,
+                "onmobile": false
+            },
+            "copycode":
+            {
+                "enable": true,
+                "show_result": true,
+                "style": "mac"
+            },
+            "back2top":
+            {
+                "enable": true,
+                "sidebar": false,
+                "scrollpercent": true
+            },
+            "bookmark":
+            {
+                "enable": false,
+                "color": "#222",
+                "save": "auto"
+            },
+            "fancybox": false,
+            "mediumzoom": true,
+            "lazyload": false,
+            "pangu": true,
+            "comments":
+            {
+                "style": "tabs",
+                "active": "valine",
+                "storage": true,
+                "lazyload": false,
+                "nav": null
+            },
+            "algolia":
+            {
+                "hits":
+                {
+                    "per_page": 10
+                },
+                "labels":
+                {
+                    "input_placeholder": "Search for Posts",
+                    "hits_empty": "We didn't find any results for the search: ${query}",
+                    "hits_stats": "${hits} results found in ${time} ms"
+                }
+            },
+            "localsearch":
+            {
+                "enable": true,
+                "trigger": "auto",
+                "top_n_per_article": 8,
+                "unescape": false,
+                "preload": false
+            },
+            "motion":
+            {
+                "enable": false,
+                "async": false,
+                "transition":
+                {
+                    "post_block": "bounceDownIn",
+                    "post_header": "slideDownIn",
+                    "post_body": "slideDownIn",
+                    "coll_header": "slideLeftIn",
+                    "sidebar": "slideUpIn"
+                }
+            },
+            "path": "search.xml"
+        };
+
+    </script>
+    <meta name="description" content="GoLang内置包之time 一寸光阴一寸金，寸金难买寸光阴 时间离我们仅在咫尺，无论是在编程中时间还是日常生活中对于时间的 记述都是离我们最近的，那么让我们一起来学习一下GoLang中内置包time。">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Golang内置包之time">
+    <meta property="og:url" content="https://paynewu.com/11529.html">
+    <meta property="og:site_name" content="吴志鹏｜Payne-Wu">
+    <meta property="og:description" content="GoLang内置包之time 一寸光阴一寸金，寸金难买寸光阴 时间离我们仅在咫尺，无论是在编程中时间还是日常生活中对于时间的 记述都是离我们最近的，那么让我们一起来学习一下GoLang中内置包time。">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="article:published_time" content="2020-12-01T15:55:27.000Z">
+    <meta property="article:modified_time" content="2022-07-27T09:58:26.872Z">
+    <meta property="article:author" content="吴志鹏">
+    <meta property="article:tag" content="Go">
+    <meta name="twitter:card" content="summary">
+    <link rel="canonical" href="https://paynewu.com/11529.html">
+    <script id="page-configurations">
+        // https://hexo.io/docs/variables.html
+        CONFIG.page = {
+            sidebar: "",
+            isHome: false,
+            isPost: true,
+            lang: 'zh-CN'
+        };
+
+    </script>
+    <title>Golang内置包之time | 吴志鹏｜Payne-Wu</title>
+    <meta name="google-site-verification" content="p_bIcnvirkFzG2dYKuNDivKD8-STet5W7D-01woA2fc" />
+    <noscript>
+        <style>
+            .use-motion .brand,
+            .use-motion .menu-item,
+            .sidebar-inner,
+            .use-motion .post-block,
+            .use-motion .pagination,
+            .use-motion .comments,
+            .use-motion .post-header,
+            .use-motion .post-body,
+            .use-motion .collection-header
+            {
+                opacity: initial;
+            }
+
+            .use-motion .site-title,
+            .use-motion .site-subtitle
+            {
+                opacity: initial;
+                top: initial;
+            }
+
+            .use-motion .logo-line-before i
+            {
+                left: initial;
+            }
+
+            .use-motion .logo-line-after i
+            {
+                right: initial;
+            }
+
+        </style>
+    </noscript>
+    <link rel="alternate" href="/atom.xml" title="吴志鹏｜Payne-Wu" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+    <div class="container">
+        <div class="headband"></div>
+        <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+            <div class="header-inner">
+                <div class="site-brand-container">
+                    <div class="site-nav-toggle">
+                        <div class="toggle" aria-label="切换导航栏">
+                            <span class="toggle-line toggle-line-first"></span>
+                            <span class="toggle-line toggle-line-middle"></span>
+                            <span class="toggle-line toggle-line-last"></span>
+                        </div>
+                    </div>
+                    <div class="site-meta">
+                        <a href="/" class="brand" rel="start">
+                            <span class="logo-line-before"><i></i></span>
+                            <h1 class="site-title">吴志鹏｜Payne-Wu </h1>
+                            <span class="logo-line-after"><i></i></span>
+                        </a>
+                    </div>
+                    <div class="site-nav-right">
+                        <div class="toggle popup-trigger">
+                            <i class="fa fa-search fa-fw fa-lg"></i>
+                        </div>
+                    </div>
+                </div>
+                <nav class="site-nav">
+                    <ul id="menu" class="main-menu menu">
+                        <li class="menu-item menu-item-home">
+                            <a href="/" rel="section">首页</a>
+                        </li>
+                        <li class="menu-item menu-item-archives">
+                            <a href="/archives/" rel="section">文章列表</a>
+                        </li>
+                        <li class="menu-item menu-item-tags">
+                            <a href="/tags/" rel="section">Tags Cloud</a>
+                        </li>
+                        <li class="menu-item menu-item-categories">
+                            <a href="/categories/" rel="section">文章集合</a>
+                        </li>
+                        <li class="menu-item menu-item-about">
+                            <a href="/about/" rel="section">关于我啊</a>
+                        </li>
+                        <li class="menu-item menu-item-message">
+                            <a href="/message/" rel="section">留言与我</a>
+                        </li>
+                        <li class="menu-item menu-item-search">
+                            <a role="button" class="popup-trigger">搜索 </a>
+                        </li>
+                    </ul>
+                </nav>
+                <div class="search-pop-overlay">
+                    <div class="popup search-popup">
+                        <div class="search-header">
+                            <span class="search-icon">
+                                <i class="fa fa-search"></i>
+                            </span>
+                            <div class="search-input-container">
+                                <input autocomplete="off" autocapitalize="off" placeholder="搜索..." spellcheck="false" type="search" class="search-input">
+                            </div>
+                            <span class="popup-btn-close">
+                                <i class="fa fa-times-circle"></i>
+                            </span>
+                        </div>
+                        <div id="search-result">
+                            <div id="no-result">
+                                <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="back-to-top">
+            <i class="fa fa-arrow-up"></i>
+            <span>0%</span>
+        </div>
+        <div class="reading-progress-bar"></div>
+        <main class="main">
+            <div class="main-inner">
+                <div class="content-wrap">
+                    <div class="content post posts-expand">
+                        <article itemscope itemtype="http://schema.org/Article" class="post-block single" lang="zh-CN">
+                            <link itemprop="mainEntityOfPage" href="https://paynewu.com/11529.html">
+                            <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <meta itemprop="image" content="/images/favicon/android-chrome-512x512.png">
+                                <meta itemprop="name" content="吴志鹏">
+                                <meta itemprop="description" content="Talk is free，please state clearly">
+                            </span>
+                            <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+                                <meta itemprop="name" content="吴志鹏｜Payne-Wu">
+                            </span>
+                            <header class="post-header">
+                                <h1 class="post-title" itemprop="name headline"> Golang内置包之time </h1>
+                                <div class="post-meta">
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-user"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">作者</span>
+                                        <span><a href="/authors/Payne" class="author" itemprop="url" rel="index">Payne</a></span>
+                                    </span>
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-calendar"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">发表于</span>
+                                        <time title="创建时间：2020-12-01 23:55:27" itemprop="dateCreated datePublished" datetime="2020-12-01T23:55:27+08:00">2020-12-01</time>
+                                    </span>
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-folder"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">分类于</span>
+                                        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                                            <a href="/categories/Go/" itemprop="url" rel="index"><span itemprop="name">Go</span></a>
+                                        </span>
+                                    </span>
+                                    <br>
+                                    <span class="post-meta-item" title="本文字数">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-file-word"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">本文字数：</span>
+                                        <span>1.1k</span>
+                                    </span>
+                                    <span class="post-meta-item" title="阅读时长">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-clock"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                                        <span>1 分钟</span>
+                                    </span>
+                                </div>
+                            </header>
+                            <div class="post-body" itemprop="articleBody">
+                                <h2 id="GoLang内置包之time"><a href="#GoLang内置包之time" class="headerlink" title="GoLang内置包之time"></a>GoLang内置包之time</h2>
+                                <p>一寸光阴一寸金，寸金难买寸光阴</p>
+                                <p>时间离我们仅在咫尺，无论是在编程中时间还是日常生活中对于时间的 记述都是离我们最近的，那么让我们一起来学习一下GoLang中内置包time。</p>
+                                <a id="more"></a>
+                                <p>Let’s Go</p>
+                                <h3 id="time包源码怎么说"><a href="#time包源码怎么说" class="headerlink" title="time包源码怎么说"></a>time包源码怎么说</h3>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="keyword">const</span> (</span><br><span class="line">	Nanosecond  Duration = <span class="number">1</span></span><br><span class="line">	Microsecond          = <span class="number">1000</span> * Nanosecond</span><br><span class="line">	Millisecond          = <span class="number">1000</span> * Microsecond</span><br><span class="line">	Second               = <span class="number">1000</span> * Millisecond</span><br><span class="line">	Minute               = <span class="number">60</span> * Second</span><br><span class="line">	Hour                 = <span class="number">60</span> * Minute</span><br><span class="line">)</span><br><span class="line">time.Duration是time包定义的一个类型，</span><br><span class="line">它代表两个时间点之间经过的时间，以纳秒为单位。time.Duration表示一段时间间隔，可表示的最长时间段大约<span class="number">290</span>年。</span><br><span class="line"></span><br><span class="line">例如：time.Duration表示<span class="number">1</span>纳秒，time.Second表示<span class="number">1</span>秒。</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h3 id="基本使用"><a href="#基本使用" class="headerlink" title="基本使用"></a>基本使用</h3>
+                                <p>打印显示出现在的时间，基本示例如下。 其中now为<code>time.Time</code>类型,Month 为<code>time.Month</code>类型</p>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">timeDemo</span><span class="params">()</span></span> &#123;</span><br><span class="line">	now := time.Now() <span class="comment">//获取当前时间</span></span><br><span class="line">	<span class="comment">// current time:2020-12-01 22:24:30.85736 +0800 CST m=+0.000096031</span></span><br><span class="line">	fmt.Printf(<span class="string">"current time:%v\n"</span>, now)</span><br><span class="line"></span><br><span class="line">	year := now.Year()     <span class="comment">//年</span></span><br><span class="line">	month := now.Month()   <span class="comment">//月</span></span><br><span class="line">	day := now.Day()       <span class="comment">//日</span></span><br><span class="line">	hour := now.Hour()     <span class="comment">//小时</span></span><br><span class="line">	minute := now.Minute() <span class="comment">//分钟</span></span><br><span class="line">	second := now.Second() <span class="comment">//秒</span></span><br><span class="line">	fmt.Printf(<span class="string">"%d-%02d-%02d %02d:%02d:%02d\n"</span>, year, month, day, hour, minute, second)</span><br><span class="line">	fmt.Printf(<span class="string">"%T,%T,%T,%T,%T,%T,%T\n"</span>, now, year, month, day, hour, minute, second)</span><br><span class="line">	<span class="comment">// time.Time,int,time.Month,int,int,int,int</span></span><br><span class="line">&#125;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h3 id="时间戳"><a href="#时间戳" class="headerlink" title="时间戳"></a>时间戳</h3>
+                                <p>在编程中对于时间戳的应用也尤为广泛,例如在Web开发中做cookies有效期，接口加密， Redis中的key有效期等等，大部分都是使用到了时间戳。</p>
+                                <p>时间戳是自1970年1月1日（08:00:00GMT）至当前时间的总毫秒数。它也被称为Unix时间戳（UnixTimestamp）。 在GoLang中,获取时间戳的操作如下</p>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">timeStamp</span><span class="params">()</span></span> &#123;</span><br><span class="line">	now := time.Now()</span><br><span class="line">	<span class="comment">// 当前时间戳 TimeStamp type:int64, TimeStamp:1606832965</span></span><br><span class="line">	fmt.Printf(<span class="string">"TimeStamp type:%T, TimeStamp:%v"</span>, now.Unix(), now.Unix())</span><br><span class="line">&#125;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>除此之外还有纳秒时间戳，我们可以使用<code>time.Now().UnixNano()</code>来获取它</p>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">timeStamp</span><span class="params">()</span></span> &#123;</span><br><span class="line">	now := time.Now()</span><br><span class="line">	<span class="comment">// 纳秒级时间戳TimeStamp type:int64, TimeStamp:1606833059999670000</span></span><br><span class="line">	fmt.Printf(<span class="string">"TimeStamp type:%T, TimeStamp:%v\n"</span>, now.UnixNano(), now.UnixNano())</span><br><span class="line">&#125;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>那么基本的时间戳的先暂且为止了，那该如何由时间戳转化为普通的时间格式呢？</p>
+                                <p>当然也是有方法滴，莫急莫急，请听我一一道来，嘴比较笨就直接用代码吧，嘻嘻</p>
+                                <p>在<code>go</code>语言中可以<code>time.Unix</code>来直接将时间戳转化为当前时间格式，实现瞬间替换。</p>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">timeStampToTime</span><span class="params">()</span></span> &#123;</span><br><span class="line">	timestamp := time.Now().Unix()</span><br><span class="line">	timeObj := time.Unix(timestamp, <span class="number">0</span>) <span class="comment">//将时间戳转为时间格式</span></span><br><span class="line">	fmt.Println(timeObj)</span><br><span class="line">	year := timeObj.Year()     <span class="comment">//年</span></span><br><span class="line">	month := timeObj.Month()   <span class="comment">//月</span></span><br><span class="line">	day := timeObj.Day()       <span class="comment">//日</span></span><br><span class="line">	hour := timeObj.Hour()     <span class="comment">//小时</span></span><br><span class="line">	minute := timeObj.Minute() <span class="comment">//分钟</span></span><br><span class="line">	second := timeObj.Second() <span class="comment">//秒</span></span><br><span class="line">	fmt.Printf(<span class="string">"%d-%02d-%02d %02d:%02d:%02d\n"</span>, year, month, day, hour, minute, second)</span><br><span class="line">&#125;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>这样我们就可以简单的将时间戳转化为时间格式，是不是很Nice</p>
+                                <p>基本的定义查看就以及搞完了，那咱们整一下高级一点的东西，时间的操作</p>
+                                <h3 id="操作时间"><a href="#操作时间" class="headerlink" title="操作时间"></a>操作时间</h3>
+                                <h4 id="ADD"><a href="#ADD" class="headerlink" title="ADD"></a>ADD</h4>
+                                <p>在原本的时间基础上在增加h时m分钟s秒，其增加的部分源码如下</p>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="comment">// type Duration int64</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(t Time)</span> <span class="title">Add</span><span class="params">(d Duration)</span> <span class="title">Time</span></span> &#123;</span><br><span class="line">	dsec := <span class="keyword">int64</span>(d / <span class="number">1e9</span>)</span><br><span class="line">	nsec := t.nsec() + <span class="keyword">int32</span>(d%<span class="number">1e9</span>)</span><br><span class="line">	<span class="keyword">if</span> nsec &gt;= <span class="number">1e9</span> &#123;</span><br><span class="line">		dsec++</span><br><span class="line">		nsec -= <span class="number">1e9</span></span><br><span class="line">	&#125; <span class="keyword">else</span> <span class="keyword">if</span> nsec &lt; <span class="number">0</span> &#123;</span><br><span class="line">		dsec--</span><br><span class="line">		nsec += <span class="number">1e9</span></span><br><span class="line">	&#125;</span><br><span class="line">	t.wall = t.wall&amp;^nsecMask | <span class="keyword">uint64</span>(nsec) <span class="comment">// update nsec</span></span><br><span class="line">	t.addSec(dsec)</span><br><span class="line">	<span class="keyword">if</span> t.wall&amp;hasMonotonic != <span class="number">0</span> &#123;</span><br><span class="line">		te := t.ext + <span class="keyword">int64</span>(d)</span><br><span class="line">		<span class="keyword">if</span> d &lt; <span class="number">0</span> &amp;&amp; te &gt; t.ext || d &gt; <span class="number">0</span> &amp;&amp; te &lt; t.ext &#123;</span><br><span class="line">			<span class="comment">// Monotonic clock reading now out of range; degrade to wall-only.</span></span><br><span class="line">			t.stripMono()</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			t.ext = te</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> t</span><br><span class="line">&#125;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>首先如果要增加的话那么数据的类型必须是一致的，这个在强类型语言go中这个是一定的。</p>
+                                <p>从上面的源码中函数定义的这个变量名<code>Add(d Duration)</code>发现，其参数d为Duration类型，那么我们直接拿过来用即可，实现代码如下:</p>
+                                <figure class="highlight verilog">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">	<span class="string">"time"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">func operating(h, m, s, mls, msc, ns <span class="keyword">time</span><span class="variable">.Duration</span>) &#123;</span><br><span class="line">	now := <span class="keyword">time</span><span class="variable">.Now</span>()</span><br><span class="line">	fmt<span class="variable">.Println</span>(now<span class="variable">.Add</span>(<span class="keyword">time</span><span class="variable">.Hour</span>*h + <span class="keyword">time</span><span class="variable">.Minute</span>*m + <span class="keyword">time</span><span class="variable">.Second</span>*s + <span class="keyword">time</span><span class="variable">.Millisecond</span>*mls + <span class="keyword">time</span><span class="variable">.Microsecond</span>*msc + <span class="keyword">time</span><span class="variable">.Nanosecond</span>*ns))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">	<span class="comment">//timeDemo()</span></span><br><span class="line">	<span class="comment">//timeStamp()</span></span><br><span class="line">	<span class="comment">//timeStampToTime()</span></span><br><span class="line">	operating(<span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>)</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>注意在这里并不能增加年\月\日，仅能增加时分秒,也就是以下的才被允许</p>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="keyword">const</span> (</span><br><span class="line">	Nanosecond  Duration = <span class="number">1</span></span><br><span class="line">	Microsecond          = <span class="number">1000</span> * Nanosecond</span><br><span class="line">	Millisecond          = <span class="number">1000</span> * Microsecond</span><br><span class="line">	Second               = <span class="number">1000</span> * Millisecond</span><br><span class="line">	Minute               = <span class="number">60</span> * Second</span><br><span class="line">	Hour                 = <span class="number">60</span> * Minute</span><br><span class="line">)</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h4 id="Sub"><a href="#Sub" class="headerlink" title="Sub"></a>Sub</h4>
+                                <figure class="highlight css">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="selector-tag">func</span> <span class="selector-tag">operating</span>() &#123;</span><br><span class="line">	<span class="attribute">now </span>:= time.<span class="built_in">Now</span>()</span><br><span class="line">	targetTime := now.<span class="built_in">Add</span>(time.Hour)</span><br><span class="line">	// 目标时间与此时相比相差<span class="number">1</span>h0m0s</span><br><span class="line">	fmt.<span class="built_in">Println</span>(targetTime.Sub(now))</span><br><span class="line">&#125;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <blockquote>
+                                    <p>谁的sub谁为参照时间</p>
+                                </blockquote>
+                                <h4 id="Equal"><a href="#Equal" class="headerlink" title="Equal"></a>Equal</h4>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(t Time)</span> <span class="title">Equal</span><span class="params">(u Time)</span> <span class="title">bool</span></span></span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>判断两个时间是否相同，会考虑时区的影响，因此不同时区标准的时间也可以正确比较。本方法和用t==u不同，这种方法还会比较地点和时区信息。</p>
+                                <h4 id="Before"><a href="#Before" class="headerlink" title="Before"></a>Before</h4>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(t Time)</span> <span class="title">Before</span><span class="params">(u Time)</span> <span class="title">bool</span></span></span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>如果t代表的时间点在u之前，返回真；否则返回假。</p>
+                                <h4 id="After"><a href="#After" class="headerlink" title="After"></a>After</h4>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(t Time)</span> <span class="title">After</span><span class="params">(u Time)</span> <span class="title">bool</span></span></span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>如果t代表的时间点在u之后，返回真；否则返回假。</p>
+                                <h4 id="定时器"><a href="#定时器" class="headerlink" title="定时器"></a>定时器</h4>
+                                <p>使用<code>time.Tick(时间间隔)</code>来设置定时器，定时器的本质上是一个通道（channel）。</p>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">tickDemo</span><span class="params">()</span></span> &#123;</span><br><span class="line">	ticker := time.Tick(time.Second) <span class="comment">//定义一个1秒间隔的定时器</span></span><br><span class="line">	<span class="keyword">for</span> i := <span class="keyword">range</span> ticker &#123;</span><br><span class="line">		fmt.Println(i)<span class="comment">//每秒都会执行的任务</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h3 id="时间格式化"><a href="#时间格式化" class="headerlink" title="时间格式化"></a>时间格式化</h3>
+                                <p>时间类型有一个自带的方法<code>Format</code>进行格式化，需要注意的是Go语言中格式化时间模板不是常见的<code>Y-m-d H:M:S</code>而是使用Go的诞生时间2006年1月2号15点04分（记忆口诀为2006 1 2 3 4）</p>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">formatDemo</span><span class="params">()</span></span> &#123;</span><br><span class="line">	now := time.Now()</span><br><span class="line">	<span class="comment">// 格式化的模板为Go的出生时间2006年1月2号15点04分 Mon Jan</span></span><br><span class="line">	<span class="comment">// 24小时制</span></span><br><span class="line">	fmt.Println(now.Format(<span class="string">"2006-01-02 15:04:05.000 Mon Jan"</span>))</span><br><span class="line">	<span class="comment">// 12小时制</span></span><br><span class="line">	fmt.Println(now.Format(<span class="string">"2006-01-02 03:04:05.000 PM Mon Jan"</span>))</span><br><span class="line">	fmt.Println(now.Format(<span class="string">"2006/01/02 15:04"</span>))</span><br><span class="line">	fmt.Println(now.Format(<span class="string">"15:04 2006/01/02"</span>))</span><br><span class="line">	fmt.Println(now.Format(<span class="string">"2006/01/02"</span>))</span><br><span class="line">&#125;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>补充：如果想格式化为12小时方式，需指定<code>PM</code>。</p>
+                                <h4 id="解析字符串格式的时间"><a href="#解析字符串格式的时间" class="headerlink" title="解析字符串格式的时间"></a>解析字符串格式的时间</h4>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">now := time.Now()</span><br><span class="line">fmt.Println(now)</span><br><span class="line"><span class="comment">// 加载时区</span></span><br><span class="line">loc, err := time.LoadLocation(<span class="string">"Asia/Shanghai"</span>)</span><br><span class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">	fmt.Println(err)</span><br><span class="line">	<span class="keyword">return</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 按照指定时区和指定格式解析字符串时间</span></span><br><span class="line">timeObj, err := time.ParseInLocation(<span class="string">"2006/01/02 15:04:05"</span>, <span class="string">"2019/08/04 14:15:20"</span>, loc)</span><br><span class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">	fmt.Println(err)</span><br><span class="line">	<span class="keyword">return</span></span><br><span class="line">&#125;</span><br><span class="line">fmt.Println(timeObj)</span><br><span class="line">fmt.Println(timeObj.Sub(now))</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                            </div>
+                            <div class="popular-posts-header">相关文章</div>
+                            <ul class="popular-posts">
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/62372.html" rel="bookmark">Golang-Array</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/17571.html" rel="bookmark">Golang-Defer详解</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/3744.html" rel="bookmark">Golang-Map</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/45903.html" rel="bookmark">Golang-匿名函数与闭包</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/1962.html" rel="bookmark">Golang-接口(interface)</a></div>
+                                </li>
+                            </ul>
+                            <footer class="post-footer">
+                                <div class="post-tags">
+                                    <a href="/tags/Go/" rel="tag"><i class="fa fa-tag"></i> Go</a>
+                                </div>
+                                <div class="post-nav">
+                                    <div class="post-nav-item">
+                                        <a href="/1627.html" rel="prev" title="使用Golang操作文件的那些事儿">
+                                            <i class="fa fa-chevron-left"></i> 使用Golang操作文件的那些事儿 </a>
+                                    </div>
+                                    <div class="post-nav-item">
+                                        <a href="/21490.html" rel="next" title="Golang并发编程初探"> Golang并发编程初探 <i class="fa fa-chevron-right"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </footer>
+                        </article>
+                    </div>
+                    <script>
+                        window.addEventListener('tabs:register', () =>
+                        {
+                            let
+                            {
+                                activeClass
+                            } = CONFIG.comments;
+                            if (CONFIG.comments.storage)
+                            {
+                                activeClass = localStorage.getItem('comments_active') || activeClass;
+                            }
+                            if (activeClass)
+                            {
+                                let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+                                if (activeTab)
+                                {
+                                    activeTab.click();
+                                }
+                            }
+                        });
+                        if (CONFIG.comments.storage)
+                        {
+                            window.addEventListener('tabs:click', event =>
+                            {
+                                if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+                                let commentClass = event.target.classList[1];
+                                localStorage.setItem('comments_active', commentClass);
+                            });
+                        }
+
+                    </script>
+                </div>
+                <div class="toggle sidebar-toggle">
+                    <span class="toggle-line toggle-line-first"></span>
+                    <span class="toggle-line toggle-line-middle"></span>
+                    <span class="toggle-line toggle-line-last"></span>
+                </div>
+                <aside class="sidebar">
+                    <div class="sidebar-inner">
+                        <ul class="sidebar-nav motion-element">
+                            <li class="sidebar-nav-toc"> 文章目录 </li>
+                            <li class="sidebar-nav-overview"> 站点概览 </li>
+                        </ul>
+                        <!--noindex-->
+                        <div class="post-toc-wrap sidebar-panel">
+                            <div class="post-toc motion-element">
+                                <ol class="nav">
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#GoLang内置包之time"><span class="nav-number">1.</span> <span class="nav-text">GoLang内置包之time</span></a>
+                                        <ol class="nav-child">
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#time包源码怎么说"><span class="nav-number">1.1.</span> <span class="nav-text">time包源码怎么说</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#基本使用"><span class="nav-number">1.2.</span> <span class="nav-text">基本使用</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#时间戳"><span class="nav-number">1.3.</span> <span class="nav-text">时间戳</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#操作时间"><span class="nav-number">1.4.</span> <span class="nav-text">操作时间</span></a>
+                                                <ol class="nav-child">
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#ADD"><span class="nav-number">1.4.1.</span> <span class="nav-text">ADD</span></a></li>
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#Sub"><span class="nav-number">1.4.2.</span> <span class="nav-text">Sub</span></a></li>
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#Equal"><span class="nav-number">1.4.3.</span> <span class="nav-text">Equal</span></a></li>
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#Before"><span class="nav-number">1.4.4.</span> <span class="nav-text">Before</span></a></li>
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#After"><span class="nav-number">1.4.5.</span> <span class="nav-text">After</span></a></li>
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#定时器"><span class="nav-number">1.4.6.</span> <span class="nav-text">定时器</span></a></li>
+                                                </ol>
+                                            </li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#时间格式化"><span class="nav-number">1.5.</span> <span class="nav-text">时间格式化</span></a>
+                                                <ol class="nav-child">
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#解析字符串格式的时间"><span class="nav-number">1.5.1.</span> <span class="nav-text">解析字符串格式的时间</span></a></li>
+                                                </ol>
+                                            </li>
+                                        </ol>
+                                    </li>
+                                </ol>
+                            </div>
+                        </div>
+                        <!--/noindex-->
+                        <div class="site-overview-wrap sidebar-panel">
+                            <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <img class="site-author-image" itemprop="image" alt="吴志鹏" src="/images/favicon/android-chrome-512x512.png">
+                                <p class="site-author-name" itemprop="name">吴志鹏</p>
+                                <div class="site-description" itemprop="description">Talk is free，please state clearly</div>
+                            </div>
+                            <div class="site-state-wrap motion-element">
+                                <nav class="site-state">
+                                    <div class="site-state-item site-state-posts">
+                                        <a href="/archives/">
+                                            <span class="site-state-item-count">136</span>
+                                            <span class="site-state-item-name">日志</span>
+                                        </a>
+                                    </div>
+                                    <div class="site-state-item site-state-categories">
+                                        <a href="/categories/">
+                                            <span class="site-state-item-count">158</span>
+                                            <span class="site-state-item-name">分类</span></a>
+                                    </div>
+                                    <div class="site-state-item site-state-tags">
+                                        <a href="/tags/">
+                                            <span class="site-state-item-count">89</span>
+                                            <span class="site-state-item-name">标签</span></a>
+                                    </div>
+                                </nav>
+                            </div>
+                            <div class="links-of-author motion-element">
+                                <span class="links-of-author-item">
+                                    <a href="https://github.com/Payne-Wu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Payne-Wu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="mailto:wuzhipeng1289690157@gmail.com" title="E-Mail → mailto:wuzhipeng1289690157@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="https://www.zhihu.com/people/wu-zhi-peng-72-78" title="ZhiHu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;wu-zhi-peng-72-78" rel="noopener" target="_blank"><i class="fa fa-magic fa-fw"></i>ZhiHu</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="https://weibo.com/u/6987234483" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;6987234483" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+                <div id="sidebar-dimmer"></div>
+            </div>
+        </main>
+        <footer class="footer">
+            <div class="footer-inner">
+                <div class="copyright"> &copy; <span itemprop="copyrightYear">2022</span>
+                    <span class="with-love">
+                        <i class="fa fa-heart"></i>
+                    </span>
+                    <span class="author" itemprop="copyrightHolder">PayneWu</span>
+                    <span class="post-meta-divider">|</span>
+                    <span class="post-meta-item-icon">
+                        <i class="fa fa-chart-area"></i>
+                    </span>
+                    <span title="站点总字数">255k</span>
+                    <span class="post-meta-divider">|</span>
+                    <span class="post-meta-item-icon">
+                        <i class="fa fa-coffee"></i>
+                    </span>
+                    <span title="站点阅读时长">3:51</span>
+                </div>
+                <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">湘ICP备2021019893号-1 </a>
+                </div>
+                <div style="display: none;">
+                    <script src="//s95.cnzz.com/z_stat.php?id=true&web_id=true"></script>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+    <script src="/js/utils.js"></script>
+    <script src="/.js"></script>
+    <script src="/js/schemes/pisces.js"></script>
+    <script src="/.js"></script>
+    <script src="/js/next-boot.js"></script>
+    <script src="/.js"></script>
+    <script>
+        (function ()
+        {
+            var canonicalURL, curProtocol;
+            //Get the <link> tag
+            var x = document.getElementsByTagName("link");
+            //Find the last canonical URL
+            if (x.length > 0)
+            {
+                for (i = 0; i < x.length; i++)
+                {
+                    if (x[i].rel.toLowerCase() == 'canonical' && x[i].href)
+                    {
+                        canonicalURL = x[i].href;
+                    }
+                }
+            }
+            //Get protocol
+            if (!canonicalURL)
+            {
+                curProtocol = window.location.protocol.split(':')[0];
+            }
+            else
+            {
+                curProtocol = canonicalURL.split(':')[0];
+            }
+            //Get current URL if the canonical URL does not exist
+            if (!canonicalURL) canonicalURL = window.location.href;
+            //Assign script content. Replace current URL with the canonical URL
+            ! function ()
+            {
+                var e = /([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,
+                    r = canonicalURL,
+                    t = document.referrer;
+                if (!e.test(r))
+                {
+                    var n = (String(curProtocol).toLowerCase() === 'https') ? "https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif" : "//api.share.baidu.com/s.gif";
+                    t ? (n += "?r=" + encodeURIComponent(document.referrer), r && (n += "&l=" + r)) : r && (n += "?l=" + r);
+                    var i = new Image;
+                    i.src = n
+                }
+            }(window);
+        })();
+
+    </script>
+    <script src="/js/local-search.js"></script>
+    <script src="/.js"></script>
+</body>
+
+</html>

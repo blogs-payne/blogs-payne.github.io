@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+    <meta name="theme-color" content="#222">
+    <meta name="generator" content="Hexo 4.2.1">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16-next.png">
+    <link rel="mask-icon" href="/images/favicon/safari-pinned-tab.svg" color="#222">
+    <meta name="msapplication-config" content="/images/favicon/browserconfig.xml">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+    <link rel="stylesheet" href="/lib/pace/pace-theme-mac-osx.min.css">
+    <script src="/lib/pace/pace.min.js"></script>
+    <script id="hexo-configurations">
+        var NexT = window.NexT ||
+        {};
+        var CONFIG = {
+            "hostname": "paynewu.com",
+            "root": "/",
+            "scheme": "Gemini",
+            "version": "7.8.0",
+            "exturl": false,
+            "sidebar":
+            {
+                "position": "right",
+                "width": 240,
+                "display": "post",
+                "padding": 18,
+                "offset": 12,
+                "onmobile": false
+            },
+            "copycode":
+            {
+                "enable": true,
+                "show_result": true,
+                "style": "mac"
+            },
+            "back2top":
+            {
+                "enable": true,
+                "sidebar": false,
+                "scrollpercent": true
+            },
+            "bookmark":
+            {
+                "enable": false,
+                "color": "#222",
+                "save": "auto"
+            },
+            "fancybox": false,
+            "mediumzoom": true,
+            "lazyload": false,
+            "pangu": true,
+            "comments":
+            {
+                "style": "tabs",
+                "active": "valine",
+                "storage": true,
+                "lazyload": false,
+                "nav": null
+            },
+            "algolia":
+            {
+                "hits":
+                {
+                    "per_page": 10
+                },
+                "labels":
+                {
+                    "input_placeholder": "Search for Posts",
+                    "hits_empty": "We didn't find any results for the search: ${query}",
+                    "hits_stats": "${hits} results found in ${time} ms"
+                }
+            },
+            "localsearch":
+            {
+                "enable": true,
+                "trigger": "auto",
+                "top_n_per_article": 8,
+                "unescape": false,
+                "preload": false
+            },
+            "motion":
+            {
+                "enable": false,
+                "async": false,
+                "transition":
+                {
+                    "post_block": "bounceDownIn",
+                    "post_header": "slideDownIn",
+                    "post_body": "slideDownIn",
+                    "coll_header": "slideLeftIn",
+                    "sidebar": "slideUpIn"
+                }
+            },
+            "path": "search.xml"
+        };
+
+    </script>
+    <meta name="description" content="Smali Smali是Android虚拟机的反汇编语言 Android代码一般是用JVM语言编写，执行Androdi程序一般需要用到JVM，在Android平台上也不例外，但是出于性能上的考虑，并没有使用标准的JVM，而是使用专门的Android虚拟机（5.0以下为Dalvik，5.0以上为ART）。Android虚拟机的可执行文件并不是普通的class文件，而是再重新整合打包后生成的dex文件">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="smali语法">
+    <meta property="og:url" content="https://paynewu.com/2947499305.html">
+    <meta property="og:site_name" content="吴志鹏｜Payne-Wu">
+    <meta property="og:description" content="Smali Smali是Android虚拟机的反汇编语言 Android代码一般是用JVM语言编写，执行Androdi程序一般需要用到JVM，在Android平台上也不例外，但是出于性能上的考虑，并没有使用标准的JVM，而是使用专门的Android虚拟机（5.0以下为Dalvik，5.0以上为ART）。Android虚拟机的可执行文件并不是普通的class文件，而是再重新整合打包后生成的dex文件">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="article:published_time" content="2022-06-25T00:54:51.000Z">
+    <meta property="article:modified_time" content="2022-07-27T09:58:26.880Z">
+    <meta property="article:author" content="吴志鹏">
+    <meta property="article:tag" content="smail">
+    <meta name="twitter:card" content="summary">
+    <link rel="canonical" href="https://paynewu.com/2947499305.html">
+    <script id="page-configurations">
+        // https://hexo.io/docs/variables.html
+        CONFIG.page = {
+            sidebar: "",
+            isHome: false,
+            isPost: true,
+            lang: 'zh-CN'
+        };
+
+    </script>
+    <title>smali语法 | 吴志鹏｜Payne-Wu</title>
+    <meta name="google-site-verification" content="p_bIcnvirkFzG2dYKuNDivKD8-STet5W7D-01woA2fc" />
+    <noscript>
+        <style>
+            .use-motion .brand,
+            .use-motion .menu-item,
+            .sidebar-inner,
+            .use-motion .post-block,
+            .use-motion .pagination,
+            .use-motion .comments,
+            .use-motion .post-header,
+            .use-motion .post-body,
+            .use-motion .collection-header
+            {
+                opacity: initial;
+            }
+
+            .use-motion .site-title,
+            .use-motion .site-subtitle
+            {
+                opacity: initial;
+                top: initial;
+            }
+
+            .use-motion .logo-line-before i
+            {
+                left: initial;
+            }
+
+            .use-motion .logo-line-after i
+            {
+                right: initial;
+            }
+
+        </style>
+    </noscript>
+    <link rel="alternate" href="/atom.xml" title="吴志鹏｜Payne-Wu" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+    <div class="container">
+        <div class="headband"></div>
+        <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+            <div class="header-inner">
+                <div class="site-brand-container">
+                    <div class="site-nav-toggle">
+                        <div class="toggle" aria-label="切换导航栏">
+                            <span class="toggle-line toggle-line-first"></span>
+                            <span class="toggle-line toggle-line-middle"></span>
+                            <span class="toggle-line toggle-line-last"></span>
+                        </div>
+                    </div>
+                    <div class="site-meta">
+                        <a href="/" class="brand" rel="start">
+                            <span class="logo-line-before"><i></i></span>
+                            <h1 class="site-title">吴志鹏｜Payne-Wu </h1>
+                            <span class="logo-line-after"><i></i></span>
+                        </a>
+                    </div>
+                    <div class="site-nav-right">
+                        <div class="toggle popup-trigger">
+                            <i class="fa fa-search fa-fw fa-lg"></i>
+                        </div>
+                    </div>
+                </div>
+                <nav class="site-nav">
+                    <ul id="menu" class="main-menu menu">
+                        <li class="menu-item menu-item-home">
+                            <a href="/" rel="section">首页</a>
+                        </li>
+                        <li class="menu-item menu-item-archives">
+                            <a href="/archives/" rel="section">文章列表</a>
+                        </li>
+                        <li class="menu-item menu-item-tags">
+                            <a href="/tags/" rel="section">Tags Cloud</a>
+                        </li>
+                        <li class="menu-item menu-item-categories">
+                            <a href="/categories/" rel="section">文章集合</a>
+                        </li>
+                        <li class="menu-item menu-item-about">
+                            <a href="/about/" rel="section">关于我啊</a>
+                        </li>
+                        <li class="menu-item menu-item-message">
+                            <a href="/message/" rel="section">留言与我</a>
+                        </li>
+                        <li class="menu-item menu-item-search">
+                            <a role="button" class="popup-trigger">搜索 </a>
+                        </li>
+                    </ul>
+                </nav>
+                <div class="search-pop-overlay">
+                    <div class="popup search-popup">
+                        <div class="search-header">
+                            <span class="search-icon">
+                                <i class="fa fa-search"></i>
+                            </span>
+                            <div class="search-input-container">
+                                <input autocomplete="off" autocapitalize="off" placeholder="搜索..." spellcheck="false" type="search" class="search-input">
+                            </div>
+                            <span class="popup-btn-close">
+                                <i class="fa fa-times-circle"></i>
+                            </span>
+                        </div>
+                        <div id="search-result">
+                            <div id="no-result">
+                                <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="back-to-top">
+            <i class="fa fa-arrow-up"></i>
+            <span>0%</span>
+        </div>
+        <div class="reading-progress-bar"></div>
+        <main class="main">
+            <div class="main-inner">
+                <div class="content-wrap">
+                    <div class="content post posts-expand">
+                        <article itemscope itemtype="http://schema.org/Article" class="post-block single" lang="zh-CN">
+                            <link itemprop="mainEntityOfPage" href="https://paynewu.com/2947499305.html">
+                            <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <meta itemprop="image" content="/images/favicon/android-chrome-512x512.png">
+                                <meta itemprop="name" content="吴志鹏">
+                                <meta itemprop="description" content="Talk is free，please state clearly">
+                            </span>
+                            <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+                                <meta itemprop="name" content="吴志鹏｜Payne-Wu">
+                            </span>
+                            <header class="post-header">
+                                <h1 class="post-title" itemprop="name headline"> smali语法 </h1>
+                                <div class="post-meta">
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-user"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">作者</span>
+                                        <span><a href="/authors/Payne" class="author" itemprop="url" rel="index">Payne</a></span>
+                                    </span>
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-calendar"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">发表于</span>
+                                        <time title="创建时间：2022-06-25 08:54:51" itemprop="dateCreated datePublished" datetime="2022-06-25T08:54:51+08:00">2022-06-25</time>
+                                    </span>
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-folder"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">分类于</span>
+                                        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                                            <a href="/categories/smali/" itemprop="url" rel="index"><span itemprop="name">smali</span></a>
+                                        </span> ， <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                                            <a href="/categories/smali/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
+                                        </span>
+                                    </span>
+                                    <br>
+                                    <span class="post-meta-item" title="本文字数">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-file-word"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">本文字数：</span>
+                                        <span>1.5k</span>
+                                    </span>
+                                    <span class="post-meta-item" title="阅读时长">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-clock"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                                        <span>1 分钟</span>
+                                    </span>
+                                </div>
+                            </header>
+                            <div class="post-body" itemprop="articleBody">
+                                <h2 id="Smali"><a href="#Smali" class="headerlink" title="Smali"></a>Smali</h2>
+                                <p><strong>Smali是Android虚拟机的反汇编语言</strong></p>
+                                <p>Android代码一般是用JVM语言编写，执行Androdi程序一般需要用到JVM，在Android平台上也不例外，但是出于性能上的考虑，并没有使用标准的JVM，而是使用专门的Android虚拟机（5.0以下为Dalvik，5.0以上为ART）。Android虚拟机的可执行文件并不是普通的class文件，而是再重新整合打包后生成的dex文件。smali是dex格式的文件的汇编器<br>反汇编器\ 其语法是一种宽松的jasmin/dedexer 语法,实现了.dex格式的所有功能(注解/调试信息/线路信息等)</p>
+                                <h2 id="学习smali必要性"><a href="#学习smali必要性" class="headerlink" title="学习smali必要性"></a>学习smali必要性</h2>
+                                <ol>
+                                    <li>动态调试与修改APK, 当静态分析已经无法满足时,此时便需要对Android进行动态调试, 而动态调试便是调试smail</li>
+                                    <li>修改APK运行逻辑, 通过修改smali代码,在重新打包.便可对app进行持久化的修改.(常用的注入均在外部而不是app内部)</li>
+                                </ol>
+                                <blockquote>
+                                    <p>插件: java2smail</p>
+                                </blockquote>
+                                <h2 id="Smali基本语法"><a href="#Smali基本语法" class="headerlink" title="Smali基本语法"></a>Smali基本语法</h2>
+                                <h3 id="关键字"><a href="#关键字" class="headerlink" title="关键字"></a>关键字</h3>
+                                <p><strong>关键字</strong></p>
+                                <div class="table-container">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>关键字</th>
+                                                <th>说明</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>.class</td>
+                                                <td>定义类名</td>
+                                            </tr>
+                                            <tr>
+                                                <td>.super</td>
+                                                <td>定义父类名</td>
+                                            </tr>
+                                            <tr>
+                                                <td>.source</td>
+                                                <td>定义源文件名</td>
+                                            </tr>
+                                            <tr>
+                                                <td>.filed</td>
+                                                <td>定义字段</td>
+                                            </tr>
+                                            <tr>
+                                                <td>.method</td>
+                                                <td>定义方法开始</td>
+                                            </tr>
+                                            <tr>
+                                                <td>.end method</td>
+                                                <td>定义方法结束</td>
+                                            </tr>
+                                            <tr>
+                                                <td>.annotation</td>
+                                                <td>定义注解开始</td>
+                                            </tr>
+                                            <tr>
+                                                <td>.end annotation</td>
+                                                <td>定义注解结束</td>
+                                            </tr>
+                                            <tr>
+                                                <td>.implements</td>
+                                                <td>定义接口指令</td>
+                                            </tr>
+                                            <tr>
+                                                <td>.local</td>
+                                                <td>指定了方法内局部变量的个数</td>
+                                            </tr>
+                                            <tr>
+                                                <td>.registers</td>
+                                                <td>指定方法内使用寄存器的总数</td>
+                                            </tr>
+                                            <tr>
+                                                <td>.prologue</td>
+                                                <td>表示方法中代码的开始处</td>
+                                            </tr>
+                                            <tr>
+                                                <td>.line</td>
+                                                <td>表示java源文件中指定行</td>
+                                            </tr>
+                                            <tr>
+                                                <td>.paramter</td>
+                                                <td>指定方法的参数</td>
+                                            </tr>
+                                            <tr>
+                                                <td>.param</td>
+                                                <td>和.paramter含义一致,但是表达格式不同</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <h3 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h3>
+                                <div class="table-container">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Smali</th>
+                                                <th>Java</th>
+                                                <th>备注</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>v</td>
+                                                <td>void</td>
+                                                <td>只能用于返回值类型</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Z</td>
+                                                <td>boolean</td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td>B</td>
+                                                <td>byte</td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td>S</td>
+                                                <td>short</td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td>C</td>
+                                                <td>char</td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td>I</td>
+                                                <td>int</td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td>J</td>
+                                                <td>long</td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td>F</td>
+                                                <td>float</td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td>D</td>
+                                                <td>double</td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Lpackage/name;</td>
+                                                <td>对象类型</td>
+                                                <td>L表示这是一个对象类型，package表示该对象所在的包，；表示对象名称的结束</td>
+                                            </tr>
+                                            <tr>
+                                                <td>[类型</td>
+                                                <td>数组</td>
+                                                <td>[I表示一个int型数据，[Ljava/lang/String 表示一个String的对象数组</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <p><strong>类声明</strong></p>
+                                <figure class="highlight java">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="class">.<span class="keyword">class</span> + 修饰符 + 类名</span></span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p><strong>构造函数</strong></p>
+                                <figure class="highlight java">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">.method 权限修饰符 constructor &lt;init&gt;(参数类型) V</span><br><span class="line"># 方法体</span><br><span class="line">.end method</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p><strong>成员变量定义格式</strong></p>
+                                <figure class="highlight java">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">.field <span class="keyword">public</span>/<span class="keyword">private</span> [<span class="keyword">static</span>][<span class="keyword">final</span>] varName:&lt;类型&gt;</span><br><span class="line">.field 访问权限修饰符 类型修饰符 变量名:类名路径</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p><strong>返回值关键字</strong></p>
+                                <div class="table-container">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>返回关键字</th>
+                                                <th>Java数据类型</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>return</td>
+                                                <td>byte short float char boolean</td>
+                                            </tr>
+                                            <tr>
+                                                <td>return-void</td>
+                                                <td>void</td>
+                                            </tr>
+                                            <tr>
+                                                <td>return-wide</td>
+                                                <td>long double</td>
+                                            </tr>
+                                            <tr>
+                                                <td>return-object</td>
+                                                <td>数组 object</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <p><strong>获取指令</strong></p>
+                                <figure class="highlight java">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">iget, sget, iget-<span class="keyword">boolean</span>, sget-<span class="keyword">boolean</span>, iget-object, sget-object</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p><strong>操作指令</strong></p>
+                                <figure class="highlight java">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">iput, sput, iput-<span class="keyword">boolean</span>, sput-<span class="keyword">boolean</span>, iput-object, sput-object</span><br><span class="line">array的操作是aget和aput</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p><strong>指令解析</strong></p>
+                                <figure class="highlight java">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">sget-object v0,Lcom/aaa;-&gt;ID:Ljava/lang/String;</span><br><span class="line">获取ID这个String类型的成员变量并放到v0这个寄存器中</span><br><span class="line">iget-object v0,p0,Lcom/aaa;-&gt;view:Lcom/aaa/view;</span><br><span class="line">iget-object比sget-object多一个参数p0，这个参数代表变量所在类的实例。这里p0就是<span class="keyword">this</span></span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>example</p>
+                                <figure class="highlight java">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="comment">// example 1 相当于java代码：this.timer = null;</span></span><br><span class="line"><span class="keyword">const</span>/<span class="number">4</span> v3, <span class="number">0x0</span></span><br><span class="line">sput-object v3, Lcom/aaa;-&gt;timer:Lcom/aaa/timer;</span><br><span class="line"></span><br><span class="line"><span class="comment">// example 2</span></span><br><span class="line">.local v0, args:Landroid/os/Message;</span><br><span class="line"><span class="keyword">const</span>/<span class="number">4</span> v1, <span class="number">0x12</span></span><br><span class="line">iput v1,v0,Landroid/os/Message;-&gt;what:I</span><br><span class="line"><span class="comment">// 相当于java代码：args.what = 18; 其中args为Message的实例</span></span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p><strong>调用指令</strong></p>
+                                <div class="table-container">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>调用关键字</th>
+                                                <th>作用</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>invoke-virtual</td>
+                                                <td>非私有实例方法调用</td>
+                                            </tr>
+                                            <tr>
+                                                <td>invoke-direct</td>
+                                                <td>构造方法以及私有方法的调用</td>
+                                            </tr>
+                                            <tr>
+                                                <td>invoke-static</td>
+                                                <td>静态方法的调用</td>
+                                            </tr>
+                                            <tr>
+                                                <td>invoke-super</td>
+                                                <td>父类方法的调用</td>
+                                            </tr>
+                                            <tr>
+                                                <td>invoke-interface</td>
+                                                <td>接口方法调用</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <p>调用格式： invoke-指令类型 {参数1, 参数2,…}, L类名;-&gt;方法名 如果不是是静态方法，参数1代表调用该方法的实例。</p>
+                                <h2 id="寄存器"><a href="#寄存器" class="headerlink" title="寄存器"></a>寄存器</h2>
+                                <p>Java中变量都是存放在内存中的，Android为了提高性能，变量都是存放在寄存器中的，寄存器为32位，可以支持任何类型。64位类型(Long/ Double) 用2个格式的寄存器表示; Dalvik字节码有两种类型: 原始类型和引用类型(<br>包括对象和数组)</p>
+                                <p>寄存器分为如下两类： 1、本地寄存器: 用v开头数字结尾的符号来表示，v0, v1, v2,… 2、参数寄存器: 用p开头数字结尾的符号来表示，p0,p1,p2,…<br><em>注意：</em><br><strong>在非static方法中，p0代指this，p1为方法的第一个参数。</strong><br><strong>在static方法中，p0为方法的第一个参数。</strong></p>
+                                <figure class="highlight smali">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">const/4 v0, 0x1 //把值0x1存到v0本地寄存器</span><br><span class="line">iput-boolean v0,p0,<span class="class">Lcom/aaa;</span>-&gt;IsRegisterd:Z //把v0中的值赋给com.aaa.IsRegistered，p0代表this，相当于this.Isregistered=true</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h2 id="tip"><a href="#tip" class="headerlink" title="tip:"></a>tip:</h2>
+                                <p>查看smali代码时可以和java代码结合来看</p>
+                                <h2 id="referer"><a href="#referer" class="headerlink" title="referer"></a>referer</h2>
+                                <p><a href="https://source.android.com/devices/tech/dalvik/dalvik-bytecode" target="_blank" rel="noopener">Dalvik 字节码</a></p>
+                                <p><a href="https://www.jianshu.com/p/9931a1e77066" target="_blank" rel="noopener">https://www.jianshu.com/p/9931a1e77066</a></p>
+                            </div>
+                            <footer class="post-footer">
+                                <div class="post-tags">
+                                    <a href="/tags/smail/" rel="tag"><i class="fa fa-tag"></i> smail</a>
+                                </div>
+                                <div class="post-nav">
+                                    <div class="post-nav-item">
+                                        <a href="/3591261126.html" rel="prev" title="frida hook">
+                                            <i class="fa fa-chevron-left"></i> frida hook </a>
+                                    </div>
+                                    <div class="post-nav-item">
+                                        <a href="/4038451747.html" rel="next" title="frida-rpc"> frida-rpc <i class="fa fa-chevron-right"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </footer>
+                        </article>
+                    </div>
+                    <script>
+                        window.addEventListener('tabs:register', () =>
+                        {
+                            let
+                            {
+                                activeClass
+                            } = CONFIG.comments;
+                            if (CONFIG.comments.storage)
+                            {
+                                activeClass = localStorage.getItem('comments_active') || activeClass;
+                            }
+                            if (activeClass)
+                            {
+                                let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+                                if (activeTab)
+                                {
+                                    activeTab.click();
+                                }
+                            }
+                        });
+                        if (CONFIG.comments.storage)
+                        {
+                            window.addEventListener('tabs:click', event =>
+                            {
+                                if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+                                let commentClass = event.target.classList[1];
+                                localStorage.setItem('comments_active', commentClass);
+                            });
+                        }
+
+                    </script>
+                </div>
+                <div class="toggle sidebar-toggle">
+                    <span class="toggle-line toggle-line-first"></span>
+                    <span class="toggle-line toggle-line-middle"></span>
+                    <span class="toggle-line toggle-line-last"></span>
+                </div>
+                <aside class="sidebar">
+                    <div class="sidebar-inner">
+                        <ul class="sidebar-nav motion-element">
+                            <li class="sidebar-nav-toc"> 文章目录 </li>
+                            <li class="sidebar-nav-overview"> 站点概览 </li>
+                        </ul>
+                        <!--noindex-->
+                        <div class="post-toc-wrap sidebar-panel">
+                            <div class="post-toc motion-element">
+                                <ol class="nav">
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#Smali"><span class="nav-number">1.</span> <span class="nav-text">Smali</span></a></li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#学习smali必要性"><span class="nav-number">2.</span> <span class="nav-text">学习smali必要性</span></a></li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#Smali基本语法"><span class="nav-number">3.</span> <span class="nav-text">Smali基本语法</span></a>
+                                        <ol class="nav-child">
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#关键字"><span class="nav-number">3.1.</span> <span class="nav-text">关键字</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#数据类型"><span class="nav-number">3.2.</span> <span class="nav-text">数据类型</span></a></li>
+                                        </ol>
+                                    </li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#寄存器"><span class="nav-number">4.</span> <span class="nav-text">寄存器</span></a></li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#tip"><span class="nav-number">5.</span> <span class="nav-text">tip:</span></a></li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#referer"><span class="nav-number">6.</span> <span class="nav-text">referer</span></a></li>
+                                </ol>
+                            </div>
+                        </div>
+                        <!--/noindex-->
+                        <div class="site-overview-wrap sidebar-panel">
+                            <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <img class="site-author-image" itemprop="image" alt="吴志鹏" src="/images/favicon/android-chrome-512x512.png">
+                                <p class="site-author-name" itemprop="name">吴志鹏</p>
+                                <div class="site-description" itemprop="description">Talk is free，please state clearly</div>
+                            </div>
+                            <div class="site-state-wrap motion-element">
+                                <nav class="site-state">
+                                    <div class="site-state-item site-state-posts">
+                                        <a href="/archives/">
+                                            <span class="site-state-item-count">136</span>
+                                            <span class="site-state-item-name">日志</span>
+                                        </a>
+                                    </div>
+                                    <div class="site-state-item site-state-categories">
+                                        <a href="/categories/">
+                                            <span class="site-state-item-count">158</span>
+                                            <span class="site-state-item-name">分类</span></a>
+                                    </div>
+                                    <div class="site-state-item site-state-tags">
+                                        <a href="/tags/">
+                                            <span class="site-state-item-count">89</span>
+                                            <span class="site-state-item-name">标签</span></a>
+                                    </div>
+                                </nav>
+                            </div>
+                            <div class="links-of-author motion-element">
+                                <span class="links-of-author-item">
+                                    <a href="https://github.com/Payne-Wu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Payne-Wu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="mailto:wuzhipeng1289690157@gmail.com" title="E-Mail → mailto:wuzhipeng1289690157@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="https://www.zhihu.com/people/wu-zhi-peng-72-78" title="ZhiHu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;wu-zhi-peng-72-78" rel="noopener" target="_blank"><i class="fa fa-magic fa-fw"></i>ZhiHu</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="https://weibo.com/u/6987234483" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;6987234483" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+                <div id="sidebar-dimmer"></div>
+            </div>
+        </main>
+        <footer class="footer">
+            <div class="footer-inner">
+                <div class="copyright"> &copy; <span itemprop="copyrightYear">2022</span>
+                    <span class="with-love">
+                        <i class="fa fa-heart"></i>
+                    </span>
+                    <span class="author" itemprop="copyrightHolder">PayneWu</span>
+                    <span class="post-meta-divider">|</span>
+                    <span class="post-meta-item-icon">
+                        <i class="fa fa-chart-area"></i>
+                    </span>
+                    <span title="站点总字数">255k</span>
+                    <span class="post-meta-divider">|</span>
+                    <span class="post-meta-item-icon">
+                        <i class="fa fa-coffee"></i>
+                    </span>
+                    <span title="站点阅读时长">3:51</span>
+                </div>
+                <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">湘ICP备2021019893号-1 </a>
+                </div>
+                <div style="display: none;">
+                    <script src="//s95.cnzz.com/z_stat.php?id=true&web_id=true"></script>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+    <script src="/js/utils.js"></script>
+    <script src="/.js"></script>
+    <script src="/js/schemes/pisces.js"></script>
+    <script src="/.js"></script>
+    <script src="/js/next-boot.js"></script>
+    <script src="/.js"></script>
+    <script>
+        (function ()
+        {
+            var canonicalURL, curProtocol;
+            //Get the <link> tag
+            var x = document.getElementsByTagName("link");
+            //Find the last canonical URL
+            if (x.length > 0)
+            {
+                for (i = 0; i < x.length; i++)
+                {
+                    if (x[i].rel.toLowerCase() == 'canonical' && x[i].href)
+                    {
+                        canonicalURL = x[i].href;
+                    }
+                }
+            }
+            //Get protocol
+            if (!canonicalURL)
+            {
+                curProtocol = window.location.protocol.split(':')[0];
+            }
+            else
+            {
+                curProtocol = canonicalURL.split(':')[0];
+            }
+            //Get current URL if the canonical URL does not exist
+            if (!canonicalURL) canonicalURL = window.location.href;
+            //Assign script content. Replace current URL with the canonical URL
+            ! function ()
+            {
+                var e = /([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,
+                    r = canonicalURL,
+                    t = document.referrer;
+                if (!e.test(r))
+                {
+                    var n = (String(curProtocol).toLowerCase() === 'https') ? "https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif" : "//api.share.baidu.com/s.gif";
+                    t ? (n += "?r=" + encodeURIComponent(document.referrer), r && (n += "&l=" + r)) : r && (n += "?l=" + r);
+                    var i = new Image;
+                    i.src = n
+                }
+            }(window);
+        })();
+
+    </script>
+    <script src="/js/local-search.js"></script>
+    <script src="/.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+    <meta name="theme-color" content="#222">
+    <meta name="generator" content="Hexo 4.2.1">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16-next.png">
+    <link rel="mask-icon" href="/images/favicon/safari-pinned-tab.svg" color="#222">
+    <meta name="msapplication-config" content="/images/favicon/browserconfig.xml">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+    <link rel="stylesheet" href="/lib/pace/pace-theme-mac-osx.min.css">
+    <script src="/lib/pace/pace.min.js"></script>
+    <script id="hexo-configurations">
+        var NexT = window.NexT ||
+        {};
+        var CONFIG = {
+            "hostname": "paynewu.com",
+            "root": "/",
+            "scheme": "Gemini",
+            "version": "7.8.0",
+            "exturl": false,
+            "sidebar":
+            {
+                "position": "right",
+                "width": 240,
+                "display": "post",
+                "padding": 18,
+                "offset": 12,
+                "onmobile": false
+            },
+            "copycode":
+            {
+                "enable": true,
+                "show_result": true,
+                "style": "mac"
+            },
+            "back2top":
+            {
+                "enable": true,
+                "sidebar": false,
+                "scrollpercent": true
+            },
+            "bookmark":
+            {
+                "enable": false,
+                "color": "#222",
+                "save": "auto"
+            },
+            "fancybox": false,
+            "mediumzoom": true,
+            "lazyload": false,
+            "pangu": true,
+            "comments":
+            {
+                "style": "tabs",
+                "active": "valine",
+                "storage": true,
+                "lazyload": false,
+                "nav": null
+            },
+            "algolia":
+            {
+                "hits":
+                {
+                    "per_page": 10
+                },
+                "labels":
+                {
+                    "input_placeholder": "Search for Posts",
+                    "hits_empty": "We didn't find any results for the search: ${query}",
+                    "hits_stats": "${hits} results found in ${time} ms"
+                }
+            },
+            "localsearch":
+            {
+                "enable": true,
+                "trigger": "auto",
+                "top_n_per_article": 8,
+                "unescape": false,
+                "preload": false
+            },
+            "motion":
+            {
+                "enable": false,
+                "async": false,
+                "transition":
+                {
+                    "post_block": "bounceDownIn",
+                    "post_header": "slideDownIn",
+                    "post_body": "slideDownIn",
+                    "coll_header": "slideLeftIn",
+                    "sidebar": "slideUpIn"
+                }
+            },
+            "path": "search.xml"
+        };
+
+    </script>
+    <meta name="description" content="DML的使用 对表中的数据行进行增、删、改 增      向数据表内插入数据                                              123456789                                           # INSERT语法INSERT [INTO] table_name [(field_name_1, field_name_2.">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="MySQL的SQL使用之中">
+    <meta property="og:url" content="https://paynewu.com/1815382139.html">
+    <meta property="og:site_name" content="吴志鹏｜Payne-Wu">
+    <meta property="og:description" content="DML的使用 对表中的数据行进行增、删、改 增      向数据表内插入数据                                              123456789                                           # INSERT语法INSERT [INTO] table_name [(field_name_1, field_name_2.">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="article:published_time" content="2021-08-26T06:53:02.000Z">
+    <meta property="article:modified_time" content="2022-07-27T09:58:26.876Z">
+    <meta property="article:author" content="吴志鹏">
+    <meta property="article:tag" content="MySQL">
+    <meta property="article:tag" content="数据库">
+    <meta name="twitter:card" content="summary">
+    <link rel="canonical" href="https://paynewu.com/1815382139.html">
+    <script id="page-configurations">
+        // https://hexo.io/docs/variables.html
+        CONFIG.page = {
+            sidebar: "",
+            isHome: false,
+            isPost: true,
+            lang: 'zh-CN'
+        };
+
+    </script>
+    <title>MySQL的SQL使用之中 | 吴志鹏｜Payne-Wu</title>
+    <meta name="google-site-verification" content="p_bIcnvirkFzG2dYKuNDivKD8-STet5W7D-01woA2fc" />
+    <noscript>
+        <style>
+            .use-motion .brand,
+            .use-motion .menu-item,
+            .sidebar-inner,
+            .use-motion .post-block,
+            .use-motion .pagination,
+            .use-motion .comments,
+            .use-motion .post-header,
+            .use-motion .post-body,
+            .use-motion .collection-header
+            {
+                opacity: initial;
+            }
+
+            .use-motion .site-title,
+            .use-motion .site-subtitle
+            {
+                opacity: initial;
+                top: initial;
+            }
+
+            .use-motion .logo-line-before i
+            {
+                left: initial;
+            }
+
+            .use-motion .logo-line-after i
+            {
+                right: initial;
+            }
+
+        </style>
+    </noscript>
+    <link rel="alternate" href="/atom.xml" title="吴志鹏｜Payne-Wu" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+    <div class="container">
+        <div class="headband"></div>
+        <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+            <div class="header-inner">
+                <div class="site-brand-container">
+                    <div class="site-nav-toggle">
+                        <div class="toggle" aria-label="切换导航栏">
+                            <span class="toggle-line toggle-line-first"></span>
+                            <span class="toggle-line toggle-line-middle"></span>
+                            <span class="toggle-line toggle-line-last"></span>
+                        </div>
+                    </div>
+                    <div class="site-meta">
+                        <a href="/" class="brand" rel="start">
+                            <span class="logo-line-before"><i></i></span>
+                            <h1 class="site-title">吴志鹏｜Payne-Wu </h1>
+                            <span class="logo-line-after"><i></i></span>
+                        </a>
+                    </div>
+                    <div class="site-nav-right">
+                        <div class="toggle popup-trigger">
+                            <i class="fa fa-search fa-fw fa-lg"></i>
+                        </div>
+                    </div>
+                </div>
+                <nav class="site-nav">
+                    <ul id="menu" class="main-menu menu">
+                        <li class="menu-item menu-item-home">
+                            <a href="/" rel="section">首页</a>
+                        </li>
+                        <li class="menu-item menu-item-archives">
+                            <a href="/archives/" rel="section">文章列表</a>
+                        </li>
+                        <li class="menu-item menu-item-tags">
+                            <a href="/tags/" rel="section">Tags Cloud</a>
+                        </li>
+                        <li class="menu-item menu-item-categories">
+                            <a href="/categories/" rel="section">文章集合</a>
+                        </li>
+                        <li class="menu-item menu-item-about">
+                            <a href="/about/" rel="section">关于我啊</a>
+                        </li>
+                        <li class="menu-item menu-item-message">
+                            <a href="/message/" rel="section">留言与我</a>
+                        </li>
+                        <li class="menu-item menu-item-search">
+                            <a role="button" class="popup-trigger">搜索 </a>
+                        </li>
+                    </ul>
+                </nav>
+                <div class="search-pop-overlay">
+                    <div class="popup search-popup">
+                        <div class="search-header">
+                            <span class="search-icon">
+                                <i class="fa fa-search"></i>
+                            </span>
+                            <div class="search-input-container">
+                                <input autocomplete="off" autocapitalize="off" placeholder="搜索..." spellcheck="false" type="search" class="search-input">
+                            </div>
+                            <span class="popup-btn-close">
+                                <i class="fa fa-times-circle"></i>
+                            </span>
+                        </div>
+                        <div id="search-result">
+                            <div id="no-result">
+                                <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="back-to-top">
+            <i class="fa fa-arrow-up"></i>
+            <span>0%</span>
+        </div>
+        <div class="reading-progress-bar"></div>
+        <main class="main">
+            <div class="main-inner">
+                <div class="content-wrap">
+                    <div class="content post posts-expand">
+                        <article itemscope itemtype="http://schema.org/Article" class="post-block single" lang="zh-CN">
+                            <link itemprop="mainEntityOfPage" href="https://paynewu.com/1815382139.html">
+                            <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <meta itemprop="image" content="/images/favicon/android-chrome-512x512.png">
+                                <meta itemprop="name" content="吴志鹏">
+                                <meta itemprop="description" content="Talk is free，please state clearly">
+                            </span>
+                            <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+                                <meta itemprop="name" content="吴志鹏｜Payne-Wu">
+                            </span>
+                            <header class="post-header">
+                                <h1 class="post-title" itemprop="name headline"> MySQL的SQL使用之中 </h1>
+                                <div class="post-meta">
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-user"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">作者</span>
+                                        <span><a href="/authors/Payne" class="author" itemprop="url" rel="index">Payne</a></span>
+                                    </span>
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-calendar"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">发表于</span>
+                                        <time title="创建时间：2021-08-26 14:53:02" itemprop="dateCreated datePublished" datetime="2021-08-26T14:53:02+08:00">2021-08-26</time>
+                                    </span>
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-folder"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">分类于</span>
+                                        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                                            <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a>
+                                        </span> ， <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                                            <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/MySQL/" itemprop="url" rel="index"><span itemprop="name">MySQL</span></a>
+                                        </span>
+                                    </span>
+                                    <br>
+                                    <span class="post-meta-item" title="本文字数">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-file-word"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">本文字数：</span>
+                                        <span>1.8k</span>
+                                    </span>
+                                    <span class="post-meta-item" title="阅读时长">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-clock"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                                        <span>2 分钟</span>
+                                    </span>
+                                </div>
+                            </header>
+                            <div class="post-body" itemprop="articleBody">
+                                <h2 id="DML的使用"><a href="#DML的使用" class="headerlink" title="DML的使用"></a>DML的使用</h2>
+                                <p>对表中的数据行进行增、删、改</p>
+                                <h3 id="增"><a href="#增" class="headerlink" title="增"></a>增</h3>
+                                <blockquote>
+                                    <p>向数据表内插入数据</p>
+                                </blockquote>
+                                <figure class="highlight plain">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"># INSERT语法</span><br><span class="line">INSERT [INTO] table_name [(field_name_1, field_name_2...)]</span><br><span class="line">VALUES (value1, value2...),[(value1, value2...)...]</span><br><span class="line"># 常见示例</span><br><span class="line">## 插入</span><br><span class="line">INSERT INTO ch_people_msg(&#96;p_uic&#96;, &#96;p_nickname&#96;, &#96;p_gender&#96;, &#96;p_age&#96;, &#96;p_pnum&#96;, &#96;p_address&#96;, &#96;p_email&#96;)</span><br><span class="line">VALUES (&quot;431122200008868162&quot;, &quot;payne&quot;, &quot;m&quot;, 22, 17672655132, &quot;湖南省xx市xx区雨花a世界&quot;, &quot;127xxxx261&quot;),</span><br><span class="line">       (&quot;431122200002148162&quot;, &quot;tom&quot;, &quot;m&quot;, 25, 17672655132, &quot;湖南省xx市xx区雨花a世界&quot;, &quot;127xxxx221&quot;),</span><br><span class="line">       (&quot;431122200002168163&quot;, &quot;tom&quot;, &quot;m&quot;, 25, 17672655132, &quot;湖南省xx市xx区雨花a世界&quot;, &quot;127xxxx221&quot;)</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <blockquote>
+                                    <figure class="highlight plain">
+                                        <table>
+                                            <tr>
+                                                <td class="gutter">
+                                                    <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre>
+                                                </td>
+                                                <td class="code">
+                                                    <pre><span class="line">CREATE TABLE IF NOT EXISTS &#96;ch_people_msg&#96; ( </span><br><span class="line">  &#96;p_id&#96;  SERIAL NOT NULL AUTO_INCREMENT COMMENT &#39;用户id&#39; , </span><br><span class="line">  &#96;p_uic&#96; CHAR(18) NOT NULL COMMENT &#39;用户身份证&#39;,</span><br><span class="line">  &#96;p_nickname&#96; VARCHAR(50) NOT NULL COMMENT &#39;用户昵称&#39;, </span><br><span class="line">  &#96;p_gender&#96; ENUM(&#39;m&#39;,&#39;f&#39;, &#39;n&#39;) NOT NULL DEFAULT &#39;n&#39; COMMENT &#39;用户性别&#39;, </span><br><span class="line">  &#96;p_age&#96; TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT &#39;用户年龄&#39;, </span><br><span class="line">  &#96;p_pnum&#96; CHAR(11) NOT NULL COMMENT &#39;用户电话&#39;, </span><br><span class="line">  &#96;p_address&#96; VARCHAR(100) NOT NULL COMMENT &#39;用户地址&#39;, </span><br><span class="line">  &#96;p_email&#96; VARCHAR(50) NOT NULL COMMENT &#39;用户邮箱&#39;, </span><br><span class="line">  &#96;p_add_time&#96; TIMESTAMP NOT NULL DEFAULT NOW() COMMENT &#39;统计用户时间&#39;,</span><br><span class="line">   PRIMARY KEY (&#96;p_id&#96;),</span><br><span class="line">   UNIQUE KEY &#96;p_uic&#96;(&#96;p_uic&#96;)</span><br><span class="line">) ENGINE &#x3D; InnoDB CHARSET&#x3D;utf8mb4 COLLATE utf8mb4_general_ci COMMENT &#x3D; &#39;中国成员信息表&#39;;</span><br></pre>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </figure>
+                                </blockquote>
+                                <h3 id="删"><a href="#删" class="headerlink" title="删"></a>删</h3>
+                                <figure class="highlight pgsql">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="keyword">DELETE</span> <span class="keyword">FROM</span> <span class="built_in">table_name</span></span><br><span class="line"><span class="keyword">truncate</span> <span class="keyword">table</span> <span class="built_in">table_name</span>;</span><br><span class="line"><span class="keyword">DROP</span> <span class="keyword">table</span> <span class="built_in">table_name</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">delete</span>: DML操作, 是逻辑性质删除,逐行进行删除,速度慢.</span><br><span class="line"><span class="keyword">truncate</span>: DDL操作,对与表段中的数据页进行清空,速度快.</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <blockquote>
+                                    <p>当表被TRUNCATE 后，这个表和索引所占用的空间会恢复到初始大小，</p>
+                                    <p> DELETE操作不会减少表或索引所占用的空间。</p>
+                                    <p> drop语句将表所占用的空间全释放掉。</p>
+                                    <p>释放空间与速度：drop &gt; truncate &gt; delete</p>
+                                </blockquote>
+                                <p><strong>delete</strong></p>
+                                <p>-</p>
+                                <p>delete是DML，执行delete操作时，每次从表中删除一行，并且同时将该行的的删除操作记录在redo和undo表空间中以便进行回滚（rollback）和重做操作，但要注意表空间要足够大，需要手动提交（commit）操作才能生效，可以通过rollback撤消操作。</p>
+                                <ul>
+                                    <li>
+                                        <p>delete可根据条件删除表中满足条件的数据，如果不指定where子句，那么删除表中所有记录。</p>
+                                    </li>
+                                    <li>
+                                        <p>delete语句不影响表所占用的extent，高水线(high watermark)保持原位置不变。</p>
+                                    </li>
+                                </ul>
+                                <p><strong>truncate</strong></p>
+                                <ul>
+                                    <li>truncate是DDL，会隐式提交，所以，不能回滚，不会触发触发器。</li>
+                                    <li>
+                                        <p>truncate会删除表中所有记录，并且将重新设置高水线和所有的索引，缺省情况下将空间释放到minextents个extent，除非使用reuse<br>storage，。不会记录日志，所以执行速度很快，但不能通过rollback撤消操作（如果一不小心把一个表truncate掉，也是可以恢复的，只是不能通过rollback来恢复）。</p>
+                                    </li>
+                                    <li>
+                                        <p>对于外键（foreignkey ）约束引用的表，不能使用 truncate table，而应使用不带 where 子句的 delete 语句。</p>
+                                    </li>
+                                    <li>
+                                        <p>truncatetable不能用于参与了索引视图的表。</p>
+                                    </li>
+                                </ul>
+                                <p><strong>drop</strong></p>
+                                <ul>
+                                    <li>drop是DDL，会隐式提交，所以，不能回滚，不会触发触发器。</li>
+                                    <li>
+                                        <p>drop语句删除表结构及所有数据，并将表所占用的空间全部释放。</p>
+                                    </li>
+                                    <li>
+                                        <p>drop语句将删除表的结构所依赖的约束，触发器，索引，依赖于该表的存储过程/函数将保留,但是变为invalid状态。</p>
+                                    </li>
+                                </ul>
+                                <blockquote>
+                                    <ul>
+                                        <li>
+                                            <p>如果想删除表，当然用drop；</p>
+                                        </li>
+                                        <li>
+                                            <p>如果想保留表而将所有数据删除，如果和事务无关，用truncate即可；</p>
+                                        </li>
+                                        <li>
+                                            <p>如果和事务有关，或者想触发trigger，还是用delete；</p>
+                                        </li>
+                                        <li>
+                                            <p>如果是整理表内部的碎片，可以用truncate跟上reuse stroage，再重新导入/插入数据。</p>
+                                        </li>
+                                    </ul>
+                                </blockquote>
+                                <p>伪删除：用update来替代delete，最终保证业务中查不到（select）即可</p>
+                                <figure class="highlight sql">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">1.添加状态列</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> ch_people_msg</span><br><span class="line">    <span class="keyword">ADD</span> state <span class="built_in">TINYINT</span> <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">DEFAULT</span> <span class="number">1</span>;</span><br><span class="line"><span class="keyword">SELECT</span> *</span><br><span class="line"><span class="keyword">FROM</span> ch_people_msg;</span><br><span class="line">2.</span><br><span class="line"><span class="keyword">UPDATE</span> 替代</span><br><span class="line"><span class="keyword">DELETE</span></span><br><span class="line"><span class="keyword">UPDATE</span> ch_people_msg</span><br><span class="line"><span class="keyword">SET</span> state=<span class="number">0</span></span><br><span class="line"><span class="keyword">WHERE</span> <span class="keyword">id</span> = <span class="number">6</span>;</span><br><span class="line">3. 业务语句查询</span><br><span class="line"><span class="keyword">SELECT</span> *</span><br><span class="line"><span class="keyword">FROM</span> ch_people_msg</span><br><span class="line"><span class="keyword">WHERE</span> state = <span class="number">1</span>;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h3 id="改"><a href="#改" class="headerlink" title="改"></a>改</h3>
+                                <figure class="highlight routeros">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">UPDATE ch_people_msg <span class="builtin-name">SET</span> <span class="attribute">p_nickname</span>=<span class="string">'zero'</span> WHERE <span class="attribute">id</span>=2;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h3 id="查"><a href="#查" class="headerlink" title="查"></a>查</h3>
+                                <figure class="highlight dart">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"># 基本语法</span><br><span class="line">select--from--[where]--[group by]--[having]--[order by]</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <blockquote>
+                                    <p>FROM：对FROM子句中的前两个表执行笛卡尔积（Cartesian product)(交叉联接），生成虚拟表VT1 ON：对VT1应用ON筛选器。只有那些使<join_condition>为真的行才被插入VT2<br>OUTER(JOIN)：如果指定了OUTER JOIN（相对于CROSS JOIN 或(INNER JOIN),保留表（preserved table：左外部联接把左表标记为保留表，右外部联接把右表标记为保留表，完全外部联接把两个表都标记为保留表）中未找到匹配的行将作为外部行添加到 VT2,生成VT3.如果FROM子句包含两个以上的表，则对上一个联接生成的结果表和下一个表重复执行步骤1到步骤3，直到处理完所有的表为止。<br>WHERE：对VT3应用WHERE筛选器。只有使<where_condition>为true的行才被插入VT4.<br>GROUP BY：按GROUP BY子句中的列列表对VT4中的行分组，生成VT5.<br>CUBE|ROLLUP：把超组(Suppergroups)插入VT5,生成VT6.<br>HAVING：对VT6应用HAVING筛选器。只有使<having_condition>为true的组才会被插入VT7.<br>SELECT：处理SELECT列表，产生VT8.<br>DISTINCT：将重复的行从VT8中移除，产生VT9.<br>ORDER BY：将VT9中的行按ORDER BY 子句中的列列表排序，生成游标（VC10).<br>TOP：从VC10的开始处选择指定数量或比例的行，生成表VT11,并返回调用者。</p>
+                                </blockquote>
+                                <figure class="highlight dart">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"># 单表子句-from</span><br><span class="line">SELECT 列<span class="number">1</span>,列<span class="number">2</span> FROM 表</span><br><span class="line">SELECT  *  FROM 表</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h4 id="where"><a href="#where" class="headerlink" title="where"></a>where</h4>
+                                <figure class="highlight dart">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"># 等值查询</span><br><span class="line">	SELECT  *  FROM 表 where 列 = 值</span><br><span class="line">	SELECT 列<span class="number">1</span>,列<span class="number">2</span> FROM 表 where 列 = 值</span><br><span class="line">  </span><br><span class="line"># 比较运算符</span><br><span class="line">&gt;、&lt;、&gt;=、&lt;=、!=、=</span><br><span class="line">	SELECT * FROM 表 where 列 &gt;= 值</span><br><span class="line">	SELECT 列,... FROM 表 where 列 &lt;= 值</span><br><span class="line">  </span><br><span class="line"># 模糊查询</span><br><span class="line">	%代表任何个数的任何字符 _:它代表一个任何字符</span><br><span class="line">	注意：%不能放在前面,因为不走索引,要找%或_,转义就行了\%和\_</span><br><span class="line">  </span><br><span class="line"># or、and</span><br><span class="line">  	SELECT * FROM 表 where 列 &gt;= 值 or 列 &lt; 值</span><br><span class="line">  </span><br><span class="line"># where配合<span class="keyword">in</span>语句</span><br><span class="line">  SELECT * FROM 表 WHERE 列 IN (VALUES, VALUES);</span><br><span class="line"></span><br><span class="line"># where配合between and</span><br><span class="line">  SELECT * FROM city  WHERE population &gt;<span class="number">1000000</span> AND population &lt;<span class="number">2000000</span>;</span><br><span class="line">	SELECT * FROM city  WHERE population BETWEEN <span class="number">1000000</span> AND <span class="number">2000000</span>;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h4 id="group-by"><a href="#group-by" class="headerlink" title="group by"></a>group by</h4>
+                                <p>根据 by后面的条件进行<strong>分组</strong>，方便统计，by后面跟一个列或多个列</p>
+                                <blockquote>
+                                    <p><strong>max()</strong> ：最大值<br><strong>min()</strong> ：最小值<br><strong>avg()</strong> ：平均值<br><strong>sum()</strong> ：总和<br><strong>count()</strong> ：个数<br><strong>group_concat()</strong> : 列转行</p>
+                                </blockquote>
+                                <p><strong>having</strong></p>
+                                <p>​ having语句是分组后过滤的条件，在group by之后使用，也就是如果要用having语句，必须要先有group by语句。</p>
+                                <h4 id="order-by"><a href="#order-by" class="headerlink" title="order by"></a>order by</h4>
+                                <p>实现先排序，by后添加条件列</p>
+                                <figure class="highlight sql">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="comment"># distinct：去重复查询</span></span><br><span class="line"><span class="keyword">SELECT</span> 列 <span class="keyword">FROM</span> ;</span><br><span class="line"><span class="keyword">SELECT</span> <span class="keyword">DISTINCT</span>(列) <span class="keyword">FROM</span> city  ;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 联合查询- union all</span></span><br><span class="line">  <span class="keyword">SELECT</span> * <span class="keyword">FROM</span> city </span><br><span class="line"><span class="keyword">WHERE</span> countrycode <span class="keyword">IN</span> (<span class="string">'CHN'</span> ,<span class="string">'USA'</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> city <span class="keyword">WHERE</span> countrycode=<span class="string">'CHN'</span></span><br><span class="line"><span class="keyword">UNION</span> <span class="keyword">ALL</span></span><br><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> city <span class="keyword">WHERE</span> countrycode=<span class="string">'USA'</span></span><br><span class="line"></span><br><span class="line">说明:一般情况下,我们会将 <span class="keyword">IN</span> 或者 <span class="keyword">OR</span> 语句 改写成 <span class="keyword">UNION</span> <span class="keyword">ALL</span>,来提高性能</span><br><span class="line"><span class="keyword">UNION</span>     去重复</span><br><span class="line"><span class="keyword">UNION</span> <span class="keyword">ALL</span> 不去重复</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                            </div>
+                            <div class="popular-posts-header">相关文章</div>
+                            <ul class="popular-posts">
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/507251385.html" rel="bookmark">MySQL优化</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/1336292242.html" rel="bookmark">MySQL存储引擎</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/1376532068.html" rel="bookmark">MySQL数据库一些概念</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/1647551827.html" rel="bookmark">MySQL数据库体系结构</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/1196530272.html" rel="bookmark">MySQL数据类型</a></div>
+                                </li>
+                            </ul>
+                            <footer class="post-footer">
+                                <div class="post-tags">
+                                    <a href="/tags/MySQL/" rel="tag"><i class="fa fa-tag"></i> MySQL</a>
+                                    <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="tag"><i class="fa fa-tag"></i> 数据库</a>
+                                </div>
+                                <div class="post-nav">
+                                    <div class="post-nav-item">
+                                        <a href="/1195400737.html" rel="prev" title="优雅的从服务器上传下载文件">
+                                            <i class="fa fa-chevron-left"></i> 优雅的从服务器上传下载文件 </a>
+                                    </div>
+                                    <div class="post-nav-item">
+                                        <a href="/1529878275.html" rel="next" title="kubernetes搭建dashboard"> kubernetes搭建dashboard <i class="fa fa-chevron-right"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </footer>
+                        </article>
+                    </div>
+                    <script>
+                        window.addEventListener('tabs:register', () =>
+                        {
+                            let
+                            {
+                                activeClass
+                            } = CONFIG.comments;
+                            if (CONFIG.comments.storage)
+                            {
+                                activeClass = localStorage.getItem('comments_active') || activeClass;
+                            }
+                            if (activeClass)
+                            {
+                                let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+                                if (activeTab)
+                                {
+                                    activeTab.click();
+                                }
+                            }
+                        });
+                        if (CONFIG.comments.storage)
+                        {
+                            window.addEventListener('tabs:click', event =>
+                            {
+                                if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+                                let commentClass = event.target.classList[1];
+                                localStorage.setItem('comments_active', commentClass);
+                            });
+                        }
+
+                    </script>
+                </div>
+                <div class="toggle sidebar-toggle">
+                    <span class="toggle-line toggle-line-first"></span>
+                    <span class="toggle-line toggle-line-middle"></span>
+                    <span class="toggle-line toggle-line-last"></span>
+                </div>
+                <aside class="sidebar">
+                    <div class="sidebar-inner">
+                        <ul class="sidebar-nav motion-element">
+                            <li class="sidebar-nav-toc"> 文章目录 </li>
+                            <li class="sidebar-nav-overview"> 站点概览 </li>
+                        </ul>
+                        <!--noindex-->
+                        <div class="post-toc-wrap sidebar-panel">
+                            <div class="post-toc motion-element">
+                                <ol class="nav">
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#DML的使用"><span class="nav-number">1.</span> <span class="nav-text">DML的使用</span></a>
+                                        <ol class="nav-child">
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#增"><span class="nav-number">1.1.</span> <span class="nav-text">增</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#删"><span class="nav-number">1.2.</span> <span class="nav-text">删</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#改"><span class="nav-number">1.3.</span> <span class="nav-text">改</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#查"><span class="nav-number">1.4.</span> <span class="nav-text">查</span></a>
+                                                <ol class="nav-child">
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#where"><span class="nav-number">1.4.1.</span> <span class="nav-text">where</span></a></li>
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#group-by"><span class="nav-number">1.4.2.</span> <span class="nav-text">group by</span></a></li>
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#order-by"><span class="nav-number">1.4.3.</span> <span class="nav-text">order by</span></a></li>
+                                                </ol>
+                                            </li>
+                                        </ol>
+                                    </li>
+                                </ol>
+                            </div>
+                        </div>
+                        <!--/noindex-->
+                        <div class="site-overview-wrap sidebar-panel">
+                            <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <img class="site-author-image" itemprop="image" alt="吴志鹏" src="/images/favicon/android-chrome-512x512.png">
+                                <p class="site-author-name" itemprop="name">吴志鹏</p>
+                                <div class="site-description" itemprop="description">Talk is free，please state clearly</div>
+                            </div>
+                            <div class="site-state-wrap motion-element">
+                                <nav class="site-state">
+                                    <div class="site-state-item site-state-posts">
+                                        <a href="/archives/">
+                                            <span class="site-state-item-count">136</span>
+                                            <span class="site-state-item-name">日志</span>
+                                        </a>
+                                    </div>
+                                    <div class="site-state-item site-state-categories">
+                                        <a href="/categories/">
+                                            <span class="site-state-item-count">158</span>
+                                            <span class="site-state-item-name">分类</span></a>
+                                    </div>
+                                    <div class="site-state-item site-state-tags">
+                                        <a href="/tags/">
+                                            <span class="site-state-item-count">89</span>
+                                            <span class="site-state-item-name">标签</span></a>
+                                    </div>
+                                </nav>
+                            </div>
+                            <div class="links-of-author motion-element">
+                                <span class="links-of-author-item">
+                                    <a href="https://github.com/Payne-Wu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Payne-Wu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="mailto:wuzhipeng1289690157@gmail.com" title="E-Mail → mailto:wuzhipeng1289690157@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="https://www.zhihu.com/people/wu-zhi-peng-72-78" title="ZhiHu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;wu-zhi-peng-72-78" rel="noopener" target="_blank"><i class="fa fa-magic fa-fw"></i>ZhiHu</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="https://weibo.com/u/6987234483" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;6987234483" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+                <div id="sidebar-dimmer"></div>
+            </div>
+        </main>
+        <footer class="footer">
+            <div class="footer-inner">
+                <div class="copyright"> &copy; <span itemprop="copyrightYear">2022</span>
+                    <span class="with-love">
+                        <i class="fa fa-heart"></i>
+                    </span>
+                    <span class="author" itemprop="copyrightHolder">PayneWu</span>
+                    <span class="post-meta-divider">|</span>
+                    <span class="post-meta-item-icon">
+                        <i class="fa fa-chart-area"></i>
+                    </span>
+                    <span title="站点总字数">255k</span>
+                    <span class="post-meta-divider">|</span>
+                    <span class="post-meta-item-icon">
+                        <i class="fa fa-coffee"></i>
+                    </span>
+                    <span title="站点阅读时长">3:51</span>
+                </div>
+                <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">湘ICP备2021019893号-1 </a>
+                </div>
+                <div style="display: none;">
+                    <script src="//s95.cnzz.com/z_stat.php?id=true&web_id=true"></script>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+    <script src="/js/utils.js"></script>
+    <script src="/.js"></script>
+    <script src="/js/schemes/pisces.js"></script>
+    <script src="/.js"></script>
+    <script src="/js/next-boot.js"></script>
+    <script src="/.js"></script>
+    <script>
+        (function ()
+        {
+            var canonicalURL, curProtocol;
+            //Get the <link> tag
+            var x = document.getElementsByTagName("link");
+            //Find the last canonical URL
+            if (x.length > 0)
+            {
+                for (i = 0; i < x.length; i++)
+                {
+                    if (x[i].rel.toLowerCase() == 'canonical' && x[i].href)
+                    {
+                        canonicalURL = x[i].href;
+                    }
+                }
+            }
+            //Get protocol
+            if (!canonicalURL)
+            {
+                curProtocol = window.location.protocol.split(':')[0];
+            }
+            else
+            {
+                curProtocol = canonicalURL.split(':')[0];
+            }
+            //Get current URL if the canonical URL does not exist
+            if (!canonicalURL) canonicalURL = window.location.href;
+            //Assign script content. Replace current URL with the canonical URL
+            ! function ()
+            {
+                var e = /([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,
+                    r = canonicalURL,
+                    t = document.referrer;
+                if (!e.test(r))
+                {
+                    var n = (String(curProtocol).toLowerCase() === 'https') ? "https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif" : "//api.share.baidu.com/s.gif";
+                    t ? (n += "?r=" + encodeURIComponent(document.referrer), r && (n += "&l=" + r)) : r && (n += "?l=" + r);
+                    var i = new Image;
+                    i.src = n
+                }
+            }(window);
+        })();
+
+    </script>
+    <script src="/js/local-search.js"></script>
+    <script src="/.js"></script>
+</body>
+
+</html>

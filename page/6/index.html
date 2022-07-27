@@ -1,0 +1,2153 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+    <meta name="theme-color" content="#222">
+    <meta name="generator" content="Hexo 4.2.1">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16-next.png">
+    <link rel="mask-icon" href="/images/favicon/safari-pinned-tab.svg" color="#222">
+    <meta name="msapplication-config" content="/images/favicon/browserconfig.xml">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+    <link rel="stylesheet" href="/lib/pace/pace-theme-mac-osx.min.css">
+    <script src="/lib/pace/pace.min.js"></script>
+    <script id="hexo-configurations">
+        var NexT = window.NexT ||
+        {};
+        var CONFIG = {
+            "hostname": "paynewu.com",
+            "root": "/",
+            "scheme": "Gemini",
+            "version": "7.8.0",
+            "exturl": false,
+            "sidebar":
+            {
+                "position": "right",
+                "width": 240,
+                "display": "post",
+                "padding": 18,
+                "offset": 12,
+                "onmobile": false
+            },
+            "copycode":
+            {
+                "enable": true,
+                "show_result": true,
+                "style": "mac"
+            },
+            "back2top":
+            {
+                "enable": true,
+                "sidebar": false,
+                "scrollpercent": true
+            },
+            "bookmark":
+            {
+                "enable": false,
+                "color": "#222",
+                "save": "auto"
+            },
+            "fancybox": false,
+            "mediumzoom": true,
+            "lazyload": false,
+            "pangu": true,
+            "comments":
+            {
+                "style": "tabs",
+                "active": "valine",
+                "storage": true,
+                "lazyload": false,
+                "nav": null
+            },
+            "algolia":
+            {
+                "hits":
+                {
+                    "per_page": 10
+                },
+                "labels":
+                {
+                    "input_placeholder": "Search for Posts",
+                    "hits_empty": "We didn't find any results for the search: ${query}",
+                    "hits_stats": "${hits} results found in ${time} ms"
+                }
+            },
+            "localsearch":
+            {
+                "enable": true,
+                "trigger": "auto",
+                "top_n_per_article": 8,
+                "unescape": false,
+                "preload": false
+            },
+            "motion":
+            {
+                "enable": false,
+                "async": false,
+                "transition":
+                {
+                    "post_block": "bounceDownIn",
+                    "post_header": "slideDownIn",
+                    "post_body": "slideDownIn",
+                    "coll_header": "slideLeftIn",
+                    "sidebar": "slideUpIn"
+                }
+            },
+            "path": "search.xml"
+        };
+
+    </script>
+    <meta name="description" content="Talk is free，please state clearly">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="吴志鹏｜Payne-Wu">
+    <meta property="og:url" content="https://paynewu.com/page/6/">
+    <meta property="og:site_name" content="吴志鹏｜Payne-Wu">
+    <meta property="og:description" content="Talk is free，please state clearly">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="article:author" content="吴志鹏">
+    <meta property="article:tag" content="吴志鹏">
+    <meta property="article:tag" content="Payne">
+    <meta property="article:tag" content="payne-wu">
+    <meta property="article:tag" content="Python">
+    <meta property="article:tag" content="Java">
+    <meta property="article:tag" content="Golang">
+    <meta property="article:tag" content="go">
+    <meta property="article:tag" content="spider">
+    <meta property="article:tag" content="crawler">
+    <meta property="article:tag" content="js">
+    <meta property="article:tag" content="爬虫">
+    <meta property="article:tag" content=" CloudNative">
+    <meta name="twitter:card" content="summary">
+    <link rel="canonical" href="https://paynewu.com/page/6/">
+    <script id="page-configurations">
+        // https://hexo.io/docs/variables.html
+        CONFIG.page = {
+            sidebar: "",
+            isHome: true,
+            isPost: false,
+            lang: 'zh-CN'
+        };
+
+    </script>
+    <title>吴志鹏｜Payne-Wu</title>
+    <meta name="google-site-verification" content="p_bIcnvirkFzG2dYKuNDivKD8-STet5W7D-01woA2fc" />
+    <noscript>
+        <style>
+            .use-motion .brand,
+            .use-motion .menu-item,
+            .sidebar-inner,
+            .use-motion .post-block,
+            .use-motion .pagination,
+            .use-motion .comments,
+            .use-motion .post-header,
+            .use-motion .post-body,
+            .use-motion .collection-header
+            {
+                opacity: initial;
+            }
+
+            .use-motion .site-title,
+            .use-motion .site-subtitle
+            {
+                opacity: initial;
+                top: initial;
+            }
+
+            .use-motion .logo-line-before i
+            {
+                left: initial;
+            }
+
+            .use-motion .logo-line-after i
+            {
+                right: initial;
+            }
+
+        </style>
+    </noscript>
+    <link rel="alternate" href="/atom.xml" title="吴志鹏｜Payne-Wu" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+    <div class="container">
+        <div class="headband"></div>
+        <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+            <div class="header-inner">
+                <div class="site-brand-container">
+                    <div class="site-nav-toggle">
+                        <div class="toggle" aria-label="切换导航栏">
+                            <span class="toggle-line toggle-line-first"></span>
+                            <span class="toggle-line toggle-line-middle"></span>
+                            <span class="toggle-line toggle-line-last"></span>
+                        </div>
+                    </div>
+                    <div class="site-meta">
+                        <a href="/" class="brand" rel="start">
+                            <span class="logo-line-before"><i></i></span>
+                            <h1 class="site-title">吴志鹏｜Payne-Wu </h1>
+                            <span class="logo-line-after"><i></i></span>
+                        </a>
+                    </div>
+                    <div class="site-nav-right">
+                        <div class="toggle popup-trigger">
+                            <i class="fa fa-search fa-fw fa-lg"></i>
+                        </div>
+                    </div>
+                </div>
+                <nav class="site-nav">
+                    <ul id="menu" class="main-menu menu">
+                        <li class="menu-item menu-item-home">
+                            <a href="/" rel="section">首页</a>
+                        </li>
+                        <li class="menu-item menu-item-archives">
+                            <a href="/archives/" rel="section">文章列表</a>
+                        </li>
+                        <li class="menu-item menu-item-tags">
+                            <a href="/tags/" rel="section">Tags Cloud</a>
+                        </li>
+                        <li class="menu-item menu-item-categories">
+                            <a href="/categories/" rel="section">文章集合</a>
+                        </li>
+                        <li class="menu-item menu-item-about">
+                            <a href="/about/" rel="section">关于我啊</a>
+                        </li>
+                        <li class="menu-item menu-item-message">
+                            <a href="/message/" rel="section">留言与我</a>
+                        </li>
+                        <li class="menu-item menu-item-search">
+                            <a role="button" class="popup-trigger">搜索 </a>
+                        </li>
+                    </ul>
+                </nav>
+                <div class="search-pop-overlay">
+                    <div class="popup search-popup">
+                        <div class="search-header">
+                            <span class="search-icon">
+                                <i class="fa fa-search"></i>
+                            </span>
+                            <div class="search-input-container">
+                                <input autocomplete="off" autocapitalize="off" placeholder="搜索..." spellcheck="false" type="search" class="search-input">
+                            </div>
+                            <span class="popup-btn-close">
+                                <i class="fa fa-times-circle"></i>
+                            </span>
+                        </div>
+                        <div id="search-result">
+                            <div id="no-result">
+                                <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="back-to-top">
+            <i class="fa fa-arrow-up"></i>
+            <span>0%</span>
+        </div>
+        <div class="reading-progress-bar"></div>
+        <main class="main">
+            <div class="main-inner">
+                <div class="content-wrap">
+                    <div class="content index posts-expand">
+                        <div class="carousel">
+                            <div id="wowslider-container">
+                                <div class="ws_images">
+                                    <ul>
+                                    </ul>
+                                </div>
+                                <div class="ws_thumbs">
+                                    <div>
+                                    </div>
+                                </div>
+                                <div class="ws_shadow"></div>
+                            </div>
+                        </div>
+                        <article itemscope itemtype="http://schema.org/Article" class="post-block index" lang="zh-CN">
+                            <link itemprop="mainEntityOfPage" href="https://paynewu.com/19099.html">
+                            <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <meta itemprop="image" content="/images/favicon/android-chrome-512x512.png">
+                                <meta itemprop="name" content="吴志鹏">
+                                <meta itemprop="description" content="Talk is free，please state clearly">
+                            </span>
+                            <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+                                <meta itemprop="name" content="吴志鹏｜Payne-Wu">
+                            </span>
+                            <header class="post-header">
+                                <h2 class="post-title" itemprop="name headline">
+                                    <a class="label"> Book <i class="label-arrow"></i>
+                                    </a>
+                                    <a href="/19099.html" class="post-title-link" itemprop="url">Book List</a>
+                                </h2>
+                            </header>
+                            <div class="post-body" itemprop="articleBody">
+                                <div class="thumb">
+                                    <img itemprop="contentUrl" class="random">
+                                </div>
+                                <div class="excerpt">
+                                    <p>
+                                    <h2 id="图书清单"><a href="#图书清单" class="headerlink" title="图书清单"></a>图书清单</h2>
+                                    <h3 id="操作系统"><a href="#操作系统" class="headerlink" title="操作系统"></a>操作系统</h3>
+                                    <p>操作系统导论</p>
+                                    <p>现代操作系统</p>
+                                    <p>深入理解计算机操作系统</p>
+                                    <p>操作系统-精髓与设计原理</p>
+                                    <p>编译原理</p>
+                                    <p>系统之美</p>
+                                    <p>计算机程序设计艺术</p>
+                                    <p>计算机程序的构造和解释</p>
+                                    <p>计算机是怎么跑起来的</p>
+                                    <blockquote>
+                                        <p>较为适合入门,鸟瞰全茂</p>
+                                    </blockquote>
+                                    <h3 id="计算机网络"><a href="#计算机网络" class="headerlink" title="计算机网络"></a>计算机网络</h3>
+                                    <p>计算机网络-谢希仁</p>
+                                    <blockquote>
+                                        <p>该书全面系统地介绍了计算机网络的发展和原理体系结构</p>
+                                    </blockquote>
+                                    <p>网络是怎样连接的</p>
+                                    <blockquote>
+                                        <p>本书以探索之旅的形式，从在浏览器中输入网址开始，一路追踪了到显示出网页内容为止的整个过程，以图配文，讲解了网络的全貌，并重点介绍了实际的网络设备和软件是如何工作的。目的是帮助读者理解网络的本质意义，理解实际的设备和软件，进而熟练运用网络技术。</p>
+                                    </blockquote>
+                                    <p>图解TCP/IP</p>
+                                    <p>图解http</p>
+                                    <blockquote>
+                                        <p>对互联网HTTP基盘- HTTP协议进行全面系统的介绍。该书由HTTP协议发展史娓娓道来。严谨细致的剖析HTTP结构，在讲解的同是还辅以大量的生动通讯图。最后延伸到Web安全、最新技术动向等方面。</p>
+                                    </blockquote>
+                                    <p>HTTP权威指南</p>
+                                    <blockquote>
+                                        <p>本书是HTTP及相关核心web技术的核心之作。主要介绍了web应用程序是怎么工作的，核心的英特网协议如何与架构交互的</p>
+                                    </blockquote>
+                                    <p>Wireshark网络分析就是这么简单</p>
+                                    <blockquote>
+                                        <p>采用风趣幽默的手法，由浅入深的使用Wireshark分析常见的网络协议</p>
+                                    </blockquote>
+                                    <p>Wireshark网络分析的艺术</p>
+                                    <blockquote>
+                                        <p>采用实际的场景通俗易懂的纵横Wireshark网络分析</p>
+                                    </blockquote>
+                                    <p>计算机网络-自顶向下方法</p>
+                                    <p>TCP/IP详解 卷1：协议</p>
+                                    <p>TCP/IP详解 卷2：实现</p>
+                                    <p>TCP/IP详解 卷3：TCP事务协议、HTTP、NNTP和UNIX域协议</p>
+                                    <h3 id="算法与数据结构"><a href="#算法与数据结构" class="headerlink" title="算法与数据结构"></a>算法与数据结构</h3>
+                                    <p>算法导论</p>
+                                    <p>算法</p>
+                                    <p>剑指offer</p>
+                                    <p>算法图解</p>
+                                    <p>算法之美</p>
+                                    <p>程序员代码面试指南：</p>
+                                    <p>labuladong的算法小抄: 构造刷题框架</p>
+                                    <p><strong>相信以后的做为程序员的你一定会感谢曾经学过算法的自己，无论是在面试，coding、亦或者日常解决问题 都是如虎添翼</strong></p>
+                                    <h3 id="数学"><a href="#数学" class="headerlink" title="数学"></a>数学</h3>
+                                    <p>程序员的数学</p>
+                                    <p>程序员的数学1</p>
+                                    <p>程序员的数学2</p>
+                                    <p>数学之美</p>
+                                    <h3 id="Linux"><a href="#Linux" class="headerlink" title="Linux"></a>Linux</h3>
+                                    <p>Linux命令行大全 Linux系统命令及Shell脚本</p>
+                                    <p>精通Linux Linux程序设计 Raspberry Pi入门指南</p>
+                                    <p>高性能Linux服务器运维实战</p>
+                                    <h3 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h3>
+                                    <h4 id="关系型数据库"><a href="#关系型数据库" class="headerlink" title="关系型数据库:"></a>关系型数据库:</h4>
+                                    <h5 id="My-SQL"><a href="#My-SQL" class="headerlink" title="My SQL"></a>My SQL</h5>
+                                    <p>高性能的MySQL</p>
+                                    <blockquote>
+                                        <p>mysql 领域的经典之作，拥有广泛的影响力。第三版不但涵盖了最新mysql 5.5版本的新特性，也讲述了关于固态盘、高可扩展性设计和云计算环境下的数据库相关的新内容，原有的基准测试和性能优化部分也做了大量的扩展和补充。全书共分为16 章和6 个附录，内容涵盖mysql 架构和历史，基准测试和性能剖析，数据库软硬件性能优化，复制、备份和恢复，高可用与高可扩展性，以及云端的mysql 和mysql相关工具等方面的内容。</p>
+                                    </blockquote>
+                                    <p>高可用MySQL</p>
+                                    <p>SQL必知必会</p>
+                                    <blockquote>
+                                        <p>与其他同类图书不同，它没有过多阐述数据库基础理论，而是专门针对一线软件开发人员，直接从SQL SELECT开始，讲述实际工作环境中最常用和最必需的SQL知识，实用性极强。通过本书，读者能够从没有多少SQL经验的新手，迅速编写出世界级的SQL！</p>
+                                        <p>本书是麻省理工学院、伊利诺伊大学等众多大学的参考教材。除了作为教程之外，独特的编排方式还使本书成为方便的快速查询手册。</p>
+                                    </blockquote>
+                                    <p>SQL入门经典</p>
+                                    <blockquote>
+                                        <p>详细介绍了SQL语言的基本语法、基本概念，说明了各种SQL实现与ANSI标准之间的差别。书中包含了大量的范例，直观地说明了如何使用SQL对数据进行处理。每章后面还有针对性很强的测验与练习，能够帮助读者更好地理解和掌握学习的内容。在最后的附录里还有关于安装MySQL的详细介绍、书中用到的关键SQL语句、测验和练习的答案。</p>
+                                    </blockquote>
+                                    <p>前金良方:MySQL性能优化金字塔法则</p>
+                                    <blockquote>
+                                        <p>一共分为3篇：基础篇、案例篇和工具篇。“基础篇”从理论基础和基本原理层面介绍了MySQL的安装与配置、升级和体系结构，information_schema、sys_schema、performance_schema和mysql_schema，MySQL复制，MySQL事务，SQL语句优化及架构设计基础知识。“案例篇”从硬件和系统、MySQL架构等方面给出了性能优化的十几个案例，包括：性能测试的基本优化思路和需要关注的性能指标解释、对日常SQL语句执行慢的基本定位、避免x86可用性的一般性方法、节能模式会怎样影响性能、I/O存储作为数据库重要的依赖是如何影响数据库性能的、主备复制不一致可能有哪些原因、字符集不一致会造成哪些性能问题、在实际场景中锁的争用是怎样的。“工具篇”介绍了在MySQL性能优化过程中需要用到的各种工具，包括：dmidecode、top、dstat等硬件和系统排查工具；FIO、sysbench、HammerDB等压力测试工具；mysqldump、XtraBackup等备份工具；Percona、innotop、Prometheus等监控工具</p>
+                                    </blockquote>
+                                    <p><strong>一本 《高性能的MySQL》足以争霸纵横</strong></p>
+                                    <h4 id="非关系性数据库："><a href="#非关系性数据库：" class="headerlink" title="非关系性数据库："></a>非关系性数据库：</h4>
+                                    <h5 id="MongoDB"><a href="#MongoDB" class="headerlink" title="MongoDB"></a>MongoDB</h5>
+                                    <p>MongoDB权威指南</p>
+                                    <blockquote>
+                                        <p>此书可作为数据库开发人员的工作指南，也可作为系统管理人员的进阶指导，还可供项目中其他成员了解MongoDB使用。书中介绍了面向文档的存储方式及利用MongoDB的无模式数据模型处理文档、集合和多个数据库，讲述了如何执行基本的写操作以及各种复杂的条件查询，还介绍了索引、聚合工具以及其他高级查询技术，另外对监控、安全性和身份验证、备份和修复、水平扩展MongoDB数据库等内容也有所涉及。</p>
+                                    </blockquote>
+                                    <p>深入学习MongoDB</p>
+                                    <blockquote>
+                                        <p>第一部分全面讲解了有关建立和使用集群的内容，不仅从应用开发人员的角度讲解了MongoDB的使用，而且从运维方面介绍了集群的管理。其中内容包括通过分片设置MongoDB集群，分片的工作原理，查询和更新数据，操作、监控和备份集群，错误处理。第二部分依次从应用设计、实现、优化、数据安全和管理方面介绍了使用MongoDB构建应用的技巧，内容包括范式化与反范式化的利弊权衡，复制组的故障恢复等。</p>
+                                    </blockquote>
+                                    <p>大数据存储 MongoDB实战指南</p>
+                                    <blockquote>
+                                        <p>什么是MongoDB及其核心进程； MongoDB的查询语言系统； MongoDB的索引与查询优化； 增、删、改语句； Journaling日志功能； 聚集分析框架与MapReduce的编程模型； 复制集的功能与工作机制； 分片集群； 分布式文件系统； MongoDB的管理与监控； 权限控制； MongoDB的PHP驱动接口； 一个完整的电商平台实例。 本书适合有海量数据存储需求的人员、数据库管理开发人员、数据挖掘与分析人员以及各类基于数据库的应用开发人员。读者将从书中获得诸多实用的知识和开发技巧</p>
+                                    </blockquote>
+                                    <h5 id="Redis"><a href="#Redis" class="headerlink" title="Redis"></a>Redis</h5>
+                                    <p>Redis开发与运维</p>
+                                    <blockquote>
+                                        <p>本书全面讲解Redis基本功能及其应用，并结合线上开发与运维监控中的实际使用案例，深入分析并总结了实际开发运维中遇到的“陷阱”，以及背后的原因， 包含大规模集群开发与管理的场景、应用案例与开发技巧，为高效开发运维提供了大量实际经验和建议。本书不要求读者有任何Redis使用经验,对入门与进阶DevOps的开发者提供有价值的帮助。主要内容包括：Redis的安装配置、API、各种高效功能、客户端、持久化、复制、高可用、内存、哨兵、集群、缓存设计等，Redis高可用集群解决方案，Redis设计和使用中的问题，最后提供了一个开源工具：Redis监控运维云平台CacheCloud。</p>
+                                    </blockquote>
+                                    <p>Redis设计与实现</p>
+                                    <blockquote>
+                                        <p>本书全面而完整地讲解了Redis的内部机制与实现方式，对Redis的大多数单机功能以及所有多机功能的实现原理进行了介绍，展示了这些功能的核心数据结构以及关键的算法思想,图示丰富，描述清晰，并给出大量参考信息。通过阅读本书，读者可以快速、有效地了解Redis的内部构造以及运作机制，更好、更高效地使用Redis。</p>
+                                        <p>本书主要分为四大部分。第一部分“数据结构与对象”介绍了Redis中的各种对象及其数据结构，并说明这些数据结构如何影响对象的功能和性能。第二部分“单机数据库的实现”对Redis实现单机数据库的方法进行了介绍，包括数据库、RDB持久化、AOF持久化、事件等。第三部分“多机数据库的实现”对Redis的Sentinel、复制、集群三个多机功能进行了介绍。第四部分“独立功能的实现”对Redis中各个相对独立的功能模块进行了介绍，涉及发布与订阅、事务、Lua脚本、排序、二进制位数组、慢查询日志、监视器等。</p>
+                                    </blockquote>
+                                    <p>Redis 深度历险核心原理与应用实践</p>
+                                    <blockquote>
+                                        <p>分为基础和应用篇、原理篇、集群篇、拓展篇、源码篇共 5 大块内容。基础和应用篇讲解对读者来说最有价值的内容，可以直接应用到实际工作中；原理篇、集群篇让开发者透过简单的技术表面看到精致的底层世界；拓展篇帮助读者拓展技术视野和夯实基础，便于进阶学习；源码篇让高阶的读者能够读懂源码，掌握核心技术实力</p>
+                                    </blockquote>
+                                    <h3 id="垃圾回收算法"><a href="#垃圾回收算法" class="headerlink" title="垃圾回收算法"></a>垃圾回收算法</h3>
+                                    <p>垃圾回收算法手册：自动内存管理的艺术</p>
+                                    <blockquote>
+                                        <p>本书汇集了自动内存管理研究者和开发者们在过去50年间的丰富经验，在本书中，作者在一个统一的易于接受的框架内比较了当下最重要的回收策略以及最先进的回收技术。</p>
+                                        <p>本书从近年来硬件与软件的发展给垃圾回收所带来的新挑战出发，探讨了这些挑战给高性能垃圾回收器的设计者与实现者所带来的影响。在简单的传统回收算法之外，本书还涵盖了并行垃圾回收、增量式垃圾回收、并发垃圾回收以及实时垃圾回收。书中配备了丰富的伪代码与插图，以描述各种算法与概念。</p>
+                                    </blockquote>
+                                    <p>垃圾回收的算法与实现</p>
+                                    <blockquote>
+                                        <p>本书前半介绍基本GC算法，包括标记-清除GC、引用计数、复制算法的GC、串行GC的算法、并发GC的算法等。后半介绍V8、Rubinius、Dalvik、CPython等几种具体GC的实现</p>
+                                        <p>深入浅出理解 垃圾回收 与实现</p>
+                                    </blockquote>
+                                    <p>深入分析gcc</p>
+                                    <blockquote>
+                                        <p>结合GCC4.4.0源代码，围绕GCC编译过程，详细介绍了GCC的设计框架和实现过程，包括从源代码到AST、从AST到GIMPLE、从GIMPLE到RTL，以及从RTL到终的目标机器代码的详细过程，涉及各个阶段中间表示的详细分析、生成过程，使读者在了解编译原理的基础上进一步掌握其实现的总体流程和实现细节</p>
+                                    </blockquote>
+                                    <h3 id="编码"><a href="#编码" class="headerlink" title="编码"></a>编码</h3>
+                                    <p>Head First设计模式</p>
+                                    <p>重构</p>
+                                    <blockquote>
+                                        <p>Refactoring: Improving the Design of Existing Code</p>
+                                        <p>重构，一言以蔽之，就是在不改变外部行为的前提下，有条不紊地改善代码。多年前，正是本书原版的出版，使重构终于从编程高手们的小圈子走出，成为众多普通程序员日常开发工作中不可或缺的一部分。</p>
+                                        <p> 本书凝聚了软件开发社区专家多年摸索而获得的宝贵经验，拥有不因时光流逝而磨灭的价值。今天，无论是重构本身，业界对重构的理解，还是开发工具对重构的支持力度，都与本书最初出版时不可同日而语，但书中所蕴涵的意味和精华，依然值得反复咀嚼，而且往往能够常读常新。</p>
+                                    </blockquote>
+                                    <p>Effeactivate Debugging：软件和系统调试的66个有效方法</p>
+                                    <blockquote>
+                                        <p>本书所要讲解的调试知识，包括与调试有关的策略、工具及方法。当我们在开发并运作一款复杂的计算系统时，可能会遇到各种问题，而这些调试知识，则使大家能够应对这些问题。</p>
+                                        <p>过去我们所说的调试，主要是指检测并修复程序错误，而当前却很少有哪个程序会孤立地运作，即便是一个很小的程序，也会与外部的程序库相链接（通常是动态链接）。更为复杂的程序会运行在应用程序服务器中，会调用 Web 服务，会使用关系型数据库及 NoSQL 数据库，会从目录服务器上获取数据，会运行外部的程序，会利用其他的中间件，也会纳入很多第三方的软件包。于是，要想令整个系统及服务正常地运作，就必须确保其中的组件不会发生故障，这些组件可能是由公司内部人员所开发的，也可能是由第三方所提供的，它们所在的主机或许分布在全球各地。</p>
+                                    </blockquote>
+                                    <h3 id="架构"><a href="#架构" class="headerlink" title="架构"></a>架构</h3>
+                                    <p>企业IT架构转型之道</p>
+                                    <p>微服务架构设计模式</p>
+                                    <p>架构简洁之道</p>
+                                    <p>大型网站技术架构</p>
+                                    <p>高可用架构</p>
+                                    <p>大型网站技术架构演进与性能优化</p>
+                                    <p>京东基础架构建设之路</p>
+                                    <h3 id="中间件"><a href="#中间件" class="headerlink" title="中间件"></a>中间件</h3>
+                                    <h4 id="Kafka"><a href="#Kafka" class="headerlink" title="Kafka"></a>Kafka</h4>
+                                    <p>Kafka:The Definitive Guide: Real-Time Data and Stream Processing at Scale</p>
+                                    <p>Kafka权威指南</p>
+                                    <blockquote>
+                                        <p>本书由出身于LinkedIn的Kafka核心作者和一线技术人员共同执笔，详细介绍了如何部署Kafka集群、开发可靠的基于事件驱动的微服务，以及基于Kafka平台构建可伸缩的流式应用程序。通过详尽示例，你将会了解到Kafka的设计原则、可靠性保证、关键API，以及复制协议、控制器和存储层等架构细节</p>
+                                    </blockquote>
+                                    <p>深入理解Kafka：核心设计与实践原理</p>
+                                    <blockquote>
+                                        <p>从Kafka的基础概念切入，循序渐进地转入对其内部原理的剖析。主要阐述了Kafka中生产者客户端、消费者客户端、主题与分区、日志存储、原理解析、监控管理、应用扩展及流式计算等内容。</p>
+                                        <p>虽然Kafka的内核使用Scala语言编写，但基本以Java语言作为主要的示例语言，方便大多数读者的理解。</p>
+                                        <p>总体上可以划分为三个部分：基础篇、原理篇和扩展篇，前4章为基础篇，包括基础概念、生产者、消费者，以及主题与分区，学习完这4章的内容完全可以应对绝大多数的开发场景。第5章至第8章为原理篇，包括对日志存储、协议设计、控制器、组协调器、事务、一致性、可靠性等内容的探究，学习完这4章的内容可以让读者对Kafka有一个深刻的认知。最后4章从应用扩展层面来做讲解，可以归类为扩展篇，主要内容包括监控、应用工具、应用扩展（延时队列、重试队列、死信队列、消息轨迹等）、与Spark的集成等，让读者可以对Kafka的生态有一个更加全面的认知。</p>
+                                    </blockquote>
+                                    <h4 id="Elasticsearch"><a href="#Elasticsearch" class="headerlink" title="Elasticsearch"></a>Elasticsearch</h4>
+                                    <p>Elasticsearch: The Definitive Guide A distributed real-time search and analytics engine</p>
+                                    <p>Elasticsearch in Action</p>
+                                    <p>本书主要展示如何使用Elasticsearch构建可扩展的搜索应用程序。书中覆盖了Elasticsearch的主要特性，从使用不同的分析器和查询类型进行相关性调优，到使用聚集功能进行实时性分析，还有地理空间搜索和文档过滤等更多吸引人的特性。</p>
+                                    <p>全书共分两个部分，第一部分解释了核心特性，内容主要涉及Elasticsearch的介绍，数据的索引、更新和删除，数据的搜索，数据的分析，使用相关性进行搜索，使用聚集来探索数据，文档间的关系等；第二部分介绍每个特性工作的更多细节及其对性能和可扩展性的影响，以便对核心功能进行产品化，内容主要涉及水平扩展和性能提升等。</p>
+                                    <h3 id="Python"><a href="#Python" class="headerlink" title="Python"></a>Python</h3>
+                                    <p>Python编程：从入门到实战</p>
+                                    <p>Python学习手册</p>
+                                    <p>Think Python</p>
+                                    <blockquote>
+                                        <p>Think Python: How to Think Like a Computer Scientist</p>
+                                        <p>本书从基本的编程概念开始讲起，包括语言的语法和语义，而且每个编程概念都有清晰的定义，引领读者循序渐进地学习变量、表达式、语句、函数和数据结构。书中还探讨了如何处理文件和数据库，如何理解对象、方法和面向对象编程，如何使用调试技巧来修正语法错误、运行时错误和语义错误。每一章都配有术语表和练习题，方便读者巩固所学的知识和技巧。此外，每一章都抽出一节来讲解如何调试程序。</p>
+                                    </blockquote>
+                                    <p>Head First Python</p>
+                                    <p>Learn Python The Hard Way</p>
+                                    <p>Python Cookbook</p>
+                                    <blockquote>
+                                        <p>本书介绍了Python应用在各个领域中的一些使用技巧和方法，从最基本的字符、文件序列、字典和排序，到进阶的面向对象编程、数据库和数据持久化、 XML处理和Web编程，再到比较高级和抽象的描述符、装饰器、元类、迭代器和生成器，均有涉及。书中还介绍了一些第三方包和库的使用，包括 Twisted、GIL、PyWin32等。本书覆盖了Python应用中的很多常见问题，并提出了通用的解决方案。书中的代码和方法具有很强的实用性，可以方便地应用到实际的项目中，并产生立竿见影的效果。尤为难得的是，本书的各位作者都具有丰富的业界实践经验，因此，本书不仅给出了对各种问题的解决方案，同时还体现了很多专家的思维方式和良好的编程习惯，与具体的细节性知识相比，这部分内容无疑是本书的精华。</p>
+                                    </blockquote>
+                                    <p>Python源码剖析</p>
+                                    <blockquote>
+                                        <p>为了更好地利用Python语言，无论是使用Python语言本身，还是将Python与C/C++交互使用，深刻理解Python的运行原理都是非常重要的。本书以CPython为研究对象，在C代码一级，深入细致地剖析了Python的实现。书中不仅包括了对大量Python内置对象的剖析，更将大量的篇幅用于对Python虚拟机及Python高级特性的剖析。通过此书，读者能够透彻地理解Python中的一般表达式、控制结构、异常机制、类机制、多线程机制、模块的动态加载机制、内存管理机制等核心技术的运行原理，同时，本书所揭示的动态语言的核心技术对于理解其他动态语言，如 Javascript、Ruby等也有较大的参考价值</p>
+                                    </blockquote>
+                                    <p>流畅的Python</p>
+                                    <blockquote>
+                                        <p>本书致力于帮助Python开发人员挖掘这门语言及相关程序库的优秀特性，避免重复劳动，同时写出简洁、流畅、易读、易维护，并且具有地道Python风格的代码。本书尤其深入探讨了Python语言的高级用法，涵盖数据结构、Python风格的对象、并行与并发，以及元编程等不同的方面。</p>
+                                    </blockquote>
+                                    <p>Python高性能编程</p>
+                                    <blockquote>
+                                        <p>围绕如何进行代码优化和加快实际应用的运行速度进行详细讲解。本书主要包含以下主题：计算机内部结构的背景知识、列表和元组、字典和集合、迭代器和生成器、矩阵和矢量计算、并发、集群和工作队列等。最后，通过一系列真实案例展现了在应用场景中需要注意的问题</p>
+                                    </blockquote>
+                                    <p>编写高质量代码：改善Python程序的91个建议</p>
+                                    <blockquote>
+                                        <p>Effective Python: 90 Specific Ways to Write Better Python, Second Edition</p>
+                                        <p>本书可以帮你掌握真正的 Pythonic 编程方式，令你能够完全发挥出 Python 语言的强大功能，并写出健壮而高效的代码。汇聚了 90 条实践原则、开发技巧和便捷方案，并以实用的代码范例来解释它们。</p>
+                                    </blockquote>
+                                    <h3 id="Java"><a href="#Java" class="headerlink" title="Java"></a>Java</h3>
+                                    <p>Java核心技术</p>
+                                    <p>Effective Java</p>
+                                    <p>重学Java设计模式</p>
+                                    <p>Java编程思想</p>
+                                    <p>深入理解Java虚拟机</p>
+                                    <p>揭秘Java虚拟机</p>
+                                    <p>Java并发编程实战</p>
+                                    <p>Java性能权威指南</p>
+                                    <p>深入分析Java Web技术内幕</p>
+                                    <p>代码简洁之道(clean code)</p>
+                                    <blockquote>
+                                        <p>Clean Code: A Handbook of Agile Software Craftsmanship</p>
+                                        <p>软件质量，不但依赖于架构及项目管理，而且与代码质量紧密相关。这一点，无论是敏捷开发流派还是传统开发流派，都不得不承认。</p>
+                                        <p>本书提出一种观念：代码质量与其整洁度成正比。干净的代码，既在质量上较为可靠，也为后期维护、升级奠定了良好基础。作为编程领域的佼佼者，本书作者给出了一系列行之有效的整洁代码操作实践。这些实践在本书中体现为一条条规则（或称“启示”），并辅以来自现实项目的正、反两面的范例。只要遵循这些规则，就能编写出干净的代码，从而有效提升代码质量。</p>
+                                        <p>本书阅读对象为一切有志于改善代码质量的程序员及技术经理。书中介绍的规则均来自作者多年的实践经验，涵盖从命名到重构的多个编程方面，虽为一“家”之言，然诚有可资借鉴的价值。</p>
+                                    </blockquote>
+                                    <h3 id="Android"><a href="#Android" class="headerlink" title="Android"></a>Android</h3>
+                                    <p>第一行代码:Android</p>
+                                    <p>打造高质量Android应用</p>
+                                    <p>Android进阶之光</p>
+                                    <p>Android 源码设计模式解析与实战</p>
+                                    <h3 id="GoLang"><a href="#GoLang" class="headerlink" title="GoLang"></a>GoLang</h3>
+                                    <p>go语言程序设计</p>
+                                    <p>Go语言趣学指南</p>
+                                    <p>Go语言并发之道</p>
+                                    <p>Go语言编程之旅:一起用go做项目</p>
+                                    <p>Go语言学习笔记</p>
+                                    <p>Go Web 编程</p>
+                                    <p>Go专家编程</p>
+                                    <p>Go语言实战(Go in Action)</p>
+                                    <p>Go语言高级编程</p>
+                                    <p>GO语言高并发与微服务实战</p>
+                                    <h3 id="Web"><a href="#Web" class="headerlink" title="Web"></a>Web</h3>
+                                    <p>Web性能实战</p>
+                                    <blockquote>
+                                        <p>创建快速网站的指南，指导你如何以正确的方式创建高性能网站。书中介绍了如何加快向用户交付站点资源的速度、提高渲染速度、减少网站占用空间；探讨了HTTP/2等能够大幅提升网站速度的技术；阐述了如何构建一个自动化的工作流以完成常见的优化任务，同时提高开发效率。</p>
+                                    </blockquote>
+                                    <p>Web性能权威指南</p>
+                                    <blockquote>
+                                        <p>涵盖Web 开发者技术体系中应该掌握的所有网络及性能优化知识。全书以性能优化为主线，从TCP、UDP 和TLS 协议讲起，解释了如何针对这几种协议和基础设施来优化应用。然后深入探讨了无线和移动网络的工作机制。最后，揭示了HTTP 协议的底层细节，同时详细介绍了HTTP 2.0、 XHR、SSE、WebSocket、WebRTC 和DataChannel 等现代浏览器新增的具有革命性的新能力。</p>
+                                    </blockquote>
+                                    <p>前端架构设计</p>
+                                    <p>同构 JavaScript 应用开发</p>
+                                    <h3 id="网络爬虫"><a href="#网络爬虫" class="headerlink" title="网络爬虫"></a>网络爬虫</h3>
+                                    <p><strong>Python 网络爬虫从入门到实践</strong></p>
+                                    <p><strong>Python3网络爬虫开发实战</strong></p>
+                                    <p><strong>Python3反爬虫原理与绕过实战</strong></p>
+                                    <p><strong>Android安全攻防权威指南</strong></p>
+                                    <p><strong>Android应用安全和逆向分析</strong></p>
+                                    <p><strong>IDA PRO 权威指南</strong></p>
+                                    <h3 id="数据分析"><a href="#数据分析" class="headerlink" title="数据分析"></a>数据分析</h3>
+                                    <h4 id="通识类"><a href="#通识类" class="headerlink" title="通识类"></a>通识类</h4>
+                                    <blockquote>
+                                        <p>认识数据分析，构建数据分析思维，练就数据分析能力</p>
+                                    </blockquote>
+                                    <p><strong>深入浅出数据分析</strong></p>
+                                    <p><strong>精益数据分析</strong></p>
+                                    <p><strong>数学之美</strong></p>
+                                    <h4 id="统计学"><a href="#统计学" class="headerlink" title="统计学"></a>统计学</h4>
+                                    <p><strong>统计学</strong></p>
+                                    <p><strong>深入浅出统计学</strong></p>
+                                    <p><strong>赤裸裸的统计学</strong></p>
+                                    <p><strong>统计学七支柱</strong></p>
+                                    <p>统计学习方法-李航</p>
+                                    <h4 id="实践类"><a href="#实践类" class="headerlink" title="实践类"></a>实践类</h4>
+                                    <blockquote>
+                                        <p>what do? How do? Why do?</p>
+                                    </blockquote>
+                                    <h5 id="Excel"><a href="#Excel" class="headerlink" title="Excel"></a>Excel</h5>
+                                    <p><strong>谁说菜鸟不会数据分析</strong></p>
+                                    <p><strong>Excel数据分析思维、技术、与实践</strong></p>
+                                    <p><strong>对比Excel轻松学习数据分析</strong></p>
+                                    <h5 id="Python-1"><a href="#Python-1" class="headerlink" title="Python"></a>Python</h5>
+                                    <p><strong>Python数据分析</strong></p>
+                                    <p><strong>利用Python进行数据分析</strong></p>
+                                    <p><strong>Python金融大数据分析</strong></p>
+                                    <p><strong>Python数据分析实战</strong></p>
+                                    <h5 id="可视化"><a href="#可视化" class="headerlink" title="可视化"></a>可视化</h5>
+                                    <p><strong>用图表说话</strong></p>
+                                    <p><strong>Excel图表之道</strong></p>
+                                    <h4 id="数据分析技术的应用"><a href="#数据分析技术的应用" class="headerlink" title="数据分析技术的应用"></a>数据分析技术的应用</h4>
+                                    <p>Python数据分析与数据化运营</p>
+                                    <p>数据挖掘与数据化运营实战</p>
+                                    <p>社交网站的数据挖掘与分析</p>
+                                    <h3 id="数据挖掘"><a href="#数据挖掘" class="headerlink" title="数据挖掘"></a>数据挖掘</h3>
+                                    <p>数据挖掘-概念与技术</p>
+                                    <p>数据挖掘导论</p>
+                                    <h3 id="深度学习"><a href="#深度学习" class="headerlink" title="深度学习"></a>深度学习</h3>
+                                    <p>深度学习的数学</p>
+                                    <p>深度学习入门</p>
+                                    <p>Python深度学习</p>
+                                    <p>深度学习</p>
+                                    <p>动手学习深度学习</p>
+                                    <p>深度学习进阶</p>
+                                    <h3 id="机器学习"><a href="#机器学习" class="headerlink" title="机器学习"></a>机器学习</h3>
+                                    <p>机器学习(西瓜书)-周志华</p>
+                                    <p>统计学习方法-李航</p>
+                                    <p>Patten Recongnition and Machine Learning</p>
+                                    <p>统计自然语言处理</p>
+                                    <h3 id="云原生"><a href="#云原生" class="headerlink" title="云原生"></a>云原生</h3>
+                                    <h4 id="Docker"><a href="#Docker" class="headerlink" title="Docker"></a>Docker</h4>
+                                    <p><a href="https://yeasy.gitbook.io/docker_practice/" target="_blank" rel="noopener">Docker从入门到实践</a></p>
+                                    <p>深入浅出docker</p>
+                                    <blockquote>
+                                        <p>深入浅出的介绍了docker相关知识，清晰详细的操作步骤结合大量实际代码</p>
+                                    </blockquote>
+                                    <p>Docker容器与容器云</p>
+                                    <blockquote>
+                                        <p>从概念用法解析到核心原理分析，然后到高级实践，层层递进。全面介绍了docker以及围绕Docker构建的各类容器云平台，深入分析了Kubernetes背后的技术原理与设计思想</p>
+                                    </blockquote>
+                                    <p>第一本Docker书</p>
+                                    <blockquote>
+                                        <p>本书专注于指导读者完成Docker的安装、部署、管理和扩展，带领读者经历从测试到生产的整个开发生命周期，让读者了解Docker适用于什么场景。书中先介绍Docker及其组件的基础知识，然后介绍用Docker构建容器和服务来完成各种任务：利用Docker为新项目建立测试环境，演示如何使用持续集成的工作流集成Docker，如何构建应用程序服务和平台，如何使用Docker的API，如何扩展Docker。</p>
+                                    </blockquote>
+                                    <h4 id="Kubernetes"><a href="#Kubernetes" class="headerlink" title="Kubernetes"></a>Kubernetes</h4>
+                                    <p>每天五分钟玩转Kubernetes</p>
+                                    <blockquote>
+                                        <p>内容简洁实用，核心观点点到即止。适合入门与碎片化学习</p>
+                                    </blockquote>
+                                    <p>再也不踩坑的Kubernetes</p>
+                                    <blockquote>
+                                        <p>各种环境搭建如Redis集群、RabbitMQ等。适合当工具书</p>
+                                    </blockquote>
+                                    <p>Kubernetes权威指南</p>
+                                    <blockquote>
+                                        <p>从架构师、开发人员和运维人员的角度，阐述了Kubernetes的基本概念、实践指南、核心原理、开发指导、运维指南、新特性演进等内容，图文并茂、内容丰富、由浅入深、讲解全面；并围绕在生产环境中可能出现的问题，给出了大量的典型案例，比如安全配置方案、网络方案、共享存储方案、高可用方案及Trouble Shooting技巧等，有很强的实战指导意义。</p>
+                                    </blockquote>
+                                    <p>Kubernetes进阶实战</p>
+                                    <p>Kubernetes网络权威指南</p>
+                                    <p>Kubernetes生产化与实践之路</p>
+                                    <p>深入剖析Kubernetes</p>
+                                    <p>Kubernetes源码剖析</p>
+                                    <p>Kubernetes in Action</p>
+                                    <p>云原生服务网格istio</p>
+                                    <p>性能之巅：洞悉系统、企业与云计算洞悉系统、企业与云计算</p>
+                                    <p>BPF之巅洞悉Linux系统和应用性能</p>
+                                    <h3 id="软技能"><a href="#软技能" class="headerlink" title="软技能"></a>软技能</h3>
+                                    <p>程序员的三门课：技术精进，架构修炼、管理探秘</p>
+                                    <p>代码之外的功夫：程序员精进之道</p>
+                                    <p>程序员修炼之道:从小工到专家</p>
+                                    <p>高效程序员的45个习惯：敏捷开发修炼之道</p>
+                                    <p>Google方法法</p>
+                                    <p>Google 工作整理术</p>
+                                    <p>程序的自我修养</p>
+                                    <p>软件随想录</p>
+                                    <p>程序员的职业素养</p>
+                                    <p>人月神话</p>
+                                    <p>决断力</p>
+                                    <p>金字塔原理</p>
+                                    <p>逻辑表达：高效沟通的金字塔思维</p>
+                                    <p>麦肯锡教我的思维武器</p>
+                                    <p>持续更新…</p>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="post-meta">
+                                <span class="post-meta-item">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-user"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">作者</span>
+                                    <span><a href="/authors/Payne" class="author" itemprop="url" rel="index">Payne</a></span>
+                                </span>
+                                <span class="post-meta-item">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-calendar"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">发表于</span>
+                                    <time title="创建时间：2021-01-24 13:12:10" itemprop="dateCreated datePublished" datetime="2021-01-24T13:12:10+08:00">2021-01-24</time>
+                                </span>
+                                <br>
+                                <span class="post-meta-item" title="本文字数">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-file-word"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">本文字数：</span>
+                                    <span>9.7k</span>
+                                </span>
+                                <span class="post-meta-item" title="阅读时长">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-clock"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                                    <span>9 分钟</span>
+                                </span>
+                            </div>
+                        </article>
+                        <article itemscope itemtype="http://schema.org/Article" class="post-block index" lang="zh-CN">
+                            <link itemprop="mainEntityOfPage" href="https://paynewu.com/54288.html">
+                            <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <meta itemprop="image" content="/images/favicon/android-chrome-512x512.png">
+                                <meta itemprop="name" content="吴志鹏">
+                                <meta itemprop="description" content="Talk is free，please state clearly">
+                            </span>
+                            <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+                                <meta itemprop="name" content="吴志鹏｜Payne-Wu">
+                            </span>
+                            <header class="post-header">
+                                <h2 class="post-title" itemprop="name headline">
+                                    <a class="label"> 容器编排 <i class="label-arrow"></i>
+                                    </a>
+                                    <a href="/54288.html" class="post-title-link" itemprop="url">docker 底层原理探究</a>
+                                </h2>
+                            </header>
+                            <div class="post-body" itemprop="articleBody">
+                                <div class="thumb">
+                                    <img itemprop="contentUrl" class="random">
+                                </div>
+                                <div class="excerpt">
+                                    <p>
+                                    <p>Docker is written in the <a href="https://golang.org/" target="_blank" rel="noopener">Go programming language</a> and takes advantage of several features of the<br>Linux kernel to deliver its functionality.</p>
+                                    </p>
+                                    <!--noindex-->
+                                    <div class="post-button">
+                                        <a class="btn" href="/54288.html#more" rel="contents"> 阅读全文 &raquo; </a>
+                                    </div>
+                                    <!--/noindex-->
+                                </div>
+                            </div>
+                            <div class="post-meta">
+                                <span class="post-meta-item">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-user"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">作者</span>
+                                    <span><a href="/authors/Payne" class="author" itemprop="url" rel="index">Payne</a></span>
+                                </span>
+                                <span class="post-meta-item">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-calendar"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">发表于</span>
+                                    <time title="创建时间：2021-01-24 13:12:10" itemprop="dateCreated datePublished" datetime="2021-01-24T13:12:10+08:00">2021-01-24</time>
+                                </span>
+                                <br>
+                                <span class="post-meta-item" title="本文字数">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-file-word"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">本文字数：</span>
+                                    <span>3.1k</span>
+                                </span>
+                                <span class="post-meta-item" title="阅读时长">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-clock"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                                    <span>3 分钟</span>
+                                </span>
+                            </div>
+                        </article>
+                        <article itemscope itemtype="http://schema.org/Article" class="post-block index" lang="zh-CN">
+                            <link itemprop="mainEntityOfPage" href="https://paynewu.com/22168.html">
+                            <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <meta itemprop="image" content="/images/favicon/android-chrome-512x512.png">
+                                <meta itemprop="name" content="吴志鹏">
+                                <meta itemprop="description" content="Talk is free，please state clearly">
+                            </span>
+                            <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+                                <meta itemprop="name" content="吴志鹏｜Payne-Wu">
+                            </span>
+                            <header class="post-header">
+                                <h2 class="post-title" itemprop="name headline">
+                                    <a class="label"> Redis <i class="label-arrow"></i>
+                                    </a>
+                                    <a href="/22168.html" class="post-title-link" itemprop="url">粗谈Redis事物</a>
+                                </h2>
+                            </header>
+                            <div class="post-body" itemprop="articleBody">
+                                <div class="thumb">
+                                    <img itemprop="contentUrl" class="random">
+                                </div>
+                                <div class="excerpt">
+                                    <p>
+                                    <h2 id="Redis-事务是什么东东"><a href="#Redis-事务是什么东东" class="headerlink" title="Redis 事务是什么东东"></a>Redis 事务是什么东东</h2>
+                                    <p>一组命令的集合。事务支持一次执行多个命令，一个事务中所有命令都会被序列化。在事务执行过程，会按照顺序串行化执行队列中的命令，其他客户端提交的命令请求不会插入到事务执行命令序列中。</p>
+                                    <blockquote>
+                                        <p>简单来说：redis事务就是一次性、顺序性、排他性的执行一个队列中的一系列命令。　</p>
+                                    </blockquote>
+                                    </p>
+                                    <!--noindex-->
+                                    <div class="post-button">
+                                        <a class="btn" href="/22168.html#more" rel="contents"> 阅读全文 &raquo; </a>
+                                    </div>
+                                    <!--/noindex-->
+                                </div>
+                            </div>
+                            <div class="post-meta">
+                                <span class="post-meta-item">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-user"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">作者</span>
+                                    <span><a href="/authors/Payne" class="author" itemprop="url" rel="index">Payne</a></span>
+                                </span>
+                                <span class="post-meta-item">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-calendar"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">发表于</span>
+                                    <time title="创建时间：2021-01-23 16:54:19" itemprop="dateCreated datePublished" datetime="2021-01-23T16:54:19+08:00">2021-01-23</time>
+                                </span>
+                                <br>
+                                <span class="post-meta-item" title="本文字数">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-file-word"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">本文字数：</span>
+                                    <span>883</span>
+                                </span>
+                                <span class="post-meta-item" title="阅读时长">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-clock"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                                    <span>1 分钟</span>
+                                </span>
+                            </div>
+                        </article>
+                        <article itemscope itemtype="http://schema.org/Article" class="post-block index" lang="zh-CN">
+                            <link itemprop="mainEntityOfPage" href="https://paynewu.com/51496.html">
+                            <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <meta itemprop="image" content="/images/favicon/android-chrome-512x512.png">
+                                <meta itemprop="name" content="吴志鹏">
+                                <meta itemprop="description" content="Talk is free，please state clearly">
+                            </span>
+                            <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+                                <meta itemprop="name" content="吴志鹏｜Payne-Wu">
+                            </span>
+                            <header class="post-header">
+                                <h2 class="post-title" itemprop="name headline">
+                                    <a class="label"> Redis <i class="label-arrow"></i>
+                                    </a>
+                                    <a href="/51496.html" class="post-title-link" itemprop="url">Redis服务与连接那些事儿</a>
+                                </h2>
+                            </header>
+                            <div class="post-body" itemprop="articleBody">
+                                <div class="thumb">
+                                    <img itemprop="contentUrl" class="random">
+                                </div>
+                                <div class="excerpt">
+                                    <p>
+                                    <h2 id="启动示例"><a href="#启动示例" class="headerlink" title="启动示例"></a>启动示例</h2>
+                                    <p>当我们需要使用Redis的时候需要把redis的服务开启。如下</p>
+                                    <figure class="highlight sh">
+                                        <table>
+                                            <tr>
+                                                <td class="gutter">
+                                                    <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre>
+                                                </td>
+                                                <td class="code">
+                                                    <pre><span class="line"><span class="comment"># 启动</span></span><br><span class="line">redis-server</span><br><span class="line"><span class="comment"># 守护进程方式启动</span></span><br><span class="line">redis-server &amp;</span><br><span class="line"><span class="comment"># 使用自定义redis.conf启动</span></span><br><span class="line">redis-server path</span><br></pre>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </figure>
+                                    </p>
+                                    <!--noindex-->
+                                    <div class="post-button">
+                                        <a class="btn" href="/51496.html#more" rel="contents"> 阅读全文 &raquo; </a>
+                                    </div>
+                                    <!--/noindex-->
+                                </div>
+                            </div>
+                            <div class="post-meta">
+                                <span class="post-meta-item">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-user"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">作者</span>
+                                    <span><a href="/authors/Payne" class="author" itemprop="url" rel="index">Payne</a></span>
+                                </span>
+                                <span class="post-meta-item">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-calendar"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">发表于</span>
+                                    <time title="创建时间：2021-01-18 01:28:06" itemprop="dateCreated datePublished" datetime="2021-01-18T01:28:06+08:00">2021-01-18</time>
+                                </span>
+                                <br>
+                                <span class="post-meta-item" title="本文字数">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-file-word"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">本文字数：</span>
+                                    <span>2.4k</span>
+                                </span>
+                                <span class="post-meta-item" title="阅读时长">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-clock"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                                    <span>2 分钟</span>
+                                </span>
+                            </div>
+                        </article>
+                        <article itemscope itemtype="http://schema.org/Article" class="post-block index" lang="zh-CN">
+                            <link itemprop="mainEntityOfPage" href="https://paynewu.com/12856.html">
+                            <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <meta itemprop="image" content="/images/favicon/android-chrome-512x512.png">
+                                <meta itemprop="name" content="吴志鹏">
+                                <meta itemprop="description" content="Talk is free，please state clearly">
+                            </span>
+                            <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+                                <meta itemprop="name" content="吴志鹏｜Payne-Wu">
+                            </span>
+                            <header class="post-header">
+                                <h2 class="post-title" itemprop="name headline">
+                                    <a class="label"> Redis <i class="label-arrow"></i>
+                                    </a>
+                                    <a href="/12856.html" class="post-title-link" itemprop="url">详探Redis.conf</a>
+                                </h2>
+                            </header>
+                            <div class="post-body" itemprop="articleBody">
+                                <div class="thumb">
+                                    <img itemprop="contentUrl" class="random">
+                                </div>
+                                <div class="excerpt">
+                                    <p>
+                                    <blockquote>
+                                        <p>Redis版本：6.0.10</p>
+                                        <p>redis.conf 默认路径：/opt/redis-6.0.10 路径下（如果为自定制安装，则在您设置的redis路径下）</p>
+                                    </blockquote>
+                                    <p>还记得我刚入行的时候，我的师傅就经常告诉我们<code>配置比开发更重要</code>，因为很多时候就是由于配置不当，而造成后期的难以预想的各种问题，<br>以至于项目难以维护等等由于配置。进入一个公司首先的也是看相关项目的文档。so，如果需要对于redis有更深入的了解，与使用配置文件不可不读。 为CURD，但不止于CURD。那么接下来我们对于<code>redis.conf</code>有个了解，话不多说，开干。</p>
+                                    </p>
+                                    <!--noindex-->
+                                    <div class="post-button">
+                                        <a class="btn" href="/12856.html#more" rel="contents"> 阅读全文 &raquo; </a>
+                                    </div>
+                                    <!--/noindex-->
+                                </div>
+                            </div>
+                            <div class="post-meta">
+                                <span class="post-meta-item">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-user"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">作者</span>
+                                    <span><a href="/authors/Payne" class="author" itemprop="url" rel="index">Payne</a></span>
+                                </span>
+                                <span class="post-meta-item">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-calendar"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">发表于</span>
+                                    <time title="创建时间：2021-01-18 01:26:08" itemprop="dateCreated datePublished" datetime="2021-01-18T01:26:08+08:00">2021-01-18</time>
+                                </span>
+                                <br>
+                                <span class="post-meta-item" title="本文字数">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-file-word"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">本文字数：</span>
+                                    <span>8.4k</span>
+                                </span>
+                                <span class="post-meta-item" title="阅读时长">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-clock"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                                    <span>8 分钟</span>
+                                </span>
+                            </div>
+                        </article>
+                        <article itemscope itemtype="http://schema.org/Article" class="post-block index" lang="zh-CN">
+                            <link itemprop="mainEntityOfPage" href="https://paynewu.com/16021.html">
+                            <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <meta itemprop="image" content="/images/favicon/android-chrome-512x512.png">
+                                <meta itemprop="name" content="吴志鹏">
+                                <meta itemprop="description" content="Talk is free，please state clearly">
+                            </span>
+                            <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+                                <meta itemprop="name" content="吴志鹏｜Payne-Wu">
+                            </span>
+                            <header class="post-header">
+                                <h2 class="post-title" itemprop="name headline">
+                                    <a class="label"> Redis <i class="label-arrow"></i>
+                                    </a>
+                                    <a href="/16021.html" class="post-title-link" itemprop="url">Redis概览与安装</a>
+                                </h2>
+                            </header>
+                            <div class="post-body" itemprop="articleBody">
+                                <div class="thumb">
+                                    <img itemprop="contentUrl" class="random">
+                                </div>
+                                <div class="excerpt">
+                                    <p>
+                                    <h2 id="Redis概览"><a href="#Redis概览" class="headerlink" title="Redis概览"></a>Redis概览</h2>
+                                    <p>Redis是一个开源（BSD许可）的内存数据结构存储，用作数据库、缓存和消息代理。Redis提供诸如字符串、哈希、列表、集合、带范围查询的排序集合、位图、超日志、地理空间索引和流等数据结构。Redis具有内置的复制、Lua脚本、LRU逐出、事务和不同级别的磁盘持久性，并通过Redis<br>Sentinel和Redis Cluster的自动分区提供高可用性</p>
+                                    </p>
+                                    <!--noindex-->
+                                    <div class="post-button">
+                                        <a class="btn" href="/16021.html#more" rel="contents"> 阅读全文 &raquo; </a>
+                                    </div>
+                                    <!--/noindex-->
+                                </div>
+                            </div>
+                            <div class="post-meta">
+                                <span class="post-meta-item">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-user"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">作者</span>
+                                    <span><a href="/authors/Payne" class="author" itemprop="url" rel="index">Payne</a></span>
+                                </span>
+                                <span class="post-meta-item">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-calendar"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">发表于</span>
+                                    <time title="创建时间：2021-01-14 01:29:01" itemprop="dateCreated datePublished" datetime="2021-01-14T01:29:01+08:00">2021-01-14</time>
+                                </span>
+                                <br>
+                                <span class="post-meta-item" title="本文字数">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-file-word"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">本文字数：</span>
+                                    <span>390</span>
+                                </span>
+                                <span class="post-meta-item" title="阅读时长">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-clock"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                                    <span>1 分钟</span>
+                                </span>
+                            </div>
+                        </article>
+                        <article itemscope itemtype="http://schema.org/Article" class="post-block index" lang="zh-CN">
+                            <link itemprop="mainEntityOfPage" href="https://paynewu.com/18675.html">
+                            <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <meta itemprop="image" content="/images/favicon/android-chrome-512x512.png">
+                                <meta itemprop="name" content="吴志鹏">
+                                <meta itemprop="description" content="Talk is free，please state clearly">
+                            </span>
+                            <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+                                <meta itemprop="name" content="吴志鹏｜Payne-Wu">
+                            </span>
+                            <header class="post-header">
+                                <h2 class="post-title" itemprop="name headline">
+                                    <a class="label"> 数据库 <i class="label-arrow"></i>
+                                    </a>
+                                    <a href="/18675.html" class="post-title-link" itemprop="url">SQL,何必在忆之一(索引与执行计划篇)</a>
+                                </h2>
+                            </header>
+                            <div class="post-body" itemprop="articleBody">
+                                <div class="thumb">
+                                    <img itemprop="contentUrl" class="random">
+                                </div>
+                                <div class="excerpt">
+                                    <p>
+                                    <h2 id="B-Tree"><a href="#B-Tree" class="headerlink" title="B Tree"></a>B Tree</h2>
+                                    <h3 id="B树的种类"><a href="#B树的种类" class="headerlink" title="B树的种类"></a>B树的种类</h3>
+                                    <ul>
+                                        <li>B Tree</li>
+                                        <li>B+ Tree</li>
+                                        <li>B* Tree</li>
+                                    </ul>
+                                    <h3 id="B-树的定义"><a href="#B-树的定义" class="headerlink" title="B 树的定义"></a>B 树的定义</h3>
+                                    </p>
+                                    <!--noindex-->
+                                    <div class="post-button">
+                                        <a class="btn" href="/18675.html#more" rel="contents"> 阅读全文 &raquo; </a>
+                                    </div>
+                                    <!--/noindex-->
+                                </div>
+                            </div>
+                            <div class="post-meta">
+                                <span class="post-meta-item">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-user"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">作者</span>
+                                    <span><a href="/authors/Payne" class="author" itemprop="url" rel="index">Payne</a></span>
+                                </span>
+                                <span class="post-meta-item">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-calendar"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">发表于</span>
+                                    <time title="创建时间：2021-01-13 20:41:20" itemprop="dateCreated datePublished" datetime="2021-01-13T20:41:20+08:00">2021-01-13</time>
+                                </span>
+                                <br>
+                                <span class="post-meta-item" title="本文字数">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-file-word"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">本文字数：</span>
+                                    <span>3.4k</span>
+                                </span>
+                                <span class="post-meta-item" title="阅读时长">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-clock"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                                    <span>3 分钟</span>
+                                </span>
+                            </div>
+                        </article>
+                        <article itemscope itemtype="http://schema.org/Article" class="post-block index" lang="zh-CN">
+                            <link itemprop="mainEntityOfPage" href="https://paynewu.com/9129.html">
+                            <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <meta itemprop="image" content="/images/favicon/android-chrome-512x512.png">
+                                <meta itemprop="name" content="吴志鹏">
+                                <meta itemprop="description" content="Talk is free，please state clearly">
+                            </span>
+                            <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+                                <meta itemprop="name" content="吴志鹏｜Payne-Wu">
+                            </span>
+                            <header class="post-header">
+                                <h2 class="post-title" itemprop="name headline">
+                                    <a class="label"> 技术杂谈 <i class="label-arrow"></i>
+                                    </a>
+                                    <a href="/9129.html" class="post-title-link" itemprop="url">Supervisor-程序管理更加得心应手</a>
+                                </h2>
+                            </header>
+                            <div class="post-body" itemprop="articleBody">
+                                <div class="thumb">
+                                    <img itemprop="contentUrl" class="random">
+                                </div>
+                                <div class="excerpt">
+                                    <p>
+                                    <h2 id="Supervisor初探篇"><a href="#Supervisor初探篇" class="headerlink" title="Supervisor初探篇"></a>Supervisor初探篇</h2>
+                                    <h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3>
+                                    <p>Supervisor是一个客户机/服务器系统(也就是非常经典的C/S结构)，它允许用户在类UNIX操作系统上<code>控制</code>许多进程。</p>
+                                    </p>
+                                    <!--noindex-->
+                                    <div class="post-button">
+                                        <a class="btn" href="/9129.html#more" rel="contents"> 阅读全文 &raquo; </a>
+                                    </div>
+                                    <!--/noindex-->
+                                </div>
+                            </div>
+                            <div class="post-meta">
+                                <span class="post-meta-item">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-user"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">作者</span>
+                                    <span><a href="/authors/Payne" class="author" itemprop="url" rel="index">Payne</a></span>
+                                </span>
+                                <span class="post-meta-item">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-calendar"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">发表于</span>
+                                    <time title="创建时间：2021-01-12 19:33:32" itemprop="dateCreated datePublished" datetime="2021-01-12T19:33:32+08:00">2021-01-12</time>
+                                </span>
+                                <br>
+                                <span class="post-meta-item" title="本文字数">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-file-word"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">本文字数：</span>
+                                    <span>1.8k</span>
+                                </span>
+                                <span class="post-meta-item" title="阅读时长">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-clock"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                                    <span>2 分钟</span>
+                                </span>
+                            </div>
+                        </article>
+                        <article itemscope itemtype="http://schema.org/Article" class="post-block index" lang="zh-CN">
+                            <link itemprop="mainEntityOfPage" href="https://paynewu.com/44075.html">
+                            <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <meta itemprop="image" content="/images/favicon/android-chrome-512x512.png">
+                                <meta itemprop="name" content="吴志鹏">
+                                <meta itemprop="description" content="Talk is free，please state clearly">
+                            </span>
+                            <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+                                <meta itemprop="name" content="吴志鹏｜Payne-Wu">
+                            </span>
+                            <header class="post-header">
+                                <h2 class="post-title" itemprop="name headline">
+                                    <a class="label"> 数据库 <i class="label-arrow"></i>
+                                    </a>
+                                    <a href="/44075.html" class="post-title-link" itemprop="url">sql,何必在忆-基础篇</a>
+                                </h2>
+                            </header>
+                            <div class="post-body" itemprop="articleBody">
+                                <div class="thumb">
+                                    <img itemprop="contentUrl" class="random">
+                                </div>
+                                <div class="excerpt">
+                                    <p>
+                                    <p>还记得那是在2018年的十月的某个日子，虽早已入秋，但夏日的炎热却丝毫不减退散。那时的我正捧着一本<code>SQL Server程序设计</code>的白蓝皮书与九栋315的狗子们，匆匆的走向<code>j1-402</code>进行了我们人生中第一次<code>SQL数据库的学习</code><br>，时光总是戏人，现实总是玩笑。当初的几个伙伴都走向了各行各业，而唯有我编程课，问啥啥不会，写啥啥就废的我进入了IT行业。说来实在嘲讽，缅怀那些我错过的编程课，致那些年说过无数次“让我学<code>SQL</code><br>,根本不可能”，我承认我打脸了。正如此章的title一般，“SQL语句， 何必在忆？”</p>
+                                    <p>很久之前就学了SQL，然而又忘记，今天正式系统的性的回顾一下，温故而知新。可以为师矣</p>
+                                    </p>
+                                    <!--noindex-->
+                                    <div class="post-button">
+                                        <a class="btn" href="/44075.html#more" rel="contents"> 阅读全文 &raquo; </a>
+                                    </div>
+                                    <!--/noindex-->
+                                </div>
+                            </div>
+                            <div class="post-meta">
+                                <span class="post-meta-item">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-user"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">作者</span>
+                                    <span><a href="/authors/Payne" class="author" itemprop="url" rel="index">Payne</a></span>
+                                </span>
+                                <span class="post-meta-item">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-calendar"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">发表于</span>
+                                    <time title="创建时间：2021-01-11 16:21:48" itemprop="dateCreated datePublished" datetime="2021-01-11T16:21:48+08:00">2021-01-11</time>
+                                </span>
+                                <br>
+                                <span class="post-meta-item" title="本文字数">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-file-word"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">本文字数：</span>
+                                    <span>3.3k</span>
+                                </span>
+                                <span class="post-meta-item" title="阅读时长">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-clock"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                                    <span>3 分钟</span>
+                                </span>
+                            </div>
+                        </article>
+                        <article itemscope itemtype="http://schema.org/Article" class="post-block index" lang="zh-CN">
+                            <link itemprop="mainEntityOfPage" href="https://paynewu.com/11430.html">
+                            <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <meta itemprop="image" content="/images/favicon/android-chrome-512x512.png">
+                                <meta itemprop="name" content="吴志鹏">
+                                <meta itemprop="description" content="Talk is free，please state clearly">
+                            </span>
+                            <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+                                <meta itemprop="name" content="吴志鹏｜Payne-Wu">
+                            </span>
+                            <header class="post-header">
+                                <h2 class="post-title" itemprop="name headline">
+                                    <a class="label"> 数据库 <i class="label-arrow"></i>
+                                    </a>
+                                    <a href="/11430.html" class="post-title-link" itemprop="url">执行一条SQL，这之间到底发生了啥？</a>
+                                </h2>
+                            </header>
+                            <div class="post-body" itemprop="articleBody">
+                                <div class="thumb">
+                                    <img itemprop="contentUrl" class="random">
+                                </div>
+                                <div class="excerpt">
+                                    <p>
+                                    <h3 id="MySQL模型初探"><a href="#MySQL模型初探" class="headerlink" title="MySQL模型初探"></a>MySQL模型初探</h3>
+                                    <p>MySQL基础结构是采用典型的C/S工作模型(即是server/client)</p>
+                                    </p>
+                                    <!--noindex-->
+                                    <div class="post-button">
+                                        <a class="btn" href="/11430.html#more" rel="contents"> 阅读全文 &raquo; </a>
+                                    </div>
+                                    <!--/noindex-->
+                                </div>
+                            </div>
+                            <div class="post-meta">
+                                <span class="post-meta-item">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-user"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">作者</span>
+                                    <span><a href="/authors/Payne" class="author" itemprop="url" rel="index">Payne</a></span>
+                                </span>
+                                <span class="post-meta-item">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-calendar"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">发表于</span>
+                                    <time title="创建时间：2021-01-03 21:26:58" itemprop="dateCreated datePublished" datetime="2021-01-03T21:26:58+08:00">2021-01-03</time>
+                                </span>
+                                <br>
+                                <span class="post-meta-item" title="本文字数">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-file-word"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">本文字数：</span>
+                                    <span>2.1k</span>
+                                </span>
+                                <span class="post-meta-item" title="阅读时长">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-clock"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                                    <span>2 分钟</span>
+                                </span>
+                            </div>
+                        </article>
+                        <article itemscope itemtype="http://schema.org/Article" class="post-block index" lang="zh-CN">
+                            <link itemprop="mainEntityOfPage" href="https://paynewu.com/32262.html">
+                            <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <meta itemprop="image" content="/images/favicon/android-chrome-512x512.png">
+                                <meta itemprop="name" content="吴志鹏">
+                                <meta itemprop="description" content="Talk is free，please state clearly">
+                            </span>
+                            <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+                                <meta itemprop="name" content="吴志鹏｜Payne-Wu">
+                            </span>
+                            <header class="post-header">
+                                <h2 class="post-title" itemprop="name headline">
+                                    <a class="label"> 技术人生 <i class="label-arrow"></i>
+                                    </a>
+                                    <a href="/32262.html" class="post-title-link" itemprop="url">谈谈生活中那些与学习的事儿</a>
+                                </h2>
+                            </header>
+                            <div class="post-body" itemprop="articleBody">
+                                <div class="thumb">
+                                    <img itemprop="contentUrl" class="random">
+                                </div>
+                                <div class="excerpt">
+                                    <p>
+                                    <p>前几天有个公众号的小伙伴找到我，问到我<code>大佬大佬，你是怎么学习的啊</code>，我的回答是<code>老大哥，俺也不知道啊。应该是先这样在这样然后在这样</code>(男性同胞啊)<br>。那到底那样啊？说实话我真不知道，我还真的不晓得什么样的学习方法、为人处事，等等是正确的。如果你问我“有没有一招KO所有”，那我只能回答你“想啥呢？如果真的有为什么只能你会，对不对？”。有时候选择比努力更加重要，方法比努力重要。没有方向所有的风都是逆风，一个个的大佬叫着，说真的很多时候我比谁都尴尬，如履薄冰。害怕你问的问题，我也不会。毕竟俺也是挺平凡的一个靓仔(<br>“呸，丑东西～”)</p>
+                                    </p>
+                                    <!--noindex-->
+                                    <div class="post-button">
+                                        <a class="btn" href="/32262.html#more" rel="contents"> 阅读全文 &raquo; </a>
+                                    </div>
+                                    <!--/noindex-->
+                                </div>
+                            </div>
+                            <div class="post-meta">
+                                <span class="post-meta-item">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-user"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">作者</span>
+                                    <span><a href="/authors/Payne" class="author" itemprop="url" rel="index">Payne</a></span>
+                                </span>
+                                <span class="post-meta-item">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-calendar"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">发表于</span>
+                                    <time title="创建时间：2021-01-01 23:34:28" itemprop="dateCreated datePublished" datetime="2021-01-01T23:34:28+08:00">2021-01-01</time>
+                                </span>
+                                <br>
+                                <span class="post-meta-item" title="本文字数">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-file-word"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">本文字数：</span>
+                                    <span>5.7k</span>
+                                </span>
+                                <span class="post-meta-item" title="阅读时长">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-clock"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                                    <span>5 分钟</span>
+                                </span>
+                            </div>
+                        </article>
+                        <article itemscope itemtype="http://schema.org/Article" class="post-block index" lang="zh-CN">
+                            <link itemprop="mainEntityOfPage" href="https://paynewu.com/22141.html">
+                            <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <meta itemprop="image" content="/images/favicon/android-chrome-512x512.png">
+                                <meta itemprop="name" content="吴志鹏">
+                                <meta itemprop="description" content="Talk is free，please state clearly">
+                            </span>
+                            <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+                                <meta itemprop="name" content="吴志鹏｜Payne-Wu">
+                            </span>
+                            <header class="post-header">
+                                <h2 class="post-title" itemprop="name headline">
+                                    <a class="label"> Python <i class="label-arrow"></i>
+                                    </a>
+                                    <a href="/22141.html" class="post-title-link" itemprop="url">pipenv 让你的虚拟环境更加funny一点</a>
+                                </h2>
+                            </header>
+                            <div class="post-body" itemprop="articleBody">
+                                <div class="thumb">
+                                    <img itemprop="contentUrl" class="random">
+                                </div>
+                                <div class="excerpt">
+                                    <p>
+                                    <h2 id="什么是虚拟环境？"><a href="#什么是虚拟环境？" class="headerlink" title="什么是虚拟环境？"></a>什么是虚拟环境？</h2>
+                                    <p>-</p>
+                                    <p>由<a href="https://cuiqingcai.com/[https://baike.baidu.com/item/虚拟环境/6529153?fr=aladdin](https://baike.baidu.com/item/虚拟环境/6529153?fr=aladdin" target="_blank" rel="noopener">百度百科</a> )<br>得知： 以专利的实时动态程序行为修饰与模拟算法，直接利用本机的 OS，模拟出自带与本机相容 OS 的虚拟机（Vista 下可模拟 Vista、XP，Windows 7 下则可模拟 Windows 7、Vista、XP），也称为 “虚拟环境”</p>
+                                    <ul>
+                                        <li>功能： 每一个环境都相当于一个新的 Python 环境。你可以在这个新的环境里安装库，运行代码等</li>
+                                    </ul>
+                                    </p>
+                                    <!--noindex-->
+                                    <div class="post-button">
+                                        <a class="btn" href="/22141.html#more" rel="contents"> 阅读全文 &raquo; </a>
+                                    </div>
+                                    <!--/noindex-->
+                                </div>
+                            </div>
+                            <div class="post-meta">
+                                <span class="post-meta-item">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-user"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">作者</span>
+                                    <span><a href="/authors/Payne" class="author" itemprop="url" rel="index">Payne</a></span>
+                                </span>
+                                <span class="post-meta-item">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-calendar"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">发表于</span>
+                                    <time title="创建时间：2020-12-22 00:34:28" itemprop="dateCreated datePublished" datetime="2020-12-22T00:34:28+08:00">2020-12-22</time>
+                                </span>
+                                <br>
+                                <span class="post-meta-item" title="本文字数">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-file-word"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">本文字数：</span>
+                                    <span>3.3k</span>
+                                </span>
+                                <span class="post-meta-item" title="阅读时长">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-clock"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                                    <span>3 分钟</span>
+                                </span>
+                            </div>
+                        </article>
+                        <article itemscope itemtype="http://schema.org/Article" class="post-block index" lang="zh-CN">
+                            <link itemprop="mainEntityOfPage" href="https://paynewu.com/3018.html">
+                            <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <meta itemprop="image" content="/images/favicon/android-chrome-512x512.png">
+                                <meta itemprop="name" content="吴志鹏">
+                                <meta itemprop="description" content="Talk is free，please state clearly">
+                            </span>
+                            <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+                                <meta itemprop="name" content="吴志鹏｜Payne-Wu">
+                            </span>
+                            <header class="post-header">
+                                <h2 class="post-title" itemprop="name headline">
+                                    <a class="label"> 技术杂谈 <i class="label-arrow"></i>
+                                    </a>
+                                    <a href="/3018.html" class="post-title-link" itemprop="url">scrapy-splash对接代理</a>
+                                </h2>
+                            </header>
+                            <div class="post-body" itemprop="articleBody">
+                                <div class="thumb">
+                                    <img itemprop="contentUrl" class="random">
+                                </div>
+                                <div class="excerpt">
+                                    <p>
+                                    <h2 id="Scrapy-Splash使用及代理失败处理"><a href="#Scrapy-Splash使用及代理失败处理" class="headerlink" title="Scrapy-Splash使用及代理失败处理"></a>Scrapy-Splash使用及代理失败处理</h2>
+                                    <p>在日常做爬虫的时候肯定遇到这么一些问题，网页js渲染，接口加密等，以至于无法有效的获取数据，那么此时若想获取数据大致有两种方向，<code>硬刚加密参数</code>或<code>使用渲染工具</code></p>
+                                    <p>二者的各有所不同？</p>
+                                    <p>刚加密参数：</p>
+                                    <ul>
+                                        <li>
+                                            <p>优势：爬取速度快，实效性。损耗资源更少</p>
+                                        </li>
+                                        <li>
+                                            <p>劣势：耗费时间长，不懂的完全不会，会的也不一定能完全处理。难以在有效的时间内获取到数据</p>
+                                        </li>
+                                    </ul>
+                                    </p>
+                                    <!--noindex-->
+                                    <div class="post-button">
+                                        <a class="btn" href="/3018.html#more" rel="contents"> 阅读全文 &raquo; </a>
+                                    </div>
+                                    <!--/noindex-->
+                                </div>
+                            </div>
+                            <div class="post-meta">
+                                <span class="post-meta-item">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-user"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">作者</span>
+                                    <span><a href="/authors/Payne" class="author" itemprop="url" rel="index">Payne</a></span>
+                                </span>
+                                <span class="post-meta-item">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-calendar"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">发表于</span>
+                                    <time title="创建时间：2020-12-19 14:11:52" itemprop="dateCreated datePublished" datetime="2020-12-19T14:11:52+08:00">2020-12-19</time>
+                                </span>
+                                <br>
+                                <span class="post-meta-item" title="本文字数">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-file-word"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">本文字数：</span>
+                                    <span>1.6k</span>
+                                </span>
+                                <span class="post-meta-item" title="阅读时长">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-clock"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                                    <span>1 分钟</span>
+                                </span>
+                            </div>
+                        </article>
+                        <article itemscope itemtype="http://schema.org/Article" class="post-block index" lang="zh-CN">
+                            <link itemprop="mainEntityOfPage" href="https://paynewu.com/4479.html">
+                            <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <meta itemprop="image" content="/images/favicon/android-chrome-512x512.png">
+                                <meta itemprop="name" content="吴志鹏">
+                                <meta itemprop="description" content="Talk is free，please state clearly">
+                            </span>
+                            <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+                                <meta itemprop="name" content="吴志鹏｜Payne-Wu">
+                            </span>
+                            <header class="post-header">
+                                <h2 class="post-title" itemprop="name headline">
+                                    <a class="label"> 容器编排 <i class="label-arrow"></i>
+                                    </a>
+                                    <a href="/4479.html" class="post-title-link" itemprop="url">docker部署控制</a>
+                                </h2>
+                            </header>
+                            <div class="post-body" itemprop="articleBody">
+                                <div class="thumb">
+                                    <img itemprop="contentUrl" class="random">
+                                </div>
+                                <div class="excerpt">
+                                    <p>
+                                    <h2 id="Docker-swarm部署控制"><a href="#Docker-swarm部署控制" class="headerlink" title="Docker swarm部署控制"></a>Docker swarm部署控制</h2>
+                                    <p>还记得我之前写过一片文章叫做<a href="https://mp.weixin.qq.com/s?__biz=Mzg2MzM4NTg3MA==&amp;tempkey=MTA5MF9RcFZ5c1B4QTFmSnZHd2Qxa3hMNWhpLXFoOEJYWVBBaUZyME1sRmVBQnR1QWN3V3FUZ1hfa1BnemdtOWpLY1o0RTlzVnE2OUtRblZPS1ZDV2pDSk9QU3BadDUzLTNJa3RHYmxFQXNqMjQyQ1dSNUlrcDdfTG1scDRTWVg2UDdiLTI5eWo4dE9HSHI4TlVKOVltZEdtVzZObW9NT19GN2I5eF9YbzdBfn4%3D&amp;chksm=4e78226b790fab7d1fb0283f8b6294c40456df7aebf58d947412ed03d0c3fc3aa188de79f130#rd" target="_blank" rel="noopener">《Docker快速部署项目，极速搭建分布式》</a>，在那里讲述了如何去使用docker<br>swarm，如何构建自己的私人镜像仓库。随着最近的业务量的增长，机子加多。对于docker swarm管理难度有上升的趋势。主要的问题有以下几个</p>
+                                    <ul>
+                                        <li>物理机配置不同（比如 CPU、内存等）</li>
+                                        <li>部署着不同类型的服务（比如 Web服务、Job服务等）</li>
+                                        <li>Swarm 集群中的节点跨机房，为了内部服务间通信更快，该如何分组部署</li>
+                                        <li>。。。</li>
+                                    </ul>
+                                    <p>为了解决以上问题,以求更合理、更科学的管理部署所以有了今天这篇文章。</p>
+                                    </p>
+                                    <!--noindex-->
+                                    <div class="post-button">
+                                        <a class="btn" href="/4479.html#more" rel="contents"> 阅读全文 &raquo; </a>
+                                    </div>
+                                    <!--/noindex-->
+                                </div>
+                            </div>
+                            <div class="post-meta">
+                                <span class="post-meta-item">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-user"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">作者</span>
+                                    <span><a href="/authors/Payne" class="author" itemprop="url" rel="index">Payne</a></span>
+                                </span>
+                                <span class="post-meta-item">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-calendar"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">发表于</span>
+                                    <time title="创建时间：2020-12-13 23:44:48" itemprop="dateCreated datePublished" datetime="2020-12-13T23:44:48+08:00">2020-12-13</time>
+                                </span>
+                                <br>
+                                <span class="post-meta-item" title="本文字数">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-file-word"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">本文字数：</span>
+                                    <span>1.7k</span>
+                                </span>
+                                <span class="post-meta-item" title="阅读时长">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-clock"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                                    <span>2 分钟</span>
+                                </span>
+                            </div>
+                        </article>
+                        <article itemscope itemtype="http://schema.org/Article" class="post-block index" lang="zh-CN">
+                            <link itemprop="mainEntityOfPage" href="https://paynewu.com/34063.html">
+                            <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <meta itemprop="image" content="/images/favicon/android-chrome-512x512.png">
+                                <meta itemprop="name" content="吴志鹏">
+                                <meta itemprop="description" content="Talk is free，please state clearly">
+                            </span>
+                            <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+                                <meta itemprop="name" content="吴志鹏｜Payne-Wu">
+                            </span>
+                            <header class="post-header">
+                                <h2 class="post-title" itemprop="name headline">
+                                    <a class="label"> Go <i class="label-arrow"></i>
+                                    </a>
+                                    <a href="/34063.html" class="post-title-link" itemprop="url">Golang并发深入了解</a>
+                                </h2>
+                            </header>
+                            <div class="post-body" itemprop="articleBody">
+                                <div class="thumb">
+                                    <img itemprop="contentUrl" class="random">
+                                </div>
+                                <div class="excerpt">
+                                    <p>
+                                    <h2 id="协程控制需要"><a href="#协程控制需要" class="headerlink" title="协程控制需要"></a>协程控制需要</h2>
+                                    <p>重学编程之Golang的plan中的上一篇文章我向大家介绍了，<code>并发编程基础</code>，<code>goroutine的创建</code>，<code>channel</code><br>，正由于go语言的简洁性,我们可以简易快速的创建任意个协程。同时也留下了许多隐患，如果没有更加深入的学习，其实很难直接将其运用到实际项目中，实际生活中。为什么呢？并发的场景许许多多，但一味的只知道其创建，是很难有效的解决问题。例如以下场景-资源竞争</p>
+                                    </p>
+                                    <!--noindex-->
+                                    <div class="post-button">
+                                        <a class="btn" href="/34063.html#more" rel="contents"> 阅读全文 &raquo; </a>
+                                    </div>
+                                    <!--/noindex-->
+                                </div>
+                            </div>
+                            <div class="post-meta">
+                                <span class="post-meta-item">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-user"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">作者</span>
+                                    <span><a href="/authors/Payne" class="author" itemprop="url" rel="index">Payne</a></span>
+                                </span>
+                                <span class="post-meta-item">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-calendar"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">发表于</span>
+                                    <time title="创建时间：2020-12-06 10:46:37" itemprop="dateCreated datePublished" datetime="2020-12-06T10:46:37+08:00">2020-12-06</time>
+                                </span>
+                                <br>
+                                <span class="post-meta-item" title="本文字数">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-file-word"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">本文字数：</span>
+                                    <span>2.9k</span>
+                                </span>
+                                <span class="post-meta-item" title="阅读时长">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-clock"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                                    <span>3 分钟</span>
+                                </span>
+                            </div>
+                        </article>
+                        <article itemscope itemtype="http://schema.org/Article" class="post-block index" lang="zh-CN">
+                            <link itemprop="mainEntityOfPage" href="https://paynewu.com/52507.html">
+                            <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <meta itemprop="image" content="/images/favicon/android-chrome-512x512.png">
+                                <meta itemprop="name" content="吴志鹏">
+                                <meta itemprop="description" content="Talk is free，please state clearly">
+                            </span>
+                            <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+                                <meta itemprop="name" content="吴志鹏｜Payne-Wu">
+                            </span>
+                            <header class="post-header">
+                                <h2 class="post-title" itemprop="name headline">
+                                    <a class="label"> Go <i class="label-arrow"></i>
+                                    </a>
+                                    <a href="/52507.html" class="post-title-link" itemprop="url">Golang并发编程</a>
+                                </h2>
+                            </header>
+                            <div class="post-body" itemprop="articleBody">
+                                <div class="thumb">
+                                    <img itemprop="contentUrl" class="random">
+                                </div>
+                                <div class="excerpt">
+                                    <p>
+                                    <h2 id="单个goroutine"><a href="#单个goroutine" class="headerlink" title="单个goroutine"></a>单个goroutine</h2>
+                                    <p>Go语言中使用<code>goroutine</code>非常简单，只需要在调用函数的时候在前面加上<code>go</code>关键字，就可以为一个函数创建一个<code>goroutine</code>。</p>
+                                    </p>
+                                    <!--noindex-->
+                                    <div class="post-button">
+                                        <a class="btn" href="/52507.html#more" rel="contents"> 阅读全文 &raquo; </a>
+                                    </div>
+                                    <!--/noindex-->
+                                </div>
+                            </div>
+                            <div class="post-meta">
+                                <span class="post-meta-item">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-user"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">作者</span>
+                                    <span><a href="/authors/Payne" class="author" itemprop="url" rel="index">Payne</a></span>
+                                </span>
+                                <span class="post-meta-item">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-calendar"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">发表于</span>
+                                    <time title="创建时间：2020-12-06 10:46:03" itemprop="dateCreated datePublished" datetime="2020-12-06T10:46:03+08:00">2020-12-06</time>
+                                </span>
+                                <br>
+                                <span class="post-meta-item" title="本文字数">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-file-word"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">本文字数：</span>
+                                    <span>2.2k</span>
+                                </span>
+                                <span class="post-meta-item" title="阅读时长">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-clock"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                                    <span>2 分钟</span>
+                                </span>
+                            </div>
+                        </article>
+                        <article itemscope itemtype="http://schema.org/Article" class="post-block index" lang="zh-CN">
+                            <link itemprop="mainEntityOfPage" href="https://paynewu.com/21490.html">
+                            <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <meta itemprop="image" content="/images/favicon/android-chrome-512x512.png">
+                                <meta itemprop="name" content="吴志鹏">
+                                <meta itemprop="description" content="Talk is free，please state clearly">
+                            </span>
+                            <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+                                <meta itemprop="name" content="吴志鹏｜Payne-Wu">
+                            </span>
+                            <header class="post-header">
+                                <h2 class="post-title" itemprop="name headline">
+                                    <a class="label"> Go <i class="label-arrow"></i>
+                                    </a>
+                                    <a href="/21490.html" class="post-title-link" itemprop="url">Golang并发编程初探</a>
+                                </h2>
+                            </header>
+                            <div class="post-body" itemprop="articleBody">
+                                <div class="thumb">
+                                    <img itemprop="contentUrl" class="random">
+                                </div>
+                                <div class="excerpt">
+                                    <p>
+                                    <h2 id="基本概念了解："><a href="#基本概念了解：" class="headerlink" title="基本概念了解："></a>基本概念了解：</h2>
+                                    <h3 id="并发与并行：-略偏向于多线-进程方面"><a href="#并发与并行：-略偏向于多线-进程方面" class="headerlink" title="并发与并行：(略偏向于多线 / 进程方面)"></a>并发与并行：(略偏向于多线 / 进程方面)</h3>
+                                    <ul>
+                                        <li>并发： 指在同一时刻只能有一条指令执行，但多个进程指令被快速的轮换执行，使得在宏观上具有多个进程同时执行的效果，但在微观上并不是同时执行的，只是把时间分成若干段，使多个进程快速交替的执行</li>
+                                        <li>并行： 指在同一时刻，有多条指令在多个处理器上同时执行。所以无论从微观还是从宏观来看，二者都是一起执行的</li>
+                                    </ul>
+                                    </p>
+                                    <!--noindex-->
+                                    <div class="post-button">
+                                        <a class="btn" href="/21490.html#more" rel="contents"> 阅读全文 &raquo; </a>
+                                    </div>
+                                    <!--/noindex-->
+                                </div>
+                            </div>
+                            <div class="post-meta">
+                                <span class="post-meta-item">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-user"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">作者</span>
+                                    <span><a href="/authors/Payne" class="author" itemprop="url" rel="index">Payne</a></span>
+                                </span>
+                                <span class="post-meta-item">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-calendar"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">发表于</span>
+                                    <time title="创建时间：2020-12-06 10:43:18" itemprop="dateCreated datePublished" datetime="2020-12-06T10:43:18+08:00">2020-12-06</time>
+                                </span>
+                                <br>
+                                <span class="post-meta-item" title="本文字数">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-file-word"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">本文字数：</span>
+                                    <span>2.5k</span>
+                                </span>
+                                <span class="post-meta-item" title="阅读时长">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-clock"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                                    <span>2 分钟</span>
+                                </span>
+                            </div>
+                        </article>
+                        <article itemscope itemtype="http://schema.org/Article" class="post-block index" lang="zh-CN">
+                            <link itemprop="mainEntityOfPage" href="https://paynewu.com/11529.html">
+                            <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <meta itemprop="image" content="/images/favicon/android-chrome-512x512.png">
+                                <meta itemprop="name" content="吴志鹏">
+                                <meta itemprop="description" content="Talk is free，please state clearly">
+                            </span>
+                            <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+                                <meta itemprop="name" content="吴志鹏｜Payne-Wu">
+                            </span>
+                            <header class="post-header">
+                                <h2 class="post-title" itemprop="name headline">
+                                    <a class="label"> Go <i class="label-arrow"></i>
+                                    </a>
+                                    <a href="/11529.html" class="post-title-link" itemprop="url">Golang内置包之time</a>
+                                </h2>
+                            </header>
+                            <div class="post-body" itemprop="articleBody">
+                                <div class="thumb">
+                                    <img itemprop="contentUrl" class="random">
+                                </div>
+                                <div class="excerpt">
+                                    <p>
+                                    <h2 id="GoLang内置包之time"><a href="#GoLang内置包之time" class="headerlink" title="GoLang内置包之time"></a>GoLang内置包之time</h2>
+                                    <p>一寸光阴一寸金，寸金难买寸光阴</p>
+                                    <p>时间离我们仅在咫尺，无论是在编程中时间还是日常生活中对于时间的 记述都是离我们最近的，那么让我们一起来学习一下GoLang中内置包time。</p>
+                                    </p>
+                                    <!--noindex-->
+                                    <div class="post-button">
+                                        <a class="btn" href="/11529.html#more" rel="contents"> 阅读全文 &raquo; </a>
+                                    </div>
+                                    <!--/noindex-->
+                                </div>
+                            </div>
+                            <div class="post-meta">
+                                <span class="post-meta-item">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-user"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">作者</span>
+                                    <span><a href="/authors/Payne" class="author" itemprop="url" rel="index">Payne</a></span>
+                                </span>
+                                <span class="post-meta-item">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-calendar"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">发表于</span>
+                                    <time title="创建时间：2020-12-01 23:55:27" itemprop="dateCreated datePublished" datetime="2020-12-01T23:55:27+08:00">2020-12-01</time>
+                                </span>
+                                <br>
+                                <span class="post-meta-item" title="本文字数">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-file-word"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">本文字数：</span>
+                                    <span>1.1k</span>
+                                </span>
+                                <span class="post-meta-item" title="阅读时长">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-clock"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                                    <span>1 分钟</span>
+                                </span>
+                            </div>
+                        </article>
+                        <article itemscope itemtype="http://schema.org/Article" class="post-block index" lang="zh-CN">
+                            <link itemprop="mainEntityOfPage" href="https://paynewu.com/1627.html">
+                            <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <meta itemprop="image" content="/images/favicon/android-chrome-512x512.png">
+                                <meta itemprop="name" content="吴志鹏">
+                                <meta itemprop="description" content="Talk is free，please state clearly">
+                            </span>
+                            <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+                                <meta itemprop="name" content="吴志鹏｜Payne-Wu">
+                            </span>
+                            <header class="post-header">
+                                <h2 class="post-title" itemprop="name headline">
+                                    <a class="label"> Go <i class="label-arrow"></i>
+                                    </a>
+                                    <a href="/1627.html" class="post-title-link" itemprop="url">使用Golang操作文件的那些事儿</a>
+                                </h2>
+                            </header>
+                            <div class="post-body" itemprop="articleBody">
+                                <div class="thumb">
+                                    <img itemprop="contentUrl" class="random">
+                                </div>
+                                <div class="excerpt">
+                                    <p>
+                                    <h2 id="Golang-文件操作"><a href="#Golang-文件操作" class="headerlink" title="Golang 文件操作"></a>Golang 文件操作</h2>
+                                    <p>Os模块的使用与源码研究</p>
+                                    <p>文件：计算机中的文件是存储在外部介质（通常是磁盘）上的数据集合，文件分为文本文件和二进制文件。例如咱们常见的文件后缀名<code>.exe</code>,<code>.txt</code>,’.word’…等等</p>
+                                    <p>文件的基本操作可简单分为<code>增</code>、<code>删</code>两类，也就是咱们所说的CURD(增删改查)，也是基于此两类操作。可简单理解为<code>打开文件夹</code>、<code>CURD</code>、关闭文件夹。结束～</p>
+                                    <p>golang对于文件基本上都是基于Golang的<code>os</code>模块，那让我们一起了解一下，那么Golang是如何对文件进行操作呢。Let’s Go~</p>
+                                    </p>
+                                    <!--noindex-->
+                                    <div class="post-button">
+                                        <a class="btn" href="/1627.html#more" rel="contents"> 阅读全文 &raquo; </a>
+                                    </div>
+                                    <!--/noindex-->
+                                </div>
+                            </div>
+                            <div class="post-meta">
+                                <span class="post-meta-item">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-user"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">作者</span>
+                                    <span><a href="/authors/Payne" class="author" itemprop="url" rel="index">Payne</a></span>
+                                </span>
+                                <span class="post-meta-item">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-calendar"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">发表于</span>
+                                    <time title="创建时间：2020-11-28 00:11:57" itemprop="dateCreated datePublished" datetime="2020-11-28T00:11:57+08:00">2020-11-28</time>
+                                </span>
+                                <br>
+                                <span class="post-meta-item" title="本文字数">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-file-word"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">本文字数：</span>
+                                    <span>1.8k</span>
+                                </span>
+                                <span class="post-meta-item" title="阅读时长">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-clock"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                                    <span>2 分钟</span>
+                                </span>
+                            </div>
+                        </article>
+                        <article itemscope itemtype="http://schema.org/Article" class="post-block index" lang="zh-CN">
+                            <link itemprop="mainEntityOfPage" href="https://paynewu.com/1962.html">
+                            <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <meta itemprop="image" content="/images/favicon/android-chrome-512x512.png">
+                                <meta itemprop="name" content="吴志鹏">
+                                <meta itemprop="description" content="Talk is free，please state clearly">
+                            </span>
+                            <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+                                <meta itemprop="name" content="吴志鹏｜Payne-Wu">
+                            </span>
+                            <header class="post-header">
+                                <h2 class="post-title" itemprop="name headline">
+                                    <a class="label"> Go <i class="label-arrow"></i>
+                                    </a>
+                                    <a href="/1962.html" class="post-title-link" itemprop="url">Golang-接口(interface)</a>
+                                </h2>
+                            </header>
+                            <div class="post-body" itemprop="articleBody">
+                                <div class="thumb">
+                                    <img itemprop="contentUrl" class="random">
+                                </div>
+                                <div class="excerpt">
+                                    <p>
+                                    <p><strong>接口是一种类型</strong></p>
+                                    <p>最初的<code>int</code>、<code>string</code>、<code>bool</code>,再到稍微复杂的<code>Array</code>、<code>Map</code>、<code>Slice</code>。他们都称之为基础数据类型，以及到多维度符合类型的<code>结构体</code>。以及今日咱们所需要学习的<code>接口</code>。</p>
+                                    <p>在Go语言编程中，Go(强类型语言)，也就是说必须是一种具体的类型，当我们需要只关注能调用它的什么方法，而不关注它是什么类型,该怎么办呢？</p>
+                                    <p>Go语言中为了解决类似上面的问题，就设计了接口这个概念。接口区别于我们之前所有的具体类型，接口是一种抽象的类型。当你看到一个接口类型的值时，你不知道它是什么，唯一知道的是通过它的方法能做什么。</p>
+                                    <p><strong>疑问：只关心调用的函数，而不关注其类型</strong></p>
+                                    </p>
+                                    <!--noindex-->
+                                    <div class="post-button">
+                                        <a class="btn" href="/1962.html#more" rel="contents"> 阅读全文 &raquo; </a>
+                                    </div>
+                                    <!--/noindex-->
+                                </div>
+                            </div>
+                            <div class="post-meta">
+                                <span class="post-meta-item">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-user"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">作者</span>
+                                    <span><a href="/authors/Payne" class="author" itemprop="url" rel="index">Payne</a></span>
+                                </span>
+                                <span class="post-meta-item">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-calendar"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">发表于</span>
+                                    <time title="创建时间：2020-11-26 21:57:37" itemprop="dateCreated datePublished" datetime="2020-11-26T21:57:37+08:00">2020-11-26</time>
+                                </span>
+                                <br>
+                                <span class="post-meta-item" title="本文字数">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-file-word"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">本文字数：</span>
+                                    <span>752</span>
+                                </span>
+                                <span class="post-meta-item" title="阅读时长">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-clock"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                                    <span>1 分钟</span>
+                                </span>
+                            </div>
+                        </article>
+                        <script>
+                            document.querySelectorAll('.random').forEach(item => item.src = "https://picsum.photos/id/" + Math.floor(Math.random() * Math.floor(300)) + "/200/133")
+
+                        </script>
+                        <nav class="pagination">
+                            <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+                        </nav>
+                    </div>
+                    <script>
+                        window.addEventListener('tabs:register', () =>
+                        {
+                            let
+                            {
+                                activeClass
+                            } = CONFIG.comments;
+                            if (CONFIG.comments.storage)
+                            {
+                                activeClass = localStorage.getItem('comments_active') || activeClass;
+                            }
+                            if (activeClass)
+                            {
+                                let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+                                if (activeTab)
+                                {
+                                    activeTab.click();
+                                }
+                            }
+                        });
+                        if (CONFIG.comments.storage)
+                        {
+                            window.addEventListener('tabs:click', event =>
+                            {
+                                if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+                                let commentClass = event.target.classList[1];
+                                localStorage.setItem('comments_active', commentClass);
+                            });
+                        }
+
+                    </script>
+                </div>
+                <div class="toggle sidebar-toggle">
+                    <span class="toggle-line toggle-line-first"></span>
+                    <span class="toggle-line toggle-line-middle"></span>
+                    <span class="toggle-line toggle-line-last"></span>
+                </div>
+                <aside class="sidebar">
+                    <div class="sidebar-inner">
+                        <ul class="sidebar-nav motion-element">
+                            <li class="sidebar-nav-toc"> 文章目录 </li>
+                            <li class="sidebar-nav-overview"> 站点概览 </li>
+                        </ul>
+                        <!--noindex-->
+                        <div class="post-toc-wrap sidebar-panel">
+                        </div>
+                        <!--/noindex-->
+                        <div class="site-overview-wrap sidebar-panel">
+                            <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <img class="site-author-image" itemprop="image" alt="吴志鹏" src="/images/favicon/android-chrome-512x512.png">
+                                <p class="site-author-name" itemprop="name">吴志鹏</p>
+                                <div class="site-description" itemprop="description">Talk is free，please state clearly</div>
+                            </div>
+                            <div class="site-state-wrap motion-element">
+                                <nav class="site-state">
+                                    <div class="site-state-item site-state-posts">
+                                        <a href="/archives/">
+                                            <span class="site-state-item-count">136</span>
+                                            <span class="site-state-item-name">日志</span>
+                                        </a>
+                                    </div>
+                                    <div class="site-state-item site-state-categories">
+                                        <a href="/categories/">
+                                            <span class="site-state-item-count">158</span>
+                                            <span class="site-state-item-name">分类</span></a>
+                                    </div>
+                                    <div class="site-state-item site-state-tags">
+                                        <a href="/tags/">
+                                            <span class="site-state-item-count">89</span>
+                                            <span class="site-state-item-name">标签</span></a>
+                                    </div>
+                                </nav>
+                            </div>
+                            <div class="links-of-author motion-element">
+                                <span class="links-of-author-item">
+                                    <a href="https://github.com/Payne-Wu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Payne-Wu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="mailto:wuzhipeng1289690157@gmail.com" title="E-Mail → mailto:wuzhipeng1289690157@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="https://www.zhihu.com/people/wu-zhi-peng-72-78" title="ZhiHu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;wu-zhi-peng-72-78" rel="noopener" target="_blank"><i class="fa fa-magic fa-fw"></i>ZhiHu</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="https://weibo.com/u/6987234483" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;6987234483" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+                <div id="sidebar-dimmer"></div>
+            </div>
+        </main>
+        <footer class="footer">
+            <div class="footer-inner">
+                <div class="copyright"> &copy; <span itemprop="copyrightYear">2022</span>
+                    <span class="with-love">
+                        <i class="fa fa-heart"></i>
+                    </span>
+                    <span class="author" itemprop="copyrightHolder">PayneWu</span>
+                    <span class="post-meta-divider">|</span>
+                    <span class="post-meta-item-icon">
+                        <i class="fa fa-chart-area"></i>
+                    </span>
+                    <span title="站点总字数">255k</span>
+                    <span class="post-meta-divider">|</span>
+                    <span class="post-meta-item-icon">
+                        <i class="fa fa-coffee"></i>
+                    </span>
+                    <span title="站点阅读时长">3:51</span>
+                </div>
+                <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">湘ICP备2021019893号-1 </a>
+                </div>
+                <div style="display: none;">
+                    <script src="//s95.cnzz.com/z_stat.php?id=true&web_id=true"></script>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+    <script src="/js/utils.js"></script>
+    <script src="/.js"></script>
+    <script src="/js/schemes/pisces.js"></script>
+    <script src="/.js"></script>
+    <script src="/js/next-boot.js"></script>
+    <script src="/.js"></script>
+    <script>
+        (function ()
+        {
+            var canonicalURL, curProtocol;
+            //Get the <link> tag
+            var x = document.getElementsByTagName("link");
+            //Find the last canonical URL
+            if (x.length > 0)
+            {
+                for (i = 0; i < x.length; i++)
+                {
+                    if (x[i].rel.toLowerCase() == 'canonical' && x[i].href)
+                    {
+                        canonicalURL = x[i].href;
+                    }
+                }
+            }
+            //Get protocol
+            if (!canonicalURL)
+            {
+                curProtocol = window.location.protocol.split(':')[0];
+            }
+            else
+            {
+                curProtocol = canonicalURL.split(':')[0];
+            }
+            //Get current URL if the canonical URL does not exist
+            if (!canonicalURL) canonicalURL = window.location.href;
+            //Assign script content. Replace current URL with the canonical URL
+            ! function ()
+            {
+                var e = /([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,
+                    r = canonicalURL,
+                    t = document.referrer;
+                if (!e.test(r))
+                {
+                    var n = (String(curProtocol).toLowerCase() === 'https') ? "https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif" : "//api.share.baidu.com/s.gif";
+                    t ? (n += "?r=" + encodeURIComponent(document.referrer), r && (n += "&l=" + r)) : r && (n += "?l=" + r);
+                    var i = new Image;
+                    i.src = n
+                }
+            }(window);
+        })();
+
+    </script>
+    <script src="/js/local-search.js"></script>
+    <script src="/.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+    <meta name="theme-color" content="#222">
+    <meta name="generator" content="Hexo 4.2.1">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16-next.png">
+    <link rel="mask-icon" href="/images/favicon/safari-pinned-tab.svg" color="#222">
+    <meta name="msapplication-config" content="/images/favicon/browserconfig.xml">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+    <link rel="stylesheet" href="/lib/pace/pace-theme-mac-osx.min.css">
+    <script src="/lib/pace/pace.min.js"></script>
+    <script id="hexo-configurations">
+        var NexT = window.NexT ||
+        {};
+        var CONFIG = {
+            "hostname": "paynewu.com",
+            "root": "/",
+            "scheme": "Gemini",
+            "version": "7.8.0",
+            "exturl": false,
+            "sidebar":
+            {
+                "position": "right",
+                "width": 240,
+                "display": "post",
+                "padding": 18,
+                "offset": 12,
+                "onmobile": false
+            },
+            "copycode":
+            {
+                "enable": true,
+                "show_result": true,
+                "style": "mac"
+            },
+            "back2top":
+            {
+                "enable": true,
+                "sidebar": false,
+                "scrollpercent": true
+            },
+            "bookmark":
+            {
+                "enable": false,
+                "color": "#222",
+                "save": "auto"
+            },
+            "fancybox": false,
+            "mediumzoom": true,
+            "lazyload": false,
+            "pangu": true,
+            "comments":
+            {
+                "style": "tabs",
+                "active": "valine",
+                "storage": true,
+                "lazyload": false,
+                "nav": null
+            },
+            "algolia":
+            {
+                "hits":
+                {
+                    "per_page": 10
+                },
+                "labels":
+                {
+                    "input_placeholder": "Search for Posts",
+                    "hits_empty": "We didn't find any results for the search: ${query}",
+                    "hits_stats": "${hits} results found in ${time} ms"
+                }
+            },
+            "localsearch":
+            {
+                "enable": true,
+                "trigger": "auto",
+                "top_n_per_article": 8,
+                "unescape": false,
+                "preload": false
+            },
+            "motion":
+            {
+                "enable": false,
+                "async": false,
+                "transition":
+                {
+                    "post_block": "bounceDownIn",
+                    "post_header": "slideDownIn",
+                    "post_body": "slideDownIn",
+                    "coll_header": "slideLeftIn",
+                    "sidebar": "slideUpIn"
+                }
+            },
+            "path": "search.xml"
+        };
+
+    </script>
+    <meta name="description" content="官方网址：kafka.apache.org Mirror of Apache Kafka github: https:&#x2F;&#x2F;github.com&#x2F;apache&#x2F;kafka 什么是Kafka Apache Kafka 是一款开源的消息引擎系统, 也是一个分布式流处理平台（Distributed Streaming Platform）      处理实时数据提供一个统一、高吞吐、低延迟的平台。">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Apache Kafka认识">
+    <meta property="og:url" content="https://paynewu.com/532288655.html">
+    <meta property="og:site_name" content="吴志鹏｜Payne-Wu">
+    <meta property="og:description" content="官方网址：kafka.apache.org Mirror of Apache Kafka github: https:&#x2F;&#x2F;github.com&#x2F;apache&#x2F;kafka 什么是Kafka Apache Kafka 是一款开源的消息引擎系统, 也是一个分布式流处理平台（Distributed Streaming Platform）      处理实时数据提供一个统一、高吞吐、低延迟的平台。">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="og:image" content="https://static001.geekbang.org/resource/image/58/91/58c35d3ab0921bf0476e3ba14069d291.jpg">
+    <meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/6/64/Overview_of_Apache_Kafka.svg">
+    <meta property="article:published_time" content="2022-02-26T05:32:01.000Z">
+    <meta property="article:modified_time" content="2022-07-27T09:58:26.872Z">
+    <meta property="article:author" content="吴志鹏">
+    <meta property="article:tag" content="Apache Kafka">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:image" content="https://static001.geekbang.org/resource/image/58/91/58c35d3ab0921bf0476e3ba14069d291.jpg">
+    <link rel="canonical" href="https://paynewu.com/532288655.html">
+    <script id="page-configurations">
+        // https://hexo.io/docs/variables.html
+        CONFIG.page = {
+            sidebar: "",
+            isHome: false,
+            isPost: true,
+            lang: 'zh-CN'
+        };
+
+    </script>
+    <title>Apache Kafka认识 | 吴志鹏｜Payne-Wu</title>
+    <meta name="google-site-verification" content="p_bIcnvirkFzG2dYKuNDivKD8-STet5W7D-01woA2fc" />
+    <noscript>
+        <style>
+            .use-motion .brand,
+            .use-motion .menu-item,
+            .sidebar-inner,
+            .use-motion .post-block,
+            .use-motion .pagination,
+            .use-motion .comments,
+            .use-motion .post-header,
+            .use-motion .post-body,
+            .use-motion .collection-header
+            {
+                opacity: initial;
+            }
+
+            .use-motion .site-title,
+            .use-motion .site-subtitle
+            {
+                opacity: initial;
+                top: initial;
+            }
+
+            .use-motion .logo-line-before i
+            {
+                left: initial;
+            }
+
+            .use-motion .logo-line-after i
+            {
+                right: initial;
+            }
+
+        </style>
+    </noscript>
+    <link rel="alternate" href="/atom.xml" title="吴志鹏｜Payne-Wu" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+    <div class="container">
+        <div class="headband"></div>
+        <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+            <div class="header-inner">
+                <div class="site-brand-container">
+                    <div class="site-nav-toggle">
+                        <div class="toggle" aria-label="切换导航栏">
+                            <span class="toggle-line toggle-line-first"></span>
+                            <span class="toggle-line toggle-line-middle"></span>
+                            <span class="toggle-line toggle-line-last"></span>
+                        </div>
+                    </div>
+                    <div class="site-meta">
+                        <a href="/" class="brand" rel="start">
+                            <span class="logo-line-before"><i></i></span>
+                            <h1 class="site-title">吴志鹏｜Payne-Wu </h1>
+                            <span class="logo-line-after"><i></i></span>
+                        </a>
+                    </div>
+                    <div class="site-nav-right">
+                        <div class="toggle popup-trigger">
+                            <i class="fa fa-search fa-fw fa-lg"></i>
+                        </div>
+                    </div>
+                </div>
+                <nav class="site-nav">
+                    <ul id="menu" class="main-menu menu">
+                        <li class="menu-item menu-item-home">
+                            <a href="/" rel="section">首页</a>
+                        </li>
+                        <li class="menu-item menu-item-archives">
+                            <a href="/archives/" rel="section">文章列表</a>
+                        </li>
+                        <li class="menu-item menu-item-tags">
+                            <a href="/tags/" rel="section">Tags Cloud</a>
+                        </li>
+                        <li class="menu-item menu-item-categories">
+                            <a href="/categories/" rel="section">文章集合</a>
+                        </li>
+                        <li class="menu-item menu-item-about">
+                            <a href="/about/" rel="section">关于我啊</a>
+                        </li>
+                        <li class="menu-item menu-item-message">
+                            <a href="/message/" rel="section">留言与我</a>
+                        </li>
+                        <li class="menu-item menu-item-search">
+                            <a role="button" class="popup-trigger">搜索 </a>
+                        </li>
+                    </ul>
+                </nav>
+                <div class="search-pop-overlay">
+                    <div class="popup search-popup">
+                        <div class="search-header">
+                            <span class="search-icon">
+                                <i class="fa fa-search"></i>
+                            </span>
+                            <div class="search-input-container">
+                                <input autocomplete="off" autocapitalize="off" placeholder="搜索..." spellcheck="false" type="search" class="search-input">
+                            </div>
+                            <span class="popup-btn-close">
+                                <i class="fa fa-times-circle"></i>
+                            </span>
+                        </div>
+                        <div id="search-result">
+                            <div id="no-result">
+                                <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="back-to-top">
+            <i class="fa fa-arrow-up"></i>
+            <span>0%</span>
+        </div>
+        <div class="reading-progress-bar"></div>
+        <main class="main">
+            <div class="main-inner">
+                <div class="content-wrap">
+                    <div class="content post posts-expand">
+                        <article itemscope itemtype="http://schema.org/Article" class="post-block single" lang="zh-CN">
+                            <link itemprop="mainEntityOfPage" href="https://paynewu.com/532288655.html">
+                            <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <meta itemprop="image" content="/images/favicon/android-chrome-512x512.png">
+                                <meta itemprop="name" content="吴志鹏">
+                                <meta itemprop="description" content="Talk is free，please state clearly">
+                            </span>
+                            <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+                                <meta itemprop="name" content="吴志鹏｜Payne-Wu">
+                            </span>
+                            <header class="post-header">
+                                <h1 class="post-title" itemprop="name headline"> Apache Kafka认识 </h1>
+                                <div class="post-meta">
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-user"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">作者</span>
+                                        <span><a href="/authors/Payne" class="author" itemprop="url" rel="index">Payne</a></span>
+                                    </span>
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-calendar"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">发表于</span>
+                                        <time title="创建时间：2022-02-26 13:32:01" itemprop="dateCreated datePublished" datetime="2022-02-26T13:32:01+08:00">2022-02-26</time>
+                                    </span>
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-folder"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">分类于</span>
+                                        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                                            <a href="/categories/Apache-Kafka/" itemprop="url" rel="index"><span itemprop="name">Apache Kafka</span></a>
+                                        </span> ， <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                                            <a href="/categories/Apache-Kafka/MQ/" itemprop="url" rel="index"><span itemprop="name">MQ</span></a>
+                                        </span> ， <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                                            <a href="/categories/Apache-Kafka/MQ/Kafka/" itemprop="url" rel="index"><span itemprop="name">Kafka</span></a>
+                                        </span>
+                                    </span>
+                                    <br>
+                                    <span class="post-meta-item" title="本文字数">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-file-word"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">本文字数：</span>
+                                        <span>2.4k</span>
+                                    </span>
+                                    <span class="post-meta-item" title="阅读时长">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-clock"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                                        <span>2 分钟</span>
+                                    </span>
+                                </div>
+                            </header>
+                            <div class="post-body" itemprop="articleBody">
+                                <p>官方网址：<a href="https://kafka.apache.org/" target="_blank" rel="noopener">kafka.apache.org</a></p>
+                                <p>Mirror of Apache Kafka github: <a href="https://github.com/apache/kafka" target="_blank" rel="noopener">https://github.com/apache/kafka</a></p>
+                                <h2 id="什么是Kafka"><a href="#什么是Kafka" class="headerlink" title="什么是Kafka"></a>什么是Kafka</h2>
+                                <p>Apache Kafka 是一款开源的<strong>消息引擎</strong>系统, 也是一个分布式流处理平台（Distributed Streaming Platform）</p>
+                                <ul>
+                                    <li>处理实时数据提供一个统一、高吞吐、低延迟的平台。</li>
+                                    <li>它使用的是纯二进制的字节序列, 以时间复杂度为 O(1) 的方式提供消息持久化能力，即使对 TB 级以上数据也能保证常数时间复杂度的访问性能。</li>
+                                    <li>高吞吐率。即使在非常廉价的商用机器上也能做到单机支持每秒 100K 条以上消息的传输。</li>
+                                    <li>支持 Kafka Server 间的消息分区，及分布式消费，同时保证每个 Partition 内的消息顺序传输。</li>
+                                    <li>同时支持离线数据处理和实时数据处理。</li>
+                                    <li>Scale out：支持在线水平扩展。</li>
+                                </ul>
+                                <h2 id="Kafka功能"><a href="#Kafka功能" class="headerlink" title="Kafka功能"></a>Kafka功能</h2>
+                                <blockquote>
+                                    <p>削峰填谷解耦合</p>
+                                </blockquote>
+                                <h2 id="KafKa传输模型"><a href="#KafKa传输模型" class="headerlink" title="KafKa传输模型"></a>KafKa传输模型</h2>
+                                <p>Kfaka有两种传输模型，分别是基于一对一、多对多的思想。</p>
+                                <p>一对一：一般也称之为消息队列模型，系统 A 发送的消息只能被系统 B 接收，其他任何系统都不能读取 A 发送的消息。</p>
+                                <p>多对多：一般称之为发布订阅模型。与上面不同的是，它有一个<strong>主题（Topic）</strong><br>的概念，该模型也有发送方和接收方，只不过提法不同。发送方也称为发布者（Publisher）接收方称为订阅者（Subscriber）。和点对点模型不同的是，这个模型可能存在多个发布者向相同的主题发送消息，而订阅者也可能存在多个，它们都能接收到<strong><br>相同主题</strong>的消息。</p>
+                                <h2 id="Kafka术语"><a href="#Kafka术语" class="headerlink" title="Kafka术语"></a>Kafka术语</h2>
+                                <h3 id="message"><a href="#message" class="headerlink" title="message"></a>message</h3>
+                                <p>主题（Topic）：在 Kafka 中，发布订阅的对象是主题（Topic），你可以为每个业务、每个应用甚至是每类数据都创建专属的主题。</p>
+                                <p>分区（Partitioning）：将每个主题划分成多个分区（Partition），每个分区是一组有序的消息日志。生产者生产的每条消息只会被发送到一个分区中</p>
+                                <p>消息（Record）：Kafka 是消息引擎，这里的消息就是指 Kafka 处理的主要对象。</p>
+                                <h3 id="客户端"><a href="#客户端" class="headerlink" title="客户端"></a>客户端</h3>
+                                <p><strong>生产者（Producer）</strong></p>
+                                <p>向主题发布消息的客户端应用程序，生产者程序通常持续不断地向一个或多个主题发送消息。</p>
+                                <p><strong>消费者（Consumer）</strong></p>
+                                <p>订阅这些主题消息的客户端应用程序。和生产者类似，消费者也能够同时订阅多个主题的消息。</p>
+                                <p><strong>消费者组（Consumer Group）</strong></p>
+                                <p>多个消费者实例共同组成的一个组，同时消费多个分区以实现高吞吐。</p>
+                                <p><strong>消费者实例（Consumer Instance）</strong></p>
+                                <p>运行消费者应用的进程，也可以是一个线程。</p>
+                                <h3 id="服务端"><a href="#服务端" class="headerlink" title="服务端"></a>服务端</h3>
+                                <p><strong>Broker</strong></p>
+                                <p>Kafka 的服务器端由被称为 Broker 的服务进程构成，即一个 Kafka 集群由多个 Broker 组成，Broker 负责接收和处理客户端发送过来的请求，以及对消息进行持久化。虽然多个 Broker<br>进程能够运行在同一台机器上，但更常见的做法是将不同的 Broker 分散运行在不同的机器上，这样如果集群中某一台机器宕机，即使在它上面运行的所有 Broker 进程都挂掉了，其他机器上的 Broker 也依然能够对外提供服务。</p>
+                                <p><strong>Replication</strong></p>
+                                <p>把相同的数据拷贝到多台机器上，而这些相同的数据拷贝在 Kafka 中被称为副本（Replica）</p>
+                                <p>副本的数量是可以配置的，这些副本保存着相同的数据，但却有不同的角色和作用。</p>
+                                <p>Kafka 定义了两类副本：</p>
+                                <ul>
+                                    <li>领导者副本（Leader Replica）：对外提供服务，这里的对外指的是与客户端程序进行交互；</li>
+                                    <li>追随者副本（Follower Replica）：被动地追随领导者副本，不能与外界进行交互。</li>
+                                </ul>
+                                <p><strong>重平衡（Rebalance）</strong></p>
+                                <p>消费者组内某个消费者实例挂掉后，其他消费者实例自动重新分配订阅主题分区的过程。Rebalance 是 Kafka 消费者端实现高可用的重要手段。</p>
+                                <p><strong>消费者位移（Consumer Offset）</strong></p>
+                                <p>表征消费者消费进度，每个消费者都有自己的消费者位移。</p>
+                                <p><img src="https://static001.geekbang.org/resource/image/58/91/58c35d3ab0921bf0476e3ba14069d291.jpg" alt=""></p>
+                                <p><img src="https://upload.wikimedia.org/wikipedia/commons/6/64/Overview_of_Apache_Kafka.svg" alt=""></p>
+                                <h2 id="为什么需要使用消息系统"><a href="#为什么需要使用消息系统" class="headerlink" title="为什么需要使用消息系统"></a>为什么需要使用消息系统</h2>
+                                <p>解耦: 消息系统在处理过程中插入了一个隐含的,基于数据接口, 两边的处理过程都要实现这一接口.这允许独立拓展或修改两边的处理过程. 只要确保他们遵循同样的接口约束</p>
+                                <p>而基于消息发布订阅的机制, 可以联动多个业务下流子系统,能够不侵入的情况下的情况下分布编排和开发,来保证数据一致性</p>
+                                <p>冗余:</p>
+                                <p>有些情况下,处理数据的过程中会失败.除非数据被持久化,否则将造成丢失.消息队列吧数据进行持久化直到已经完全被处理, 通过这一方式可规避数据丢失,许多消息队列所采用的”插入-获取-删除”<br>的范式,把一个消息从队列中删除之前,需要处理系统明确指出该消息已经被完全处理完毕, 从而确保你的数据被安全的保存直到使用完毕</p>
+                                <p>拓展:</p>
+                                <p>消息解耦了处理过程, 所以增大消息入队和处理的频率是简单的,只需要在对应的端加速处理即可. 无需修改代码,修改参数,扩展非常简单</p>
+                                <p>灵活 &amp; 峰值处理能力</p>
+                                <p>在访问量剧增的情况下, 应用仍然需要继续发挥作用,但这样的突发流量并不常见; 如果对此特定时间为标准投入资源,无疑是巨大的浪费. 使用消息队列能使关键组件顶住突发的压力,而不是因为突发的超负荷的请求完全崩溃</p>
+                                <p>可恢复性</p>
+                                <p>系统的一部分组件失效时,不会影响到整个系统. 消息队列降低了进程间的耦合度, 即使一个处理消息的进程挂掉,加入队列中的消息仍然可以在恢复后被处理</p>
+                                <p>顺序</p>
+                                <p>在大多使用厂家下,数据处理的顺序都很重要. 大部分消息队列本来就是排序的,并且能保证数据按照特定的顺序来处理. kafka保证一个Partition内的消息有序性</p>
+                                <p>缓冲</p>
+                                <p>在任何重要的系统中,都会有需要不同的处理时间因素, 消息队列通过一个缓冲层来帮助业务最高效的执行-写入队列的处理尽可能的快速. 缓冲有助于控制和优化数据流和系统的速度</p>
+                                <p>异步通讯</p>
+                                <p>很多时候并不需要立即处理消息,而消息队列提供了异步处理机制, 允许将消息放入到队列,但不立即处理它. 只需要到一定的时间点处理即可</p>
+                                <h2 id="referer"><a href="#referer" class="headerlink" title="referer"></a>referer</h2>
+                                <p><a href="https://time.geekbang.org/column/intro/100029201" target="_blank" rel="noopener">Kafka 核心技术与实战</a></p>
+                                <p><a href="https://zhuanlan.zhihu.com/p/74063251" target="_blank" rel="noopener">Kafka【入门】就这一篇！ - 知乎 (zhihu.com)</a></p>
+                            </div>
+                            <div class="popular-posts-header">相关文章</div>
+                            <ul class="popular-posts">
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/2037230795.html" rel="bookmark">Kafka发行版本与版本号</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/3780016964.html" rel="bookmark">Kafka线上部署</a></div>
+                                </li>
+                            </ul>
+                            <footer class="post-footer">
+                                <div class="post-tags">
+                                    <a href="/tags/Apache-Kafka/" rel="tag"><i class="fa fa-tag"></i> Apache Kafka</a>
+                                </div>
+                                <div class="post-nav">
+                                    <div class="post-nav-item">
+                                        <a href="/71891257.html" rel="prev" title="git 使用总结">
+                                            <i class="fa fa-chevron-left"></i> git 使用总结 </a>
+                                    </div>
+                                    <div class="post-nav-item">
+                                        <a href="/3675738859.html" rel="next" title="go语言相关资料"> go语言相关资料 <i class="fa fa-chevron-right"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </footer>
+                        </article>
+                    </div>
+                    <script>
+                        window.addEventListener('tabs:register', () =>
+                        {
+                            let
+                            {
+                                activeClass
+                            } = CONFIG.comments;
+                            if (CONFIG.comments.storage)
+                            {
+                                activeClass = localStorage.getItem('comments_active') || activeClass;
+                            }
+                            if (activeClass)
+                            {
+                                let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+                                if (activeTab)
+                                {
+                                    activeTab.click();
+                                }
+                            }
+                        });
+                        if (CONFIG.comments.storage)
+                        {
+                            window.addEventListener('tabs:click', event =>
+                            {
+                                if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+                                let commentClass = event.target.classList[1];
+                                localStorage.setItem('comments_active', commentClass);
+                            });
+                        }
+
+                    </script>
+                </div>
+                <div class="toggle sidebar-toggle">
+                    <span class="toggle-line toggle-line-first"></span>
+                    <span class="toggle-line toggle-line-middle"></span>
+                    <span class="toggle-line toggle-line-last"></span>
+                </div>
+                <aside class="sidebar">
+                    <div class="sidebar-inner">
+                        <ul class="sidebar-nav motion-element">
+                            <li class="sidebar-nav-toc"> 文章目录 </li>
+                            <li class="sidebar-nav-overview"> 站点概览 </li>
+                        </ul>
+                        <!--noindex-->
+                        <div class="post-toc-wrap sidebar-panel">
+                            <div class="post-toc motion-element">
+                                <ol class="nav">
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#什么是Kafka"><span class="nav-number">1.</span> <span class="nav-text">什么是Kafka</span></a></li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#Kafka功能"><span class="nav-number">2.</span> <span class="nav-text">Kafka功能</span></a></li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#KafKa传输模型"><span class="nav-number">3.</span> <span class="nav-text">KafKa传输模型</span></a></li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#Kafka术语"><span class="nav-number">4.</span> <span class="nav-text">Kafka术语</span></a>
+                                        <ol class="nav-child">
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#message"><span class="nav-number">4.1.</span> <span class="nav-text">message</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#客户端"><span class="nav-number">4.2.</span> <span class="nav-text">客户端</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#服务端"><span class="nav-number">4.3.</span> <span class="nav-text">服务端</span></a></li>
+                                        </ol>
+                                    </li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#为什么需要使用消息系统"><span class="nav-number">5.</span> <span class="nav-text">为什么需要使用消息系统</span></a></li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#referer"><span class="nav-number">6.</span> <span class="nav-text">referer</span></a></li>
+                                </ol>
+                            </div>
+                        </div>
+                        <!--/noindex-->
+                        <div class="site-overview-wrap sidebar-panel">
+                            <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <img class="site-author-image" itemprop="image" alt="吴志鹏" src="/images/favicon/android-chrome-512x512.png">
+                                <p class="site-author-name" itemprop="name">吴志鹏</p>
+                                <div class="site-description" itemprop="description">Talk is free，please state clearly</div>
+                            </div>
+                            <div class="site-state-wrap motion-element">
+                                <nav class="site-state">
+                                    <div class="site-state-item site-state-posts">
+                                        <a href="/archives/">
+                                            <span class="site-state-item-count">136</span>
+                                            <span class="site-state-item-name">日志</span>
+                                        </a>
+                                    </div>
+                                    <div class="site-state-item site-state-categories">
+                                        <a href="/categories/">
+                                            <span class="site-state-item-count">158</span>
+                                            <span class="site-state-item-name">分类</span></a>
+                                    </div>
+                                    <div class="site-state-item site-state-tags">
+                                        <a href="/tags/">
+                                            <span class="site-state-item-count">89</span>
+                                            <span class="site-state-item-name">标签</span></a>
+                                    </div>
+                                </nav>
+                            </div>
+                            <div class="links-of-author motion-element">
+                                <span class="links-of-author-item">
+                                    <a href="https://github.com/Payne-Wu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Payne-Wu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="mailto:wuzhipeng1289690157@gmail.com" title="E-Mail → mailto:wuzhipeng1289690157@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="https://www.zhihu.com/people/wu-zhi-peng-72-78" title="ZhiHu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;wu-zhi-peng-72-78" rel="noopener" target="_blank"><i class="fa fa-magic fa-fw"></i>ZhiHu</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="https://weibo.com/u/6987234483" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;6987234483" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+                <div id="sidebar-dimmer"></div>
+            </div>
+        </main>
+        <footer class="footer">
+            <div class="footer-inner">
+                <div class="copyright"> &copy; <span itemprop="copyrightYear">2022</span>
+                    <span class="with-love">
+                        <i class="fa fa-heart"></i>
+                    </span>
+                    <span class="author" itemprop="copyrightHolder">PayneWu</span>
+                    <span class="post-meta-divider">|</span>
+                    <span class="post-meta-item-icon">
+                        <i class="fa fa-chart-area"></i>
+                    </span>
+                    <span title="站点总字数">255k</span>
+                    <span class="post-meta-divider">|</span>
+                    <span class="post-meta-item-icon">
+                        <i class="fa fa-coffee"></i>
+                    </span>
+                    <span title="站点阅读时长">3:51</span>
+                </div>
+                <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">湘ICP备2021019893号-1 </a>
+                </div>
+                <div style="display: none;">
+                    <script src="//s95.cnzz.com/z_stat.php?id=true&web_id=true"></script>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+    <script src="/js/utils.js"></script>
+    <script src="/.js"></script>
+    <script src="/js/schemes/pisces.js"></script>
+    <script src="/.js"></script>
+    <script src="/js/next-boot.js"></script>
+    <script src="/.js"></script>
+    <script>
+        (function ()
+        {
+            var canonicalURL, curProtocol;
+            //Get the <link> tag
+            var x = document.getElementsByTagName("link");
+            //Find the last canonical URL
+            if (x.length > 0)
+            {
+                for (i = 0; i < x.length; i++)
+                {
+                    if (x[i].rel.toLowerCase() == 'canonical' && x[i].href)
+                    {
+                        canonicalURL = x[i].href;
+                    }
+                }
+            }
+            //Get protocol
+            if (!canonicalURL)
+            {
+                curProtocol = window.location.protocol.split(':')[0];
+            }
+            else
+            {
+                curProtocol = canonicalURL.split(':')[0];
+            }
+            //Get current URL if the canonical URL does not exist
+            if (!canonicalURL) canonicalURL = window.location.href;
+            //Assign script content. Replace current URL with the canonical URL
+            ! function ()
+            {
+                var e = /([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,
+                    r = canonicalURL,
+                    t = document.referrer;
+                if (!e.test(r))
+                {
+                    var n = (String(curProtocol).toLowerCase() === 'https') ? "https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif" : "//api.share.baidu.com/s.gif";
+                    t ? (n += "?r=" + encodeURIComponent(document.referrer), r && (n += "&l=" + r)) : r && (n += "?l=" + r);
+                    var i = new Image;
+                    i.src = n
+                }
+            }(window);
+        })();
+
+    </script>
+    <script src="/js/local-search.js"></script>
+    <script src="/.js"></script>
+</body>
+
+</html>

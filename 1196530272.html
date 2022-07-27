@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+    <meta name="theme-color" content="#222">
+    <meta name="generator" content="Hexo 4.2.1">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16-next.png">
+    <link rel="mask-icon" href="/images/favicon/safari-pinned-tab.svg" color="#222">
+    <meta name="msapplication-config" content="/images/favicon/browserconfig.xml">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+    <link rel="stylesheet" href="/lib/pace/pace-theme-mac-osx.min.css">
+    <script src="/lib/pace/pace.min.js"></script>
+    <script id="hexo-configurations">
+        var NexT = window.NexT ||
+        {};
+        var CONFIG = {
+            "hostname": "paynewu.com",
+            "root": "/",
+            "scheme": "Gemini",
+            "version": "7.8.0",
+            "exturl": false,
+            "sidebar":
+            {
+                "position": "right",
+                "width": 240,
+                "display": "post",
+                "padding": 18,
+                "offset": 12,
+                "onmobile": false
+            },
+            "copycode":
+            {
+                "enable": true,
+                "show_result": true,
+                "style": "mac"
+            },
+            "back2top":
+            {
+                "enable": true,
+                "sidebar": false,
+                "scrollpercent": true
+            },
+            "bookmark":
+            {
+                "enable": false,
+                "color": "#222",
+                "save": "auto"
+            },
+            "fancybox": false,
+            "mediumzoom": true,
+            "lazyload": false,
+            "pangu": true,
+            "comments":
+            {
+                "style": "tabs",
+                "active": "valine",
+                "storage": true,
+                "lazyload": false,
+                "nav": null
+            },
+            "algolia":
+            {
+                "hits":
+                {
+                    "per_page": 10
+                },
+                "labels":
+                {
+                    "input_placeholder": "Search for Posts",
+                    "hits_empty": "We didn't find any results for the search: ${query}",
+                    "hits_stats": "${hits} results found in ${time} ms"
+                }
+            },
+            "localsearch":
+            {
+                "enable": true,
+                "trigger": "auto",
+                "top_n_per_article": 8,
+                "unescape": false,
+                "preload": false
+            },
+            "motion":
+            {
+                "enable": false,
+                "async": false,
+                "transition":
+                {
+                    "post_block": "bounceDownIn",
+                    "post_header": "slideDownIn",
+                    "post_body": "slideDownIn",
+                    "coll_header": "slideLeftIn",
+                    "sidebar": "slideUpIn"
+                }
+            },
+            "path": "search.xml"
+        };
+
+    </script>
+    <meta name="description" content="MySQL数据类型 MySQL支持丰富的数据类型，总体上可以分为数值类型、日期和时间类型、字符串类型。 数值类型包括整数类型、浮点数类型和定点数类型；字符串类型包括文本字符串类型和二进制字符串类型; 具体入下所示 主要包括以下几大类： 数值类型：               BIT、BOOL、TINYINT、SMALLINT、MEDIUM INT、 INT、 BIG INT、">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="MySQL数据类型">
+    <meta property="og:url" content="https://paynewu.com/1196530272.html">
+    <meta property="og:site_name" content="吴志鹏｜Payne-Wu">
+    <meta property="og:description" content="MySQL数据类型 MySQL支持丰富的数据类型，总体上可以分为数值类型、日期和时间类型、字符串类型。 数值类型包括整数类型、浮点数类型和定点数类型；字符串类型包括文本字符串类型和二进制字符串类型; 具体入下所示 主要包括以下几大类： 数值类型：               BIT、BOOL、TINYINT、SMALLINT、MEDIUM INT、 INT、 BIG INT、">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="article:published_time" content="2021-08-21T15:07:19.000Z">
+    <meta property="article:modified_time" content="2022-07-27T09:58:26.876Z">
+    <meta property="article:author" content="吴志鹏">
+    <meta property="article:tag" content="MySQL">
+    <meta property="article:tag" content="数据库">
+    <meta name="twitter:card" content="summary">
+    <link rel="canonical" href="https://paynewu.com/1196530272.html">
+    <script id="page-configurations">
+        // https://hexo.io/docs/variables.html
+        CONFIG.page = {
+            sidebar: "",
+            isHome: false,
+            isPost: true,
+            lang: 'zh-CN'
+        };
+
+    </script>
+    <title>MySQL数据类型 | 吴志鹏｜Payne-Wu</title>
+    <meta name="google-site-verification" content="p_bIcnvirkFzG2dYKuNDivKD8-STet5W7D-01woA2fc" />
+    <noscript>
+        <style>
+            .use-motion .brand,
+            .use-motion .menu-item,
+            .sidebar-inner,
+            .use-motion .post-block,
+            .use-motion .pagination,
+            .use-motion .comments,
+            .use-motion .post-header,
+            .use-motion .post-body,
+            .use-motion .collection-header
+            {
+                opacity: initial;
+            }
+
+            .use-motion .site-title,
+            .use-motion .site-subtitle
+            {
+                opacity: initial;
+                top: initial;
+            }
+
+            .use-motion .logo-line-before i
+            {
+                left: initial;
+            }
+
+            .use-motion .logo-line-after i
+            {
+                right: initial;
+            }
+
+        </style>
+    </noscript>
+    <link rel="alternate" href="/atom.xml" title="吴志鹏｜Payne-Wu" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+    <div class="container">
+        <div class="headband"></div>
+        <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+            <div class="header-inner">
+                <div class="site-brand-container">
+                    <div class="site-nav-toggle">
+                        <div class="toggle" aria-label="切换导航栏">
+                            <span class="toggle-line toggle-line-first"></span>
+                            <span class="toggle-line toggle-line-middle"></span>
+                            <span class="toggle-line toggle-line-last"></span>
+                        </div>
+                    </div>
+                    <div class="site-meta">
+                        <a href="/" class="brand" rel="start">
+                            <span class="logo-line-before"><i></i></span>
+                            <h1 class="site-title">吴志鹏｜Payne-Wu </h1>
+                            <span class="logo-line-after"><i></i></span>
+                        </a>
+                    </div>
+                    <div class="site-nav-right">
+                        <div class="toggle popup-trigger">
+                            <i class="fa fa-search fa-fw fa-lg"></i>
+                        </div>
+                    </div>
+                </div>
+                <nav class="site-nav">
+                    <ul id="menu" class="main-menu menu">
+                        <li class="menu-item menu-item-home">
+                            <a href="/" rel="section">首页</a>
+                        </li>
+                        <li class="menu-item menu-item-archives">
+                            <a href="/archives/" rel="section">文章列表</a>
+                        </li>
+                        <li class="menu-item menu-item-tags">
+                            <a href="/tags/" rel="section">Tags Cloud</a>
+                        </li>
+                        <li class="menu-item menu-item-categories">
+                            <a href="/categories/" rel="section">文章集合</a>
+                        </li>
+                        <li class="menu-item menu-item-about">
+                            <a href="/about/" rel="section">关于我啊</a>
+                        </li>
+                        <li class="menu-item menu-item-message">
+                            <a href="/message/" rel="section">留言与我</a>
+                        </li>
+                        <li class="menu-item menu-item-search">
+                            <a role="button" class="popup-trigger">搜索 </a>
+                        </li>
+                    </ul>
+                </nav>
+                <div class="search-pop-overlay">
+                    <div class="popup search-popup">
+                        <div class="search-header">
+                            <span class="search-icon">
+                                <i class="fa fa-search"></i>
+                            </span>
+                            <div class="search-input-container">
+                                <input autocomplete="off" autocapitalize="off" placeholder="搜索..." spellcheck="false" type="search" class="search-input">
+                            </div>
+                            <span class="popup-btn-close">
+                                <i class="fa fa-times-circle"></i>
+                            </span>
+                        </div>
+                        <div id="search-result">
+                            <div id="no-result">
+                                <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="back-to-top">
+            <i class="fa fa-arrow-up"></i>
+            <span>0%</span>
+        </div>
+        <div class="reading-progress-bar"></div>
+        <main class="main">
+            <div class="main-inner">
+                <div class="content-wrap">
+                    <div class="content post posts-expand">
+                        <article itemscope itemtype="http://schema.org/Article" class="post-block single" lang="zh-CN">
+                            <link itemprop="mainEntityOfPage" href="https://paynewu.com/1196530272.html">
+                            <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <meta itemprop="image" content="/images/favicon/android-chrome-512x512.png">
+                                <meta itemprop="name" content="吴志鹏">
+                                <meta itemprop="description" content="Talk is free，please state clearly">
+                            </span>
+                            <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+                                <meta itemprop="name" content="吴志鹏｜Payne-Wu">
+                            </span>
+                            <header class="post-header">
+                                <h1 class="post-title" itemprop="name headline"> MySQL数据类型 </h1>
+                                <div class="post-meta">
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-user"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">作者</span>
+                                        <span><a href="/authors/Payne" class="author" itemprop="url" rel="index">Payne</a></span>
+                                    </span>
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-calendar"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">发表于</span>
+                                        <time title="创建时间：2021-08-21 23:07:19" itemprop="dateCreated datePublished" datetime="2021-08-21T23:07:19+08:00">2021-08-21</time>
+                                    </span>
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-folder"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">分类于</span>
+                                        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                                            <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a>
+                                        </span> ， <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                                            <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/MySQL/" itemprop="url" rel="index"><span itemprop="name">MySQL</span></a>
+                                        </span>
+                                    </span>
+                                    <br>
+                                    <span class="post-meta-item" title="本文字数">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-file-word"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">本文字数：</span>
+                                        <span>3.3k</span>
+                                    </span>
+                                    <span class="post-meta-item" title="阅读时长">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-clock"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                                        <span>3 分钟</span>
+                                    </span>
+                                </div>
+                            </header>
+                            <div class="post-body" itemprop="articleBody">
+                                <h2 id="MySQL数据类型"><a href="#MySQL数据类型" class="headerlink" title="MySQL数据类型"></a>MySQL数据类型</h2>
+                                <p>MySQL支持丰富的数据类型，总体上可以分为数值类型、日期和时间类型、字符串类型。</p>
+                                <p>数值类型包括整数类型、浮点数类型和定点数类型；字符串类型包括文本字符串类型和二进制字符串类型;</p>
+                                <p>具体入下所示</p>
+                                <p>主要包括以下几大类： 数值类型：</p>
+                                <ul>
+                                    <li>
+                                        <p>BIT、BOOL、TINYINT、SMALLINT、MEDIUM INT、 INT、 BIG INT、</p>
+                                    </li>
+                                    <li>
+                                        <p>FLOAT、DOUBLE、DECIMAL(浮点数类型)</p>
+                                    </li>
+                                </ul>
+                                <p>字符串类型：CHAR、VARCHAR、TINY TEXT、TEXT、MEDIUM TEXT、LONGTEXT、TINY BLOB、BLOB、MEDIUM BLOB、LONG BLOB、ENUM、SET</p>
+                                <p>日期类型：Date、DateTime、TimeStamp、Time、Year</p>
+                                <p>空间类型：Geometry、Point、LineString、MultiPoint、MultiLineString、MultiPolyGon、Polygon、GeometryCollection</p>
+                                <p>其他类型：JSON</p>
+                                <a id="more"></a>
+                                <h3 id="数值类型"><a href="#数值类型" class="headerlink" title="数值类型"></a>数值类型</h3>
+                                <blockquote>
+                                    <p>一个字节是8位</p>
+                                    <p>无符号（UNSIGNED）为翻倍</p>
+                                </blockquote>
+                                <h4 id="整型"><a href="#整型" class="headerlink" title="整型"></a>整型</h4>
+                                <p>MySQL中的整数类型包括TINYINT、SMALLINT、MEDIUMINT、INT(INTEGER)和BIGINT。不同的整数类型，其所需要的存储空间和数值范围不尽相同</p>
+                                <div class="table-container">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th style="text-align:center">数值类型</th>
+                                                <th style="text-align:center">类型名称</th>
+                                                <th style="text-align:center">存储空间</th>
+                                                <th style="text-align:center">取值范围</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td style="text-align:center">TINY INT</td>
+                                                <td style="text-align:center">非常小的整数</td>
+                                                <td style="text-align:center">1个字节</td>
+                                                <td style="text-align:center">- 2 ^ 7 ~ 2 ^ 7 -1</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center">SMALL INT</td>
+                                                <td style="text-align:center">小整数</td>
+                                                <td style="text-align:center">2个字节</td>
+                                                <td style="text-align:center">- 2 ^ 15 ~ 2 ^ 15 -1</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center">MEDIUM INT</td>
+                                                <td style="text-align:center">中型的整数</td>
+                                                <td style="text-align:center">3个字节</td>
+                                                <td style="text-align:center">- 2 ^ 23 ~ 2 ^ 23 -1</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center">INT</td>
+                                                <td style="text-align:center">整数</td>
+                                                <td style="text-align:center">4个字节</td>
+                                                <td style="text-align:center">- 2 ^ 31 ~ 2 ^ 31 -1</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center">BIG INT</td>
+                                                <td style="text-align:center">大整数</td>
+                                                <td style="text-align:center">8个字节</td>
+                                                <td style="text-align:center">- 2 ^ 63 ~ 2 ^ 63 - 1</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <blockquote>
+                                    <p>整数类型的显示宽度与数据类型的取值范围无关。</p>
+                                    <p>显示宽度只是指定最大显示的数字个数，如果在数据表中插入了大于显示宽度，但是并没有超过整数类型的数值范围的数据，依然可以正确地插入数据，并且能够正确地显示</p>
+                                </blockquote>
+                                <h4 id="浮点型"><a href="#浮点型" class="headerlink" title="浮点型"></a>浮点型</h4>
+                                <div class="table-container">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th style="text-align:center">数值类型</th>
+                                                <th style="text-align:center">类型名称</th>
+                                                <th style="text-align:center">存储空间</th>
+                                                <th style="text-align:center">取值范围</th>
+                                                <th>说明</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td style="text-align:center">DECIMAL(M,D)</td>
+                                                <td style="text-align:center">定点数类型</td>
+                                                <td style="text-align:center">M + 1 <br />或 <br />M + 2</td>
+                                                <td style="text-align:center">~</td>
+                                                <td>未打包的浮点数，用法类似于FLOAT与DOUBLE<br />浮点型在数据库中存放的是近似值，而定点类型在数据库中存放的是精确值。</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center">FLOAT</td>
+                                                <td style="text-align:center">单精度浮点类型</td>
+                                                <td style="text-align:center">4 个字节</td>
+                                                <td style="text-align:center">2 ^ 31 ~2 ^ 31 - 1</td>
+                                                <td>~</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center">DOUBLE</td>
+                                                <td style="text-align:center">双精度浮点类型</td>
+                                                <td style="text-align:center">8 个字节</td>
+                                                <td style="text-align:center">2 ^61 ~2 ^ 61 - 1</td>
+                                                <td>~</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <blockquote>
+                                    <p>浮点数类型中的FLOAT和DOUBLE类型在不指定数据精度时，默认会按照实际的计算机硬件和操作系统决定的数据精度进行显示。如果用户指定的精度超出了浮点数类型的数据精度，则MySQL会自动进行四舍五入操作。</p>
+                                </blockquote>
+                                <h4 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h4>
+                                <div class="table-container">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th style="text-align:center">数值类型</th>
+                                                <th style="text-align:center">类型名称</th>
+                                                <th style="text-align:center">存储空间</th>
+                                                <th style="text-align:center">说明</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td style="text-align:center">BOOL</td>
+                                                <td style="text-align:center">布尔类型</td>
+                                                <td style="text-align:center">1字节</td>
+                                                <td style="text-align:center">TINY INT(1)的别名</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center">BIT</td>
+                                                <td style="text-align:center">位类型</td>
+                                                <td style="text-align:center"></td>
+                                                <td style="text-align:center">位类型(M), 每个值存储M位，默认为1，最大64</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center">SERIAL</td>
+                                                <td style="text-align:center">无符号大整数</td>
+                                                <td style="text-align:center">8 个字节</td>
+                                                <td style="text-align:center">BIG INT UNSIGNED NOT NULL AUTO_INCREMEINT UNIQUE</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <p>浮点数类型中的FLOAT类型和DOUBLE类型在不指定精度时，默认会按照计算机硬件和操作系统决定的精度进行表示；而定点数类型中的DECIMAL类型不指定精度时，默认为DECIMAL(10,0)。</p>
+                                <p>当数据类型的长度一定时，浮点数能够表示的数据范围更大，但是浮点数会引起精度问题，不适合存储高精度类型的数据。</p>
+                                <h3 id="文本类型"><a href="#文本类型" class="headerlink" title="文本类型"></a>文本类型</h3>
+                                <h4 id="字符类型"><a href="#字符类型" class="headerlink" title="字符类型"></a>字符类型</h4>
+                                <div class="table-container">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th style="text-align:center">字符类型</th>
+                                                <th style="text-align:center">类型名称</th>
+                                                <th style="text-align:center">存储空间</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td style="text-align:center">CHAR</td>
+                                                <td style="text-align:center">字符类型</td>
+                                                <td style="text-align:center">固定长度字符串，最多为255字符</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center">VARCHAR</td>
+                                                <td style="text-align:center">可变字符类型</td>
+                                                <td style="text-align:center">可变长字符串，最多为65,535字符</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center">TINYTEXT</td>
+                                                <td style="text-align:center">短文本类型</td>
+                                                <td style="text-align:center">可变长度字符串，最多为255字符</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center">TEXT</td>
+                                                <td style="text-align:center">文本类型</td>
+                                                <td style="text-align:center">可变长度字符串，最多为65,535字符</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center">MEDIUMTEXT</td>
+                                                <td style="text-align:center">中等文本类型</td>
+                                                <td style="text-align:center">可变长度，最多为16,777,215 字符</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center">LONGTEXT</td>
+                                                <td style="text-align:center">长文本类型</td>
+                                                <td style="text-align:center">可变长度，最多为4,294,967,295字符</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <p><strong>char和varchar</strong></p>
+                                <ol>
+                                    <li>
+                                        <p>char(n) 若存入字符数小于n，则以空格补于其后，查询之时再将空格去掉。所以char类型存储的字符串末尾不能有空格，varchar不限于此。</p>
+                                    </li>
+                                    <li>
+                                        <p>char(n) 固定长度，char(4)不管是存入几个字符，都将占用4个字节，varchar是存入的实际字符数+1个字节（n&lt;=255）或2个字节(n&gt;255)，所以varchar(4),存入3个字符将占用4个字节。</p>
+                                    </li>
+                                    <li>char类型的字符串检索速度要比varchar类型的快。</li>
+                                </ol>
+                                <p><strong>varchar和text</strong></p>
+                                <ol>
+                                    <li>
+                                        <p>varchar可指定n，text不能指定，内部存储varchar是存入的实际字符数+1个字节（n&lt;=255）或2个字节(n&gt;255)，text是实际字符数+2个字节。</p>
+                                    </li>
+                                    <li>
+                                        <p>text类型不能有默认值。</p>
+                                    </li>
+                                    <li>varchar可直接创建索引，text创建索引要指定前多少个字符。varchar查询速度快于text,在都创建索引的情况下，text的索引似乎不起作用。</li>
+                                </ol>
+                                <h4 id="二进制类型"><a href="#二进制类型" class="headerlink" title="二进制类型"></a>二进制类型</h4>
+                                <p>| 类型 | 类型名称 | 占位 | 说明 | | :————-: | :—————————: | :—: | :<br>—————————————————————————————: | | BINARY | 二进制字符 | | 类似于CHAR（固定长度）类型，但存储的是<strong>二进制字节字符串</strong> |<br>| VARBINARY | 可变二进制字符 | | 类似于VARCHAR（可变长度）类型，但存储的是<strong>二进制字节字符串</strong> | | TINYBLOB | 较小的大二进制对象 | 1 | 最大长度255的字节的BLOB序列<br /><br>存储时在内容前将使用1个字节表示内容的大小 | | BLOB | 大二进制对象 | 2 | 最大长度63535的字节的BLOB序列<br />存储时在内容前将使用2个字节表示内容的大小 | | MEDIUM BLOB |<br>中等大的大二进制对象 | 3 | 最大长度1677215的字节的BLOB序列<br />存储时在内容前将使用3个字节表示内容的大小 | | LONG BLOB | 大的大二进制对象 | 4 |<br>最大长度4294967296的字节的BLOB序列<br />存储时在内容前将使用4个字节表示内容的大小 |</p>
+                                <p>二进制数据(Blob)</p>
+                                <p>1._BLOB和_text存储方式不同，_TEXT以文本方式存储，英文存储区分大小写，而_Blob是以二进制方式存储，不分大小写。</p>
+                                <p>2._BLOB存储的数据只能整体读出。</p>
+                                <p>3._TEXT可以指定字符集，_BLO不用指定字符集。</p>
+                                <h4 id="补充-1"><a href="#补充-1" class="headerlink" title="补充"></a>补充</h4>
+                                <p>| 类型 | 类型名称 | 说明 | | :—: | :———: | :—————————————: | | ENUM | 枚举类型 | 由一组固定的合法值组成的枚举 | | SET | 集合类型 |<br>由一组固定的合法值组成的集合 |</p>
+                                <h3 id="日期类型"><a href="#日期类型" class="headerlink" title="日期类型"></a>日期类型</h3>
+                                <p>MySQL提供了表示日期和时间的数据类型，主要有YEAR类型、TIME类型、DATE类型、DATETIME类型和TIMESTAMP类型。</p>
+                                <ul>
+                                    <li>
+                                        <p>DATE类型通常用来表示年月日；</p>
+                                    </li>
+                                    <li>
+                                        <p>DATETIME类型通常用来表示年、月、日、时、分、秒；</p>
+                                    </li>
+                                    <li>
+                                        <p>TIME类型通常用来表示时、分、秒。</p>
+                                    </li>
+                                </ul>
+                                <div class="table-container">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th style="text-align:center">时间/日期类型</th>
+                                                <th style="text-align:center">类型名称</th>
+                                                <th style="text-align:center">占位</th>
+                                                <th style="text-align:center">日期格式</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td style="text-align:center">YEAR</td>
+                                                <td style="text-align:center">年</td>
+                                                <td style="text-align:center">1个字节</td>
+                                                <td style="text-align:center">YYYY</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center">TIME</td>
+                                                <td style="text-align:center">时间</td>
+                                                <td style="text-align:center">3个字节</td>
+                                                <td style="text-align:center">HH:MM:SS</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center">DATE</td>
+                                                <td style="text-align:center">日期</td>
+                                                <td style="text-align:center">3个字节</td>
+                                                <td style="text-align:center">YYYY—MM-DD</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center">TIMESTEAMP</td>
+                                                <td style="text-align:center">日期时间</td>
+                                                <td style="text-align:center">4个字节</td>
+                                                <td style="text-align:center">YYYY—MM-DD HH:MM:SS</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center">DATETIME</td>
+                                                <td style="text-align:center">日期时间</td>
+                                                <td style="text-align:center">8个字节</td>
+                                                <td style="text-align:center">YYYY—MM-DD HH:MM:SS</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <blockquote>
+                                    <p>若定义一个字段为timestamp，这个字段里的时间数据会随其他字段修改的时候自动刷新，所以这个数据类型的字段可以存放这条记录最后被修改的时间</p>
+                                    <p>每种日期和时间类型都有一个有效值范围，如果超出这个有效值范围，则会以0进行存储</p>
+                                </blockquote>
+                                <h3 id="空间类型"><a href="#空间类型" class="headerlink" title="空间类型"></a>空间类型</h3>
+                                <p>Geometry：存储任意几何体类型 Point：存储二维中的点类型 LineString：存储点之间的线型插值曲线类型 MultiPoint：存储点的集合类型 MultiLineString：存储点之间的线型插值曲线集合类型<br>MultiPolyGon：存储多边形集合类型 Polygon：存储多边形类型 GeometryCollection：存储任意类型集合体的集合类型</p>
+                                <h3 id="数据类型的属性"><a href="#数据类型的属性" class="headerlink" title="数据类型的属性"></a>数据类型的属性</h3>
+                                <h4 id="MySQL关键字-含义"><a href="#MySQL关键字-含义" class="headerlink" title="MySQL关键字 含义"></a>MySQL关键字 含义</h4>
+                                <p>NULL 数据列可包含NULL值 NOT NULL 数据列不允许包含NULL值 DEFAULT 默认值 PRIMARY KEY 主键 AUTO_INCREMENT 自动递增，适用于整数类型 UNSIGNED 无符号 CHARACTER<br>SET name 指定一个字符集</p>
+                            </div>
+                            <div class="popular-posts-header">相关文章</div>
+                            <ul class="popular-posts">
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/507251385.html" rel="bookmark">MySQL优化</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/1336292242.html" rel="bookmark">MySQL存储引擎</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/1376532068.html" rel="bookmark">MySQL数据库一些概念</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/1647551827.html" rel="bookmark">MySQL数据库体系结构</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/3376299280.html" rel="bookmark">MySQL的SQL使用之上</a></div>
+                                </li>
+                            </ul>
+                            <footer class="post-footer">
+                                <div class="post-tags">
+                                    <a href="/tags/MySQL/" rel="tag"><i class="fa fa-tag"></i> MySQL</a>
+                                    <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="tag"><i class="fa fa-tag"></i> 数据库</a>
+                                </div>
+                                <div class="post-nav">
+                                    <div class="post-nav-item">
+                                        <a href="/1647551827.html" rel="prev" title="MySQL数据库体系结构">
+                                            <i class="fa fa-chevron-left"></i> MySQL数据库体系结构 </a>
+                                    </div>
+                                    <div class="post-nav-item">
+                                        <a href="/3376299280.html" rel="next" title="MySQL的SQL使用之上"> MySQL的SQL使用之上 <i class="fa fa-chevron-right"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </footer>
+                        </article>
+                    </div>
+                    <script>
+                        window.addEventListener('tabs:register', () =>
+                        {
+                            let
+                            {
+                                activeClass
+                            } = CONFIG.comments;
+                            if (CONFIG.comments.storage)
+                            {
+                                activeClass = localStorage.getItem('comments_active') || activeClass;
+                            }
+                            if (activeClass)
+                            {
+                                let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+                                if (activeTab)
+                                {
+                                    activeTab.click();
+                                }
+                            }
+                        });
+                        if (CONFIG.comments.storage)
+                        {
+                            window.addEventListener('tabs:click', event =>
+                            {
+                                if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+                                let commentClass = event.target.classList[1];
+                                localStorage.setItem('comments_active', commentClass);
+                            });
+                        }
+
+                    </script>
+                </div>
+                <div class="toggle sidebar-toggle">
+                    <span class="toggle-line toggle-line-first"></span>
+                    <span class="toggle-line toggle-line-middle"></span>
+                    <span class="toggle-line toggle-line-last"></span>
+                </div>
+                <aside class="sidebar">
+                    <div class="sidebar-inner">
+                        <ul class="sidebar-nav motion-element">
+                            <li class="sidebar-nav-toc"> 文章目录 </li>
+                            <li class="sidebar-nav-overview"> 站点概览 </li>
+                        </ul>
+                        <!--noindex-->
+                        <div class="post-toc-wrap sidebar-panel">
+                            <div class="post-toc motion-element">
+                                <ol class="nav">
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL数据类型"><span class="nav-number">1.</span> <span class="nav-text">MySQL数据类型</span></a>
+                                        <ol class="nav-child">
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#数值类型"><span class="nav-number">1.1.</span> <span class="nav-text">数值类型</span></a>
+                                                <ol class="nav-child">
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#整型"><span class="nav-number">1.1.1.</span> <span class="nav-text">整型</span></a></li>
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#浮点型"><span class="nav-number">1.1.2.</span> <span class="nav-text">浮点型</span></a></li>
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#补充"><span class="nav-number">1.1.3.</span> <span class="nav-text">补充</span></a></li>
+                                                </ol>
+                                            </li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#文本类型"><span class="nav-number">1.2.</span> <span class="nav-text">文本类型</span></a>
+                                                <ol class="nav-child">
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#字符类型"><span class="nav-number">1.2.1.</span> <span class="nav-text">字符类型</span></a></li>
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#二进制类型"><span class="nav-number">1.2.2.</span> <span class="nav-text">二进制类型</span></a></li>
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#补充-1"><span class="nav-number">1.2.3.</span> <span class="nav-text">补充</span></a></li>
+                                                </ol>
+                                            </li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#日期类型"><span class="nav-number">1.3.</span> <span class="nav-text">日期类型</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#空间类型"><span class="nav-number">1.4.</span> <span class="nav-text">空间类型</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#数据类型的属性"><span class="nav-number">1.5.</span> <span class="nav-text">数据类型的属性</span></a>
+                                                <ol class="nav-child">
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#MySQL关键字-含义"><span class="nav-number">1.5.1.</span> <span class="nav-text">MySQL关键字 含义</span></a></li>
+                                                </ol>
+                                            </li>
+                                        </ol>
+                                    </li>
+                                </ol>
+                            </div>
+                        </div>
+                        <!--/noindex-->
+                        <div class="site-overview-wrap sidebar-panel">
+                            <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <img class="site-author-image" itemprop="image" alt="吴志鹏" src="/images/favicon/android-chrome-512x512.png">
+                                <p class="site-author-name" itemprop="name">吴志鹏</p>
+                                <div class="site-description" itemprop="description">Talk is free，please state clearly</div>
+                            </div>
+                            <div class="site-state-wrap motion-element">
+                                <nav class="site-state">
+                                    <div class="site-state-item site-state-posts">
+                                        <a href="/archives/">
+                                            <span class="site-state-item-count">136</span>
+                                            <span class="site-state-item-name">日志</span>
+                                        </a>
+                                    </div>
+                                    <div class="site-state-item site-state-categories">
+                                        <a href="/categories/">
+                                            <span class="site-state-item-count">158</span>
+                                            <span class="site-state-item-name">分类</span></a>
+                                    </div>
+                                    <div class="site-state-item site-state-tags">
+                                        <a href="/tags/">
+                                            <span class="site-state-item-count">89</span>
+                                            <span class="site-state-item-name">标签</span></a>
+                                    </div>
+                                </nav>
+                            </div>
+                            <div class="links-of-author motion-element">
+                                <span class="links-of-author-item">
+                                    <a href="https://github.com/Payne-Wu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Payne-Wu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="mailto:wuzhipeng1289690157@gmail.com" title="E-Mail → mailto:wuzhipeng1289690157@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="https://www.zhihu.com/people/wu-zhi-peng-72-78" title="ZhiHu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;wu-zhi-peng-72-78" rel="noopener" target="_blank"><i class="fa fa-magic fa-fw"></i>ZhiHu</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="https://weibo.com/u/6987234483" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;6987234483" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+                <div id="sidebar-dimmer"></div>
+            </div>
+        </main>
+        <footer class="footer">
+            <div class="footer-inner">
+                <div class="copyright"> &copy; <span itemprop="copyrightYear">2022</span>
+                    <span class="with-love">
+                        <i class="fa fa-heart"></i>
+                    </span>
+                    <span class="author" itemprop="copyrightHolder">PayneWu</span>
+                    <span class="post-meta-divider">|</span>
+                    <span class="post-meta-item-icon">
+                        <i class="fa fa-chart-area"></i>
+                    </span>
+                    <span title="站点总字数">255k</span>
+                    <span class="post-meta-divider">|</span>
+                    <span class="post-meta-item-icon">
+                        <i class="fa fa-coffee"></i>
+                    </span>
+                    <span title="站点阅读时长">3:51</span>
+                </div>
+                <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">湘ICP备2021019893号-1 </a>
+                </div>
+                <div style="display: none;">
+                    <script src="//s95.cnzz.com/z_stat.php?id=true&web_id=true"></script>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+    <script src="/js/utils.js"></script>
+    <script src="/.js"></script>
+    <script src="/js/schemes/pisces.js"></script>
+    <script src="/.js"></script>
+    <script src="/js/next-boot.js"></script>
+    <script src="/.js"></script>
+    <script>
+        (function ()
+        {
+            var canonicalURL, curProtocol;
+            //Get the <link> tag
+            var x = document.getElementsByTagName("link");
+            //Find the last canonical URL
+            if (x.length > 0)
+            {
+                for (i = 0; i < x.length; i++)
+                {
+                    if (x[i].rel.toLowerCase() == 'canonical' && x[i].href)
+                    {
+                        canonicalURL = x[i].href;
+                    }
+                }
+            }
+            //Get protocol
+            if (!canonicalURL)
+            {
+                curProtocol = window.location.protocol.split(':')[0];
+            }
+            else
+            {
+                curProtocol = canonicalURL.split(':')[0];
+            }
+            //Get current URL if the canonical URL does not exist
+            if (!canonicalURL) canonicalURL = window.location.href;
+            //Assign script content. Replace current URL with the canonical URL
+            ! function ()
+            {
+                var e = /([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,
+                    r = canonicalURL,
+                    t = document.referrer;
+                if (!e.test(r))
+                {
+                    var n = (String(curProtocol).toLowerCase() === 'https') ? "https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif" : "//api.share.baidu.com/s.gif";
+                    t ? (n += "?r=" + encodeURIComponent(document.referrer), r && (n += "&l=" + r)) : r && (n += "?l=" + r);
+                    var i = new Image;
+                    i.src = n
+                }
+            }(window);
+        })();
+
+    </script>
+    <script src="/js/local-search.js"></script>
+    <script src="/.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+    <meta name="theme-color" content="#222">
+    <meta name="generator" content="Hexo 4.2.1">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16-next.png">
+    <link rel="mask-icon" href="/images/favicon/safari-pinned-tab.svg" color="#222">
+    <meta name="msapplication-config" content="/images/favicon/browserconfig.xml">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+    <link rel="stylesheet" href="/lib/pace/pace-theme-mac-osx.min.css">
+    <script src="/lib/pace/pace.min.js"></script>
+    <script id="hexo-configurations">
+        var NexT = window.NexT ||
+        {};
+        var CONFIG = {
+            "hostname": "paynewu.com",
+            "root": "/",
+            "scheme": "Gemini",
+            "version": "7.8.0",
+            "exturl": false,
+            "sidebar":
+            {
+                "position": "right",
+                "width": 240,
+                "display": "post",
+                "padding": 18,
+                "offset": 12,
+                "onmobile": false
+            },
+            "copycode":
+            {
+                "enable": true,
+                "show_result": true,
+                "style": "mac"
+            },
+            "back2top":
+            {
+                "enable": true,
+                "sidebar": false,
+                "scrollpercent": true
+            },
+            "bookmark":
+            {
+                "enable": false,
+                "color": "#222",
+                "save": "auto"
+            },
+            "fancybox": false,
+            "mediumzoom": true,
+            "lazyload": false,
+            "pangu": true,
+            "comments":
+            {
+                "style": "tabs",
+                "active": "valine",
+                "storage": true,
+                "lazyload": false,
+                "nav": null
+            },
+            "algolia":
+            {
+                "hits":
+                {
+                    "per_page": 10
+                },
+                "labels":
+                {
+                    "input_placeholder": "Search for Posts",
+                    "hits_empty": "We didn't find any results for the search: ${query}",
+                    "hits_stats": "${hits} results found in ${time} ms"
+                }
+            },
+            "localsearch":
+            {
+                "enable": true,
+                "trigger": "auto",
+                "top_n_per_article": 8,
+                "unescape": false,
+                "preload": false
+            },
+            "motion":
+            {
+                "enable": false,
+                "async": false,
+                "transition":
+                {
+                    "post_block": "bounceDownIn",
+                    "post_header": "slideDownIn",
+                    "post_body": "slideDownIn",
+                    "coll_header": "slideLeftIn",
+                    "sidebar": "slideUpIn"
+                }
+            },
+            "path": "search.xml"
+        };
+
+    </script>
+    <meta name="description" content="雷电模拟器抓包配置 爬虫免不了抓包分析，当然也免不了中间转发相关的便捷操作。如果有一个稳定的、妥善的抓包环境。相信在爬虫开发中一定会事半功倍。 有真机当然是最好的，同时如果爬虫开发者并没有真机。那么模拟器变成为了不二之选。当然如果支持多开的话那就更好了。 业界比较知名的有 MuMu模拟器:https:&#x2F;&#x2F;mumu.163.com&#x2F; 雷电模拟器：https:&#x2F;&#x2F;www.ldmnq.com&#x2F; 夜神模拟">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="雷电模拟器抓包配置">
+    <meta property="og:url" content="https://paynewu.com/626715027.html">
+    <meta property="og:site_name" content="吴志鹏｜Payne-Wu">
+    <meta property="og:description" content="雷电模拟器抓包配置 爬虫免不了抓包分析，当然也免不了中间转发相关的便捷操作。如果有一个稳定的、妥善的抓包环境。相信在爬虫开发中一定会事半功倍。 有真机当然是最好的，同时如果爬虫开发者并没有真机。那么模拟器变成为了不二之选。当然如果支持多开的话那就更好了。 业界比较知名的有 MuMu模拟器:https:&#x2F;&#x2F;mumu.163.com&#x2F; 雷电模拟器：https:&#x2F;&#x2F;www.ldmnq.com&#x2F; 夜神模拟">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24egy1h1lclkmpbjj224n0u0wu4.jpg">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24egy1h1lcopronuj20gy0a4wen.jpg">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24egy1h1lcw8lt5wj20ui0u0juc.jpg">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24egy1h1lcy8j46pj20o60dygma.jpg">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24egy1h1ldabzy52j20oa0rwdgj.jpg">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24egy1h1ldaxdedej20la10a75t.jpg">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24egy1h1ldbqbtpqj20kq0dk3z5.jpg">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24egy1h1lddqsvxpj21l20u0n25.jpg">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24egy1h1ldj2cgkdj21b80u0k22.jpg">
+    <meta property="article:published_time" content="2022-04-24T17:48:36.000Z">
+    <meta property="article:modified_time" content="2022-07-27T09:58:26.884Z">
+    <meta property="article:author" content="吴志鹏">
+    <meta property="article:tag" content="抓包">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:image" content="https://tva1.sinaimg.cn/large/e6c9d24egy1h1lclkmpbjj224n0u0wu4.jpg">
+    <link rel="canonical" href="https://paynewu.com/626715027.html">
+    <script id="page-configurations">
+        // https://hexo.io/docs/variables.html
+        CONFIG.page = {
+            sidebar: "",
+            isHome: false,
+            isPost: true,
+            lang: 'zh-CN'
+        };
+
+    </script>
+    <title>雷电模拟器抓包配置 | 吴志鹏｜Payne-Wu</title>
+    <meta name="google-site-verification" content="p_bIcnvirkFzG2dYKuNDivKD8-STet5W7D-01woA2fc" />
+    <noscript>
+        <style>
+            .use-motion .brand,
+            .use-motion .menu-item,
+            .sidebar-inner,
+            .use-motion .post-block,
+            .use-motion .pagination,
+            .use-motion .comments,
+            .use-motion .post-header,
+            .use-motion .post-body,
+            .use-motion .collection-header
+            {
+                opacity: initial;
+            }
+
+            .use-motion .site-title,
+            .use-motion .site-subtitle
+            {
+                opacity: initial;
+                top: initial;
+            }
+
+            .use-motion .logo-line-before i
+            {
+                left: initial;
+            }
+
+            .use-motion .logo-line-after i
+            {
+                right: initial;
+            }
+
+        </style>
+    </noscript>
+    <link rel="alternate" href="/atom.xml" title="吴志鹏｜Payne-Wu" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+    <div class="container">
+        <div class="headband"></div>
+        <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+            <div class="header-inner">
+                <div class="site-brand-container">
+                    <div class="site-nav-toggle">
+                        <div class="toggle" aria-label="切换导航栏">
+                            <span class="toggle-line toggle-line-first"></span>
+                            <span class="toggle-line toggle-line-middle"></span>
+                            <span class="toggle-line toggle-line-last"></span>
+                        </div>
+                    </div>
+                    <div class="site-meta">
+                        <a href="/" class="brand" rel="start">
+                            <span class="logo-line-before"><i></i></span>
+                            <h1 class="site-title">吴志鹏｜Payne-Wu </h1>
+                            <span class="logo-line-after"><i></i></span>
+                        </a>
+                    </div>
+                    <div class="site-nav-right">
+                        <div class="toggle popup-trigger">
+                            <i class="fa fa-search fa-fw fa-lg"></i>
+                        </div>
+                    </div>
+                </div>
+                <nav class="site-nav">
+                    <ul id="menu" class="main-menu menu">
+                        <li class="menu-item menu-item-home">
+                            <a href="/" rel="section">首页</a>
+                        </li>
+                        <li class="menu-item menu-item-archives">
+                            <a href="/archives/" rel="section">文章列表</a>
+                        </li>
+                        <li class="menu-item menu-item-tags">
+                            <a href="/tags/" rel="section">Tags Cloud</a>
+                        </li>
+                        <li class="menu-item menu-item-categories">
+                            <a href="/categories/" rel="section">文章集合</a>
+                        </li>
+                        <li class="menu-item menu-item-about">
+                            <a href="/about/" rel="section">关于我啊</a>
+                        </li>
+                        <li class="menu-item menu-item-message">
+                            <a href="/message/" rel="section">留言与我</a>
+                        </li>
+                        <li class="menu-item menu-item-search">
+                            <a role="button" class="popup-trigger">搜索 </a>
+                        </li>
+                    </ul>
+                </nav>
+                <div class="search-pop-overlay">
+                    <div class="popup search-popup">
+                        <div class="search-header">
+                            <span class="search-icon">
+                                <i class="fa fa-search"></i>
+                            </span>
+                            <div class="search-input-container">
+                                <input autocomplete="off" autocapitalize="off" placeholder="搜索..." spellcheck="false" type="search" class="search-input">
+                            </div>
+                            <span class="popup-btn-close">
+                                <i class="fa fa-times-circle"></i>
+                            </span>
+                        </div>
+                        <div id="search-result">
+                            <div id="no-result">
+                                <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="back-to-top">
+            <i class="fa fa-arrow-up"></i>
+            <span>0%</span>
+        </div>
+        <div class="reading-progress-bar"></div>
+        <main class="main">
+            <div class="main-inner">
+                <div class="content-wrap">
+                    <div class="content post posts-expand">
+                        <article itemscope itemtype="http://schema.org/Article" class="post-block single" lang="zh-CN">
+                            <link itemprop="mainEntityOfPage" href="https://paynewu.com/626715027.html">
+                            <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <meta itemprop="image" content="/images/favicon/android-chrome-512x512.png">
+                                <meta itemprop="name" content="吴志鹏">
+                                <meta itemprop="description" content="Talk is free，please state clearly">
+                            </span>
+                            <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+                                <meta itemprop="name" content="吴志鹏｜Payne-Wu">
+                            </span>
+                            <header class="post-header">
+                                <h1 class="post-title" itemprop="name headline"> 雷电模拟器抓包配置 </h1>
+                                <div class="post-meta">
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-user"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">作者</span>
+                                        <span><a href="/authors/Payne" class="author" itemprop="url" rel="index">Payne</a></span>
+                                    </span>
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-calendar"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">发表于</span>
+                                        <time title="创建时间：2022-04-25 01:48:36" itemprop="dateCreated datePublished" datetime="2022-04-25T01:48:36+08:00">2022-04-25</time>
+                                    </span>
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-folder"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">分类于</span>
+                                        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                                            <a href="/categories/%E6%8A%93%E5%8C%85/" itemprop="url" rel="index"><span itemprop="name">抓包</span></a>
+                                        </span> ， <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                                            <a href="/categories/%E6%8A%93%E5%8C%85/%E6%A8%A1%E6%8B%9F%E5%99%A8/" itemprop="url" rel="index"><span itemprop="name">模拟器</span></a>
+                                        </span> ， <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                                            <a href="/categories/%E6%8A%93%E5%8C%85/%E6%A8%A1%E6%8B%9F%E5%99%A8/mitmproxt/" itemprop="url" rel="index"><span itemprop="name">mitmproxt</span></a>
+                                        </span>
+                                    </span>
+                                    <br>
+                                    <span class="post-meta-item" title="本文字数">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-file-word"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">本文字数：</span>
+                                        <span>1.4k</span>
+                                    </span>
+                                    <span class="post-meta-item" title="阅读时长">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-clock"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                                        <span>1 分钟</span>
+                                    </span>
+                                </div>
+                            </header>
+                            <div class="post-body" itemprop="articleBody">
+                                <h2 id="雷电模拟器抓包配置"><a href="#雷电模拟器抓包配置" class="headerlink" title="雷电模拟器抓包配置"></a>雷电模拟器抓包配置</h2>
+                                <p>爬虫免不了抓包分析，当然也免不了中间转发相关的便捷操作。如果有一个稳定的、妥善的抓包环境。相信在爬虫开发中一定会事半功倍。</p>
+                                <p>有真机当然是最好的，同时如果爬虫开发者并没有真机。那么模拟器变成为了不二之选。当然如果支持多开的话那就更好了。</p>
+                                <p>业界比较知名的有</p>
+                                <p>MuMu模拟器:<a href="https://mumu.163.com/" target="_blank" rel="noopener">https://mumu.163.com/</a></p>
+                                <p>雷电模拟器：<a href="https://www.ldmnq.com/" target="_blank" rel="noopener">https://www.ldmnq.com/</a></p>
+                                <p>夜神模拟器：<a href="https://www.yeshen.com/" target="_blank" rel="noopener">https://www.yeshen.com/</a></p>
+                                <p>在开发爬虫的时候，我个人使用的比较多的的是雷电模拟器，因为他支持多开（虽然这之间有限制），以及抓包也有些问题。但奈何，它支持多开啊。配合 <a href="https://www.mitmproxy.org/" target="_blank" rel="noopener">Mitmproxy</a>的组件譬如<code>Mitmdump</code><br>简直不要太舒服。</p>
+                                <h3 id="雷电模拟器的安装"><a href="#雷电模拟器的安装" class="headerlink" title="雷电模拟器的安装"></a>雷电模拟器的安装</h3>
+                                <p>首先进入官网， 如下图所示，<a href="https://www.ldmnq.com/" target="_blank" rel="noopener">https://www.ldmnq.com/</a></p>
+                                <p><img src="https://tva1.sinaimg.cn/large/e6c9d24egy1h1lclkmpbjj224n0u0wu4.jpg" alt="image-20220425015741050"></p>
+                                <p>选择<a href="https://www.ldmnq.com/other/version-history-and-release-notes.html" target="_blank" rel="noopener">更新日志</a>，寻找历史版本。笔者这里使用的是3.74 较为稳定。以及支持网桥。</p>
+                                <p><img src="https://tva1.sinaimg.cn/large/e6c9d24egy1h1lcopronuj20gy0a4wen.jpg" alt="image-20220425020045161"></p>
+                                <p><a href="https://dl.softmgr.qq.com/original/game/ldinst_3.74.0.exe" target="_blank" rel="noopener">https://dl.softmgr.qq.com/original/game/ldinst_3.74.0.exe</a></p>
+                                <p>选择3.74版本，主要是由于新版本的网桥这个bug在修复。以及完善度如何，至今不敢恭维。so，就选择较为稳定的它。</p>
+                                <blockquote>
+                                    <p>必须需要支持网桥，否则无法抓包。</p>
+                                </blockquote>
+                                <h2 id="抓包工具安装"><a href="#抓包工具安装" class="headerlink" title="抓包工具安装"></a>抓包工具安装</h2>
+                                <p>抓包工具这里没什么好讲的，常规常见的都都行。</p>
+                                <p>fiddle：<a href="https://www.telerik.com/download/fiddler" target="_blank" rel="noopener">https://www.telerik.com/download/fiddler</a></p>
+                                <p>Charles： <a href="https://www.charlesproxy.com/" target="_blank" rel="noopener">https://www.charlesproxy.com/</a></p>
+                                <p>mitmproxy：<a href="https://www.mitmproxy.org/" target="_blank" rel="noopener">https://www.mitmproxy.org/</a></p>
+                                <p>都比较不错，具体选择那个请你酌情考虑。</p>
+                                <h2 id="雷电模拟器抓包配置-1"><a href="#雷电模拟器抓包配置-1" class="headerlink" title="雷电模拟器抓包配置"></a>雷电模拟器抓包配置</h2>
+                                <p>首先新建一个雷电模拟器，如下图所示。以及网桥设置如下。</p>
+                                <p><strong>当然记得安装桥接的驱动</strong>。</p>
+                                <p><img src="https://tva1.sinaimg.cn/large/e6c9d24egy1h1lcw8lt5wj20ui0u0juc.jpg" alt="image-20220425020758810"></p>
+                                <p>完成后，如下所示</p>
+                                <p><img src="https://tva1.sinaimg.cn/large/e6c9d24egy1h1lcy8j46pj20o60dygma.jpg" alt="image-20220425020954288"></p>
+                                <p>以Mitmproxy的证书为例子，如下</p>
+                                <p>首先需要安装mitmproxy,执行如下命令（在此之前需要有Python环境）</p>
+                                <figure class="highlight bash">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">pip install mitmproxy</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>如果配置了环境变量的话，首次执行一下mitmproxy相关的命令（由于非Uinux，是没有mitmrpoxy的），所以执行<code>mitmweb</code>, 我个人建议是添加对应的端口。命令如下所示</p>
+                                <figure class="highlight bash">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">mitmweb -p 8088</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>当然，我建议是8088，我习惯给他配置为mitm相关的抓包的端口。当然你可以选择其他的端口，当然后续操作就可能会有些许出入。</p>
+                                <p>此时，进入<code>~.mitmproxy</code> 目录下</p>
+                                <figure class="highlight bash">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="comment"># windows</span></span><br><span class="line"><span class="built_in">cd</span> ~\.\.mitmproxy\</span><br><span class="line"><span class="comment"># mac or Linux</span></span><br><span class="line"><span class="built_in">cd</span> ~/.mitmproxy/</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>使用<code>ls</code> 命令即可查看到相关的证书了！。我建议是<strong>在这里寻找到证书而非mitm.it,因为在手机上很有可能上不去</strong></p>
+                                <h3 id="配置代理"><a href="#配置代理" class="headerlink" title="配置代理"></a>配置代理</h3>
+                                <p>在配置证书前，我强烈建议你先配置好代理端口。这将大大到降低与简化后续的操作。由于模拟器都是采用的自生的网络。直接配置WI-FI即可。如下</p>
+                                <p><img src="https://tva1.sinaimg.cn/large/e6c9d24egy1h1ldabzy52j20oa0rwdgj.jpg" alt="image-20220425022132093"></p>
+                                <p>点击修改网络，以及高级配置，同时将代理选择为手动。如下图所示</p>
+                                <p><img src="https://tva1.sinaimg.cn/large/e6c9d24egy1h1ldaxdedej20la10a75t.jpg" alt="image-20220425022206837"></p>
+                                <p>端口在这里我设置为<code>8088</code>, 代理服务器主机名。你可以在终端中的<code>ifconfig</code> 或者<code>ipconfig</code>,中获取。在此便不再过多赘述。</p>
+                                <p><img src="https://tva1.sinaimg.cn/large/e6c9d24egy1h1ldbqbtpqj20kq0dk3z5.jpg" alt="image-20220425022253389"></p>
+                                <h3 id="配置证书"><a href="#配置证书" class="headerlink" title="配置证书"></a>配置证书</h3>
+                                <p>在<code>~.mitmproxy</code>下将昵称为<code>mitmproxy-ca-cert.pem</code>的文件拖入到雷电模拟器中，如下图所示</p>
+                                <blockquote>
+                                    <p>将该文件移动屏幕内，即可跳转到该目录</p>
+                                </blockquote>
+                                <p><img src="https://tva1.sinaimg.cn/large/e6c9d24egy1h1lddqsvxpj21l20u0n25.jpg" alt="image-20220425022448328"></p>
+                                <p>开始配置证书，打开设置-&gt; 安全-&gt; 从SD卡安装 选择证书所在的目录。双击即可安装</p>
+                                <p>在终端中运行</p>
+                                <figure class="highlight bash">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">mitmweb -p 8088</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>浏览百度</p>
+                                <p><img src="https://tva1.sinaimg.cn/large/e6c9d24egy1h1ldj2cgkdj21b80u0k22.jpg" alt="image-20220425022954673"></p>
+                                <p>至此，证书就已经安装完成啦</p>
+                                <h3 id="Android-7-及以上的版本抓包"><a href="#Android-7-及以上的版本抓包" class="headerlink" title="Android 7 及以上的版本抓包"></a>Android 7 及以上的版本抓包</h3>
+                                <figure class="highlight bash">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">adb shell</span><br><span class="line">su</span><br><span class="line">mount -o rw,remount /system</span><br><span class="line">cp /data/misc/user/0/cacerts-added/269953fb.0 /system/etc/security/cacerts/</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h2 id="Referer"><a href="#Referer" class="headerlink" title="Referer"></a>Referer</h2>
+                                <p><a href="https://blog.csdn.net/Palmer9/article/details/119062660" target="_blank" rel="noopener">Android(4) Android7.0 配置系统证书</a></p>
+                            </div>
+                            <footer class="post-footer">
+                                <div class="post-tags">
+                                    <a href="/tags/%E6%8A%93%E5%8C%85/" rel="tag"><i class="fa fa-tag"></i> 抓包</a>
+                                </div>
+                                <div class="post-nav">
+                                    <div class="post-nav-item">
+                                        <a href="/2145839287.html" rel="prev" title="Linux command多版本设置">
+                                            <i class="fa fa-chevron-left"></i> Linux command多版本设置 </a>
+                                    </div>
+                                    <div class="post-nav-item">
+                                        <a href="/2352241434.html" rel="next" title="GC垃圾回收原理"> GC垃圾回收原理 <i class="fa fa-chevron-right"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </footer>
+                        </article>
+                    </div>
+                    <script>
+                        window.addEventListener('tabs:register', () =>
+                        {
+                            let
+                            {
+                                activeClass
+                            } = CONFIG.comments;
+                            if (CONFIG.comments.storage)
+                            {
+                                activeClass = localStorage.getItem('comments_active') || activeClass;
+                            }
+                            if (activeClass)
+                            {
+                                let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+                                if (activeTab)
+                                {
+                                    activeTab.click();
+                                }
+                            }
+                        });
+                        if (CONFIG.comments.storage)
+                        {
+                            window.addEventListener('tabs:click', event =>
+                            {
+                                if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+                                let commentClass = event.target.classList[1];
+                                localStorage.setItem('comments_active', commentClass);
+                            });
+                        }
+
+                    </script>
+                </div>
+                <div class="toggle sidebar-toggle">
+                    <span class="toggle-line toggle-line-first"></span>
+                    <span class="toggle-line toggle-line-middle"></span>
+                    <span class="toggle-line toggle-line-last"></span>
+                </div>
+                <aside class="sidebar">
+                    <div class="sidebar-inner">
+                        <ul class="sidebar-nav motion-element">
+                            <li class="sidebar-nav-toc"> 文章目录 </li>
+                            <li class="sidebar-nav-overview"> 站点概览 </li>
+                        </ul>
+                        <!--noindex-->
+                        <div class="post-toc-wrap sidebar-panel">
+                            <div class="post-toc motion-element">
+                                <ol class="nav">
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#雷电模拟器抓包配置"><span class="nav-number">1.</span> <span class="nav-text">雷电模拟器抓包配置</span></a>
+                                        <ol class="nav-child">
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#雷电模拟器的安装"><span class="nav-number">1.1.</span> <span class="nav-text">雷电模拟器的安装</span></a></li>
+                                        </ol>
+                                    </li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#抓包工具安装"><span class="nav-number">2.</span> <span class="nav-text">抓包工具安装</span></a></li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#雷电模拟器抓包配置-1"><span class="nav-number">3.</span> <span class="nav-text">雷电模拟器抓包配置</span></a>
+                                        <ol class="nav-child">
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#配置代理"><span class="nav-number">3.1.</span> <span class="nav-text">配置代理</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#配置证书"><span class="nav-number">3.2.</span> <span class="nav-text">配置证书</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#Android-7-及以上的版本抓包"><span class="nav-number">3.3.</span> <span class="nav-text">Android 7 及以上的版本抓包</span></a></li>
+                                        </ol>
+                                    </li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#Referer"><span class="nav-number">4.</span> <span class="nav-text">Referer</span></a></li>
+                                </ol>
+                            </div>
+                        </div>
+                        <!--/noindex-->
+                        <div class="site-overview-wrap sidebar-panel">
+                            <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <img class="site-author-image" itemprop="image" alt="吴志鹏" src="/images/favicon/android-chrome-512x512.png">
+                                <p class="site-author-name" itemprop="name">吴志鹏</p>
+                                <div class="site-description" itemprop="description">Talk is free，please state clearly</div>
+                            </div>
+                            <div class="site-state-wrap motion-element">
+                                <nav class="site-state">
+                                    <div class="site-state-item site-state-posts">
+                                        <a href="/archives/">
+                                            <span class="site-state-item-count">136</span>
+                                            <span class="site-state-item-name">日志</span>
+                                        </a>
+                                    </div>
+                                    <div class="site-state-item site-state-categories">
+                                        <a href="/categories/">
+                                            <span class="site-state-item-count">158</span>
+                                            <span class="site-state-item-name">分类</span></a>
+                                    </div>
+                                    <div class="site-state-item site-state-tags">
+                                        <a href="/tags/">
+                                            <span class="site-state-item-count">89</span>
+                                            <span class="site-state-item-name">标签</span></a>
+                                    </div>
+                                </nav>
+                            </div>
+                            <div class="links-of-author motion-element">
+                                <span class="links-of-author-item">
+                                    <a href="https://github.com/Payne-Wu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Payne-Wu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="mailto:wuzhipeng1289690157@gmail.com" title="E-Mail → mailto:wuzhipeng1289690157@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="https://www.zhihu.com/people/wu-zhi-peng-72-78" title="ZhiHu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;wu-zhi-peng-72-78" rel="noopener" target="_blank"><i class="fa fa-magic fa-fw"></i>ZhiHu</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="https://weibo.com/u/6987234483" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;6987234483" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+                <div id="sidebar-dimmer"></div>
+            </div>
+        </main>
+        <footer class="footer">
+            <div class="footer-inner">
+                <div class="copyright"> &copy; <span itemprop="copyrightYear">2022</span>
+                    <span class="with-love">
+                        <i class="fa fa-heart"></i>
+                    </span>
+                    <span class="author" itemprop="copyrightHolder">PayneWu</span>
+                    <span class="post-meta-divider">|</span>
+                    <span class="post-meta-item-icon">
+                        <i class="fa fa-chart-area"></i>
+                    </span>
+                    <span title="站点总字数">255k</span>
+                    <span class="post-meta-divider">|</span>
+                    <span class="post-meta-item-icon">
+                        <i class="fa fa-coffee"></i>
+                    </span>
+                    <span title="站点阅读时长">3:51</span>
+                </div>
+                <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">湘ICP备2021019893号-1 </a>
+                </div>
+                <div style="display: none;">
+                    <script src="//s95.cnzz.com/z_stat.php?id=true&web_id=true"></script>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+    <script src="/js/utils.js"></script>
+    <script src="/.js"></script>
+    <script src="/js/schemes/pisces.js"></script>
+    <script src="/.js"></script>
+    <script src="/js/next-boot.js"></script>
+    <script src="/.js"></script>
+    <script>
+        (function ()
+        {
+            var canonicalURL, curProtocol;
+            //Get the <link> tag
+            var x = document.getElementsByTagName("link");
+            //Find the last canonical URL
+            if (x.length > 0)
+            {
+                for (i = 0; i < x.length; i++)
+                {
+                    if (x[i].rel.toLowerCase() == 'canonical' && x[i].href)
+                    {
+                        canonicalURL = x[i].href;
+                    }
+                }
+            }
+            //Get protocol
+            if (!canonicalURL)
+            {
+                curProtocol = window.location.protocol.split(':')[0];
+            }
+            else
+            {
+                curProtocol = canonicalURL.split(':')[0];
+            }
+            //Get current URL if the canonical URL does not exist
+            if (!canonicalURL) canonicalURL = window.location.href;
+            //Assign script content. Replace current URL with the canonical URL
+            ! function ()
+            {
+                var e = /([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,
+                    r = canonicalURL,
+                    t = document.referrer;
+                if (!e.test(r))
+                {
+                    var n = (String(curProtocol).toLowerCase() === 'https') ? "https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif" : "//api.share.baidu.com/s.gif";
+                    t ? (n += "?r=" + encodeURIComponent(document.referrer), r && (n += "&l=" + r)) : r && (n += "?l=" + r);
+                    var i = new Image;
+                    i.src = n
+                }
+            }(window);
+        })();
+
+    </script>
+    <script src="/js/local-search.js"></script>
+    <script src="/.js"></script>
+</body>
+
+</html>

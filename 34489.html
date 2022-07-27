@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+    <meta name="theme-color" content="#222">
+    <meta name="generator" content="Hexo 4.2.1">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16-next.png">
+    <link rel="mask-icon" href="/images/favicon/safari-pinned-tab.svg" color="#222">
+    <meta name="msapplication-config" content="/images/favicon/browserconfig.xml">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+    <link rel="stylesheet" href="/lib/pace/pace-theme-mac-osx.min.css">
+    <script src="/lib/pace/pace.min.js"></script>
+    <script id="hexo-configurations">
+        var NexT = window.NexT ||
+        {};
+        var CONFIG = {
+            "hostname": "paynewu.com",
+            "root": "/",
+            "scheme": "Gemini",
+            "version": "7.8.0",
+            "exturl": false,
+            "sidebar":
+            {
+                "position": "right",
+                "width": 240,
+                "display": "post",
+                "padding": 18,
+                "offset": 12,
+                "onmobile": false
+            },
+            "copycode":
+            {
+                "enable": true,
+                "show_result": true,
+                "style": "mac"
+            },
+            "back2top":
+            {
+                "enable": true,
+                "sidebar": false,
+                "scrollpercent": true
+            },
+            "bookmark":
+            {
+                "enable": false,
+                "color": "#222",
+                "save": "auto"
+            },
+            "fancybox": false,
+            "mediumzoom": true,
+            "lazyload": false,
+            "pangu": true,
+            "comments":
+            {
+                "style": "tabs",
+                "active": "valine",
+                "storage": true,
+                "lazyload": false,
+                "nav": null
+            },
+            "algolia":
+            {
+                "hits":
+                {
+                    "per_page": 10
+                },
+                "labels":
+                {
+                    "input_placeholder": "Search for Posts",
+                    "hits_empty": "We didn't find any results for the search: ${query}",
+                    "hits_stats": "${hits} results found in ${time} ms"
+                }
+            },
+            "localsearch":
+            {
+                "enable": true,
+                "trigger": "auto",
+                "top_n_per_article": 8,
+                "unescape": false,
+                "preload": false
+            },
+            "motion":
+            {
+                "enable": false,
+                "async": false,
+                "transition":
+                {
+                    "post_block": "bounceDownIn",
+                    "post_header": "slideDownIn",
+                    "post_body": "slideDownIn",
+                    "coll_header": "slideLeftIn",
+                    "sidebar": "slideUpIn"
+                }
+            },
+            "path": "search.xml"
+        };
+
+    </script>
+    <meta name="description" content="HomeBrew HomeBrew官方地址 brew.idayer 简单来说他是类似于yum、apt,mac的包管理工具，使用它我们可以非常简单、丝滑的下载大部分的包、或者软件 第一次可以尝试使用如下命令进行安装                                             1                                           &#x2F;bin&#x2F;">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="新mac使用技巧入门指北">
+    <meta property="og:url" content="https://paynewu.com/34489.html">
+    <meta property="og:site_name" content="吴志鹏｜Payne-Wu">
+    <meta property="og:description" content="HomeBrew HomeBrew官方地址 brew.idayer 简单来说他是类似于yum、apt,mac的包管理工具，使用它我们可以非常简单、丝滑的下载大部分的包、或者软件 第一次可以尝试使用如下命令进行安装                                             1                                           &#x2F;bin&#x2F;">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNly1gpxd433qdsj317o0e0wes.jpg">
+    <meta property="article:published_time" content="2021-04-26T11:59:17.000Z">
+    <meta property="article:modified_time" content="2022-07-27T09:58:26.880Z">
+    <meta property="article:author" content="吴志鹏">
+    <meta property="article:tag" content="Mac">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:image" content="https://tva1.sinaimg.cn/large/008i3skNly1gpxd433qdsj317o0e0wes.jpg">
+    <link rel="canonical" href="https://paynewu.com/34489.html">
+    <script id="page-configurations">
+        // https://hexo.io/docs/variables.html
+        CONFIG.page = {
+            sidebar: "",
+            isHome: false,
+            isPost: true,
+            lang: 'zh-CN'
+        };
+
+    </script>
+    <title>新mac使用技巧入门指北 | 吴志鹏｜Payne-Wu</title>
+    <meta name="google-site-verification" content="p_bIcnvirkFzG2dYKuNDivKD8-STet5W7D-01woA2fc" />
+    <noscript>
+        <style>
+            .use-motion .brand,
+            .use-motion .menu-item,
+            .sidebar-inner,
+            .use-motion .post-block,
+            .use-motion .pagination,
+            .use-motion .comments,
+            .use-motion .post-header,
+            .use-motion .post-body,
+            .use-motion .collection-header
+            {
+                opacity: initial;
+            }
+
+            .use-motion .site-title,
+            .use-motion .site-subtitle
+            {
+                opacity: initial;
+                top: initial;
+            }
+
+            .use-motion .logo-line-before i
+            {
+                left: initial;
+            }
+
+            .use-motion .logo-line-after i
+            {
+                right: initial;
+            }
+
+        </style>
+    </noscript>
+    <link rel="alternate" href="/atom.xml" title="吴志鹏｜Payne-Wu" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+    <div class="container">
+        <div class="headband"></div>
+        <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+            <div class="header-inner">
+                <div class="site-brand-container">
+                    <div class="site-nav-toggle">
+                        <div class="toggle" aria-label="切换导航栏">
+                            <span class="toggle-line toggle-line-first"></span>
+                            <span class="toggle-line toggle-line-middle"></span>
+                            <span class="toggle-line toggle-line-last"></span>
+                        </div>
+                    </div>
+                    <div class="site-meta">
+                        <a href="/" class="brand" rel="start">
+                            <span class="logo-line-before"><i></i></span>
+                            <h1 class="site-title">吴志鹏｜Payne-Wu </h1>
+                            <span class="logo-line-after"><i></i></span>
+                        </a>
+                    </div>
+                    <div class="site-nav-right">
+                        <div class="toggle popup-trigger">
+                            <i class="fa fa-search fa-fw fa-lg"></i>
+                        </div>
+                    </div>
+                </div>
+                <nav class="site-nav">
+                    <ul id="menu" class="main-menu menu">
+                        <li class="menu-item menu-item-home">
+                            <a href="/" rel="section">首页</a>
+                        </li>
+                        <li class="menu-item menu-item-archives">
+                            <a href="/archives/" rel="section">文章列表</a>
+                        </li>
+                        <li class="menu-item menu-item-tags">
+                            <a href="/tags/" rel="section">Tags Cloud</a>
+                        </li>
+                        <li class="menu-item menu-item-categories">
+                            <a href="/categories/" rel="section">文章集合</a>
+                        </li>
+                        <li class="menu-item menu-item-about">
+                            <a href="/about/" rel="section">关于我啊</a>
+                        </li>
+                        <li class="menu-item menu-item-message">
+                            <a href="/message/" rel="section">留言与我</a>
+                        </li>
+                        <li class="menu-item menu-item-search">
+                            <a role="button" class="popup-trigger">搜索 </a>
+                        </li>
+                    </ul>
+                </nav>
+                <div class="search-pop-overlay">
+                    <div class="popup search-popup">
+                        <div class="search-header">
+                            <span class="search-icon">
+                                <i class="fa fa-search"></i>
+                            </span>
+                            <div class="search-input-container">
+                                <input autocomplete="off" autocapitalize="off" placeholder="搜索..." spellcheck="false" type="search" class="search-input">
+                            </div>
+                            <span class="popup-btn-close">
+                                <i class="fa fa-times-circle"></i>
+                            </span>
+                        </div>
+                        <div id="search-result">
+                            <div id="no-result">
+                                <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="back-to-top">
+            <i class="fa fa-arrow-up"></i>
+            <span>0%</span>
+        </div>
+        <div class="reading-progress-bar"></div>
+        <main class="main">
+            <div class="main-inner">
+                <div class="content-wrap">
+                    <div class="content post posts-expand">
+                        <article itemscope itemtype="http://schema.org/Article" class="post-block single" lang="zh-CN">
+                            <link itemprop="mainEntityOfPage" href="https://paynewu.com/34489.html">
+                            <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <meta itemprop="image" content="/images/favicon/android-chrome-512x512.png">
+                                <meta itemprop="name" content="吴志鹏">
+                                <meta itemprop="description" content="Talk is free，please state clearly">
+                            </span>
+                            <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+                                <meta itemprop="name" content="吴志鹏｜Payne-Wu">
+                            </span>
+                            <header class="post-header">
+                                <h1 class="post-title" itemprop="name headline"> 新mac使用技巧入门指北 </h1>
+                                <div class="post-meta">
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-user"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">作者</span>
+                                        <span><a href="/authors/Payne" class="author" itemprop="url" rel="index">Payne</a></span>
+                                    </span>
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-calendar"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">发表于</span>
+                                        <time title="创建时间：2021-04-26 19:59:17" itemprop="dateCreated datePublished" datetime="2021-04-26T19:59:17+08:00">2021-04-26</time>
+                                    </span>
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-folder"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">分类于</span>
+                                        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                                            <a href="/categories/Mac/" itemprop="url" rel="index"><span itemprop="name">Mac</span></a>
+                                        </span> ， <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                                            <a href="/categories/Mac/HomeBrew/" itemprop="url" rel="index"><span itemprop="name">HomeBrew</span></a>
+                                        </span> ， <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                                            <a href="/categories/Mac/HomeBrew/zsh/" itemprop="url" rel="index"><span itemprop="name">zsh</span></a>
+                                        </span> ， <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                                            <a href="/categories/Mac/HomeBrew/zsh/terminal/" itemprop="url" rel="index"><span itemprop="name">terminal</span></a>
+                                        </span>
+                                    </span>
+                                    <br>
+                                    <span class="post-meta-item" title="本文字数">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-file-word"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">本文字数：</span>
+                                        <span>380</span>
+                                    </span>
+                                    <span class="post-meta-item" title="阅读时长">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-clock"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                                        <span>1 分钟</span>
+                                    </span>
+                                </div>
+                            </header>
+                            <div class="post-body" itemprop="articleBody">
+                                <h2 id="HomeBrew"><a href="#HomeBrew" class="headerlink" title="HomeBrew"></a>HomeBrew</h2>
+                                <p><a href="https://brew.sh/" target="_blank" rel="noopener">HomeBrew官方地址</a></p>
+                                <p><a href="https://brew.idayer.com/" target="_blank" rel="noopener">brew.idayer</a></p>
+                                <p>简单来说他是类似于<code>yum、apt</code>,mac的包管理工具，使用它我们可以非常简单、丝滑的下载大部分的包、或者软件</p>
+                                <p>第一次可以尝试使用如下命令进行安装</p>
+                                <figure class="highlight shell">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>由于种种原因，如果安装不上，可以使用华科大的源进行安装</p>
+                                <figure class="highlight shell">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">/bin/bash -c "$(curl -fsSL https://cdn.jsdelivr.net/gh/ineo6/homebrew-install/install.sh)"</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>安装完成后，检查一下</p>
+                                <figure class="highlight bash">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">brew update &amp;&amp; brew upgrade &amp;&amp; brew doctor</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>设置</p>
+                                <figure class="highlight bash">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">git -C <span class="string">"/usr/local/Homebrew/Library/Taps/homebrew/homebrew-core"</span> remote <span class="built_in">set</span>-url origin https://github.com/Homebrew/homebrew-core</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h2 id="定制zsh编辑器"><a href="#定制zsh编辑器" class="headerlink" title="定制zsh编辑器"></a>定制zsh编辑器</h2>
+                                <p>原生的mac，zsh是没有命令提示的，以及显示也并没有那么好看。自定制一下,终端建议使用<code>iterm2</code></p>
+                                <p>下载<code>iterm2</code></p>
+                                <figure class="highlight bash">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">brew install --cask iterm2</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h4 id="下载oh-my-zsh"><a href="#下载oh-my-zsh" class="headerlink" title="下载oh-my-zsh"></a>下载oh-my-zsh</h4>
+                                <figure class="highlight sh">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="comment"># curl 安装方式</span></span><br><span class="line">sh -c <span class="string">"<span class="variable">$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)</span>"</span></span><br><span class="line"><span class="comment"># wget 安装方式</span></span><br><span class="line">sh -c <span class="string">"<span class="variable">$(wget https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)</span>"</span></span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h4 id="复制-zshrc"><a href="#复制-zshrc" class="headerlink" title="复制 .zshrc"></a>复制 .zshrc</h4>
+                                <figure class="highlight shell">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h4 id="修改默认-shell-可选"><a href="#修改默认-shell-可选" class="headerlink" title="修改默认 shell(可选)"></a>修改默认 shell(可选)</h4>
+                                <figure class="highlight sh">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">chsh -s /bin/zsh</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>在终端中新建一个窗口(快捷键：command + n），你就发现不一样的shell，如下图所示</p>
+                                <p><img src="https://tva1.sinaimg.cn/large/008i3skNly1gpxd433qdsj317o0e0wes.jpg" alt="image-20210426191816929"></p>
+                                <h4 id="安装插件"><a href="#安装插件" class="headerlink" title="安装插件"></a>安装插件</h4>
+                                <figure class="highlight shell">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="meta">#</span><span class="bash"> zsh-autosuggestions 提供自动补全功能</span></span><br><span class="line">git clone git://github.com/zsh-users/zsh-autosuggestions $ZSH_CUSTOM/plugins/zsh-autosuggestions</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> zsh-syntax-highlighting 语法高亮</span></span><br><span class="line">git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $ZSH_CUSTOM/plugins/zsh-syntax-highlighting</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> git-open 插件 提供 快捷打开远程地址 git open</span></span><br><span class="line">git clone https://github.com/paulirish/git-open.git $ZSH_CUSTOM/plugins/git-open</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> zsh-z z -h</span></span><br><span class="line">git clone https://github.com/agkozak/zsh-z $ZSH_CUSTOM/plugins/zsh-z</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p><code>.zshrc</code> 文件如下</p>
+                                <figure class="highlight bash">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="comment"># If you come from bash you might have to change your $PATH.</span></span><br><span class="line"><span class="comment"># export PATH=$HOME/bin:/usr/local/bin:$PATH</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Path to your oh-my-zsh installation.</span></span><br><span class="line"><span class="built_in">export</span> ZSH=<span class="string">"<span class="variable">$HOME</span>/.oh-my-zsh"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Set name of the theme to load --- if set to "random", it will</span></span><br><span class="line"><span class="comment"># load a random theme each time oh-my-zsh is loaded, in which case,</span></span><br><span class="line"><span class="comment"># to know which specific one was loaded, run: echo $RANDOM_THEME</span></span><br><span class="line"><span class="comment"># See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes</span></span><br><span class="line"><span class="comment"># ZSH_THEME="robbyrussell"</span></span><br><span class="line">ZSH_THEME=<span class="string">"random"</span></span><br><span class="line"><span class="built_in">export</span> HISTSIZE=999999</span><br><span class="line"><span class="built_in">export</span> HISTFILESIZE=999999</span><br><span class="line">ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE=<span class="string">"fg=#ff00ff,bg=cyan,bold,underline"</span></span><br><span class="line"><span class="comment"># Set list of themes to pick from when loading at random</span></span><br><span class="line"><span class="comment"># Setting this variable when ZSH_THEME=random will cause zsh to load</span></span><br><span class="line"><span class="comment"># a theme from this variable instead of looking in $ZSH/themes/</span></span><br><span class="line"><span class="comment"># If set to an empty array, this variable will have no effect.</span></span><br><span class="line"><span class="comment"># ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Uncomment the following line to use case-sensitive completion.</span></span><br><span class="line"><span class="comment"># CASE_SENSITIVE="true"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Uncomment the following line to use hyphen-insensitive completion.</span></span><br><span class="line"><span class="comment"># Case-sensitive completion must be off. _ and - will be interchangeable.</span></span><br><span class="line"><span class="comment"># HYPHEN_INSENSITIVE="true"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Uncomment one of the following lines to change the auto-update behavior</span></span><br><span class="line"><span class="comment"># zstyle ':omz:update' mode disabled  # disable automatic updates</span></span><br><span class="line"><span class="comment"># zstyle ':omz:update' mode auto      # update automatically without asking</span></span><br><span class="line"><span class="comment"># zstyle ':omz:update' mode reminder  # just remind me to update when it's time</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Uncomment the following line to change how often to auto-update (in days).</span></span><br><span class="line"><span class="comment"># zstyle ':omz:update' frequency 13</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Uncomment the following line if pasting URLs and other text is messed up.</span></span><br><span class="line"><span class="comment"># DISABLE_MAGIC_FUNCTIONS="true"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Uncomment the following line to disable colors in ls.</span></span><br><span class="line"><span class="comment"># DISABLE_LS_COLORS="true"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Uncomment the following line to disable auto-setting terminal title.</span></span><br><span class="line"><span class="comment"># DISABLE_AUTO_TITLE="true"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Uncomment the following line to enable command auto-correction.</span></span><br><span class="line"><span class="comment"># ENABLE_CORRECTION="true"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Uncomment the following line to display red dots whilst waiting for completion.</span></span><br><span class="line"><span class="comment"># You can also set it to another string to have that shown instead of the default red dots.</span></span><br><span class="line"><span class="comment"># e.g. COMPLETION_WAITING_DOTS="%F&#123;yellow&#125;waiting...%f"</span></span><br><span class="line"><span class="comment"># Caution: this setting can cause issues with multiline prompts in zsh &lt; 5.7.1 (see #5765)</span></span><br><span class="line"><span class="comment"># COMPLETION_WAITING_DOTS="true"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Uncomment the following line if you want to disable marking untracked files</span></span><br><span class="line"><span class="comment"># under VCS as dirty. This makes repository status check for large repositories</span></span><br><span class="line"><span class="comment"># much, much faster.</span></span><br><span class="line"><span class="comment"># DISABLE_UNTRACKED_FILES_DIRTY="true"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Uncomment the following line if you want to change the command execution time</span></span><br><span class="line"><span class="comment"># stamp shown in the history command output.</span></span><br><span class="line"><span class="comment"># You can set one of the optional three formats:</span></span><br><span class="line"><span class="comment"># "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"</span></span><br><span class="line"><span class="comment"># or set a custom format using the strftime function format specifications,</span></span><br><span class="line"><span class="comment"># see 'man strftime' for details.</span></span><br><span class="line"><span class="comment"># HIST_STAMPS="mm/dd/yyyy"</span></span><br><span class="line">HIST_STAMPS=<span class="string">"yyyy-mm-dd"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Would you like to use another custom folder than $ZSH/custom?</span></span><br><span class="line"><span class="comment"># ZSH_CUSTOM=/path/to/new-custom-folder</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Which plugins would you like to load?</span></span><br><span class="line"><span class="comment"># Standard plugins can be found in $ZSH/plugins/</span></span><br><span class="line"><span class="comment"># Custom plugins may be added to $ZSH_CUSTOM/plugins/</span></span><br><span class="line"><span class="comment"># Example format: plugins=(rails git textmate ruby lighthouse)</span></span><br><span class="line"><span class="comment"># Add wisely, as too many plugins slow down shell startup.</span></span><br><span class="line">plugins=(</span><br><span class="line">    rails</span><br><span class="line">    git</span><br><span class="line">    adb</span><br><span class="line">    textmate</span><br><span class="line">    lighthouse</span><br><span class="line">    bundler</span><br><span class="line">    dotenv</span><br><span class="line">    macos</span><br><span class="line">    rake</span><br><span class="line">    rbenv</span><br><span class="line">    git-open</span><br><span class="line">    zsh-z</span><br><span class="line">    zsh-autosuggestions</span><br><span class="line">    zsh-syntax-highlighting</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="built_in">source</span> <span class="variable">$ZSH</span>/oh-my-zsh.sh</span><br><span class="line"></span><br><span class="line"><span class="comment"># User configuration</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># export MANPATH="/usr/local/man:$MANPATH"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># You may need to manually set your language environment</span></span><br><span class="line"><span class="built_in">export</span> LANG=en_US.UTF-8</span><br><span class="line"></span><br><span class="line"><span class="comment"># Preferred editor for local and remote sessions</span></span><br><span class="line"><span class="comment"># if [[ -n $SSH_CONNECTION ]]; then</span></span><br><span class="line"><span class="comment">#   export EDITOR='vim'</span></span><br><span class="line"><span class="comment"># else</span></span><br><span class="line"><span class="comment">#   export EDITOR='mvim'</span></span><br><span class="line"><span class="comment"># fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Compilation flags</span></span><br><span class="line"><span class="comment"># export ARCHFLAGS="-arch x86_64"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Set personal aliases, overriding those provided by oh-my-zsh libs,</span></span><br><span class="line"><span class="comment"># plugins, and themes. Aliases can be placed here, though oh-my-zsh</span></span><br><span class="line"><span class="comment"># users are encouraged to define aliases within the ZSH_CUSTOM folder.</span></span><br><span class="line"><span class="comment"># For a full list of active aliases, run `alias`.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Example aliases</span></span><br><span class="line"><span class="built_in">alias</span> zshconfig=<span class="string">"mate ~/.zshrc"</span></span><br><span class="line"><span class="built_in">alias</span> ohmyzsh=<span class="string">"mate ~/.oh-my-zsh"</span></span><br><span class="line"><span class="built_in">alias</span> cp=<span class="string">'cp -i'</span></span><br><span class="line"><span class="built_in">alias</span> mv=<span class="string">'mv -i'</span></span><br><span class="line"><span class="built_in">alias</span> brewski=<span class="string">'brew update; brew upgrade; brew cleanup; brew doctor'</span></span><br><span class="line"><span class="built_in">alias</span> pyfmt=<span class="string">'fd . -e py | xargs black'</span></span><br><span class="line"><span class="built_in">alias</span> gofmtl=<span class="string">'fd . -e go | xargs gofmt -w'</span></span><br><span class="line"><span class="built_in">alias</span> cls=<span class="string">'clear'</span></span><br><span class="line"><span class="built_in">alias</span> ccnpm=<span class="string">"npm --registry=https://registry.npmmirror.com \</span></span><br><span class="line"><span class="string">--cache=<span class="variable">$HOME</span>/.npm/.cache/cnpm \</span></span><br><span class="line"><span class="string">--disturl=https://npmmirror.com/mirrors/node \</span></span><br><span class="line"><span class="string">--userconfig=<span class="variable">$HOME</span>/.cnpmrc"</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> GOPATH=<span class="string">"/Users/payne/WorkSpace/Go"</span></span><br><span class="line"><span class="built_in">export</span> GOBIN=<span class="string">"<span class="variable">$&#123;GOPATH&#125;</span>/bin"</span></span><br><span class="line"><span class="built_in">export</span> GOPROXY=<span class="string">"https://goproxy.cn,direct"</span></span><br><span class="line"><span class="built_in">export</span> PATH=<span class="string">"<span class="variable">$&#123;GOBIN&#125;</span>:<span class="variable">$&#123;GOPATH&#125;</span>:<span class="variable">$PATH</span>"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># &gt;&gt;&gt; conda initialize &gt;&gt;&gt;</span></span><br><span class="line"><span class="comment"># !! Contents within this block are managed by 'conda init' !!</span></span><br><span class="line">__conda_setup=<span class="string">"<span class="variable">$('/opt/homebrew/Caskroom/miniconda/base/bin/conda' 'shell.zsh' 'hook' 2&gt; /dev/null)</span>"</span></span><br><span class="line"><span class="keyword">if</span> [ $? -eq 0 ]; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">eval</span> <span class="string">"<span class="variable">$__conda_setup</span>"</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    <span class="keyword">if</span> [ -f <span class="string">"/opt/homebrew/Caskroom/miniconda/base/etc/profile.d/conda.sh"</span> ]; <span class="keyword">then</span></span><br><span class="line">        . <span class="string">"/opt/homebrew/Caskroom/miniconda/base/etc/profile.d/conda.sh"</span></span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="built_in">export</span> PATH=<span class="string">"/opt/homebrew/Caskroom/miniconda/base/bin:<span class="variable">$PATH</span>"</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"><span class="built_in">unset</span> __conda_setup</span><br><span class="line"><span class="comment"># &lt;&lt;&lt; conda initialize &lt;&lt;&lt;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">source</span> &lt;(kubectl completion zsh)</span><br><span class="line"><span class="built_in">source</span> &lt;(helm completion zsh)</span><br><span class="line"></span><br><span class="line"><span class="comment">## HOMEBREW</span></span><br><span class="line"><span class="built_in">export</span> HOMEBREW_BOTTLE_DOMAIN=https://mirrors.aliyun.com/homebrew/homebrew-bottles</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h3 id="自动补全"><a href="#自动补全" class="headerlink" title="自动补全"></a>自动补全</h3>
+                                <figure class="highlight shell">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="meta">#</span><span class="bash"> zsh</span></span><br><span class="line">source &lt;(kubectl completion zsh)</span><br><span class="line"><span class="meta">#</span><span class="bash"> bash (需要下载bash-completion)</span></span><br><span class="line">source /usr/share/bash-completion/bash_completion</span><br><span class="line">source &lt;(kubectl completion bash)</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h2 id="font"><a href="#font" class="headerlink" title="font"></a>font</h2>
+                                <ul>
+                                    <li>
+                                        <p><a href="https://github.com/romkatv/powerlevel10k" target="_blank" rel="noopener">https://github.com/romkatv/powerlevel10k</a></p>
+                                    </li>
+                                    <li>
+                                        <p><a href="https://github.com/powerline/fonts" target="_blank" rel="noopener">https://github.com/powerline/fonts</a></p>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="popular-posts-header">相关文章</div>
+                            <ul class="popular-posts">
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/1614406133.html" rel="bookmark">Reset VsCode config</a></div>
+                                </li>
+                            </ul>
+                            <footer class="post-footer">
+                                <div class="post-tags">
+                                    <a href="/tags/Mac/" rel="tag"><i class="fa fa-tag"></i> Mac</a>
+                                </div>
+                                <div class="post-nav">
+                                    <div class="post-nav-item">
+                                        <a href="/65092.html" rel="prev" title="go代码测试与调优">
+                                            <i class="fa fa-chevron-left"></i> go代码测试与调优 </a>
+                                    </div>
+                                    <div class="post-nav-item">
+                                        <a href="/42803.html" rel="next" title="爬虫优化之道"> 爬虫优化之道 <i class="fa fa-chevron-right"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </footer>
+                        </article>
+                    </div>
+                    <script>
+                        window.addEventListener('tabs:register', () =>
+                        {
+                            let
+                            {
+                                activeClass
+                            } = CONFIG.comments;
+                            if (CONFIG.comments.storage)
+                            {
+                                activeClass = localStorage.getItem('comments_active') || activeClass;
+                            }
+                            if (activeClass)
+                            {
+                                let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+                                if (activeTab)
+                                {
+                                    activeTab.click();
+                                }
+                            }
+                        });
+                        if (CONFIG.comments.storage)
+                        {
+                            window.addEventListener('tabs:click', event =>
+                            {
+                                if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+                                let commentClass = event.target.classList[1];
+                                localStorage.setItem('comments_active', commentClass);
+                            });
+                        }
+
+                    </script>
+                </div>
+                <div class="toggle sidebar-toggle">
+                    <span class="toggle-line toggle-line-first"></span>
+                    <span class="toggle-line toggle-line-middle"></span>
+                    <span class="toggle-line toggle-line-last"></span>
+                </div>
+                <aside class="sidebar">
+                    <div class="sidebar-inner">
+                        <ul class="sidebar-nav motion-element">
+                            <li class="sidebar-nav-toc"> 文章目录 </li>
+                            <li class="sidebar-nav-overview"> 站点概览 </li>
+                        </ul>
+                        <!--noindex-->
+                        <div class="post-toc-wrap sidebar-panel">
+                            <div class="post-toc motion-element">
+                                <ol class="nav">
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#HomeBrew"><span class="nav-number">1.</span> <span class="nav-text">HomeBrew</span></a></li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#定制zsh编辑器"><span class="nav-number">2.</span> <span class="nav-text">定制zsh编辑器</span></a>
+                                        <ol class="nav-child">
+                                            <li class="nav-item nav-level-4"><a class="nav-link" href="#下载oh-my-zsh"><span class="nav-number">2.0.1.</span> <span class="nav-text">下载oh-my-zsh</span></a></li>
+                                            <li class="nav-item nav-level-4"><a class="nav-link" href="#复制-zshrc"><span class="nav-number">2.0.2.</span> <span class="nav-text">复制 .zshrc</span></a></li>
+                                            <li class="nav-item nav-level-4"><a class="nav-link" href="#修改默认-shell-可选"><span class="nav-number">2.0.3.</span> <span class="nav-text">修改默认 shell(可选)</span></a></li>
+                                            <li class="nav-item nav-level-4"><a class="nav-link" href="#安装插件"><span class="nav-number">2.0.4.</span> <span class="nav-text">安装插件</span></a></li>
+                                        </ol>
+                                    </li>
+                                    <li class="nav-item nav-level-3"><a class="nav-link" href="#自动补全"><span class="nav-number">2.1.</span> <span class="nav-text">自动补全</span></a></li>
+                                </ol>
+                                </li>
+                                <li class="nav-item nav-level-2"><a class="nav-link" href="#font"><span class="nav-number">3.</span> <span class="nav-text">font</span></a></li>
+                                </ol>
+                            </div>
+                        </div>
+                        <!--/noindex-->
+                        <div class="site-overview-wrap sidebar-panel">
+                            <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <img class="site-author-image" itemprop="image" alt="吴志鹏" src="/images/favicon/android-chrome-512x512.png">
+                                <p class="site-author-name" itemprop="name">吴志鹏</p>
+                                <div class="site-description" itemprop="description">Talk is free，please state clearly</div>
+                            </div>
+                            <div class="site-state-wrap motion-element">
+                                <nav class="site-state">
+                                    <div class="site-state-item site-state-posts">
+                                        <a href="/archives/">
+                                            <span class="site-state-item-count">136</span>
+                                            <span class="site-state-item-name">日志</span>
+                                        </a>
+                                    </div>
+                                    <div class="site-state-item site-state-categories">
+                                        <a href="/categories/">
+                                            <span class="site-state-item-count">158</span>
+                                            <span class="site-state-item-name">分类</span></a>
+                                    </div>
+                                    <div class="site-state-item site-state-tags">
+                                        <a href="/tags/">
+                                            <span class="site-state-item-count">89</span>
+                                            <span class="site-state-item-name">标签</span></a>
+                                    </div>
+                                </nav>
+                            </div>
+                            <div class="links-of-author motion-element">
+                                <span class="links-of-author-item">
+                                    <a href="https://github.com/Payne-Wu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Payne-Wu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="mailto:wuzhipeng1289690157@gmail.com" title="E-Mail → mailto:wuzhipeng1289690157@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="https://www.zhihu.com/people/wu-zhi-peng-72-78" title="ZhiHu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;wu-zhi-peng-72-78" rel="noopener" target="_blank"><i class="fa fa-magic fa-fw"></i>ZhiHu</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="https://weibo.com/u/6987234483" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;6987234483" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+                <div id="sidebar-dimmer"></div>
+            </div>
+        </main>
+        <footer class="footer">
+            <div class="footer-inner">
+                <div class="copyright"> &copy; <span itemprop="copyrightYear">2022</span>
+                    <span class="with-love">
+                        <i class="fa fa-heart"></i>
+                    </span>
+                    <span class="author" itemprop="copyrightHolder">PayneWu</span>
+                    <span class="post-meta-divider">|</span>
+                    <span class="post-meta-item-icon">
+                        <i class="fa fa-chart-area"></i>
+                    </span>
+                    <span title="站点总字数">255k</span>
+                    <span class="post-meta-divider">|</span>
+                    <span class="post-meta-item-icon">
+                        <i class="fa fa-coffee"></i>
+                    </span>
+                    <span title="站点阅读时长">3:51</span>
+                </div>
+                <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">湘ICP备2021019893号-1 </a>
+                </div>
+                <div style="display: none;">
+                    <script src="//s95.cnzz.com/z_stat.php?id=true&web_id=true"></script>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+    <script src="/js/utils.js"></script>
+    <script src="/.js"></script>
+    <script src="/js/schemes/pisces.js"></script>
+    <script src="/.js"></script>
+    <script src="/js/next-boot.js"></script>
+    <script src="/.js"></script>
+    <script>
+        (function ()
+        {
+            var canonicalURL, curProtocol;
+            //Get the <link> tag
+            var x = document.getElementsByTagName("link");
+            //Find the last canonical URL
+            if (x.length > 0)
+            {
+                for (i = 0; i < x.length; i++)
+                {
+                    if (x[i].rel.toLowerCase() == 'canonical' && x[i].href)
+                    {
+                        canonicalURL = x[i].href;
+                    }
+                }
+            }
+            //Get protocol
+            if (!canonicalURL)
+            {
+                curProtocol = window.location.protocol.split(':')[0];
+            }
+            else
+            {
+                curProtocol = canonicalURL.split(':')[0];
+            }
+            //Get current URL if the canonical URL does not exist
+            if (!canonicalURL) canonicalURL = window.location.href;
+            //Assign script content. Replace current URL with the canonical URL
+            ! function ()
+            {
+                var e = /([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,
+                    r = canonicalURL,
+                    t = document.referrer;
+                if (!e.test(r))
+                {
+                    var n = (String(curProtocol).toLowerCase() === 'https') ? "https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif" : "//api.share.baidu.com/s.gif";
+                    t ? (n += "?r=" + encodeURIComponent(document.referrer), r && (n += "&l=" + r)) : r && (n += "?l=" + r);
+                    var i = new Image;
+                    i.src = n
+                }
+            }(window);
+        })();
+
+    </script>
+    <script src="/js/local-search.js"></script>
+    <script src="/.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+    <meta name="theme-color" content="#222">
+    <meta name="generator" content="Hexo 4.2.1">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16-next.png">
+    <link rel="mask-icon" href="/images/favicon/safari-pinned-tab.svg" color="#222">
+    <meta name="msapplication-config" content="/images/favicon/browserconfig.xml">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+    <link rel="stylesheet" href="/lib/pace/pace-theme-mac-osx.min.css">
+    <script src="/lib/pace/pace.min.js"></script>
+    <script id="hexo-configurations">
+        var NexT = window.NexT ||
+        {};
+        var CONFIG = {
+            "hostname": "paynewu.com",
+            "root": "/",
+            "scheme": "Gemini",
+            "version": "7.8.0",
+            "exturl": false,
+            "sidebar":
+            {
+                "position": "right",
+                "width": 240,
+                "display": "post",
+                "padding": 18,
+                "offset": 12,
+                "onmobile": false
+            },
+            "copycode":
+            {
+                "enable": true,
+                "show_result": true,
+                "style": "mac"
+            },
+            "back2top":
+            {
+                "enable": true,
+                "sidebar": false,
+                "scrollpercent": true
+            },
+            "bookmark":
+            {
+                "enable": false,
+                "color": "#222",
+                "save": "auto"
+            },
+            "fancybox": false,
+            "mediumzoom": true,
+            "lazyload": false,
+            "pangu": true,
+            "comments":
+            {
+                "style": "tabs",
+                "active": "valine",
+                "storage": true,
+                "lazyload": false,
+                "nav": null
+            },
+            "algolia":
+            {
+                "hits":
+                {
+                    "per_page": 10
+                },
+                "labels":
+                {
+                    "input_placeholder": "Search for Posts",
+                    "hits_empty": "We didn't find any results for the search: ${query}",
+                    "hits_stats": "${hits} results found in ${time} ms"
+                }
+            },
+            "localsearch":
+            {
+                "enable": true,
+                "trigger": "auto",
+                "top_n_per_article": 8,
+                "unescape": false,
+                "preload": false
+            },
+            "motion":
+            {
+                "enable": false,
+                "async": false,
+                "transition":
+                {
+                    "post_block": "bounceDownIn",
+                    "post_header": "slideDownIn",
+                    "post_body": "slideDownIn",
+                    "coll_header": "slideLeftIn",
+                    "sidebar": "slideUpIn"
+                }
+            },
+            "path": "search.xml"
+        };
+
+    </script>
+    <meta name="description" content="当部署完Kubernetes集群之后，为了便于管理Web UI或许是一种新型且快捷的部署方式。本节将以部署工具helm搭建Kubernetes Dashboard。以及拍坑 helm相关文档：      helm     CNCF Helm 项目过程报告  helm初始化 在这里推荐使用Kubernetes dashboard官方的仓库。在helm初始化完成后可使用如下命令进行helm repo初">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="kubernetes搭建dashboard">
+    <meta property="og:url" content="https://paynewu.com/1529878275.html">
+    <meta property="og:site_name" content="吴志鹏｜Payne-Wu">
+    <meta property="og:description" content="当部署完Kubernetes集群之后，为了便于管理Web UI或许是一种新型且快捷的部署方式。本节将以部署工具helm搭建Kubernetes Dashboard。以及拍坑 helm相关文档：      helm     CNCF Helm 项目过程报告  helm初始化 在这里推荐使用Kubernetes dashboard官方的仓库。在helm初始化完成后可使用如下命令进行helm repo初">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNgy1gtz2xowgsrj61di0880wn02.jpg">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNgy1gtz47x30vvj627u0k2aj602.jpg">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNgy1gtz67m63w5j60yc08sdi602.jpg">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNgy1gtz6dpjcmjj60v20r844s02.jpg">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNgy1gtz6cvz8lmj610809iacr02.jpg">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNgy1gtz6inwfgxj624m0mqq6802.jpg">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNgy1gtz6lrrzogj611001o74u02.jpg">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNgy1gtz6nfrdq3j62060oktgn02.jpg">
+    <meta property="article:published_time" content="2021-08-30T11:38:42.000Z">
+    <meta property="article:modified_time" content="2022-07-27T09:58:26.880Z">
+    <meta property="article:author" content="吴志鹏">
+    <meta property="article:tag" content="Kubernetes">
+    <meta property="article:tag" content="docker">
+    <meta property="article:tag" content="容器编排">
+    <meta property="article:tag" content="部署">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:image" content="https://tva1.sinaimg.cn/large/008i3skNgy1gtz2xowgsrj61di0880wn02.jpg">
+    <link rel="canonical" href="https://paynewu.com/1529878275.html">
+    <script id="page-configurations">
+        // https://hexo.io/docs/variables.html
+        CONFIG.page = {
+            sidebar: "",
+            isHome: false,
+            isPost: true,
+            lang: 'zh-CN'
+        };
+
+    </script>
+    <title>kubernetes搭建dashboard | 吴志鹏｜Payne-Wu</title>
+    <meta name="google-site-verification" content="p_bIcnvirkFzG2dYKuNDivKD8-STet5W7D-01woA2fc" />
+    <noscript>
+        <style>
+            .use-motion .brand,
+            .use-motion .menu-item,
+            .sidebar-inner,
+            .use-motion .post-block,
+            .use-motion .pagination,
+            .use-motion .comments,
+            .use-motion .post-header,
+            .use-motion .post-body,
+            .use-motion .collection-header
+            {
+                opacity: initial;
+            }
+
+            .use-motion .site-title,
+            .use-motion .site-subtitle
+            {
+                opacity: initial;
+                top: initial;
+            }
+
+            .use-motion .logo-line-before i
+            {
+                left: initial;
+            }
+
+            .use-motion .logo-line-after i
+            {
+                right: initial;
+            }
+
+        </style>
+    </noscript>
+    <link rel="alternate" href="/atom.xml" title="吴志鹏｜Payne-Wu" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+    <div class="container">
+        <div class="headband"></div>
+        <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+            <div class="header-inner">
+                <div class="site-brand-container">
+                    <div class="site-nav-toggle">
+                        <div class="toggle" aria-label="切换导航栏">
+                            <span class="toggle-line toggle-line-first"></span>
+                            <span class="toggle-line toggle-line-middle"></span>
+                            <span class="toggle-line toggle-line-last"></span>
+                        </div>
+                    </div>
+                    <div class="site-meta">
+                        <a href="/" class="brand" rel="start">
+                            <span class="logo-line-before"><i></i></span>
+                            <h1 class="site-title">吴志鹏｜Payne-Wu </h1>
+                            <span class="logo-line-after"><i></i></span>
+                        </a>
+                    </div>
+                    <div class="site-nav-right">
+                        <div class="toggle popup-trigger">
+                            <i class="fa fa-search fa-fw fa-lg"></i>
+                        </div>
+                    </div>
+                </div>
+                <nav class="site-nav">
+                    <ul id="menu" class="main-menu menu">
+                        <li class="menu-item menu-item-home">
+                            <a href="/" rel="section">首页</a>
+                        </li>
+                        <li class="menu-item menu-item-archives">
+                            <a href="/archives/" rel="section">文章列表</a>
+                        </li>
+                        <li class="menu-item menu-item-tags">
+                            <a href="/tags/" rel="section">Tags Cloud</a>
+                        </li>
+                        <li class="menu-item menu-item-categories">
+                            <a href="/categories/" rel="section">文章集合</a>
+                        </li>
+                        <li class="menu-item menu-item-about">
+                            <a href="/about/" rel="section">关于我啊</a>
+                        </li>
+                        <li class="menu-item menu-item-message">
+                            <a href="/message/" rel="section">留言与我</a>
+                        </li>
+                        <li class="menu-item menu-item-search">
+                            <a role="button" class="popup-trigger">搜索 </a>
+                        </li>
+                    </ul>
+                </nav>
+                <div class="search-pop-overlay">
+                    <div class="popup search-popup">
+                        <div class="search-header">
+                            <span class="search-icon">
+                                <i class="fa fa-search"></i>
+                            </span>
+                            <div class="search-input-container">
+                                <input autocomplete="off" autocapitalize="off" placeholder="搜索..." spellcheck="false" type="search" class="search-input">
+                            </div>
+                            <span class="popup-btn-close">
+                                <i class="fa fa-times-circle"></i>
+                            </span>
+                        </div>
+                        <div id="search-result">
+                            <div id="no-result">
+                                <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="back-to-top">
+            <i class="fa fa-arrow-up"></i>
+            <span>0%</span>
+        </div>
+        <div class="reading-progress-bar"></div>
+        <main class="main">
+            <div class="main-inner">
+                <div class="content-wrap">
+                    <div class="content post posts-expand">
+                        <article itemscope itemtype="http://schema.org/Article" class="post-block single" lang="zh-CN">
+                            <link itemprop="mainEntityOfPage" href="https://paynewu.com/1529878275.html">
+                            <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <meta itemprop="image" content="/images/favicon/android-chrome-512x512.png">
+                                <meta itemprop="name" content="吴志鹏">
+                                <meta itemprop="description" content="Talk is free，please state clearly">
+                            </span>
+                            <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+                                <meta itemprop="name" content="吴志鹏｜Payne-Wu">
+                            </span>
+                            <header class="post-header">
+                                <h1 class="post-title" itemprop="name headline"> kubernetes搭建dashboard </h1>
+                                <div class="post-meta">
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-user"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">作者</span>
+                                        <span><a href="/authors/Payne" class="author" itemprop="url" rel="index">Payne</a></span>
+                                    </span>
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-calendar"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">发表于</span>
+                                        <time title="创建时间：2021-08-30 19:38:42" itemprop="dateCreated datePublished" datetime="2021-08-30T19:38:42+08:00">2021-08-30</time>
+                                    </span>
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-folder"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">分类于</span>
+                                        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                                            <a href="/categories/Kubernetes/" itemprop="url" rel="index"><span itemprop="name">Kubernetes</span></a>
+                                        </span> ， <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                                            <a href="/categories/Kubernetes/docker/" itemprop="url" rel="index"><span itemprop="name">docker</span></a>
+                                        </span>
+                                    </span>
+                                    <br>
+                                    <span class="post-meta-item" title="本文字数">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-file-word"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">本文字数：</span>
+                                        <span>710</span>
+                                    </span>
+                                    <span class="post-meta-item" title="阅读时长">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-clock"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                                        <span>1 分钟</span>
+                                    </span>
+                                </div>
+                            </header>
+                            <div class="post-body" itemprop="articleBody">
+                                <p>当部署完Kubernetes集群之后，为了便于管理Web UI或许是一种新型且快捷的部署方式。本节将以部署工具helm搭建Kubernetes Dashboard。以及拍坑</p>
+                                <p>helm相关文档：</p>
+                                <ul>
+                                    <li><a href="https://helm.sh/zh/docs/" target="_blank" rel="noopener">helm</a></li>
+                                    <li><a href="https://www.cncf.io/reports/cncf-helm-project-journey-report/" target="_blank" rel="noopener">CNCF Helm 项目过程报告</a></li>
+                                </ul>
+                                <h2 id="helm初始化"><a href="#helm初始化" class="headerlink" title="helm初始化"></a>helm初始化</h2>
+                                <p>在这里推荐使用Kubernetes dashboard官方的仓库。在helm初始化完成后可使用如下命令进行helm repo初始化</p>
+                                <figure class="highlight bash">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="comment"># add repo</span></span><br><span class="line">helm repo add kubernetes-dashboard	https://kubernetes.github.io/dashboard/</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>为避免加入的repo非最新，可使用如下命令进行更新</p>
+                                <figure class="highlight bash">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">helm repo update</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>效果如下所示</p>
+                                <p><img src="https://tva1.sinaimg.cn/large/008i3skNgy1gtz2xowgsrj61di0880wn02.jpg" alt="image-20210830201834557"></p>
+                                <h3 id="helm安装Kubernetes-dashboard"><a href="#helm安装Kubernetes-dashboard" class="headerlink" title="helm安装Kubernetes dashboard"></a>helm安装Kubernetes dashboard</h3>
+                                <p>笔者建议使用新的namespace</p>
+                                <figure class="highlight bash">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="comment"># create namespace</span></span><br><span class="line">Kubernetes create ns monitor</span><br><span class="line"><span class="comment"># helm install kubernetes dashboard</span></span><br><span class="line">helm install kubernetes-dashboard kubernetes-dashboard/kubernetes-dashboard -n monitor</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>输出如下所示</p>
+                                <p><img src="https://tva1.sinaimg.cn/large/008i3skNgy1gtz47x30vvj627u0k2aj602.jpg" alt="image-20210830210303410"></p>
+                                <p>等待部署完成，查看如下图所示</p>
+                                <p><img src="https://tva1.sinaimg.cn/large/008i3skNgy1gtz67m63w5j60yc08sdi602.jpg" alt="image-20210830221157231"></p>
+                                <h4 id="修改端口暴露类型"><a href="#修改端口暴露类型" class="headerlink" title="修改端口暴露类型"></a>修改端口暴露类型</h4>
+                                <figure class="highlight routeros">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">kubectl <span class="builtin-name">edit</span> -n monitor<span class="built_in"> service </span>kubernetes-dashboard</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>将type：ClusterIP修改为NodePort类型暴露端口，如下所示</p>
+                                <p><img src="https://tva1.sinaimg.cn/large/008i3skNgy1gtz6dpjcmjj60v20r844s02.jpg" alt="image-20210830221749368"></p>
+                                <p>修改完成后，就可以获得暴露的端口啦，如下</p>
+                                <p><img src="https://tva1.sinaimg.cn/large/008i3skNgy1gtz6cvz8lmj610809iacr02.jpg" alt="image-20210830221701538"></p>
+                                <blockquote>
+                                    <p>若在云服务器上请开启对应端口，笔者这里为32623</p>
+                                </blockquote>
+                                <p>此时访问服务器ip+端口，即可进入登陆页面。如下图所示</p>
+                                <blockquote>
+                                    <ol>
+                                        <li>
+                                            <p>必须为<a href="https://ip:port">https://ip:port</a></p>
+                                        </li>
+                                        <li>
+                                            <p>建议使用火狐浏览器</p>
+                                        </li>
+                                    </ol>
+                                </blockquote>
+                                <p><img src="https://tva1.sinaimg.cn/large/008i3skNgy1gtz6inwfgxj624m0mqq6802.jpg" alt="image-20210830222235151"></p>
+                                <p>至此部署部分已经完成</p>
+                                <h2 id="获取token与授权访问"><a href="#获取token与授权访问" class="headerlink" title="获取token与授权访问"></a>获取token与授权访问</h2>
+                                <h3 id="获取token"><a href="#获取token" class="headerlink" title="获取token"></a>获取token</h3>
+                                <figure class="highlight smali">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="comment"># 查看token名称</span></span><br><span class="line">kubectl get secrets -n<span class="built_in"> monitor </span>| grep kubernetes-dashboard-token</span><br><span class="line"><span class="comment"># 查看token详情</span></span><br><span class="line">kubectl describe secrets -n<span class="built_in"> monitor </span>| grep kubernetes-dashboard-token-你自己的后缀名</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p><img src="https://tva1.sinaimg.cn/large/008i3skNgy1gtz6lrrzogj611001o74u02.jpg" alt="image-20210830222534534"></p>
+                                <h3 id="授权"><a href="#授权" class="headerlink" title="授权"></a>授权</h3>
+                                <p>此时我们刚进去界面，发现什么资源都显示不了，是因为dashboard默认的<code>serviceaccount</code>并没有权限，所以我们需要给予它授权。</p>
+                                <blockquote>
+                                    <p><strong>注意</strong>：这里直接赋予的是超级管理员权限，如果需要更加细颗粒度的授权，请参照官方的说明</p>
+                                    <p><a href="https://github.com/kubernetes/dashboard/blob/master/docs/user/access-control/README.md" target="_blank" rel="noopener">https://github.com/kubernetes/dashboard/blob/master/docs/user/access-control/README.md</a></p>
+                                </blockquote>
+                                <p><img src="https://tva1.sinaimg.cn/large/008i3skNgy1gtz6nfrdq3j62060oktgn02.jpg" alt="image-20210830222709899"></p>
+                                <figure class="highlight yaml">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">rbac.authorization.k8s.io/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">ClusterRoleBinding</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">kubernetes-dashboard</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">monitor</span></span><br><span class="line"><span class="attr">roleRef:</span></span><br><span class="line">  <span class="attr">apiGroup:</span> <span class="string">rbac.authorization.k8s.io</span></span><br><span class="line">  <span class="attr">kind:</span> <span class="string">ClusterRole</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">cluster-admin</span></span><br><span class="line"><span class="attr">subjects:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">kind:</span> <span class="string">ServiceAccount</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">kubernetes-dashboard</span></span><br><span class="line">    <span class="attr">namespace:</span> <span class="string">monitor</span></span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>将以上的yaml文件copy到master服务器上创建即可,当然若您也是使用的monitor 的namespace可直接使用如下命令</p>
+                                <figure class="highlight bash">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">kubectl apply -f https://raw.githubusercontent.com/KubernetersDeployExample/script/main/dashboard/authorization.yaml</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                            </div>
+                            <div class="popular-posts-header">相关文章</div>
+                            <ul class="popular-posts">
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/18864.html" rel="bookmark">Kubernetes集群搭建</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/4032605777.html" rel="bookmark">cni already has an IP address different from ...</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/2760374101.html" rel="bookmark">kubernetes NFS实践</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/54288.html" rel="bookmark">docker 底层原理探究</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/2890729769.html" rel="bookmark">docker分层构建</a></div>
+                                </li>
+                            </ul>
+                            <footer class="post-footer">
+                                <div class="post-tags">
+                                    <a href="/tags/Kubernetes/" rel="tag"><i class="fa fa-tag"></i> Kubernetes</a>
+                                    <a href="/tags/docker/" rel="tag"><i class="fa fa-tag"></i> docker</a>
+                                    <a href="/tags/%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%92/" rel="tag"><i class="fa fa-tag"></i> 容器编排</a>
+                                    <a href="/tags/%E9%83%A8%E7%BD%B2/" rel="tag"><i class="fa fa-tag"></i> 部署</a>
+                                </div>
+                                <div class="post-nav">
+                                    <div class="post-nav-item">
+                                        <a href="/1815382139.html" rel="prev" title="MySQL的SQL使用之中">
+                                            <i class="fa fa-chevron-left"></i> MySQL的SQL使用之中 </a>
+                                    </div>
+                                    <div class="post-nav-item">
+                                        <a href="/4032605777.html" rel="next" title="cni already has an IP address different from ..."> cni already has an IP address different from ... <i class="fa fa-chevron-right"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </footer>
+                        </article>
+                    </div>
+                    <script>
+                        window.addEventListener('tabs:register', () =>
+                        {
+                            let
+                            {
+                                activeClass
+                            } = CONFIG.comments;
+                            if (CONFIG.comments.storage)
+                            {
+                                activeClass = localStorage.getItem('comments_active') || activeClass;
+                            }
+                            if (activeClass)
+                            {
+                                let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+                                if (activeTab)
+                                {
+                                    activeTab.click();
+                                }
+                            }
+                        });
+                        if (CONFIG.comments.storage)
+                        {
+                            window.addEventListener('tabs:click', event =>
+                            {
+                                if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+                                let commentClass = event.target.classList[1];
+                                localStorage.setItem('comments_active', commentClass);
+                            });
+                        }
+
+                    </script>
+                </div>
+                <div class="toggle sidebar-toggle">
+                    <span class="toggle-line toggle-line-first"></span>
+                    <span class="toggle-line toggle-line-middle"></span>
+                    <span class="toggle-line toggle-line-last"></span>
+                </div>
+                <aside class="sidebar">
+                    <div class="sidebar-inner">
+                        <ul class="sidebar-nav motion-element">
+                            <li class="sidebar-nav-toc"> 文章目录 </li>
+                            <li class="sidebar-nav-overview"> 站点概览 </li>
+                        </ul>
+                        <!--noindex-->
+                        <div class="post-toc-wrap sidebar-panel">
+                            <div class="post-toc motion-element">
+                                <ol class="nav">
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#helm初始化"><span class="nav-number">1.</span> <span class="nav-text">helm初始化</span></a>
+                                        <ol class="nav-child">
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#helm安装Kubernetes-dashboard"><span class="nav-number">1.1.</span> <span class="nav-text">helm安装Kubernetes dashboard</span></a>
+                                                <ol class="nav-child">
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#修改端口暴露类型"><span class="nav-number">1.1.1.</span> <span class="nav-text">修改端口暴露类型</span></a></li>
+                                                </ol>
+                                            </li>
+                                        </ol>
+                                    </li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#获取token与授权访问"><span class="nav-number">2.</span> <span class="nav-text">获取token与授权访问</span></a>
+                                        <ol class="nav-child">
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#获取token"><span class="nav-number">2.1.</span> <span class="nav-text">获取token</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#授权"><span class="nav-number">2.2.</span> <span class="nav-text">授权</span></a></li>
+                                        </ol>
+                                    </li>
+                                </ol>
+                            </div>
+                        </div>
+                        <!--/noindex-->
+                        <div class="site-overview-wrap sidebar-panel">
+                            <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <img class="site-author-image" itemprop="image" alt="吴志鹏" src="/images/favicon/android-chrome-512x512.png">
+                                <p class="site-author-name" itemprop="name">吴志鹏</p>
+                                <div class="site-description" itemprop="description">Talk is free，please state clearly</div>
+                            </div>
+                            <div class="site-state-wrap motion-element">
+                                <nav class="site-state">
+                                    <div class="site-state-item site-state-posts">
+                                        <a href="/archives/">
+                                            <span class="site-state-item-count">136</span>
+                                            <span class="site-state-item-name">日志</span>
+                                        </a>
+                                    </div>
+                                    <div class="site-state-item site-state-categories">
+                                        <a href="/categories/">
+                                            <span class="site-state-item-count">158</span>
+                                            <span class="site-state-item-name">分类</span></a>
+                                    </div>
+                                    <div class="site-state-item site-state-tags">
+                                        <a href="/tags/">
+                                            <span class="site-state-item-count">89</span>
+                                            <span class="site-state-item-name">标签</span></a>
+                                    </div>
+                                </nav>
+                            </div>
+                            <div class="links-of-author motion-element">
+                                <span class="links-of-author-item">
+                                    <a href="https://github.com/Payne-Wu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Payne-Wu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="mailto:wuzhipeng1289690157@gmail.com" title="E-Mail → mailto:wuzhipeng1289690157@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="https://www.zhihu.com/people/wu-zhi-peng-72-78" title="ZhiHu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;wu-zhi-peng-72-78" rel="noopener" target="_blank"><i class="fa fa-magic fa-fw"></i>ZhiHu</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="https://weibo.com/u/6987234483" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;6987234483" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+                <div id="sidebar-dimmer"></div>
+            </div>
+        </main>
+        <footer class="footer">
+            <div class="footer-inner">
+                <div class="copyright"> &copy; <span itemprop="copyrightYear">2022</span>
+                    <span class="with-love">
+                        <i class="fa fa-heart"></i>
+                    </span>
+                    <span class="author" itemprop="copyrightHolder">PayneWu</span>
+                    <span class="post-meta-divider">|</span>
+                    <span class="post-meta-item-icon">
+                        <i class="fa fa-chart-area"></i>
+                    </span>
+                    <span title="站点总字数">255k</span>
+                    <span class="post-meta-divider">|</span>
+                    <span class="post-meta-item-icon">
+                        <i class="fa fa-coffee"></i>
+                    </span>
+                    <span title="站点阅读时长">3:51</span>
+                </div>
+                <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">湘ICP备2021019893号-1 </a>
+                </div>
+                <div style="display: none;">
+                    <script src="//s95.cnzz.com/z_stat.php?id=true&web_id=true"></script>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+    <script src="/js/utils.js"></script>
+    <script src="/.js"></script>
+    <script src="/js/schemes/pisces.js"></script>
+    <script src="/.js"></script>
+    <script src="/js/next-boot.js"></script>
+    <script src="/.js"></script>
+    <script>
+        (function ()
+        {
+            var canonicalURL, curProtocol;
+            //Get the <link> tag
+            var x = document.getElementsByTagName("link");
+            //Find the last canonical URL
+            if (x.length > 0)
+            {
+                for (i = 0; i < x.length; i++)
+                {
+                    if (x[i].rel.toLowerCase() == 'canonical' && x[i].href)
+                    {
+                        canonicalURL = x[i].href;
+                    }
+                }
+            }
+            //Get protocol
+            if (!canonicalURL)
+            {
+                curProtocol = window.location.protocol.split(':')[0];
+            }
+            else
+            {
+                curProtocol = canonicalURL.split(':')[0];
+            }
+            //Get current URL if the canonical URL does not exist
+            if (!canonicalURL) canonicalURL = window.location.href;
+            //Assign script content. Replace current URL with the canonical URL
+            ! function ()
+            {
+                var e = /([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,
+                    r = canonicalURL,
+                    t = document.referrer;
+                if (!e.test(r))
+                {
+                    var n = (String(curProtocol).toLowerCase() === 'https') ? "https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif" : "//api.share.baidu.com/s.gif";
+                    t ? (n += "?r=" + encodeURIComponent(document.referrer), r && (n += "&l=" + r)) : r && (n += "?l=" + r);
+                    var i = new Image;
+                    i.src = n
+                }
+            }(window);
+        })();
+
+    </script>
+    <script src="/js/local-search.js"></script>
+    <script src="/.js"></script>
+</body>
+
+</html>

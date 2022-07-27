@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+    <meta name="theme-color" content="#222">
+    <meta name="generator" content="Hexo 4.2.1">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16-next.png">
+    <link rel="mask-icon" href="/images/favicon/safari-pinned-tab.svg" color="#222">
+    <meta name="msapplication-config" content="/images/favicon/browserconfig.xml">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+    <link rel="stylesheet" href="/lib/pace/pace-theme-mac-osx.min.css">
+    <script src="/lib/pace/pace.min.js"></script>
+    <script id="hexo-configurations">
+        var NexT = window.NexT ||
+        {};
+        var CONFIG = {
+            "hostname": "paynewu.com",
+            "root": "/",
+            "scheme": "Gemini",
+            "version": "7.8.0",
+            "exturl": false,
+            "sidebar":
+            {
+                "position": "right",
+                "width": 240,
+                "display": "post",
+                "padding": 18,
+                "offset": 12,
+                "onmobile": false
+            },
+            "copycode":
+            {
+                "enable": true,
+                "show_result": true,
+                "style": "mac"
+            },
+            "back2top":
+            {
+                "enable": true,
+                "sidebar": false,
+                "scrollpercent": true
+            },
+            "bookmark":
+            {
+                "enable": false,
+                "color": "#222",
+                "save": "auto"
+            },
+            "fancybox": false,
+            "mediumzoom": true,
+            "lazyload": false,
+            "pangu": true,
+            "comments":
+            {
+                "style": "tabs",
+                "active": "valine",
+                "storage": true,
+                "lazyload": false,
+                "nav": null
+            },
+            "algolia":
+            {
+                "hits":
+                {
+                    "per_page": 10
+                },
+                "labels":
+                {
+                    "input_placeholder": "Search for Posts",
+                    "hits_empty": "We didn't find any results for the search: ${query}",
+                    "hits_stats": "${hits} results found in ${time} ms"
+                }
+            },
+            "localsearch":
+            {
+                "enable": true,
+                "trigger": "auto",
+                "top_n_per_article": 8,
+                "unescape": false,
+                "preload": false
+            },
+            "motion":
+            {
+                "enable": false,
+                "async": false,
+                "transition":
+                {
+                    "post_block": "bounceDownIn",
+                    "post_header": "slideDownIn",
+                    "post_body": "slideDownIn",
+                    "coll_header": "slideLeftIn",
+                    "sidebar": "slideUpIn"
+                }
+            },
+            "path": "search.xml"
+        };
+
+    </script>
+    <meta name="description" content="frida启动方式                                             123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="frida hook">
+    <meta property="og:url" content="https://paynewu.com/3591261126.html">
+    <meta property="og:site_name" content="吴志鹏｜Payne-Wu">
+    <meta property="og:description" content="frida启动方式                                             123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="article:published_time" content="2022-06-18T13:17:21.000Z">
+    <meta property="article:modified_time" content="2022-07-27T09:58:26.876Z">
+    <meta property="article:author" content="吴志鹏">
+    <meta property="article:tag" content="frida">
+    <meta name="twitter:card" content="summary">
+    <link rel="canonical" href="https://paynewu.com/3591261126.html">
+    <script id="page-configurations">
+        // https://hexo.io/docs/variables.html
+        CONFIG.page = {
+            sidebar: "",
+            isHome: false,
+            isPost: true,
+            lang: 'zh-CN'
+        };
+
+    </script>
+    <title>frida hook | 吴志鹏｜Payne-Wu</title>
+    <meta name="google-site-verification" content="p_bIcnvirkFzG2dYKuNDivKD8-STet5W7D-01woA2fc" />
+    <noscript>
+        <style>
+            .use-motion .brand,
+            .use-motion .menu-item,
+            .sidebar-inner,
+            .use-motion .post-block,
+            .use-motion .pagination,
+            .use-motion .comments,
+            .use-motion .post-header,
+            .use-motion .post-body,
+            .use-motion .collection-header
+            {
+                opacity: initial;
+            }
+
+            .use-motion .site-title,
+            .use-motion .site-subtitle
+            {
+                opacity: initial;
+                top: initial;
+            }
+
+            .use-motion .logo-line-before i
+            {
+                left: initial;
+            }
+
+            .use-motion .logo-line-after i
+            {
+                right: initial;
+            }
+
+        </style>
+    </noscript>
+    <link rel="alternate" href="/atom.xml" title="吴志鹏｜Payne-Wu" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+    <div class="container">
+        <div class="headband"></div>
+        <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+            <div class="header-inner">
+                <div class="site-brand-container">
+                    <div class="site-nav-toggle">
+                        <div class="toggle" aria-label="切换导航栏">
+                            <span class="toggle-line toggle-line-first"></span>
+                            <span class="toggle-line toggle-line-middle"></span>
+                            <span class="toggle-line toggle-line-last"></span>
+                        </div>
+                    </div>
+                    <div class="site-meta">
+                        <a href="/" class="brand" rel="start">
+                            <span class="logo-line-before"><i></i></span>
+                            <h1 class="site-title">吴志鹏｜Payne-Wu </h1>
+                            <span class="logo-line-after"><i></i></span>
+                        </a>
+                    </div>
+                    <div class="site-nav-right">
+                        <div class="toggle popup-trigger">
+                            <i class="fa fa-search fa-fw fa-lg"></i>
+                        </div>
+                    </div>
+                </div>
+                <nav class="site-nav">
+                    <ul id="menu" class="main-menu menu">
+                        <li class="menu-item menu-item-home">
+                            <a href="/" rel="section">首页</a>
+                        </li>
+                        <li class="menu-item menu-item-archives">
+                            <a href="/archives/" rel="section">文章列表</a>
+                        </li>
+                        <li class="menu-item menu-item-tags">
+                            <a href="/tags/" rel="section">Tags Cloud</a>
+                        </li>
+                        <li class="menu-item menu-item-categories">
+                            <a href="/categories/" rel="section">文章集合</a>
+                        </li>
+                        <li class="menu-item menu-item-about">
+                            <a href="/about/" rel="section">关于我啊</a>
+                        </li>
+                        <li class="menu-item menu-item-message">
+                            <a href="/message/" rel="section">留言与我</a>
+                        </li>
+                        <li class="menu-item menu-item-search">
+                            <a role="button" class="popup-trigger">搜索 </a>
+                        </li>
+                    </ul>
+                </nav>
+                <div class="search-pop-overlay">
+                    <div class="popup search-popup">
+                        <div class="search-header">
+                            <span class="search-icon">
+                                <i class="fa fa-search"></i>
+                            </span>
+                            <div class="search-input-container">
+                                <input autocomplete="off" autocapitalize="off" placeholder="搜索..." spellcheck="false" type="search" class="search-input">
+                            </div>
+                            <span class="popup-btn-close">
+                                <i class="fa fa-times-circle"></i>
+                            </span>
+                        </div>
+                        <div id="search-result">
+                            <div id="no-result">
+                                <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="back-to-top">
+            <i class="fa fa-arrow-up"></i>
+            <span>0%</span>
+        </div>
+        <div class="reading-progress-bar"></div>
+        <main class="main">
+            <div class="main-inner">
+                <div class="content-wrap">
+                    <div class="content post posts-expand">
+                        <article itemscope itemtype="http://schema.org/Article" class="post-block single" lang="zh-CN">
+                            <link itemprop="mainEntityOfPage" href="https://paynewu.com/3591261126.html">
+                            <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <meta itemprop="image" content="/images/favicon/android-chrome-512x512.png">
+                                <meta itemprop="name" content="吴志鹏">
+                                <meta itemprop="description" content="Talk is free，please state clearly">
+                            </span>
+                            <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+                                <meta itemprop="name" content="吴志鹏｜Payne-Wu">
+                            </span>
+                            <header class="post-header">
+                                <h1 class="post-title" itemprop="name headline"> frida hook </h1>
+                                <div class="post-meta">
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-user"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">作者</span>
+                                        <span><a href="/authors/Payne" class="author" itemprop="url" rel="index">Payne</a></span>
+                                    </span>
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-calendar"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">发表于</span>
+                                        <time title="创建时间：2022-06-18 21:17:21" itemprop="dateCreated datePublished" datetime="2022-06-18T21:17:21+08:00">2022-06-18</time>
+                                    </span>
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-folder"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">分类于</span>
+                                        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                                            <a href="/categories/frida/" itemprop="url" rel="index"><span itemprop="name">frida</span></a>
+                                        </span> ， <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                                            <a href="/categories/frida/hook/" itemprop="url" rel="index"><span itemprop="name">hook</span></a>
+                                        </span>
+                                    </span>
+                                    <br>
+                                    <span class="post-meta-item" title="本文字数">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-file-word"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">本文字数：</span>
+                                        <span>559</span>
+                                    </span>
+                                    <span class="post-meta-item" title="阅读时长">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-clock"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                                        <span>1 分钟</span>
+                                    </span>
+                                </div>
+                            </header>
+                            <div class="post-body" itemprop="articleBody">
+                                <h2 id="frida启动方式"><a href="#frida启动方式" class="headerlink" title="frida启动方式"></a>frida启动方式</h2>
+                                <figure class="highlight bash">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="comment"># frida -h</span></span><br><span class="line">usage: frida [options] target</span><br><span class="line"></span><br><span class="line">positional arguments:</span><br><span class="line">  args                  extra arguments and/or target</span><br><span class="line"></span><br><span class="line">optional arguments:</span><br><span class="line">  -h, --<span class="built_in">help</span>            show this <span class="built_in">help</span> message and <span class="built_in">exit</span></span><br><span class="line">  -D ID, --device ID    connect to device with the given ID</span><br><span class="line">  -U, --usb             connect to USB device</span><br><span class="line">  -R, --remote          connect to remote frida-server</span><br><span class="line">  -H HOST, --host HOST  connect to remote frida-server on HOST</span><br><span class="line">  --certificate CERTIFICATE</span><br><span class="line">                        speak TLS with HOST, expecting CERTIFICATE</span><br><span class="line">  --origin ORIGIN       connect to remote server with “Origin” header <span class="built_in">set</span> to ORIGIN</span><br><span class="line">  --token TOKEN         authenticate with HOST using TOKEN</span><br><span class="line">  --keepalive-interval INTERVAL</span><br><span class="line">                        <span class="built_in">set</span> keepalive interval <span class="keyword">in</span> seconds, or 0 to <span class="built_in">disable</span> (defaults to -1 to auto-select based on transport)</span><br><span class="line">  --p2p                 establish a peer-to-peer connection with target</span><br><span class="line">  --stun-server ADDRESS</span><br><span class="line">                        <span class="built_in">set</span> STUN server ADDRESS to use with --p2p</span><br><span class="line">  --relay address,username,password,turn-&#123;udp,tcp,tls&#125;</span><br><span class="line">                        add relay to use with --p2p</span><br><span class="line">  -f TARGET, --file TARGET</span><br><span class="line">                        spawn FILE</span><br><span class="line">  -F, --attach-frontmost</span><br><span class="line">                        attach to frontmost application</span><br><span class="line">  -n NAME, --attach-name NAME</span><br><span class="line">                        attach to NAME</span><br><span class="line">  -p PID, --attach-pid PID</span><br><span class="line">                        attach to PID</span><br><span class="line">  -W PATTERN, --await PATTERN</span><br><span class="line">                        await spawn matching PATTERN</span><br><span class="line">  --stdio &#123;inherit,pipe&#125;</span><br><span class="line">                        stdio behavior when spawning (defaults to “inherit”)</span><br><span class="line">  --aux option          <span class="built_in">set</span> aux option when spawning, such as “uid=(int)42” (supported types are: string, bool, int)</span><br><span class="line">  --realm &#123;native,emulated&#125;</span><br><span class="line">                        realm to attach <span class="keyword">in</span></span><br><span class="line">  --runtime &#123;qjs,v8&#125;    script runtime to use</span><br><span class="line">  --debug               <span class="built_in">enable</span> the Node.js compatible script debugger</span><br><span class="line">  --squelch-crash       <span class="keyword">if</span> enabled, will not dump crash report to console</span><br><span class="line">  -O FILE, --options-file FILE</span><br><span class="line">                        text file containing additional <span class="built_in">command</span> line options</span><br><span class="line">  --version             show program<span class="string">'s version number and exit</span></span><br><span class="line"><span class="string">  -l SCRIPT, --load SCRIPT</span></span><br><span class="line"><span class="string">                        load SCRIPT</span></span><br><span class="line"><span class="string">  -P PARAMETERS_JSON, --parameters PARAMETERS_JSON</span></span><br><span class="line"><span class="string">                        parameters as JSON, same as Gadget</span></span><br><span class="line"><span class="string">  -C USER_CMODULE, --cmodule USER_CMODULE</span></span><br><span class="line"><span class="string">                        load CMODULE</span></span><br><span class="line"><span class="string">  --toolchain &#123;any,internal,external&#125;</span></span><br><span class="line"><span class="string">                        CModule toolchain to use when compiling from source code</span></span><br><span class="line"><span class="string">  -c CODESHARE_URI, --codeshare CODESHARE_URI</span></span><br><span class="line"><span class="string">                        load CODESHARE_URI</span></span><br><span class="line"><span class="string">  -e CODE, --eval CODE  evaluate CODE</span></span><br><span class="line"><span class="string">  -q                    quiet mode (no prompt) and quit after -l and -e</span></span><br><span class="line"><span class="string">  -t TIMEOUT, --timeout TIMEOUT</span></span><br><span class="line"><span class="string">                        seconds to wait before terminating in quiet mode</span></span><br><span class="line"><span class="string">  --no-pause            automatically start main thread after startup</span></span><br><span class="line"><span class="string">  -o LOGFILE, --output LOGFILE</span></span><br><span class="line"><span class="string">                        output to log file</span></span><br><span class="line"><span class="string">  --eternalize          eternalize the script before exit</span></span><br><span class="line"><span class="string">  --exit-on-error       exit with code 1 after encountering any exception in the SCRIPT</span></span><br><span class="line"><span class="string">  --auto-perform        wrap entered code with Java.perform</span></span><br><span class="line"><span class="string">  --auto-reload         Enable auto reload of provided scripts and c module (on by default, will be required in the future)</span></span><br><span class="line"><span class="string">  --no-auto-reload      Disable auto reload of provided scripts and c module</span></span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h2 id="Injection"><a href="#Injection" class="headerlink" title="Injection"></a>Injection</h2>
+                                <blockquote>
+                                    <p>attach hook: 这种模式建立在app已经启动的情况下，frida利用ptrace的原理注入app进而完成Hook<br>spawn hook： 将app启动权限交与frida 来控制。使用spawn实现hook时会由frida将app重启在进行hook<br>注意：由于attach hook 基于ptrace原理进行完成，因此无法在IDA正在调试的目标app以attach注入进程中，当然若先用frida attach注入<br>在使用IDA进行调试则正常</p>
+                                </blockquote>
+                                <h3 id="Shell"><a href="#Shell" class="headerlink" title="Shell"></a>Shell</h3>
+                                <h4 id="attach"><a href="#attach" class="headerlink" title="attach"></a>attach</h4>
+                                <figure class="highlight bash">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">frida -Ul script_hook.js [-n] app_name</span><br><span class="line">frida -Ul script_hook.js -p pid</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h4 id="spawn"><a href="#spawn" class="headerlink" title="spawn"></a>spawn</h4>
+                                <figure class="highlight bash">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">frida -Ul script_hook.js -f Identifier(package name) --no-pause</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h3 id="Python-script"><a href="#Python-script" class="headerlink" title="Python script"></a>Python script</h3>
+                                <figure class="highlight python">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> frida</span><br><span class="line"><span class="keyword">from</span> loguru <span class="keyword">import</span> logger</span><br><span class="line"><span class="keyword">from</span> pptrint <span class="keyword">import</span> pprint</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">message_callback</span><span class="params">(message, data)</span>:</span></span><br><span class="line">    logger.info(<span class="string">f"[*] <span class="subst">&#123;message&#125;</span>"</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">device = frida.get_use_device(<span class="number">-1</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># attach</span></span><br><span class="line">process = device.attach(<span class="string">'className'</span>)</span><br><span class="line">script = process.create_script(<span class="string">'hook_script'</span>)</span><br><span class="line">script.on(<span class="string">'message'</span>, message_callback)</span><br><span class="line">script.load()</span><br><span class="line">sys.stdin.read()</span><br><span class="line"></span><br><span class="line"><span class="comment"># spawn</span></span><br><span class="line">device = frida.get_use_device(<span class="number">-1</span>)</span><br><span class="line">pid = devices.spawn([<span class="string">'packageName'</span>])</span><br><span class="line">process = device.attach(pid)</span><br><span class="line">script = process.create_script(<span class="string">'hook_script'</span>)</span><br><span class="line">script.on(<span class="string">'message'</span>, message_callback)</span><br><span class="line">script.load()</span><br><span class="line">sys.stdin.read()</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h2 id="frida-api"><a href="#frida-api" class="headerlink" title="frida api"></a>frida api</h2>
+                                <p>JavaScript-api : <a href="https://frida.re/docs/javascript-api" target="_blank" rel="noopener">https://frida.re/docs/javascript-api</a></p>
+                                <p>JavaScript-api-java: <a href="https://frida.re/docs/javascript-api/#java" target="_blank" rel="noopener">https://frida.re/docs/javascript-api/#java</a></p>
+                                <p>JavaScript-api-module: <a href="https://frida.re/docs/javascript-api/#module" target="_blank" rel="noopener">https://frida.re/docs/javascript-api/#module</a></p>
+                                <h2 id="Hook"><a href="#Hook" class="headerlink" title="Hook"></a>Hook</h2>
+                                <figure class="highlight js">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">Java.perfrom(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'script successfully loaded, start hook...'</span>);</span><br><span class="line">    <span class="comment">// hook script</span></span><br><span class="line">&#125;);</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h3 id="Hook-类方法"><a href="#Hook-类方法" class="headerlink" title="Hook 类方法"></a>Hook 类方法</h3>
+                                <figure class="highlight js">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">Java.perfrom(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'script successfully loaded, start hook...'</span>);</span><br><span class="line">    <span class="comment">// hook class script</span></span><br><span class="line">    <span class="keyword">let</span> class_name = Java.use(<span class="string">'com.xxx.xxx.class_name'</span>);</span><br><span class="line">    class_name.method.implementation = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="comment">// do something</span></span><br><span class="line">        <span class="comment">// this.xx</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <blockquote>
+                                    <p>this.成员变量名.value</p>
+                                </blockquote>
+                                <h3 id="Hook-内部-匿名-类方法"><a href="#Hook-内部-匿名-类方法" class="headerlink" title="Hook 内部(匿名)类方法"></a>Hook 内部(匿名)类方法</h3>
+                                <figure class="highlight js">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">Java.perfrom(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'script successfully loaded, start hook...'</span>);</span><br><span class="line">    <span class="comment">// hook class script</span></span><br><span class="line">    <span class="comment">// 类路径$内部类名 在smail找</span></span><br><span class="line">    <span class="keyword">let</span> class_name = Java.use(<span class="string">'com.xxx.xxx.class_name$xx'</span>);</span><br><span class="line">    class_name.method.implementation = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="comment">// do something</span></span><br><span class="line">        <span class="comment">// this.xx</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <blockquote>
+                                    <p>从匿名类/内部类访问外部类的属性写法： this.this$0.value.外部类的属性名.value</p>
+                                </blockquote>
+                                <h2 id="Hook-重载方法"><a href="#Hook-重载方法" class="headerlink" title="Hook 重载方法"></a>Hook 重载方法</h2>
+                                <figure class="highlight js">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">Java.perfrom(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'script successfully loaded, start hook...'</span>);</span><br><span class="line">    <span class="comment">// hook class script</span></span><br><span class="line">    <span class="comment">// 类路径$内部类名 在smail找</span></span><br><span class="line">    <span class="keyword">let</span> class_name = Java.use(<span class="string">'com.xxx.xxx.class_name'</span>);</span><br><span class="line">    class_name.method.overload(参数<span class="number">1</span>, 参数<span class="number">2</span></span><br><span class="line">...).</span><br><span class="line">    implementation = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="comment">// do something</span></span><br><span class="line">        <span class="comment">// this.xx</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// overload(参数1，参数2...) 可以根据报错来确定</span></span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h2 id="Hook-构造方法"><a href="#Hook-构造方法" class="headerlink" title="Hook 构造方法"></a>Hook 构造方法</h2>
+                                <figure class="highlight js">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">Java.perfrom(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'script successfully loaded, start hook...'</span>);</span><br><span class="line">    <span class="comment">// hook class script</span></span><br><span class="line">    <span class="comment">// 类路径$内部类名 在smail找</span></span><br><span class="line">    <span class="keyword">let</span> class_name = Java.use(<span class="string">'com.xxx.xxx.class_name'</span>);</span><br><span class="line">    class_name.$init().implementation = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="comment">// do something</span></span><br><span class="line">        <span class="comment">// this.xx</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h2 id="Hook-实例"><a href="#Hook-实例" class="headerlink" title="Hook 实例"></a>Hook 实例</h2>
+                                <figure class="highlight js">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">Java.perfrom(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'script successfully loaded, start hook...'</span>);</span><br><span class="line">    <span class="keyword">let</span> variable = Java.use(<span class="string">'com.xxx.xxx.class_name'</span>).$<span class="keyword">new</span>(参数);</span><br><span class="line">&#125;);</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                            </div>
+                            <div class="popular-posts-header">相关文章</div>
+                            <ul class="popular-posts">
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/4038451747.html" rel="bookmark">frida-rpc</a></div>
+                                </li>
+                            </ul>
+                            <footer class="post-footer">
+                                <div class="post-tags">
+                                    <a href="/tags/frida/" rel="tag"><i class="fa fa-tag"></i> frida</a>
+                                </div>
+                                <div class="post-nav">
+                                    <div class="post-nav-item">
+                                        <a href="/66759343.html" rel="prev" title="一些工作上的思考">
+                                            <i class="fa fa-chevron-left"></i> 一些工作上的思考 </a>
+                                    </div>
+                                    <div class="post-nav-item">
+                                        <a href="/2947499305.html" rel="next" title="smali语法"> smali语法 <i class="fa fa-chevron-right"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </footer>
+                        </article>
+                    </div>
+                    <script>
+                        window.addEventListener('tabs:register', () =>
+                        {
+                            let
+                            {
+                                activeClass
+                            } = CONFIG.comments;
+                            if (CONFIG.comments.storage)
+                            {
+                                activeClass = localStorage.getItem('comments_active') || activeClass;
+                            }
+                            if (activeClass)
+                            {
+                                let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+                                if (activeTab)
+                                {
+                                    activeTab.click();
+                                }
+                            }
+                        });
+                        if (CONFIG.comments.storage)
+                        {
+                            window.addEventListener('tabs:click', event =>
+                            {
+                                if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+                                let commentClass = event.target.classList[1];
+                                localStorage.setItem('comments_active', commentClass);
+                            });
+                        }
+
+                    </script>
+                </div>
+                <div class="toggle sidebar-toggle">
+                    <span class="toggle-line toggle-line-first"></span>
+                    <span class="toggle-line toggle-line-middle"></span>
+                    <span class="toggle-line toggle-line-last"></span>
+                </div>
+                <aside class="sidebar">
+                    <div class="sidebar-inner">
+                        <ul class="sidebar-nav motion-element">
+                            <li class="sidebar-nav-toc"> 文章目录 </li>
+                            <li class="sidebar-nav-overview"> 站点概览 </li>
+                        </ul>
+                        <!--noindex-->
+                        <div class="post-toc-wrap sidebar-panel">
+                            <div class="post-toc motion-element">
+                                <ol class="nav">
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#frida启动方式"><span class="nav-number">1.</span> <span class="nav-text">frida启动方式</span></a></li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#Injection"><span class="nav-number">2.</span> <span class="nav-text">Injection</span></a>
+                                        <ol class="nav-child">
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#Shell"><span class="nav-number">2.1.</span> <span class="nav-text">Shell</span></a>
+                                                <ol class="nav-child">
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#attach"><span class="nav-number">2.1.1.</span> <span class="nav-text">attach</span></a></li>
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#spawn"><span class="nav-number">2.1.2.</span> <span class="nav-text">spawn</span></a></li>
+                                                </ol>
+                                            </li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#Python-script"><span class="nav-number">2.2.</span> <span class="nav-text">Python script</span></a></li>
+                                        </ol>
+                                    </li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#frida-api"><span class="nav-number">3.</span> <span class="nav-text">frida api</span></a></li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#Hook"><span class="nav-number">4.</span> <span class="nav-text">Hook</span></a>
+                                        <ol class="nav-child">
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#Hook-类方法"><span class="nav-number">4.1.</span> <span class="nav-text">Hook 类方法</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#Hook-内部-匿名-类方法"><span class="nav-number">4.2.</span> <span class="nav-text">Hook 内部(匿名)类方法</span></a></li>
+                                        </ol>
+                                    </li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#Hook-重载方法"><span class="nav-number">5.</span> <span class="nav-text">Hook 重载方法</span></a></li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#Hook-构造方法"><span class="nav-number">6.</span> <span class="nav-text">Hook 构造方法</span></a></li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#Hook-实例"><span class="nav-number">7.</span> <span class="nav-text">Hook 实例</span></a></li>
+                                </ol>
+                            </div>
+                        </div>
+                        <!--/noindex-->
+                        <div class="site-overview-wrap sidebar-panel">
+                            <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <img class="site-author-image" itemprop="image" alt="吴志鹏" src="/images/favicon/android-chrome-512x512.png">
+                                <p class="site-author-name" itemprop="name">吴志鹏</p>
+                                <div class="site-description" itemprop="description">Talk is free，please state clearly</div>
+                            </div>
+                            <div class="site-state-wrap motion-element">
+                                <nav class="site-state">
+                                    <div class="site-state-item site-state-posts">
+                                        <a href="/archives/">
+                                            <span class="site-state-item-count">136</span>
+                                            <span class="site-state-item-name">日志</span>
+                                        </a>
+                                    </div>
+                                    <div class="site-state-item site-state-categories">
+                                        <a href="/categories/">
+                                            <span class="site-state-item-count">158</span>
+                                            <span class="site-state-item-name">分类</span></a>
+                                    </div>
+                                    <div class="site-state-item site-state-tags">
+                                        <a href="/tags/">
+                                            <span class="site-state-item-count">89</span>
+                                            <span class="site-state-item-name">标签</span></a>
+                                    </div>
+                                </nav>
+                            </div>
+                            <div class="links-of-author motion-element">
+                                <span class="links-of-author-item">
+                                    <a href="https://github.com/Payne-Wu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Payne-Wu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="mailto:wuzhipeng1289690157@gmail.com" title="E-Mail → mailto:wuzhipeng1289690157@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="https://www.zhihu.com/people/wu-zhi-peng-72-78" title="ZhiHu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;wu-zhi-peng-72-78" rel="noopener" target="_blank"><i class="fa fa-magic fa-fw"></i>ZhiHu</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="https://weibo.com/u/6987234483" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;6987234483" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+                <div id="sidebar-dimmer"></div>
+            </div>
+        </main>
+        <footer class="footer">
+            <div class="footer-inner">
+                <div class="copyright"> &copy; <span itemprop="copyrightYear">2022</span>
+                    <span class="with-love">
+                        <i class="fa fa-heart"></i>
+                    </span>
+                    <span class="author" itemprop="copyrightHolder">PayneWu</span>
+                    <span class="post-meta-divider">|</span>
+                    <span class="post-meta-item-icon">
+                        <i class="fa fa-chart-area"></i>
+                    </span>
+                    <span title="站点总字数">255k</span>
+                    <span class="post-meta-divider">|</span>
+                    <span class="post-meta-item-icon">
+                        <i class="fa fa-coffee"></i>
+                    </span>
+                    <span title="站点阅读时长">3:51</span>
+                </div>
+                <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">湘ICP备2021019893号-1 </a>
+                </div>
+                <div style="display: none;">
+                    <script src="//s95.cnzz.com/z_stat.php?id=true&web_id=true"></script>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+    <script src="/js/utils.js"></script>
+    <script src="/.js"></script>
+    <script src="/js/schemes/pisces.js"></script>
+    <script src="/.js"></script>
+    <script src="/js/next-boot.js"></script>
+    <script src="/.js"></script>
+    <script>
+        (function ()
+        {
+            var canonicalURL, curProtocol;
+            //Get the <link> tag
+            var x = document.getElementsByTagName("link");
+            //Find the last canonical URL
+            if (x.length > 0)
+            {
+                for (i = 0; i < x.length; i++)
+                {
+                    if (x[i].rel.toLowerCase() == 'canonical' && x[i].href)
+                    {
+                        canonicalURL = x[i].href;
+                    }
+                }
+            }
+            //Get protocol
+            if (!canonicalURL)
+            {
+                curProtocol = window.location.protocol.split(':')[0];
+            }
+            else
+            {
+                curProtocol = canonicalURL.split(':')[0];
+            }
+            //Get current URL if the canonical URL does not exist
+            if (!canonicalURL) canonicalURL = window.location.href;
+            //Assign script content. Replace current URL with the canonical URL
+            ! function ()
+            {
+                var e = /([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,
+                    r = canonicalURL,
+                    t = document.referrer;
+                if (!e.test(r))
+                {
+                    var n = (String(curProtocol).toLowerCase() === 'https') ? "https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif" : "//api.share.baidu.com/s.gif";
+                    t ? (n += "?r=" + encodeURIComponent(document.referrer), r && (n += "&l=" + r)) : r && (n += "?l=" + r);
+                    var i = new Image;
+                    i.src = n
+                }
+            }(window);
+        })();
+
+    </script>
+    <script src="/js/local-search.js"></script>
+    <script src="/.js"></script>
+</body>
+
+</html>

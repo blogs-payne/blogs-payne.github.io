@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+    <meta name="theme-color" content="#222">
+    <meta name="generator" content="Hexo 4.2.1">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16-next.png">
+    <link rel="mask-icon" href="/images/favicon/safari-pinned-tab.svg" color="#222">
+    <meta name="msapplication-config" content="/images/favicon/browserconfig.xml">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+    <link rel="stylesheet" href="/lib/pace/pace-theme-mac-osx.min.css">
+    <script src="/lib/pace/pace.min.js"></script>
+    <script id="hexo-configurations">
+        var NexT = window.NexT ||
+        {};
+        var CONFIG = {
+            "hostname": "paynewu.com",
+            "root": "/",
+            "scheme": "Gemini",
+            "version": "7.8.0",
+            "exturl": false,
+            "sidebar":
+            {
+                "position": "right",
+                "width": 240,
+                "display": "post",
+                "padding": 18,
+                "offset": 12,
+                "onmobile": false
+            },
+            "copycode":
+            {
+                "enable": true,
+                "show_result": true,
+                "style": "mac"
+            },
+            "back2top":
+            {
+                "enable": true,
+                "sidebar": false,
+                "scrollpercent": true
+            },
+            "bookmark":
+            {
+                "enable": false,
+                "color": "#222",
+                "save": "auto"
+            },
+            "fancybox": false,
+            "mediumzoom": true,
+            "lazyload": false,
+            "pangu": true,
+            "comments":
+            {
+                "style": "tabs",
+                "active": "valine",
+                "storage": true,
+                "lazyload": false,
+                "nav": null
+            },
+            "algolia":
+            {
+                "hits":
+                {
+                    "per_page": 10
+                },
+                "labels":
+                {
+                    "input_placeholder": "Search for Posts",
+                    "hits_empty": "We didn't find any results for the search: ${query}",
+                    "hits_stats": "${hits} results found in ${time} ms"
+                }
+            },
+            "localsearch":
+            {
+                "enable": true,
+                "trigger": "auto",
+                "top_n_per_article": 8,
+                "unescape": false,
+                "preload": false
+            },
+            "motion":
+            {
+                "enable": false,
+                "async": false,
+                "transition":
+                {
+                    "post_block": "bounceDownIn",
+                    "post_header": "slideDownIn",
+                    "post_body": "slideDownIn",
+                    "coll_header": "slideLeftIn",
+                    "sidebar": "slideUpIn"
+                }
+            },
+            "path": "search.xml"
+        };
+
+    </script>
+    <meta name="description" content="什么是方法 ​ 方法一般是面向对象编程(OOP)的一个特性，在cpp中方法对应一个类对象的成员函数，是关联到具体对象上的虚表中的。但是Go语言的方法却是关联到类型的，这样可以在编译阶段完成方法的静态绑定。 ​ 一个面向对象的程序会用方法来表达其属性对应的操作，这样使用这个对象的用户就不需要直接去操作对象，而是借助方法来做这些事情。面向对象编程(OOP)进入主流开发领域一般认为是从cpp开始的，cp">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="go语言中的方法">
+    <meta property="og:url" content="https://paynewu.com/3417717672.html">
+    <meta property="og:site_name" content="吴志鹏｜Payne-Wu">
+    <meta property="og:description" content="什么是方法 ​ 方法一般是面向对象编程(OOP)的一个特性，在cpp中方法对应一个类对象的成员函数，是关联到具体对象上的虚表中的。但是Go语言的方法却是关联到类型的，这样可以在编译阶段完成方法的静态绑定。 ​ 一个面向对象的程序会用方法来表达其属性对应的操作，这样使用这个对象的用户就不需要直接去操作对象，而是借助方法来做这些事情。面向对象编程(OOP)进入主流开发领域一般认为是从cpp开始的，cp">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="article:published_time" content="2022-02-15T11:57:36.000Z">
+    <meta property="article:modified_time" content="2022-07-27T09:58:26.880Z">
+    <meta property="article:author" content="吴志鹏">
+    <meta property="article:tag" content="Go">
+    <meta name="twitter:card" content="summary">
+    <link rel="canonical" href="https://paynewu.com/3417717672.html">
+    <script id="page-configurations">
+        // https://hexo.io/docs/variables.html
+        CONFIG.page = {
+            sidebar: "",
+            isHome: false,
+            isPost: true,
+            lang: 'zh-CN'
+        };
+
+    </script>
+    <title>go语言中的方法 | 吴志鹏｜Payne-Wu</title>
+    <meta name="google-site-verification" content="p_bIcnvirkFzG2dYKuNDivKD8-STet5W7D-01woA2fc" />
+    <noscript>
+        <style>
+            .use-motion .brand,
+            .use-motion .menu-item,
+            .sidebar-inner,
+            .use-motion .post-block,
+            .use-motion .pagination,
+            .use-motion .comments,
+            .use-motion .post-header,
+            .use-motion .post-body,
+            .use-motion .collection-header
+            {
+                opacity: initial;
+            }
+
+            .use-motion .site-title,
+            .use-motion .site-subtitle
+            {
+                opacity: initial;
+                top: initial;
+            }
+
+            .use-motion .logo-line-before i
+            {
+                left: initial;
+            }
+
+            .use-motion .logo-line-after i
+            {
+                right: initial;
+            }
+
+        </style>
+    </noscript>
+    <link rel="alternate" href="/atom.xml" title="吴志鹏｜Payne-Wu" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+    <div class="container">
+        <div class="headband"></div>
+        <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+            <div class="header-inner">
+                <div class="site-brand-container">
+                    <div class="site-nav-toggle">
+                        <div class="toggle" aria-label="切换导航栏">
+                            <span class="toggle-line toggle-line-first"></span>
+                            <span class="toggle-line toggle-line-middle"></span>
+                            <span class="toggle-line toggle-line-last"></span>
+                        </div>
+                    </div>
+                    <div class="site-meta">
+                        <a href="/" class="brand" rel="start">
+                            <span class="logo-line-before"><i></i></span>
+                            <h1 class="site-title">吴志鹏｜Payne-Wu </h1>
+                            <span class="logo-line-after"><i></i></span>
+                        </a>
+                    </div>
+                    <div class="site-nav-right">
+                        <div class="toggle popup-trigger">
+                            <i class="fa fa-search fa-fw fa-lg"></i>
+                        </div>
+                    </div>
+                </div>
+                <nav class="site-nav">
+                    <ul id="menu" class="main-menu menu">
+                        <li class="menu-item menu-item-home">
+                            <a href="/" rel="section">首页</a>
+                        </li>
+                        <li class="menu-item menu-item-archives">
+                            <a href="/archives/" rel="section">文章列表</a>
+                        </li>
+                        <li class="menu-item menu-item-tags">
+                            <a href="/tags/" rel="section">Tags Cloud</a>
+                        </li>
+                        <li class="menu-item menu-item-categories">
+                            <a href="/categories/" rel="section">文章集合</a>
+                        </li>
+                        <li class="menu-item menu-item-about">
+                            <a href="/about/" rel="section">关于我啊</a>
+                        </li>
+                        <li class="menu-item menu-item-message">
+                            <a href="/message/" rel="section">留言与我</a>
+                        </li>
+                        <li class="menu-item menu-item-search">
+                            <a role="button" class="popup-trigger">搜索 </a>
+                        </li>
+                    </ul>
+                </nav>
+                <div class="search-pop-overlay">
+                    <div class="popup search-popup">
+                        <div class="search-header">
+                            <span class="search-icon">
+                                <i class="fa fa-search"></i>
+                            </span>
+                            <div class="search-input-container">
+                                <input autocomplete="off" autocapitalize="off" placeholder="搜索..." spellcheck="false" type="search" class="search-input">
+                            </div>
+                            <span class="popup-btn-close">
+                                <i class="fa fa-times-circle"></i>
+                            </span>
+                        </div>
+                        <div id="search-result">
+                            <div id="no-result">
+                                <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="back-to-top">
+            <i class="fa fa-arrow-up"></i>
+            <span>0%</span>
+        </div>
+        <div class="reading-progress-bar"></div>
+        <main class="main">
+            <div class="main-inner">
+                <div class="content-wrap">
+                    <div class="content post posts-expand">
+                        <article itemscope itemtype="http://schema.org/Article" class="post-block single" lang="zh-CN">
+                            <link itemprop="mainEntityOfPage" href="https://paynewu.com/3417717672.html">
+                            <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <meta itemprop="image" content="/images/favicon/android-chrome-512x512.png">
+                                <meta itemprop="name" content="吴志鹏">
+                                <meta itemprop="description" content="Talk is free，please state clearly">
+                            </span>
+                            <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+                                <meta itemprop="name" content="吴志鹏｜Payne-Wu">
+                            </span>
+                            <header class="post-header">
+                                <h1 class="post-title" itemprop="name headline"> go语言中的方法 </h1>
+                                <div class="post-meta">
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-user"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">作者</span>
+                                        <span><a href="/authors/Payne" class="author" itemprop="url" rel="index">Payne</a></span>
+                                    </span>
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-calendar"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">发表于</span>
+                                        <time title="创建时间：2022-02-15 19:57:36" itemprop="dateCreated datePublished" datetime="2022-02-15T19:57:36+08:00">2022-02-15</time>
+                                    </span>
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-folder"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">分类于</span>
+                                        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                                            <a href="/categories/Go/" itemprop="url" rel="index"><span itemprop="name">Go</span></a>
+                                        </span> ， <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                                            <a href="/categories/Go/go/" itemprop="url" rel="index"><span itemprop="name">go</span></a>
+                                        </span> ， <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                                            <a href="/categories/Go/go/golang/" itemprop="url" rel="index"><span itemprop="name">golang</span></a>
+                                        </span>
+                                    </span>
+                                    <br>
+                                    <span class="post-meta-item" title="本文字数">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-file-word"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">本文字数：</span>
+                                        <span>1.5k</span>
+                                    </span>
+                                    <span class="post-meta-item" title="阅读时长">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-clock"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                                        <span>1 分钟</span>
+                                    </span>
+                                </div>
+                            </header>
+                            <div class="post-body" itemprop="articleBody">
+                                <h2 id="什么是方法"><a href="#什么是方法" class="headerlink" title="什么是方法"></a>什么是方法</h2>
+                                <p>​ 方法一般是面向对象编程(OOP)的一个特性，在cpp中方法对应一个类对象的成员函数，是关联到具体对象上的虚表中的。但是Go语言的方法却是<strong>关联到类型</strong>的，这样可以在编译阶段完成方法的静态绑定。</p>
+                                <p>​ 一个面向对象的程序会用方法来表达其属性对应的操作，这样使用这个对象的用户就不需要直接去操作对象，而是借助方法来做这些事情。面向对象编程(OOP)<br>进入主流开发领域一般认为是从cpp开始的，cpp就是在兼容C语言的基础之上支持了class等面向对象的特性。然后Java编程则号称是纯粹的面向对象语言，因为Java中函数是不能独立存在的，每个函数都必然是属于某个类的。</p>
+                                <p>面向对象编程更多的只是一种思想，很多号称支持面向对象编程的语言只是将经常用到的特性内置到语言中了而已。</p>
+                                <h2 id="方法的声明"><a href="#方法的声明" class="headerlink" title="方法的声明"></a>方法的声明</h2>
+                                <p>Go语言中的<code>方法（Method）</code>是一种作用于特定类型变量的函数。这种特定类型变量叫做<code>接收者（Receiver）</code>，其中方法接收器（receiver）参数、函数 / 方法参数，以及返回值变量对应的作用域范围，都是函数 /<br>方法体对应的显式代码块。</p>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(接收者变量 接收者类型(值类型或指针类型)</span>) 方法名<span class="params">(参数列表)</span> <span class="params">(返回参数)</span></span> &#123;</span><br><span class="line">    方法体</span><br><span class="line">&#125;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <ul>
+                                    <li>接收者变量：接收者中的参数变量名在命名时，官方建议使用接收者类型名称首字母的小写，而非<code>self</code>、<code>this</code>之类的命名。例如，<code>Person</code>类型的接收者变量应该命名为 <code>p</code>，<code>Connector</code>类型的接收者变量应该命名为<code>c</code><br>等。</li>
+                                    <li>接收者类型：接收者类型和参数类似，可以是指针类型和非指针类型。</li>
+                                    <li>方法名、参数列表、返回参数：具体格式与函数定义相同。</li>
+                                </ul>
+                                <p>一个简单的例子</p>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> people <span class="keyword">struct</span> &#123;</span><br><span class="line">	name             <span class="keyword">string</span></span><br><span class="line">	age              <span class="keyword">uint16</span></span><br><span class="line">	height           <span class="keyword">float32</span></span><br><span class="line">	weight           <span class="keyword">float32</span></span><br><span class="line">	hometown         <span class="keyword">string</span></span><br><span class="line">	currentResidence <span class="keyword">string</span></span><br><span class="line">	lifeMotto        <span class="keyword">string</span></span><br><span class="line">	Hobby            <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">string</span></span><br><span class="line">	Job              <span class="keyword">string</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 构造函数</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">newPeople</span><span class="params">(name <span class="keyword">string</span>, age <span class="keyword">uint16</span>, height <span class="keyword">float32</span>, weight <span class="keyword">float32</span>, hometown <span class="keyword">string</span>, currentResidence <span class="keyword">string</span>, lifeMotto <span class="keyword">string</span>, hobby <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">string</span>, job <span class="keyword">string</span>)</span> *<span class="title">people</span></span> &#123;</span><br><span class="line">	<span class="keyword">return</span> &amp;people&#123;</span><br><span class="line">		name:             name,</span><br><span class="line">		age:              age,</span><br><span class="line">		height:           height,</span><br><span class="line">		weight:           weight,</span><br><span class="line">		hometown:         hometown,</span><br><span class="line">		currentResidence: currentResidence,</span><br><span class="line">		lifeMotto:        lifeMotto,</span><br><span class="line">		Hobby:            hobby,</span><br><span class="line">		Job:              job,</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	people := newPeople(</span><br><span class="line">		<span class="string">`Payne`</span>,</span><br><span class="line">		<span class="number">23</span>,</span><br><span class="line">		<span class="number">1.767</span>,</span><br><span class="line">		<span class="number">75</span>,</span><br><span class="line">		<span class="string">`HuNan`</span>,</span><br><span class="line">		<span class="string">`ShangHai`</span>,</span><br><span class="line">		<span class="string">`stay hungry,stay foolish`</span>,</span><br><span class="line">		<span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">string</span>&#123;</span><br><span class="line">			<span class="string">`first`</span>: <span class="string">`reading`</span>,</span><br><span class="line">		&#125;,</span><br><span class="line">		<span class="string">`data engineer`</span>,</span><br><span class="line">	)</span><br><span class="line">	fmt.Println(people)</span><br><span class="line">&#125;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h3 id="接收者"><a href="#接收者" class="headerlink" title="接收者"></a>接收者</h3>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="comment">//方法(值类型接受者)</span></span><br><span class="line"><span class="comment">//	当方法作用于值类型接收者时，Go语言会在代码运行时将接收者的值复制一份。</span></span><br><span class="line"><span class="comment">// 	在值类型接收者的方法中可以获取接收者的成员值，但修改操作只是针对副本，无法修改接收者变量本身。</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(p people)</span> <span class="title">introduce</span><span class="params">()</span></span>  &#123;</span><br><span class="line">	fmt.Println(p)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 方法(指针类型接受者)</span></span><br><span class="line"><span class="comment">// 	指针类型的接收者由一个结构体的指针组成，由于指针的特性，</span></span><br><span class="line"><span class="comment">// 	调用方法时修改接收者指针的任意成员变量，在方法结束后，修改都是有效的。</span></span><br><span class="line"><span class="comment">// 	这种方式就十分接近于其他语言中面向对象中的this或者self。</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(p *people)</span> <span class="title">introduceMe</span><span class="params">()</span></span>  &#123;</span><br><span class="line">	fmt.Println(p)</span><br><span class="line">&#125;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h3 id="什么时候应该使用指针类型接收者"><a href="#什么时候应该使用指针类型接收者" class="headerlink" title="什么时候应该使用指针类型接收者"></a>什么时候应该使用指针类型接收者</h3>
+                                <ol>
+                                    <li>需要修改接收者中的值</li>
+                                    <li>接收者是拷贝代价比较大的大对象</li>
+                                    <li>保证一致性，如果有某个方法使用了指针接收者，那么其他的方法也应该使用指针接收者。</li>
+                                </ol>
+                                <h2 id="Tips"><a href="#Tips" class="headerlink" title="Tips"></a>Tips</h2>
+                                <h3 id="构造函数优化"><a href="#构造函数优化" class="headerlink" title="构造函数优化"></a>构造函数优化</h3>
+                                <p>在上面的例子中发现过多的参数，这个写法乍看之下是没啥问题的，但是一旦 people 结构内部的字段发生了变化，增加或者减少了，那么这个初始化函数 newPeople 就怎么看都觉的别扭了。</p>
+                                <p>​ 如果参数继续增加呢？那么所有调用了这个 newPeople 方法的地方也都需要进行修改，且按照代码整洁的逻辑，参数多于 5 个，这个函数就很难使用了。而且，如果这 5 个参数都是可有可无的参数，就是有的参数可以不填写，</p>
+                                <p>有默认值，比如 age 这个字段，即使我们不填写，在后续的业务逻辑中可能也没有很多影响，那么我在实际调用 newPeople 的时候，age 这个字段还需要传递 0 值, 以及hometown为空值，那么构造方法newPeople如下所示</p>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">people := newPeople(</span><br><span class="line">		<span class="string">`Payne`</span>,</span><br><span class="line">		<span class="number">0</span>,</span><br><span class="line">		<span class="number">1.767</span>,</span><br><span class="line">		<span class="number">75</span>,</span><br><span class="line">		<span class="string">``</span>,</span><br><span class="line">		<span class="string">`ShangHai`</span>,</span><br><span class="line">		<span class="string">`stay hungry,stay foolish`</span>,</span><br><span class="line">		<span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">string</span>&#123;</span><br><span class="line">			<span class="string">`first`</span>: <span class="string">`reading`</span>,</span><br><span class="line">		&#125;,</span><br><span class="line">		<span class="string">`data engineer`</span>,</span><br><span class="line">	)</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>乍看这行代码，你可能会以为我创建了一个 people，它的年龄为 0以及hometown为空值，但是实际上我们是希望表达这里使用了一个“缺省值”，这种代码的语义逻辑就不对了。那改怎么如何呢？</p>
+                                <h3 id="请使用options写法"><a href="#请使用options写法" class="headerlink" title="请使用options写法"></a>请使用options写法</h3>
+                                <p>options 为可选参数，以上面的代码为例，我们只需<code>name</code>, <code>age</code>,<code>job</code> 为必选，其他为可选参数的，那此时可以这么写，如下所示</p>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> people <span class="keyword">struct</span> &#123;</span><br><span class="line">	name             <span class="keyword">string</span></span><br><span class="line">	age              <span class="keyword">uint16</span></span><br><span class="line">	height           <span class="keyword">float32</span></span><br><span class="line">	weight           <span class="keyword">float32</span></span><br><span class="line">	hometown         <span class="keyword">string</span></span><br><span class="line">	currentResidence <span class="keyword">string</span></span><br><span class="line">	lifeMotto        <span class="keyword">string</span></span><br><span class="line">	Hobby            <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">string</span></span><br><span class="line">	Job              <span class="keyword">string</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// peopleOptions 可选参数</span></span><br><span class="line"><span class="keyword">type</span> peopleOptions <span class="function"><span class="keyword">func</span><span class="params">(p *people)</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">withHeight</span><span class="params">(height <span class="keyword">float32</span>)</span> <span class="title">peopleOptions</span></span> &#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="function"><span class="keyword">func</span><span class="params">(p *people)</span></span> &#123;</span><br><span class="line">		p.height = height</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">withWeight</span><span class="params">(weight <span class="keyword">float32</span>)</span> <span class="title">peopleOptions</span></span> &#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="function"><span class="keyword">func</span><span class="params">(p *people)</span></span> &#123;</span><br><span class="line">		p.weight = weight</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">withHometown</span><span class="params">(hometown <span class="keyword">string</span>)</span> <span class="title">peopleOptions</span></span> &#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="function"><span class="keyword">func</span><span class="params">(p *people)</span></span> &#123;</span><br><span class="line">		p.hometown = hometown</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">withCurrentResidence</span><span class="params">(currentResidence <span class="keyword">string</span>)</span> <span class="title">peopleOptions</span></span> &#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="function"><span class="keyword">func</span><span class="params">(p *people)</span></span> &#123;</span><br><span class="line">		p.currentResidence = currentResidence</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">withLifeMotto</span><span class="params">(lifeMotto <span class="keyword">string</span>)</span> <span class="title">peopleOptions</span></span> &#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="function"><span class="keyword">func</span><span class="params">(p *people)</span></span> &#123;</span><br><span class="line">		p.lifeMotto = lifeMotto</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">withHobby</span><span class="params">(Hobby <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">string</span>)</span> <span class="title">peopleOptions</span></span> &#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="function"><span class="keyword">func</span><span class="params">(p *people)</span></span> &#123;</span><br><span class="line">		p.Hobby = Hobby</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 构造函数</span></span><br><span class="line"><span class="comment">// 必选: name, age, job</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">newPeopleOptions</span><span class="params">(name <span class="keyword">string</span>, age <span class="keyword">uint16</span>, job <span class="keyword">string</span>, options ...peopleOptions)</span> *<span class="title">people</span></span> &#123;</span><br><span class="line">	p := &amp;people&#123;</span><br><span class="line">		name: name,</span><br><span class="line">		age:  age,</span><br><span class="line">		Job:  job,</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> _, option := <span class="keyword">range</span> options &#123;</span><br><span class="line">		option(p)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> p</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//方法(值类型接受者)</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(p people)</span> <span class="title">introduce</span><span class="params">()</span></span> &#123;</span><br><span class="line">	fmt.Println(p)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//方法(指针类型接受者)</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(p *people)</span> <span class="title">introduceMe</span><span class="params">()</span></span> &#123;</span><br><span class="line">	fmt.Println(p)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	people := newPeopleOptions(</span><br><span class="line">		<span class="string">`Payne`</span>,</span><br><span class="line">		<span class="number">21</span>,</span><br><span class="line">		<span class="string">`data engineer`</span>,</span><br><span class="line">		withHeight(<span class="number">1.767</span>),</span><br><span class="line">	)</span><br><span class="line">	people.introduce()</span><br><span class="line">	<span class="comment">//people.introduceMe()</span></span><br><span class="line">&#125;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>其中with代表可选的， 如果我们后续 Foo 多了一个可变属性，那么我们只需要多一个 WithXXX 的方法就可以了，而 NewFoo 函数不需要任何变化，调用方只要在指定这个可变属性的地方增加 WithXXX 就可以了，扩展性非常好。</p>
+                                <h2 id="源码赏析"><a href="#源码赏析" class="headerlink" title="源码赏析"></a>源码赏析</h2>
+                                <p>以下是go爬虫框架<code>colly</code>的初始化部分，大致结构如下</p>
+                                <ul>
+                                    <li>
+                                        <p>可选函数类型：<code>CollectorOption func(*Collector)</code></p>
+                                    </li>
+                                    <li>
+                                        <p>采集器结构体：<code>Collector</code></p>
+                                    </li>
+                                    <li>
+                                        <p>初始化方法：<code>Init</code></p>
+                                    </li>
+                                    <li>
+                                        <p>虚拟环境处理方法：<code>parseSettingsFromEnv</code></p>
+                                    </li>
+                                    <li>
+                                        <p>构造函数:<code>NewCollector</code></p>
+                                    </li>
+                                </ul>
+                                <blockquote>
+                                    <p>gocolly/colly.go</p>
+                                </blockquote>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="comment">// A CollectorOption sets an option on a Collector.</span></span><br><span class="line"><span class="keyword">type</span> CollectorOption <span class="function"><span class="keyword">func</span><span class="params">(*Collector)</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Collector provides the scraper instance for a scraping job</span></span><br><span class="line"><span class="keyword">type</span> Collector <span class="keyword">struct</span> &#123;</span><br><span class="line">	<span class="comment">// UserAgent is the User-Agent string used by HTTP requests</span></span><br><span class="line">	UserAgent <span class="keyword">string</span></span><br><span class="line">	<span class="comment">// MaxDepth limits the recursion depth of visited URLs.</span></span><br><span class="line">	<span class="comment">// Set it to 0 for infinite recursion (default).</span></span><br><span class="line">	MaxDepth <span class="keyword">int</span></span><br><span class="line">	<span class="comment">// AllowedDomains is a domain whitelist.</span></span><br><span class="line">	<span class="comment">// Leave it blank to allow any domains to be visited</span></span><br><span class="line">	AllowedDomains []<span class="keyword">string</span></span><br><span class="line">	<span class="comment">// DisallowedDomains is a domain blacklist.</span></span><br><span class="line">	DisallowedDomains []<span class="keyword">string</span></span><br><span class="line">	<span class="comment">// DisallowedURLFilters is a list of regular expressions which restricts</span></span><br><span class="line">	<span class="comment">// visiting URLs. If any of the rules matches to a URL the</span></span><br><span class="line">	<span class="comment">// request will be stopped. DisallowedURLFilters will</span></span><br><span class="line">	<span class="comment">// be evaluated before URLFilters</span></span><br><span class="line">	<span class="comment">// Leave it blank to allow any URLs to be visited</span></span><br><span class="line">	DisallowedURLFilters []*regexp.Regexp</span><br><span class="line">	<span class="comment">// URLFilters is a list of regular expressions which restricts</span></span><br><span class="line">	<span class="comment">// visiting URLs. If any of the rules matches to a URL the</span></span><br><span class="line">	<span class="comment">// request won't be stopped. DisallowedURLFilters will</span></span><br><span class="line">	<span class="comment">// be evaluated before URLFilters</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">// Leave it blank to allow any URLs to be visited</span></span><br><span class="line">	URLFilters []*regexp.Regexp</span><br><span class="line"></span><br><span class="line">	<span class="comment">// AllowURLRevisit allows multiple downloads of the same URL</span></span><br><span class="line">	AllowURLRevisit <span class="keyword">bool</span></span><br><span class="line">	<span class="comment">// MaxBodySize is the limit of the retrieved response body in bytes.</span></span><br><span class="line">	<span class="comment">// 0 means unlimited.</span></span><br><span class="line">	<span class="comment">// The default value for MaxBodySize is 10MB (10 * 1024 * 1024 bytes).</span></span><br><span class="line">	MaxBodySize <span class="keyword">int</span></span><br><span class="line">	<span class="comment">// CacheDir specifies a location where GET requests are cached as files.</span></span><br><span class="line">	<span class="comment">// When it's not defined, caching is disabled.</span></span><br><span class="line">	CacheDir <span class="keyword">string</span></span><br><span class="line">	<span class="comment">// IgnoreRobotsTxt allows the Collector to ignore any restrictions set by</span></span><br><span class="line">	<span class="comment">// the target host's robots.txt file.  See http://www.robotstxt.org/ for more</span></span><br><span class="line">	<span class="comment">// information.</span></span><br><span class="line">	IgnoreRobotsTxt <span class="keyword">bool</span></span><br><span class="line">	<span class="comment">// Async turns on asynchronous network communication. Use Collector.Wait() to</span></span><br><span class="line">	<span class="comment">// be sure all requests have been finished.</span></span><br><span class="line">	Async <span class="keyword">bool</span></span><br><span class="line">	<span class="comment">// ParseHTTPErrorResponse allows parsing HTTP responses with non 2xx status codes.</span></span><br><span class="line">	<span class="comment">// By default, Colly parses only successful HTTP responses. Set ParseHTTPErrorResponse</span></span><br><span class="line">	<span class="comment">// to true to enable it.</span></span><br><span class="line">	ParseHTTPErrorResponse <span class="keyword">bool</span></span><br><span class="line">	<span class="comment">// ID is the unique identifier of a collector</span></span><br><span class="line">	ID <span class="keyword">uint32</span></span><br><span class="line">	<span class="comment">// DetectCharset can enable character encoding detection for non-utf8 response bodies</span></span><br><span class="line">	<span class="comment">// without explicit charset declaration. This feature uses https://github.com/saintfish/chardet</span></span><br><span class="line">	DetectCharset <span class="keyword">bool</span></span><br><span class="line">	<span class="comment">// RedirectHandler allows control on how a redirect will be managed</span></span><br><span class="line">	<span class="comment">// use c.SetRedirectHandler to set this value</span></span><br><span class="line">	redirectHandler <span class="function"><span class="keyword">func</span><span class="params">(req *http.Request, via []*http.Request)</span> <span class="title">error</span></span></span><br><span class="line">	<span class="comment">// CheckHead performs a HEAD request before every GET to pre-validate the response</span></span><br><span class="line">	CheckHead <span class="keyword">bool</span></span><br><span class="line">	<span class="comment">// TraceHTTP enables capturing and reporting request performance for crawler tuning.</span></span><br><span class="line">	<span class="comment">// When set to true, the Response.Trace will be filled in with an HTTPTrace object.</span></span><br><span class="line">	TraceHTTP <span class="keyword">bool</span></span><br><span class="line">	<span class="comment">// Context is the context that will be used for HTTP requests. You can set this</span></span><br><span class="line">	<span class="comment">// to support clean cancellation of scraping.</span></span><br><span class="line">	Context context.Context</span><br><span class="line"></span><br><span class="line">	store                    storage.Storage</span><br><span class="line">	debugger                 debug.Debugger</span><br><span class="line">	robotsMap                <span class="keyword">map</span>[<span class="keyword">string</span>]*robotstxt.RobotsData</span><br><span class="line">	htmlCallbacks            []*htmlCallbackContainer</span><br><span class="line">	xmlCallbacks             []*xmlCallbackContainer</span><br><span class="line">	requestCallbacks         []RequestCallback</span><br><span class="line">	responseCallbacks        []ResponseCallback</span><br><span class="line">	responseHeadersCallbacks []ResponseHeadersCallback</span><br><span class="line">	errorCallbacks           []ErrorCallback</span><br><span class="line">	scrapedCallbacks         []ScrapedCallback</span><br><span class="line">	requestCount             <span class="keyword">uint32</span></span><br><span class="line">	responseCount            <span class="keyword">uint32</span></span><br><span class="line">	backend                  *httpBackend</span><br><span class="line">	wg                       *sync.WaitGroup</span><br><span class="line">	lock                     *sync.RWMutex</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Init initializes the Collector's private variables and sets default</span></span><br><span class="line"><span class="comment">// configuration for the Collector</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(c *Collector)</span> <span class="title">Init</span><span class="params">()</span></span> &#123;</span><br><span class="line">	c.UserAgent = <span class="string">"colly - https://github.com/gocolly/colly/v2"</span></span><br><span class="line">	c.MaxDepth = <span class="number">0</span></span><br><span class="line">	c.store = &amp;storage.InMemoryStorage&#123;&#125;</span><br><span class="line">	c.store.Init()</span><br><span class="line">	c.MaxBodySize = <span class="number">10</span> * <span class="number">1024</span> * <span class="number">1024</span></span><br><span class="line">	c.backend = &amp;httpBackend&#123;&#125;</span><br><span class="line">	jar, _ := cookiejar.New(<span class="literal">nil</span>)</span><br><span class="line">	c.backend.Init(jar)</span><br><span class="line">	c.backend.Client.CheckRedirect = c.checkRedirectFunc()</span><br><span class="line">	c.wg = &amp;sync.WaitGroup&#123;&#125;</span><br><span class="line">	c.lock = &amp;sync.RWMutex&#123;&#125;</span><br><span class="line">	c.robotsMap = <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">string</span>]*robotstxt.RobotsData)</span><br><span class="line">	c.IgnoreRobotsTxt = <span class="literal">true</span></span><br><span class="line">	c.ID = atomic.AddUint32(&amp;collectorCounter, <span class="number">1</span>)</span><br><span class="line">	c.TraceHTTP = <span class="literal">false</span></span><br><span class="line">	c.Context = context.Background()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// NewCollector creates a new Collector instance with default configuration</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">NewCollector</span><span class="params">(options ...CollectorOption)</span> *<span class="title">Collector</span></span> &#123;</span><br><span class="line">	c := &amp;Collector&#123;&#125;</span><br><span class="line">	c.Init()</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> _, f := <span class="keyword">range</span> options &#123;</span><br><span class="line">		f(c)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	c.parseSettingsFromEnv()</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> c</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(c *Collector)</span> <span class="title">parseSettingsFromEnv</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">for</span> _, e := <span class="keyword">range</span> os.Environ() &#123;</span><br><span class="line">		<span class="keyword">if</span> !strings.HasPrefix(e, <span class="string">"COLLY_"</span>) &#123;</span><br><span class="line">			<span class="keyword">continue</span></span><br><span class="line">		&#125;</span><br><span class="line">		pair := strings.SplitN(e[<span class="number">6</span>:], <span class="string">"="</span>, <span class="number">2</span>)</span><br><span class="line">		<span class="keyword">if</span> f, ok := envMap[pair[<span class="number">0</span>]]; ok &#123;</span><br><span class="line">			f(c, pair[<span class="number">1</span>])</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			log.Println(<span class="string">"Unknown environment variable:"</span>, pair[<span class="number">0</span>])</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                            </div>
+                            <div class="popular-posts-header">相关文章</div>
+                            <ul class="popular-posts">
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/62372.html" rel="bookmark">Golang-Array</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/17571.html" rel="bookmark">Golang-Defer详解</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/3744.html" rel="bookmark">Golang-Map</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/45903.html" rel="bookmark">Golang-匿名函数与闭包</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/1962.html" rel="bookmark">Golang-接口(interface)</a></div>
+                                </li>
+                            </ul>
+                            <footer class="post-footer">
+                                <div class="post-tags">
+                                    <a href="/tags/Go/" rel="tag"><i class="fa fa-tag"></i> Go</a>
+                                </div>
+                                <div class="post-nav">
+                                    <div class="post-nav-item">
+                                        <a href="/2411485724.html" rel="prev" title="svn rollback">
+                                            <i class="fa fa-chevron-left"></i> svn rollback </a>
+                                    </div>
+                                    <div class="post-nav-item">
+                                        <a href="/3120335305.html" rel="next" title="模块化的VimIDE-spacevim"> 模块化的VimIDE-spacevim <i class="fa fa-chevron-right"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </footer>
+                        </article>
+                    </div>
+                    <script>
+                        window.addEventListener('tabs:register', () =>
+                        {
+                            let
+                            {
+                                activeClass
+                            } = CONFIG.comments;
+                            if (CONFIG.comments.storage)
+                            {
+                                activeClass = localStorage.getItem('comments_active') || activeClass;
+                            }
+                            if (activeClass)
+                            {
+                                let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+                                if (activeTab)
+                                {
+                                    activeTab.click();
+                                }
+                            }
+                        });
+                        if (CONFIG.comments.storage)
+                        {
+                            window.addEventListener('tabs:click', event =>
+                            {
+                                if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+                                let commentClass = event.target.classList[1];
+                                localStorage.setItem('comments_active', commentClass);
+                            });
+                        }
+
+                    </script>
+                </div>
+                <div class="toggle sidebar-toggle">
+                    <span class="toggle-line toggle-line-first"></span>
+                    <span class="toggle-line toggle-line-middle"></span>
+                    <span class="toggle-line toggle-line-last"></span>
+                </div>
+                <aside class="sidebar">
+                    <div class="sidebar-inner">
+                        <ul class="sidebar-nav motion-element">
+                            <li class="sidebar-nav-toc"> 文章目录 </li>
+                            <li class="sidebar-nav-overview"> 站点概览 </li>
+                        </ul>
+                        <!--noindex-->
+                        <div class="post-toc-wrap sidebar-panel">
+                            <div class="post-toc motion-element">
+                                <ol class="nav">
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#什么是方法"><span class="nav-number">1.</span> <span class="nav-text">什么是方法</span></a></li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#方法的声明"><span class="nav-number">2.</span> <span class="nav-text">方法的声明</span></a>
+                                        <ol class="nav-child">
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#接收者"><span class="nav-number">2.1.</span> <span class="nav-text">接收者</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#什么时候应该使用指针类型接收者"><span class="nav-number">2.2.</span> <span class="nav-text">什么时候应该使用指针类型接收者</span></a></li>
+                                        </ol>
+                                    </li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#Tips"><span class="nav-number">3.</span> <span class="nav-text">Tips</span></a>
+                                        <ol class="nav-child">
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#构造函数优化"><span class="nav-number">3.1.</span> <span class="nav-text">构造函数优化</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#请使用options写法"><span class="nav-number">3.2.</span> <span class="nav-text">请使用options写法</span></a></li>
+                                        </ol>
+                                    </li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#源码赏析"><span class="nav-number">4.</span> <span class="nav-text">源码赏析</span></a></li>
+                                </ol>
+                            </div>
+                        </div>
+                        <!--/noindex-->
+                        <div class="site-overview-wrap sidebar-panel">
+                            <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <img class="site-author-image" itemprop="image" alt="吴志鹏" src="/images/favicon/android-chrome-512x512.png">
+                                <p class="site-author-name" itemprop="name">吴志鹏</p>
+                                <div class="site-description" itemprop="description">Talk is free，please state clearly</div>
+                            </div>
+                            <div class="site-state-wrap motion-element">
+                                <nav class="site-state">
+                                    <div class="site-state-item site-state-posts">
+                                        <a href="/archives/">
+                                            <span class="site-state-item-count">136</span>
+                                            <span class="site-state-item-name">日志</span>
+                                        </a>
+                                    </div>
+                                    <div class="site-state-item site-state-categories">
+                                        <a href="/categories/">
+                                            <span class="site-state-item-count">158</span>
+                                            <span class="site-state-item-name">分类</span></a>
+                                    </div>
+                                    <div class="site-state-item site-state-tags">
+                                        <a href="/tags/">
+                                            <span class="site-state-item-count">89</span>
+                                            <span class="site-state-item-name">标签</span></a>
+                                    </div>
+                                </nav>
+                            </div>
+                            <div class="links-of-author motion-element">
+                                <span class="links-of-author-item">
+                                    <a href="https://github.com/Payne-Wu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Payne-Wu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="mailto:wuzhipeng1289690157@gmail.com" title="E-Mail → mailto:wuzhipeng1289690157@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="https://www.zhihu.com/people/wu-zhi-peng-72-78" title="ZhiHu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;wu-zhi-peng-72-78" rel="noopener" target="_blank"><i class="fa fa-magic fa-fw"></i>ZhiHu</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="https://weibo.com/u/6987234483" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;6987234483" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+                <div id="sidebar-dimmer"></div>
+            </div>
+        </main>
+        <footer class="footer">
+            <div class="footer-inner">
+                <div class="copyright"> &copy; <span itemprop="copyrightYear">2022</span>
+                    <span class="with-love">
+                        <i class="fa fa-heart"></i>
+                    </span>
+                    <span class="author" itemprop="copyrightHolder">PayneWu</span>
+                    <span class="post-meta-divider">|</span>
+                    <span class="post-meta-item-icon">
+                        <i class="fa fa-chart-area"></i>
+                    </span>
+                    <span title="站点总字数">255k</span>
+                    <span class="post-meta-divider">|</span>
+                    <span class="post-meta-item-icon">
+                        <i class="fa fa-coffee"></i>
+                    </span>
+                    <span title="站点阅读时长">3:51</span>
+                </div>
+                <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">湘ICP备2021019893号-1 </a>
+                </div>
+                <div style="display: none;">
+                    <script src="//s95.cnzz.com/z_stat.php?id=true&web_id=true"></script>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+    <script src="/js/utils.js"></script>
+    <script src="/.js"></script>
+    <script src="/js/schemes/pisces.js"></script>
+    <script src="/.js"></script>
+    <script src="/js/next-boot.js"></script>
+    <script src="/.js"></script>
+    <script>
+        (function ()
+        {
+            var canonicalURL, curProtocol;
+            //Get the <link> tag
+            var x = document.getElementsByTagName("link");
+            //Find the last canonical URL
+            if (x.length > 0)
+            {
+                for (i = 0; i < x.length; i++)
+                {
+                    if (x[i].rel.toLowerCase() == 'canonical' && x[i].href)
+                    {
+                        canonicalURL = x[i].href;
+                    }
+                }
+            }
+            //Get protocol
+            if (!canonicalURL)
+            {
+                curProtocol = window.location.protocol.split(':')[0];
+            }
+            else
+            {
+                curProtocol = canonicalURL.split(':')[0];
+            }
+            //Get current URL if the canonical URL does not exist
+            if (!canonicalURL) canonicalURL = window.location.href;
+            //Assign script content. Replace current URL with the canonical URL
+            ! function ()
+            {
+                var e = /([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,
+                    r = canonicalURL,
+                    t = document.referrer;
+                if (!e.test(r))
+                {
+                    var n = (String(curProtocol).toLowerCase() === 'https') ? "https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif" : "//api.share.baidu.com/s.gif";
+                    t ? (n += "?r=" + encodeURIComponent(document.referrer), r && (n += "&l=" + r)) : r && (n += "?l=" + r);
+                    var i = new Image;
+                    i.src = n
+                }
+            }(window);
+        })();
+
+    </script>
+    <script src="/js/local-search.js"></script>
+    <script src="/.js"></script>
+</body>
+
+</html>

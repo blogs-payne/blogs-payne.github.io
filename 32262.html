@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+    <meta name="theme-color" content="#222">
+    <meta name="generator" content="Hexo 4.2.1">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16-next.png">
+    <link rel="mask-icon" href="/images/favicon/safari-pinned-tab.svg" color="#222">
+    <meta name="msapplication-config" content="/images/favicon/browserconfig.xml">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+    <link rel="stylesheet" href="/lib/pace/pace-theme-mac-osx.min.css">
+    <script src="/lib/pace/pace.min.js"></script>
+    <script id="hexo-configurations">
+        var NexT = window.NexT ||
+        {};
+        var CONFIG = {
+            "hostname": "paynewu.com",
+            "root": "/",
+            "scheme": "Gemini",
+            "version": "7.8.0",
+            "exturl": false,
+            "sidebar":
+            {
+                "position": "right",
+                "width": 240,
+                "display": "post",
+                "padding": 18,
+                "offset": 12,
+                "onmobile": false
+            },
+            "copycode":
+            {
+                "enable": true,
+                "show_result": true,
+                "style": "mac"
+            },
+            "back2top":
+            {
+                "enable": true,
+                "sidebar": false,
+                "scrollpercent": true
+            },
+            "bookmark":
+            {
+                "enable": false,
+                "color": "#222",
+                "save": "auto"
+            },
+            "fancybox": false,
+            "mediumzoom": true,
+            "lazyload": false,
+            "pangu": true,
+            "comments":
+            {
+                "style": "tabs",
+                "active": "valine",
+                "storage": true,
+                "lazyload": false,
+                "nav": null
+            },
+            "algolia":
+            {
+                "hits":
+                {
+                    "per_page": 10
+                },
+                "labels":
+                {
+                    "input_placeholder": "Search for Posts",
+                    "hits_empty": "We didn't find any results for the search: ${query}",
+                    "hits_stats": "${hits} results found in ${time} ms"
+                }
+            },
+            "localsearch":
+            {
+                "enable": true,
+                "trigger": "auto",
+                "top_n_per_article": 8,
+                "unescape": false,
+                "preload": false
+            },
+            "motion":
+            {
+                "enable": false,
+                "async": false,
+                "transition":
+                {
+                    "post_block": "bounceDownIn",
+                    "post_header": "slideDownIn",
+                    "post_body": "slideDownIn",
+                    "coll_header": "slideLeftIn",
+                    "sidebar": "slideUpIn"
+                }
+            },
+            "path": "search.xml"
+        };
+
+    </script>
+    <meta name="description" content="前几天有个公众号的小伙伴找到我，问到我大佬大佬，你是怎么学习的啊，我的回答是老大哥，俺也不知道啊。应该是先这样在这样然后在这样(男性同胞啊)。那到底那样啊？说实话我真不知道，我还真的不晓得什么样的学习方法、为人处事，等等是正确的。如果你问我“有没有一招KO所有”，那我只能回答你“想啥呢？如果真的有为什么只能你会，对不对？”。有时候选择比努力更加重要，方法比努力重要。没有方向所有的风都是逆风，一个个">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="谈谈生活中那些与学习的事儿">
+    <meta property="og:url" content="https://paynewu.com/32262.html">
+    <meta property="og:site_name" content="吴志鹏｜Payne-Wu">
+    <meta property="og:description" content="前几天有个公众号的小伙伴找到我，问到我大佬大佬，你是怎么学习的啊，我的回答是老大哥，俺也不知道啊。应该是先这样在这样然后在这样(男性同胞啊)。那到底那样啊？说实话我真不知道，我还真的不晓得什么样的学习方法、为人处事，等等是正确的。如果你问我“有没有一招KO所有”，那我只能回答你“想啥呢？如果真的有为什么只能你会，对不对？”。有时候选择比努力更加重要，方法比努力重要。没有方向所有的风都是逆风，一个个">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="og:image" content="https://img-blog.csdnimg.cn/20201025051513142.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3d6cDcwODE=,size_16,color_FFFFFF,t_70#pic_center">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwgy1gm7j0i3g5jj30cs0cs3yf.jpg">
+    <meta property="article:published_time" content="2021-01-01T15:34:28.000Z">
+    <meta property="article:modified_time" content="2022-07-27T09:58:26.884Z">
+    <meta property="article:author" content="吴志鹏">
+    <meta property="article:tag" content="杂谈">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:image" content="https://img-blog.csdnimg.cn/20201025051513142.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3d6cDcwODE=,size_16,color_FFFFFF,t_70#pic_center">
+    <link rel="canonical" href="https://paynewu.com/32262.html">
+    <script id="page-configurations">
+        // https://hexo.io/docs/variables.html
+        CONFIG.page = {
+            sidebar: "",
+            isHome: false,
+            isPost: true,
+            lang: 'zh-CN'
+        };
+
+    </script>
+    <title>谈谈生活中那些与学习的事儿 | 吴志鹏｜Payne-Wu</title>
+    <meta name="google-site-verification" content="p_bIcnvirkFzG2dYKuNDivKD8-STet5W7D-01woA2fc" />
+    <noscript>
+        <style>
+            .use-motion .brand,
+            .use-motion .menu-item,
+            .sidebar-inner,
+            .use-motion .post-block,
+            .use-motion .pagination,
+            .use-motion .comments,
+            .use-motion .post-header,
+            .use-motion .post-body,
+            .use-motion .collection-header
+            {
+                opacity: initial;
+            }
+
+            .use-motion .site-title,
+            .use-motion .site-subtitle
+            {
+                opacity: initial;
+                top: initial;
+            }
+
+            .use-motion .logo-line-before i
+            {
+                left: initial;
+            }
+
+            .use-motion .logo-line-after i
+            {
+                right: initial;
+            }
+
+        </style>
+    </noscript>
+    <link rel="alternate" href="/atom.xml" title="吴志鹏｜Payne-Wu" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+    <div class="container">
+        <div class="headband"></div>
+        <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+            <div class="header-inner">
+                <div class="site-brand-container">
+                    <div class="site-nav-toggle">
+                        <div class="toggle" aria-label="切换导航栏">
+                            <span class="toggle-line toggle-line-first"></span>
+                            <span class="toggle-line toggle-line-middle"></span>
+                            <span class="toggle-line toggle-line-last"></span>
+                        </div>
+                    </div>
+                    <div class="site-meta">
+                        <a href="/" class="brand" rel="start">
+                            <span class="logo-line-before"><i></i></span>
+                            <h1 class="site-title">吴志鹏｜Payne-Wu </h1>
+                            <span class="logo-line-after"><i></i></span>
+                        </a>
+                    </div>
+                    <div class="site-nav-right">
+                        <div class="toggle popup-trigger">
+                            <i class="fa fa-search fa-fw fa-lg"></i>
+                        </div>
+                    </div>
+                </div>
+                <nav class="site-nav">
+                    <ul id="menu" class="main-menu menu">
+                        <li class="menu-item menu-item-home">
+                            <a href="/" rel="section">首页</a>
+                        </li>
+                        <li class="menu-item menu-item-archives">
+                            <a href="/archives/" rel="section">文章列表</a>
+                        </li>
+                        <li class="menu-item menu-item-tags">
+                            <a href="/tags/" rel="section">Tags Cloud</a>
+                        </li>
+                        <li class="menu-item menu-item-categories">
+                            <a href="/categories/" rel="section">文章集合</a>
+                        </li>
+                        <li class="menu-item menu-item-about">
+                            <a href="/about/" rel="section">关于我啊</a>
+                        </li>
+                        <li class="menu-item menu-item-message">
+                            <a href="/message/" rel="section">留言与我</a>
+                        </li>
+                        <li class="menu-item menu-item-search">
+                            <a role="button" class="popup-trigger">搜索 </a>
+                        </li>
+                    </ul>
+                </nav>
+                <div class="search-pop-overlay">
+                    <div class="popup search-popup">
+                        <div class="search-header">
+                            <span class="search-icon">
+                                <i class="fa fa-search"></i>
+                            </span>
+                            <div class="search-input-container">
+                                <input autocomplete="off" autocapitalize="off" placeholder="搜索..." spellcheck="false" type="search" class="search-input">
+                            </div>
+                            <span class="popup-btn-close">
+                                <i class="fa fa-times-circle"></i>
+                            </span>
+                        </div>
+                        <div id="search-result">
+                            <div id="no-result">
+                                <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="back-to-top">
+            <i class="fa fa-arrow-up"></i>
+            <span>0%</span>
+        </div>
+        <div class="reading-progress-bar"></div>
+        <main class="main">
+            <div class="main-inner">
+                <div class="content-wrap">
+                    <div class="content post posts-expand">
+                        <article itemscope itemtype="http://schema.org/Article" class="post-block single" lang="zh-CN">
+                            <link itemprop="mainEntityOfPage" href="https://paynewu.com/32262.html">
+                            <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <meta itemprop="image" content="/images/favicon/android-chrome-512x512.png">
+                                <meta itemprop="name" content="吴志鹏">
+                                <meta itemprop="description" content="Talk is free，please state clearly">
+                            </span>
+                            <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+                                <meta itemprop="name" content="吴志鹏｜Payne-Wu">
+                            </span>
+                            <header class="post-header">
+                                <h1 class="post-title" itemprop="name headline"> 谈谈生活中那些与学习的事儿 </h1>
+                                <div class="post-meta">
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-user"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">作者</span>
+                                        <span><a href="/authors/Payne" class="author" itemprop="url" rel="index">Payne</a></span>
+                                    </span>
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-calendar"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">发表于</span>
+                                        <time title="创建时间：2021-01-01 23:34:28" itemprop="dateCreated datePublished" datetime="2021-01-01T23:34:28+08:00">2021-01-01</time>
+                                    </span>
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-folder"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">分类于</span>
+                                        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                                            <a href="/categories/%E6%8A%80%E6%9C%AF%E4%BA%BA%E7%94%9F/" itemprop="url" rel="index"><span itemprop="name">技术人生</span></a>
+                                        </span>
+                                    </span>
+                                    <br>
+                                    <span class="post-meta-item" title="本文字数">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-file-word"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">本文字数：</span>
+                                        <span>5.7k</span>
+                                    </span>
+                                    <span class="post-meta-item" title="阅读时长">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-clock"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                                        <span>5 分钟</span>
+                                    </span>
+                                </div>
+                            </header>
+                            <div class="post-body" itemprop="articleBody">
+                                <p>前几天有个公众号的小伙伴找到我，问到我<code>大佬大佬，你是怎么学习的啊</code>，我的回答是<code>老大哥，俺也不知道啊。应该是先这样在这样然后在这样</code>(男性同胞啊)<br>。那到底那样啊？说实话我真不知道，我还真的不晓得什么样的学习方法、为人处事，等等是正确的。如果你问我“有没有一招KO所有”，那我只能回答你“想啥呢？如果真的有为什么只能你会，对不对？”。有时候选择比努力更加重要，方法比努力重要。没有方向所有的风都是逆风，一个个的大佬叫着，说真的很多时候我比谁都尴尬，如履薄冰。害怕你问的问题，我也不会。毕竟俺也是挺平凡的一个靓仔(<br>“呸，丑东西～”)</p>
+                                <a id="more"></a>
+                                <p>偏了偏了，咱们回到正题上其实说到学习方法、高效率有什么非常非常好的方法，说真的似乎还真的有。不过我想将我现目前所认知的所有告诉你，</p>
+                                <p>说到这些我按照我目前所认知的归纳为三大部分，<code>高效率</code>、<code>时间管理</code>、<code>学习方法</code>、<code>如何分析</code>，来吧来吧，看看我到底想对你说些什么呢？</p>
+                                <h2 id="谈谈高效率"><a href="#谈谈高效率" class="headerlink" title="谈谈高效率"></a>谈谈高效率</h2>
+                                <blockquote>
+                                    <p>你所浪费的今天，是昨天死去的人奢望的明天。</p>
+                                    <p>你所厌恶的现在，正是未来的你回不去的曾经。</p>
+                                </blockquote>
+                                <p>时间总是公平的，你我的一天都只有24hour，一分不多一秒不少，如何合理的利用，高效的利用。高额的产出就成了我们都想突破思考的问题。那位独秀同学请先坐下，哥的容貌就比你帅一点点。这个是认真的，嘻嘻～。</p>
+                                <p>首先我们来看这样的一个物理公式，效率 = 输入功除以输出功，也就是投入与产出的比值。理论上讲一分耕耘一分收获。但实际上却并不一定是这样。阻挡我们“高产”的东西有很多，例如生活中的各种琐事、各种朋友圈、短视频、等等等等都耗费着那宝贵的时间</p>
+                                <h4 id="全身心投入是高效率的开始"><a href="#全身心投入是高效率的开始" class="headerlink" title="全身心投入是高效率的开始"></a>全身心投入是高效率的开始</h4>
+                                <p>说到全身心的投入，那自然离不开控制自己了。正因为生活中的琐事等等真的非常的多，以至于我们无法较为投入。我分享我几个感觉不错的建议</p>
+                                <ul>
+                                    <li>放下手机</li>
+                                    <li>安静的环境</li>
+                                    <li>适宜的氛围</li>
+                                </ul>
+                                <p>放下手机，很好理解。手机静音，把手机放在不太容易看的见的地方，从而抑制看手机、玩手机的想法。将思维定在此时此刻想做的事上。朋友圈上隔壁王阿姨家的猫又生了几个崽，等下又去吃什么好吃的。微信上又有个小姐姐好漂亮，好可爱，怎么办，怎么办好喜欢，怎么办。关你什么事儿？做到雨女无瓜。对吧，有这样的感觉就nice。</p>
+                                <p>选择、制造安静的环境，很多朋友啊真的是稍微有点动静就心猿意马，然后一大堆的想法就出来了。然后就似脱缰野马，未有归途。然后就没有然后了呗。脑子一想，这几分钟就过去了，眼睛一睁一闭着一天就过去了，眼睛一睁不闭这辈子就过去了。不知道你们是不是这样的，我就是了。所以控制不住自己受环境所影响的，那就选择，或者制造相对应的环境。让自己能够全身心投入那伟大神圣的事业</p>
+                                <h3 id="人脑规律是高效率的进阶"><a href="#人脑规律是高效率的进阶" class="headerlink" title="人脑规律是高效率的进阶"></a>人脑规律是高效率的进阶</h3>
+                                <p>说到这个真的是玄之又玄的东西，早晨记忆力更好，下午思维逻辑更清晰。不知道你们是什么样的情况。我的脑子基本是符合这个神圣的定律。就比如我早晨的时候会看一些，技术文档、大佬的公众号、等等这些。效果真的非常不错。下午的话我会去攻克难题，无论上是项目上的，还是等等。如果在这“最清醒”的状态都搞不出来，那么平时也别想。当然每个人都情况会有所不同，具体视情况而定</p>
+                                <h3 id="手脚并用是高效率的高阶"><a href="#手脚并用是高效率的高阶" class="headerlink" title="手脚并用是高效率的高阶"></a>手脚并用是高效率的高阶</h3>
+                                <p>这个其实说’五到’会更加适合，而并不是仅仅是手脚并用。你以为跑步呢。腿撒开跑，手撒开摇。这个并不是这样的。借用鲁迅先生的思想“五到”，眼到，口到，心到，手到，脑到。其实最重要的还是人到（手动狗头～）</p>
+                                <p>眼到：集中在目标，不可看别处。</p>
+                                <p>口到：认真读书，有感情。</p>
+                                <p>心到：最重要便是心，用心去看去学，不可三心二意。</p>
+                                <p>手到：做做批注，实际操作一下，在有感受后旁边写上自己的体会。</p>
+                                <p>脑到：提出不懂的问题，善于思考,追根求源。</p>
+                                <h2 id="谈谈学习方法"><a href="#谈谈学习方法" class="headerlink" title="谈谈学习方法"></a>谈谈学习方法</h2>
+                                <p>说到非常可行的学习方法，其实真的很简单。相信大家也都听说过无数次了。<code>预习</code>，<code>学习</code>，<code>复习</code>。是不是so easy？哇唔，大道至简，我会了。</p>
+                                <blockquote>
+                                    <p>屌丝逆袭，赢取白富美，出任CEO，走向人生巅峰的小手在向我召唤。我等下一不小心就成功了怎么办？</p>
+                                    <p>那我又只能告诉你，快醒醒。你以为你是万年难得一见的骨骼惊奇，头铁是吧？这才哪到哪啊，八字还没一撇呢，更别说捺了</p>
+                                </blockquote>
+                                <p>其实做到以上三点并不看起来的那么简单，真的是那种咫尺天涯，知易行难。</p>
+                                <p>那么怎么样的学习方法才是较为正确，且高效率的呢？接下来让我们去了解一下“十步学习法”，真真实实的将预习、学习、复习精准落实起来。我个人感觉挺高效的，不过事先说明“十步学习法”并不是我发现、我创建的。不过我确实从中受益良多，话不多见，开干～</p>
+                                <h3 id="十步学习法"><a href="#十步学习法" class="headerlink" title="十步学习法"></a>十步学习法</h3>
+                                <p><img src="https://img-blog.csdnimg.cn/20201025051513142.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3d6cDcwODE=,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></p>
+                                <p>对于“十步学习法”的前六个步骤，我们需要集中精力完成足够多的前期调研，确保自己明确知道要学哪些内容，以及如何确认自己已达成目标。这六个步骤只需要针对将要学习的每个主题做一次。第 7 步到第 10 步则要针对在第 5<br>步所制定的学习计划中的每个模块重复。</p>
+                                <p>虽然前六个步骤只需要做一次，但它们却是最重要的，因为它们将对我们未来的成败起决定性作用。在这六个步骤中，我们需要为自己实际的学习主题做好一切准备。</p>
+                                <h4 id="第一步：了解全局"><a href="#第一步：了解全局" class="headerlink" title="第一步：了解全局"></a>第一步：了解全局</h4>
+                                <p>我们要做的就是了解将要学习的主题的全局。这个主题宏观上是什么样的？</p>
+                                <p>我们能够从中学到足够丰富的知识以了解自己认知以外的, 以及我们自己认知之外的有多少？</p>
+                                <p>要完成这一步，对想要学的内容做一些基础性了解。</p>
+                                <blockquote>
+                                    <p>关键词:广泛</p>
+                                </blockquote>
+                                <h4 id="第二步：确定范围"><a href="#第二步：确定范围" class="headerlink" title="第二步：确定范围"></a>第二步：确定范围</h4>
+                                <p>当我们对自己所要学习的主题及其相关的知识都有了一个大致的了解后，此时需要集中精力去明确自己到底要学什么?</p>
+                                <p>明确具体的范围是至关重要的，唯有这样才能了解项目的全局，以求做好相应的准备。</p>
+                                <blockquote>
+                                    <p>关键词: 深度</p>
+                                </blockquote>
+                                <h4 id="第三步：定义目标"><a href="#第三步：定义目标" class="headerlink" title="第三步：定义目标"></a>第三步：定义目标</h4>
+                                <p>在开始学习前，明确“成功”的 含义极为重要。如果不知道成功是什么，很难找准目标，也很难知道自己什么时候已经真正达到目标。在尝试学习任何东西之前，我们都应该清晰清除的明白,完成之后我能完成什么样的事情?<br>当知道自己的目标是什么的时候，就可以更轻松地使用倒推的方式，明确实现目标所需的步骤。</p>
+                                <p>这一步的目标是形成一份简明清晰的陈述，勾勒出学习后的成功图景。好的成功标准应该是具体的，无二义性的. 根据一\二步制定,绘出自己<code>成功</code>将能达到的实际效果.</p>
+                                <blockquote>
+                                    <p>关键词: 具体</p>
+                                </blockquote>
+                                <h4 id="第四步：寻找资源"><a href="#第四步：寻找资源" class="headerlink" title="第四步：寻找资源"></a>第四步：寻找资源</h4>
+                                <p>要尝试收集到多种多样的资源以帮助我们学习，以求更加深入的了解此知识或技术</p>
+                                <p>需要找到尽可能多的与自己所选主题相关的资源，此时可无需考虑这些资源的质量。</p>
+                                <p>信息来源(不分先后)：</p>
+                                <ul>
+                                    <li>
+                                        <p>专家</p>
+                                    </li>
+                                    <li>
+                                        <p>图书</p>
+                                    </li>
+                                    <li>源代码</li>
+                                    <li>示例项目</li>
+                                    <li>博客文章</li>
+                                    <li>在线视频</li>
+                                    <li>在线文档</li>
+                                    <li>… …</li>
+                                </ul>
+                                <blockquote>
+                                    <p>关键词: 尋找</p>
+                                </blockquote>
+                                <h4 id="第五步：创建学习计划"><a href="#第五步：创建学习计划" class="headerlink" title="第五步：创建学习计划"></a>第五步：创建学习计划</h4>
+                                <p>此時需创建相對應学习規劃。可以把学习路径类比成写书时的<strong>大纲</strong>。</p>
+                                <p>打造自己的学习计划，一个好办法就是观察别人是如何教我们感兴趣的主题的。可以参考在第四步中搜集到的图书目录，如果 5 位 以上的作者都把内容分解为相同的模块和顺序，那么就可以遵循这样的方法制订自己的学习计划。</p>
+                                <blockquote>
+                                    <p>关键词: 大綱</p>
+                                </blockquote>
+                                <h4 id="第六步：筛选资源"><a href="#第六步：筛选资源" class="headerlink" title="第六步：筛选资源"></a>第六步：筛选资源</h4>
+                                <p>此時已经知道了要学什么及以什么顺序学，</p>
+                                <p>將第四步中收集的全部资源瀏覽\篩選，找出哪些内容能够覆盖我们的学习计划，还应当看看评论，试着找出品质最高的资源。</p>
+                                <blockquote>
+                                    <p>关键词: 篩選</p>
+                                </blockquote>
+                                <h4 id="第七步：开始学习，浅尝辄止"><a href="#第七步：开始学习，浅尝辄止" class="headerlink" title="第七步：开始学习，浅尝辄止"></a>第七步：开始学习，浅尝辄止</h4>
+                                <p>大多数情況下在过程中会犯两类相對错误：</p>
+                                <ul>
+                                    <li>第一类错误是在知之不多的情况下就盲目开始，即行动太快；</li>
+                                    <li>第二类错误是在行动之前准备太多，即行动太晚。</li>
+                                </ul>
+                                <p>要想在这两者之间取得平衡，我们掌握的知识要恰到好处，足以能够开始学习，但又不会多到让人无力探索，这样的学习效果是最佳的。</p>
+                                <p>目标為获得足够多与所学主题相关的信息，从而能让我们可以开始学习，并在下一步中动手操作。</p>
+                                <blockquote>
+                                    <p>关键词: 節奏</p>
+                                </blockquote>
+                                <h4 id="第八步：动手操作，边玩边学"><a href="#第八步：动手操作，边玩边学" class="headerlink" title="第八步：动手操作，边玩边学"></a>第八步：动手操作，边玩边学</h4>
+                                <p>这一步中我们无需提前了解全部内容，要做的首要的一件事就是亲自操作和亲身体验。采用这种方法，可以通过探索和实践进行学习。</p>
+                                <p>在操作过程中，我们的大脑自然地会产生各种问题：</p>
+                                <ul>
+                                    <li>
+                                        <p>它是如何工作的？</p>
+                                    </li>
+                                    <li>
+                                        <p>如果我这么做，可能会发生什么？</p>
+                                    </li>
+                                    <li>
+                                        <p>我该如何解决这个问题？</p>
+                                    </li>
+                                </ul>
+                                <p>这些问题能够引导我们走向真正重要的方向。当我们回过头寻找问题的答案时，不只是这些问题迎刃而解，而且我们记得的东西要比学习的东西多很多.</p>
+                                <blockquote>
+                                    <p>关键词: 思考</p>
+                                </blockquote>
+                                <h4 id="第九步：全面掌握，学以致用"><a href="#第九步：全面掌握，学以致用" class="headerlink" title="第九步：全面掌握，学以致用"></a>第九步：全面掌握，学以致用</h4>
+                                <p>好奇心是学习特别是自学的重要组成部分。</p>
+                                <p>这一步的目标就是让我们找回好奇心驱动的学习。在这一步，我们依然没有必要把收集到的所有资料都仔细地看一遍。只需要阅读或观看与当前所学相关的知识。最后，试着把自己正在学习的内容与最终目标关联起来。我们掌握的每个模块，都应该以某种方式推动你向着终极目标前进。</p>
+                                <blockquote>
+                                    <p>關鍵詞:全面</p>
+                                </blockquote>
+                                <h4 id="第十步：乐为人师，融会贯通"><a href="#第十步：乐为人师，融会贯通" class="headerlink" title="第十步：乐为人师，融会贯通"></a>第十步：乐为人师，融会贯通</h4>
+                                <p>三人行,必有我師</p>
+                                <p>走出自己的舒适区，将所学到的教给别人,爭取教會。要想确定你确实掌握了某些知识，这是唯一的办法；同时，在将自己所学介绍给他人时，这也是查缺补漏的好办法。</p>
+                                <blockquote>
+                                    <p>關鍵詞: 學教</p>
+                                </blockquote>
+                                <h2 id="谈谈描述问题与解决问题"><a href="#谈谈描述问题与解决问题" class="headerlink" title="谈谈描述问题与解决问题"></a>谈谈描述问题与解决问题</h2>
+                                <p>其实描述问题我这个“八何分析法”是个非常不错的思路结构，如果你能够清晰的描述你的问题，无论是对于自己还是需要得到有效的帮助去解决问题都会事半功倍</p>
+                                <h3 id="描述问题-八何分析法"><a href="#描述问题-八何分析法" class="headerlink" title="描述问题(八何分析法)"></a>描述问题(八何分析法)</h3>
+                                <p>What，Where，When，Who，Why，How，How much，How feel</p>
+                                <ul>
+                                    <li>
+                                        <p>Why：为何——为什么要做？为什么要如此做（有没有更好的办法）？（做这项工作的原因或理由）</p>
+                                    </li>
+                                    <li>
+                                        <p>What：何事——什么事？做什么？准备什么？（即明确工作的内容和要达成的目标）</p>
+                                    </li>
+                                    <li>
+                                        <p>Where：何处——在何处着手进行最好？在哪里做？（工作发生的地点）？</p>
+                                    </li>
+                                    <li>
+                                        <p>When：何时——什么时候开始？什么时候完成？ 什么时候检查？（时间）</p>
+                                    </li>
+                                    <li>
+                                        <p>Who：何人——谁去做？ （由谁来承担、执行？）谁负责？谁来完成？（参加人、负责人）？</p>
+                                    </li>
+                                    <li>
+                                        <p>How：如何——如何做？如何提高效率？如何实施？方法怎样？（用什么方法进行）？</p>
+                                    </li>
+                                    <li>
+                                        <p>How much：何价——成本如何？达到怎样的效果（做到什么程度）？ 数量如果？质量水平如何？费用产出如何？</p>
+                                    </li>
+                                    <li>
+                                        <p>How feel：感觉—体验如何？开发者、使用者、领导最终的体验是否满意？</p>
+                                    </li>
+                                </ul>
+                                <p>概括：即为什么？是什么？何处？何时？由谁做？怎样做？成本多少？结果会怎样？也就是：要明确工作/任务的原因、内容、空间位置、时间、执行对象、方法、成本。加上工作结果（how do you feel）：工作结果预测，就成为5W3H。</p>
+                                <p>这样可能会更加符合人脑记忆，时间(when)、地点（where）、人物（who）、what、why，How，How much，How feel</p>
+                                <h3 id="问题分割及解决之道"><a href="#问题分割及解决之道" class="headerlink" title="问题分割及解决之道"></a>问题分割及解决之道</h3>
+                                <p>在能够清晰的描述问题之后，相信你对于问题出现的地方就有个大概的定位，那么接下来就是分割问题。剖析大问题成一个个小问题，解决一个个最后这个问题就能能够轻松的被解决。同时找到最佳解决方案。</p>
+                                <p>比如我需要做个简单的学生管理系统，那么我们就可以分解出这样几个小问题。</p>
+                                <ol>
+                                    <li>学生信息</li>
+                                    <li>管理账号</li>
+                                    <li>菜单栏目</li>
+                                    <li>实现功能<ol>
+                                            <li>查看</li>
+                                            <li>添加</li>
+                                            <li>修改</li>
+                                            <li>删除</li>
+                                            <li>退出</li>
+                                        </ol>
+                                    </li>
+                                </ol>
+                                <p>这样是不是比完成学生管理系统好实现的多。那么我们只需要一个个实现以上几个功能就可以实现一个简单的学生管理系统了。so easy。当然这样还不足以上线，只能在本地跑一跑，玩一玩。那么如果真的做成项目的话。只需要一个个扩宽就可以了。</p>
+                                <p>比如</p>
+                                <p>学生信息,那么我们自然而然的想到数据库，又由于这写之间的关系。我个人是建议使用SQL数据库。后面数据量大了之后在进行分库分表，甚至SQL集群等等。这项目不就慢慢起来了么</p>
+                                <p>菜单栏，这个就是个展示的面板嘛，抛到前端(主要是前端了)。然后在分割成什么主页啊，信息页啊。等等，这样是不是越来越大了</p>
+                                <p>然后顺着这种思路，自然而然的从一个小的case到项目了</p>
+                                <h2 id="谈谈如何规划"><a href="#谈谈如何规划" class="headerlink" title="谈谈如何规划"></a>谈谈如何规划</h2>
+                                <p>说了那么多终于到了这里也终于到了取舍分离的阶段，一生中有很多事，大事小事。等等，那么如果做个区分，相信你我在未来的道路上会更加清晰明了。那么我们谈谈该如何规划、制定吧。</p>
+                                <p>说到这个就不得不提一下，“四象限分析法”，如下图所示</p>
+                                <p><img src="https://tva1.sinaimg.cn/large/0081Kckwgy1gm7j0i3g5jj30cs0cs3yf.jpg" alt=""></p>
+                                <h3 id="界限"><a href="#界限" class="headerlink" title="界限"></a>界限</h3>
+                                <p>第一象限</p>
+                                <p>这个象限包含的是一些紧急而重要的事情，这一类的事情具有时间的紧迫性和影响的重要性，无法回避也不能拖延，必须首先处理优先解决。它表现为重大项目的谈判，重要的会议工作等。</p>
+                                <p>第二象限</p>
+                                <p>第二象限包含的事件是那些紧急但不重要的事情，这些事情很紧急但并不重要，因此这一象限的事件具有很大的欺骗性。很多人认识上有误区，认为紧急的事情都显得重要，实际上，像无谓的电话、附和别人期望的事、打麻将三缺一等事件都并不重要。这些不重要的事件往往因为它紧急，就会占据人们的很多宝贵时间。</p>
+                                <p>第三象限</p>
+                                <p>第三象限的事件大多是些琐碎的杂事，没有时间的紧迫性，没有任何的重要性，这种事件与时间的结合纯粹是在扼杀时间，是在浪费生命。发呆、上网、闲聊、游逛，这是饱食终日无所事事的人的生活方式。</p>
+                                <p>第四象限</p>
+                                <p>第四象限不同于第一象限，这一象限的事件不具有时间上的紧迫性，但是，它具有重大的影响，对于个人或者企业的存在和发展以及周围环境的建立维护，都具有重大的意义。</p>
+                                <h3 id="关系"><a href="#关系" class="headerlink" title="关系"></a>关系</h3>
+                                <p>1.优先解决第一象限</p>
+                                <p>首先要有准确的判断能力，确定是既紧急又重要的事情，然后优先处理。</p>
+                                <p>2.区分一二象限</p>
+                                <p>第一象限和第二象限难以区分，第二象限对人们的欺骗性是最大的，它很紧急的事实造成了它很重要的假象，耗费了人们大量的时间。依据紧急与否是很难区分这两个象限的，要区分它们就必须借助另一标准，看这件事是否重要。也就是按照自己的人生目标和人生规划来衡量这件事的重要性。如果它重要就属于第一象限的内容；如果它不重要，就属于第二象限的内容。</p>
+                                <p>3.投资第四象限</p>
+                                <p>第一象限的事情重要而且紧急，由于时间原因人们往往不能做得很好。第四象限的事情很重要，而且会有充足的时间去准备，有充足的时间去做好。可见，投资第四象限，它的回报才是最大的。</p>
+                                <p>4.放弃第三象限</p>
+                                <p>第三象限都是既不重要也不紧急的琐事，但它们往往使人们难以脱身，所以人们经常会跌进第三象限而无法自拔。例如，玩游戏、看娱乐视频等，只要一玩起来就很难脱身，而且要耗费很长的时间才能达成结果。</p>
+                                <h3 id="策略"><a href="#策略" class="headerlink" title="策略"></a>策略</h3>
+                                <ol>
+                                    <li>马上做：如果你总是有紧急又重要的事情要做，说明你在时间管理上存在问题，设法减少它。</li>
+                                    <li>计划做：尽可能地把时间花在重要但不紧急（第四象限）的事情上，这样才能减少第一象限的工作量。</li>
+                                    <li>授权做：对于紧急但不重要的事情的处理原则是授权，让别人去做。</li>
+                                    <li>减少做：不重要也不紧急的事情尽量少做。</li>
+                                </ol>
+                                <p>其实说实话，很多东西都不是自己的，自己也是做一个总结吧。希望你我在人生的道路上一路高歌猛进，加油～</p>
+                                <p>积跬Coder敬上 致辞</p>
+                            </div>
+                            <footer class="post-footer">
+                                <div class="post-tags">
+                                    <a href="/tags/%E6%9D%82%E8%B0%88/" rel="tag"><i class="fa fa-tag"></i> 杂谈</a>
+                                </div>
+                                <div class="post-nav">
+                                    <div class="post-nav-item">
+                                        <a href="/22141.html" rel="prev" title="pipenv 让你的虚拟环境更加funny一点">
+                                            <i class="fa fa-chevron-left"></i> pipenv 让你的虚拟环境更加funny一点 </a>
+                                    </div>
+                                    <div class="post-nav-item">
+                                        <a href="/11430.html" rel="next" title="执行一条SQL，这之间到底发生了啥？"> 执行一条SQL，这之间到底发生了啥？ <i class="fa fa-chevron-right"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </footer>
+                        </article>
+                    </div>
+                    <script>
+                        window.addEventListener('tabs:register', () =>
+                        {
+                            let
+                            {
+                                activeClass
+                            } = CONFIG.comments;
+                            if (CONFIG.comments.storage)
+                            {
+                                activeClass = localStorage.getItem('comments_active') || activeClass;
+                            }
+                            if (activeClass)
+                            {
+                                let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+                                if (activeTab)
+                                {
+                                    activeTab.click();
+                                }
+                            }
+                        });
+                        if (CONFIG.comments.storage)
+                        {
+                            window.addEventListener('tabs:click', event =>
+                            {
+                                if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+                                let commentClass = event.target.classList[1];
+                                localStorage.setItem('comments_active', commentClass);
+                            });
+                        }
+
+                    </script>
+                </div>
+                <div class="toggle sidebar-toggle">
+                    <span class="toggle-line toggle-line-first"></span>
+                    <span class="toggle-line toggle-line-middle"></span>
+                    <span class="toggle-line toggle-line-last"></span>
+                </div>
+                <aside class="sidebar">
+                    <div class="sidebar-inner">
+                        <ul class="sidebar-nav motion-element">
+                            <li class="sidebar-nav-toc"> 文章目录 </li>
+                            <li class="sidebar-nav-overview"> 站点概览 </li>
+                        </ul>
+                        <!--noindex-->
+                        <div class="post-toc-wrap sidebar-panel">
+                            <div class="post-toc motion-element">
+                                <ol class="nav">
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#谈谈高效率"><span class="nav-number">1.</span> <span class="nav-text">谈谈高效率</span></a>
+                                        <ol class="nav-child">
+                                            <li class="nav-item nav-level-4"><a class="nav-link" href="#全身心投入是高效率的开始"><span class="nav-number">1.0.1.</span> <span class="nav-text">全身心投入是高效率的开始</span></a></li>
+                                        </ol>
+                                    </li>
+                                    <li class="nav-item nav-level-3"><a class="nav-link" href="#人脑规律是高效率的进阶"><span class="nav-number">1.1.</span> <span class="nav-text">人脑规律是高效率的进阶</span></a></li>
+                                    <li class="nav-item nav-level-3"><a class="nav-link" href="#手脚并用是高效率的高阶"><span class="nav-number">1.2.</span> <span class="nav-text">手脚并用是高效率的高阶</span></a></li>
+                                </ol>
+                                </li>
+                                <li class="nav-item nav-level-2"><a class="nav-link" href="#谈谈学习方法"><span class="nav-number">2.</span> <span class="nav-text">谈谈学习方法</span></a>
+                                    <ol class="nav-child">
+                                        <li class="nav-item nav-level-3"><a class="nav-link" href="#十步学习法"><span class="nav-number">2.1.</span> <span class="nav-text">十步学习法</span></a>
+                                            <ol class="nav-child">
+                                                <li class="nav-item nav-level-4"><a class="nav-link" href="#第一步：了解全局"><span class="nav-number">2.1.1.</span> <span class="nav-text">第一步：了解全局</span></a></li>
+                                                <li class="nav-item nav-level-4"><a class="nav-link" href="#第二步：确定范围"><span class="nav-number">2.1.2.</span> <span class="nav-text">第二步：确定范围</span></a></li>
+                                                <li class="nav-item nav-level-4"><a class="nav-link" href="#第三步：定义目标"><span class="nav-number">2.1.3.</span> <span class="nav-text">第三步：定义目标</span></a></li>
+                                                <li class="nav-item nav-level-4"><a class="nav-link" href="#第四步：寻找资源"><span class="nav-number">2.1.4.</span> <span class="nav-text">第四步：寻找资源</span></a></li>
+                                                <li class="nav-item nav-level-4"><a class="nav-link" href="#第五步：创建学习计划"><span class="nav-number">2.1.5.</span> <span class="nav-text">第五步：创建学习计划</span></a></li>
+                                                <li class="nav-item nav-level-4"><a class="nav-link" href="#第六步：筛选资源"><span class="nav-number">2.1.6.</span> <span class="nav-text">第六步：筛选资源</span></a></li>
+                                                <li class="nav-item nav-level-4"><a class="nav-link" href="#第七步：开始学习，浅尝辄止"><span class="nav-number">2.1.7.</span> <span class="nav-text">第七步：开始学习，浅尝辄止</span></a></li>
+                                                <li class="nav-item nav-level-4"><a class="nav-link" href="#第八步：动手操作，边玩边学"><span class="nav-number">2.1.8.</span> <span class="nav-text">第八步：动手操作，边玩边学</span></a></li>
+                                                <li class="nav-item nav-level-4"><a class="nav-link" href="#第九步：全面掌握，学以致用"><span class="nav-number">2.1.9.</span> <span class="nav-text">第九步：全面掌握，学以致用</span></a></li>
+                                                <li class="nav-item nav-level-4"><a class="nav-link" href="#第十步：乐为人师，融会贯通"><span class="nav-number">2.1.10.</span> <span class="nav-text">第十步：乐为人师，融会贯通</span></a></li>
+                                            </ol>
+                                        </li>
+                                    </ol>
+                                </li>
+                                <li class="nav-item nav-level-2"><a class="nav-link" href="#谈谈描述问题与解决问题"><span class="nav-number">3.</span> <span class="nav-text">谈谈描述问题与解决问题</span></a>
+                                    <ol class="nav-child">
+                                        <li class="nav-item nav-level-3"><a class="nav-link" href="#描述问题-八何分析法"><span class="nav-number">3.1.</span> <span class="nav-text">描述问题(八何分析法)</span></a></li>
+                                        <li class="nav-item nav-level-3"><a class="nav-link" href="#问题分割及解决之道"><span class="nav-number">3.2.</span> <span class="nav-text">问题分割及解决之道</span></a></li>
+                                    </ol>
+                                </li>
+                                <li class="nav-item nav-level-2"><a class="nav-link" href="#谈谈如何规划"><span class="nav-number">4.</span> <span class="nav-text">谈谈如何规划</span></a>
+                                    <ol class="nav-child">
+                                        <li class="nav-item nav-level-3"><a class="nav-link" href="#界限"><span class="nav-number">4.1.</span> <span class="nav-text">界限</span></a></li>
+                                        <li class="nav-item nav-level-3"><a class="nav-link" href="#关系"><span class="nav-number">4.2.</span> <span class="nav-text">关系</span></a></li>
+                                        <li class="nav-item nav-level-3"><a class="nav-link" href="#策略"><span class="nav-number">4.3.</span> <span class="nav-text">策略</span></a></li>
+                                    </ol>
+                                </li>
+                                </ol>
+                            </div>
+                        </div>
+                        <!--/noindex-->
+                        <div class="site-overview-wrap sidebar-panel">
+                            <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <img class="site-author-image" itemprop="image" alt="吴志鹏" src="/images/favicon/android-chrome-512x512.png">
+                                <p class="site-author-name" itemprop="name">吴志鹏</p>
+                                <div class="site-description" itemprop="description">Talk is free，please state clearly</div>
+                            </div>
+                            <div class="site-state-wrap motion-element">
+                                <nav class="site-state">
+                                    <div class="site-state-item site-state-posts">
+                                        <a href="/archives/">
+                                            <span class="site-state-item-count">136</span>
+                                            <span class="site-state-item-name">日志</span>
+                                        </a>
+                                    </div>
+                                    <div class="site-state-item site-state-categories">
+                                        <a href="/categories/">
+                                            <span class="site-state-item-count">158</span>
+                                            <span class="site-state-item-name">分类</span></a>
+                                    </div>
+                                    <div class="site-state-item site-state-tags">
+                                        <a href="/tags/">
+                                            <span class="site-state-item-count">89</span>
+                                            <span class="site-state-item-name">标签</span></a>
+                                    </div>
+                                </nav>
+                            </div>
+                            <div class="links-of-author motion-element">
+                                <span class="links-of-author-item">
+                                    <a href="https://github.com/Payne-Wu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Payne-Wu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="mailto:wuzhipeng1289690157@gmail.com" title="E-Mail → mailto:wuzhipeng1289690157@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="https://www.zhihu.com/people/wu-zhi-peng-72-78" title="ZhiHu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;wu-zhi-peng-72-78" rel="noopener" target="_blank"><i class="fa fa-magic fa-fw"></i>ZhiHu</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="https://weibo.com/u/6987234483" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;6987234483" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+                <div id="sidebar-dimmer"></div>
+            </div>
+        </main>
+        <footer class="footer">
+            <div class="footer-inner">
+                <div class="copyright"> &copy; <span itemprop="copyrightYear">2022</span>
+                    <span class="with-love">
+                        <i class="fa fa-heart"></i>
+                    </span>
+                    <span class="author" itemprop="copyrightHolder">PayneWu</span>
+                    <span class="post-meta-divider">|</span>
+                    <span class="post-meta-item-icon">
+                        <i class="fa fa-chart-area"></i>
+                    </span>
+                    <span title="站点总字数">255k</span>
+                    <span class="post-meta-divider">|</span>
+                    <span class="post-meta-item-icon">
+                        <i class="fa fa-coffee"></i>
+                    </span>
+                    <span title="站点阅读时长">3:51</span>
+                </div>
+                <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">湘ICP备2021019893号-1 </a>
+                </div>
+                <div style="display: none;">
+                    <script src="//s95.cnzz.com/z_stat.php?id=true&web_id=true"></script>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+    <script src="/js/utils.js"></script>
+    <script src="/.js"></script>
+    <script src="/js/schemes/pisces.js"></script>
+    <script src="/.js"></script>
+    <script src="/js/next-boot.js"></script>
+    <script src="/.js"></script>
+    <script>
+        (function ()
+        {
+            var canonicalURL, curProtocol;
+            //Get the <link> tag
+            var x = document.getElementsByTagName("link");
+            //Find the last canonical URL
+            if (x.length > 0)
+            {
+                for (i = 0; i < x.length; i++)
+                {
+                    if (x[i].rel.toLowerCase() == 'canonical' && x[i].href)
+                    {
+                        canonicalURL = x[i].href;
+                    }
+                }
+            }
+            //Get protocol
+            if (!canonicalURL)
+            {
+                curProtocol = window.location.protocol.split(':')[0];
+            }
+            else
+            {
+                curProtocol = canonicalURL.split(':')[0];
+            }
+            //Get current URL if the canonical URL does not exist
+            if (!canonicalURL) canonicalURL = window.location.href;
+            //Assign script content. Replace current URL with the canonical URL
+            ! function ()
+            {
+                var e = /([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,
+                    r = canonicalURL,
+                    t = document.referrer;
+                if (!e.test(r))
+                {
+                    var n = (String(curProtocol).toLowerCase() === 'https') ? "https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif" : "//api.share.baidu.com/s.gif";
+                    t ? (n += "?r=" + encodeURIComponent(document.referrer), r && (n += "&l=" + r)) : r && (n += "?l=" + r);
+                    var i = new Image;
+                    i.src = n
+                }
+            }(window);
+        })();
+
+    </script>
+    <script src="/js/local-search.js"></script>
+    <script src="/.js"></script>
+</body>
+
+</html>

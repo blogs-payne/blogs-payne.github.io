@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+    <meta name="theme-color" content="#222">
+    <meta name="generator" content="Hexo 4.2.1">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16-next.png">
+    <link rel="mask-icon" href="/images/favicon/safari-pinned-tab.svg" color="#222">
+    <meta name="msapplication-config" content="/images/favicon/browserconfig.xml">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+    <link rel="stylesheet" href="/lib/pace/pace-theme-mac-osx.min.css">
+    <script src="/lib/pace/pace.min.js"></script>
+    <script id="hexo-configurations">
+        var NexT = window.NexT ||
+        {};
+        var CONFIG = {
+            "hostname": "paynewu.com",
+            "root": "/",
+            "scheme": "Gemini",
+            "version": "7.8.0",
+            "exturl": false,
+            "sidebar":
+            {
+                "position": "right",
+                "width": 240,
+                "display": "post",
+                "padding": 18,
+                "offset": 12,
+                "onmobile": false
+            },
+            "copycode":
+            {
+                "enable": true,
+                "show_result": true,
+                "style": "mac"
+            },
+            "back2top":
+            {
+                "enable": true,
+                "sidebar": false,
+                "scrollpercent": true
+            },
+            "bookmark":
+            {
+                "enable": false,
+                "color": "#222",
+                "save": "auto"
+            },
+            "fancybox": false,
+            "mediumzoom": true,
+            "lazyload": false,
+            "pangu": true,
+            "comments":
+            {
+                "style": "tabs",
+                "active": "valine",
+                "storage": true,
+                "lazyload": false,
+                "nav": null
+            },
+            "algolia":
+            {
+                "hits":
+                {
+                    "per_page": 10
+                },
+                "labels":
+                {
+                    "input_placeholder": "Search for Posts",
+                    "hits_empty": "We didn't find any results for the search: ${query}",
+                    "hits_stats": "${hits} results found in ${time} ms"
+                }
+            },
+            "localsearch":
+            {
+                "enable": true,
+                "trigger": "auto",
+                "top_n_per_article": 8,
+                "unescape": false,
+                "preload": false
+            },
+            "motion":
+            {
+                "enable": false,
+                "async": false,
+                "transition":
+                {
+                    "post_block": "bounceDownIn",
+                    "post_header": "slideDownIn",
+                    "post_body": "slideDownIn",
+                    "coll_header": "slideLeftIn",
+                    "sidebar": "slideUpIn"
+                }
+            },
+            "path": "search.xml"
+        };
+
+    </script>
+    <meta name="description" content="Golang 文件操作 Os模块的使用与源码研究 文件：计算机中的文件是存储在外部介质（通常是磁盘）上的数据集合，文件分为文本文件和二进制文件。例如咱们常见的文件后缀名.exe,.txt,’.word’…等等 文件的基本操作可简单分为增、删两类，也就是咱们所说的CURD(增删改查)，也是基于此两类操作。可简单理解为打开文件夹、CURD、关闭文件夹。结束～ golang对于文件基本上都是基于Gola">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="使用Golang操作文件的那些事儿">
+    <meta property="og:url" content="https://paynewu.com/1627.html">
+    <meta property="og:site_name" content="吴志鹏｜Payne-Wu">
+    <meta property="og:description" content="Golang 文件操作 Os模块的使用与源码研究 文件：计算机中的文件是存储在外部介质（通常是磁盘）上的数据集合，文件分为文本文件和二进制文件。例如咱们常见的文件后缀名.exe,.txt,’.word’…等等 文件的基本操作可简单分为增、删两类，也就是咱们所说的CURD(增删改查)，也是基于此两类操作。可简单理解为打开文件夹、CURD、关闭文件夹。结束～ golang对于文件基本上都是基于Gola">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwgy1gl44ct0b29j31fu0u07d6.jpg">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwgy1gl453fvstjj30su0fg75h.jpg">
+    <meta property="article:published_time" content="2020-11-27T16:11:57.000Z">
+    <meta property="article:modified_time" content="2022-07-27T09:58:26.880Z">
+    <meta property="article:author" content="吴志鹏">
+    <meta property="article:tag" content="Go">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:image" content="https://tva1.sinaimg.cn/large/0081Kckwgy1gl44ct0b29j31fu0u07d6.jpg">
+    <link rel="canonical" href="https://paynewu.com/1627.html">
+    <script id="page-configurations">
+        // https://hexo.io/docs/variables.html
+        CONFIG.page = {
+            sidebar: "",
+            isHome: false,
+            isPost: true,
+            lang: 'zh-CN'
+        };
+
+    </script>
+    <title>使用Golang操作文件的那些事儿 | 吴志鹏｜Payne-Wu</title>
+    <meta name="google-site-verification" content="p_bIcnvirkFzG2dYKuNDivKD8-STet5W7D-01woA2fc" />
+    <noscript>
+        <style>
+            .use-motion .brand,
+            .use-motion .menu-item,
+            .sidebar-inner,
+            .use-motion .post-block,
+            .use-motion .pagination,
+            .use-motion .comments,
+            .use-motion .post-header,
+            .use-motion .post-body,
+            .use-motion .collection-header
+            {
+                opacity: initial;
+            }
+
+            .use-motion .site-title,
+            .use-motion .site-subtitle
+            {
+                opacity: initial;
+                top: initial;
+            }
+
+            .use-motion .logo-line-before i
+            {
+                left: initial;
+            }
+
+            .use-motion .logo-line-after i
+            {
+                right: initial;
+            }
+
+        </style>
+    </noscript>
+    <link rel="alternate" href="/atom.xml" title="吴志鹏｜Payne-Wu" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+    <div class="container">
+        <div class="headband"></div>
+        <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+            <div class="header-inner">
+                <div class="site-brand-container">
+                    <div class="site-nav-toggle">
+                        <div class="toggle" aria-label="切换导航栏">
+                            <span class="toggle-line toggle-line-first"></span>
+                            <span class="toggle-line toggle-line-middle"></span>
+                            <span class="toggle-line toggle-line-last"></span>
+                        </div>
+                    </div>
+                    <div class="site-meta">
+                        <a href="/" class="brand" rel="start">
+                            <span class="logo-line-before"><i></i></span>
+                            <h1 class="site-title">吴志鹏｜Payne-Wu </h1>
+                            <span class="logo-line-after"><i></i></span>
+                        </a>
+                    </div>
+                    <div class="site-nav-right">
+                        <div class="toggle popup-trigger">
+                            <i class="fa fa-search fa-fw fa-lg"></i>
+                        </div>
+                    </div>
+                </div>
+                <nav class="site-nav">
+                    <ul id="menu" class="main-menu menu">
+                        <li class="menu-item menu-item-home">
+                            <a href="/" rel="section">首页</a>
+                        </li>
+                        <li class="menu-item menu-item-archives">
+                            <a href="/archives/" rel="section">文章列表</a>
+                        </li>
+                        <li class="menu-item menu-item-tags">
+                            <a href="/tags/" rel="section">Tags Cloud</a>
+                        </li>
+                        <li class="menu-item menu-item-categories">
+                            <a href="/categories/" rel="section">文章集合</a>
+                        </li>
+                        <li class="menu-item menu-item-about">
+                            <a href="/about/" rel="section">关于我啊</a>
+                        </li>
+                        <li class="menu-item menu-item-message">
+                            <a href="/message/" rel="section">留言与我</a>
+                        </li>
+                        <li class="menu-item menu-item-search">
+                            <a role="button" class="popup-trigger">搜索 </a>
+                        </li>
+                    </ul>
+                </nav>
+                <div class="search-pop-overlay">
+                    <div class="popup search-popup">
+                        <div class="search-header">
+                            <span class="search-icon">
+                                <i class="fa fa-search"></i>
+                            </span>
+                            <div class="search-input-container">
+                                <input autocomplete="off" autocapitalize="off" placeholder="搜索..." spellcheck="false" type="search" class="search-input">
+                            </div>
+                            <span class="popup-btn-close">
+                                <i class="fa fa-times-circle"></i>
+                            </span>
+                        </div>
+                        <div id="search-result">
+                            <div id="no-result">
+                                <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="back-to-top">
+            <i class="fa fa-arrow-up"></i>
+            <span>0%</span>
+        </div>
+        <div class="reading-progress-bar"></div>
+        <main class="main">
+            <div class="main-inner">
+                <div class="content-wrap">
+                    <div class="content post posts-expand">
+                        <article itemscope itemtype="http://schema.org/Article" class="post-block single" lang="zh-CN">
+                            <link itemprop="mainEntityOfPage" href="https://paynewu.com/1627.html">
+                            <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <meta itemprop="image" content="/images/favicon/android-chrome-512x512.png">
+                                <meta itemprop="name" content="吴志鹏">
+                                <meta itemprop="description" content="Talk is free，please state clearly">
+                            </span>
+                            <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+                                <meta itemprop="name" content="吴志鹏｜Payne-Wu">
+                            </span>
+                            <header class="post-header">
+                                <h1 class="post-title" itemprop="name headline"> 使用Golang操作文件的那些事儿 </h1>
+                                <div class="post-meta">
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-user"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">作者</span>
+                                        <span><a href="/authors/Payne" class="author" itemprop="url" rel="index">Payne</a></span>
+                                    </span>
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-calendar"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">发表于</span>
+                                        <time title="创建时间：2020-11-28 00:11:57" itemprop="dateCreated datePublished" datetime="2020-11-28T00:11:57+08:00">2020-11-28</time>
+                                    </span>
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-folder"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">分类于</span>
+                                        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                                            <a href="/categories/Go/" itemprop="url" rel="index"><span itemprop="name">Go</span></a>
+                                        </span>
+                                    </span>
+                                    <br>
+                                    <span class="post-meta-item" title="本文字数">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-file-word"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">本文字数：</span>
+                                        <span>1.8k</span>
+                                    </span>
+                                    <span class="post-meta-item" title="阅读时长">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-clock"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                                        <span>2 分钟</span>
+                                    </span>
+                                </div>
+                            </header>
+                            <div class="post-body" itemprop="articleBody">
+                                <h2 id="Golang-文件操作"><a href="#Golang-文件操作" class="headerlink" title="Golang 文件操作"></a>Golang 文件操作</h2>
+                                <p>Os模块的使用与源码研究</p>
+                                <p>文件：计算机中的文件是存储在外部介质（通常是磁盘）上的数据集合，文件分为文本文件和二进制文件。例如咱们常见的文件后缀名<code>.exe</code>,<code>.txt</code>,’.word’…等等</p>
+                                <p>文件的基本操作可简单分为<code>增</code>、<code>删</code>两类，也就是咱们所说的CURD(增删改查)，也是基于此两类操作。可简单理解为<code>打开文件夹</code>、<code>CURD</code>、关闭文件夹。结束～</p>
+                                <p>golang对于文件基本上都是基于Golang的<code>os</code>模块，那让我们一起了解一下，那么Golang是如何对文件进行操作呢。Let’s Go~</p>
+                                <a id="more"></a>
+                                <h3 id="打开文件"><a href="#打开文件" class="headerlink" title="打开文件"></a>打开文件</h3>
+                                <p>Golang中打开文件使用<code>os.Open</code>模块,官方os.open部分源码如下：</p>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="comment">// os.Open</span></span><br><span class="line"><span class="comment">// Open opens the named file for reading. If successful, methods on</span></span><br><span class="line"><span class="comment">// the returned file can be used for reading; the associated file</span></span><br><span class="line"><span class="comment">// descriptor has mode O_RDONLY.</span></span><br><span class="line"><span class="comment">// If there is an error, it will be of type *PathError.</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Open</span><span class="params">(name <span class="keyword">string</span>)</span> <span class="params">(*File, error)</span></span> &#123;</span><br><span class="line">	<span class="keyword">return</span> OpenFile(name, O_RDONLY, <span class="number">0</span>)</span><br><span class="line">&#125;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <blockquote>
+                                    <p>Open打开命名文件以供读取。如果成功，则可以使用返回文件上的方法进行读取；关联的文件。描述符的模式为O_RDONLY。 如果有错误，它将是* PathError类型。</p>
+                                    <p>它接收一个string 类型的变量<code>name</code>,返回两个值，File的指针和错误error。那么我们使用它打开文件的的时候就需要这样做</p>
+                                    <figure class="highlight go">
+                                        <table>
+                                            <tr>
+                                                <td class="gutter">
+                                                    <pre><span class="line">1</span><br><span class="line">2</span><br></pre>
+                                                </td>
+                                                <td class="code">
+                                                    <pre><span class="line">fileObj, err := os.Open(name <span class="keyword">string</span>)</span><br><span class="line"><span class="comment">// 其中os.Open中的name为路径Path</span></span><br></pre>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </figure>
+                                </blockquote>
+                                <p>基础使用的介绍暂且为止，其实我们更应该关心的应该是<code>OpenFile(name, O_RDONLY, 0)</code>，这个函数到底干了啥，我们追踪一下这个函数(在GoLang编辑器中， mac可以直接使用command +<br>鼠标左键直接进入，Win可以使用ctrl + 鼠标左键)，如下:</p>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">OpenFile</span><span class="params">(name <span class="keyword">string</span>, flag <span class="keyword">int</span>, perm FileMode)</span> <span class="params">(*File, error)</span></span> &#123;</span><br><span class="line">	testlog.Open(name)</span><br><span class="line">	f, err := openFileNolog(name, flag, perm)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">nil</span>, err</span><br><span class="line">	&#125;</span><br><span class="line">	f.appendMode = flag&amp;O_APPEND != <span class="number">0</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> f, <span class="literal">nil</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// OpenFile是广义的open调用；大多数用户将使用Open 或Create代替。它打开带有指定标志的命名文件（O_RDONLY等）。如果该文件不存在，并且传递了O_CREATE标志，则会使用模式perm（在umask之前）创建该文件。如果成功，返回文件上的方法可以用于I / O。 如果有错误，它将是* PathError类型。</span></span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>这个文件全部内容还是有点分量的，有信息的伙伴，可以详细的阅读一下全部内容。暂且为止</p>
+                                <p>那让我们实践一下，使用Golang打开文件，如下</p>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">	<span class="string">"os"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="comment">// 打开此文件，./main.go为相对路径。在这里是此文件</span></span><br><span class="line">	fileObj, err := os.Open(<span class="string">"./main.go"</span>)</span><br><span class="line">	<span class="comment">// 异常处理</span></span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		fmt.Printf(<span class="string">"Open File Error Message:%#v\n"</span>, err)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// 尝试打印(此处输出的为地址值)</span></span><br><span class="line">	fmt.Println(&amp;fileObj)</span><br><span class="line">	<span class="comment">// defer 关闭文件</span></span><br><span class="line">	<span class="keyword">defer</span> fileObj.Close()</span><br><span class="line">&#125;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p><img src="https://tva1.sinaimg.cn/large/0081Kckwgy1gl44ct0b29j31fu0u07d6.jpg" alt=""></p>
+                                <p>以防忘记关闭文件，造成bug，我们在这里使用defer + 关闭。</p>
+                                <blockquote>
+                                    <p>注意：在编辑器中并不建议直接使用鼠标右键运行，这样可能会导致路径错误。大部分的编辑器都并不是只运行此文件!!!</p>
+                                    <figure class="highlight sh">
+                                        <table>
+                                            <tr>
+                                                <td class="gutter">
+                                                    <pre><span class="line">1</span><br></pre>
+                                                </td>
+                                                <td class="code">
+                                                    <pre><span class="line">Open File Error Message:&amp;os.PathError&#123;Op:<span class="string">"open"</span>, Path:<span class="string">"./main.go"</span>, Err:0x2&#125;</span><br></pre>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </figure>
+                                    <p>如果你遇见了类似的错误，你可以直接在终端中，切换到当前路径。使用<code>go run main.go</code>，直接运行。这样就可以直接得到正确的结果啦</p>
+                                </blockquote>
+                                <h3 id="读取文件"><a href="#读取文件" class="headerlink" title="读取文件"></a>读取文件</h3>
+                                <p>打开文件之后，那么我们可以就可以对他们进行操作了，我们在这里主要演示一下读取文件的操作。还是老样子，先看一下主要的相关源码，如下:</p>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="comment">// FileObj.Read()</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(f *File)</span> <span class="title">Read</span><span class="params">(b []<span class="keyword">byte</span>)</span> <span class="params">(n <span class="keyword">int</span>, err error)</span></span> &#123;</span><br><span class="line">	<span class="keyword">if</span> err := f.checkValid(<span class="string">"read"</span>); err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span>, err</span><br><span class="line">	&#125;</span><br><span class="line">	n, e := f.read(b)</span><br><span class="line">	<span class="keyword">return</span> n, f.wrapErr(<span class="string">"read"</span>, e)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// f.read(b)</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(f *File)</span> <span class="title">read</span><span class="params">(b []<span class="keyword">byte</span>)</span> <span class="params">(n <span class="keyword">int</span>, err error)</span></span> &#123;</span><br><span class="line">	n, err = f.pfd.Read(b)</span><br><span class="line">	runtime.KeepAlive(f)</span><br><span class="line">	<span class="keyword">return</span> n, err</span><br><span class="line">&#125;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <blockquote>
+                                    <p>FileObj.Read()</p>
+                                    <p>示例化接受文件的地址值(也就是咱们前面打开获取到的结果)，接受切片的字节，返回读取的内容，以及错误</p>
+                                    <p>在此函数中首先检查是否为有效的读取，然后在进行f.read(b)的操作,接受其返回结果。</p>
+                                    <p>f.read(b)</p>
+                                    <p>在这里，主要检测是否在读取，如果是那么返回本次的读取内容</p>
+                                </blockquote>
+                                <p>从以上我们不难看出，其实读取文件是读取文件内部的字节</p>
+                                <p>那么更具FileObj.Read()，我们可以了解它基本的使用方法，如下</p>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(f *File)</span> <span class="title">Read</span><span class="params">(b []<span class="keyword">byte</span>)</span> <span class="params">(n <span class="keyword">int</span>, err error)</span></span></span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>读取部分的示例代码如下：</p>
+                                <p>在这里我们需要考虑：是否能够正常读取？是否读完了？具体请看异常处理部分</p>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="comment">// 读取文件</span></span><br><span class="line">	<span class="comment">// 定义每次读取的大小</span></span><br><span class="line">	<span class="comment">//var tmp = make([]byte, 128)</span></span><br><span class="line">	<span class="keyword">var</span> tmp  [<span class="number">128</span>]<span class="keyword">byte</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">// n:从开始到结尾的内容</span></span><br><span class="line">	n, err := fileObj.Read(tmp[:])</span><br><span class="line">	<span class="comment">// 异常处理</span></span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		fmt.Printf(<span class="string">"Read of File Error, ErrorMessage:%#v\n"</span>, err)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> err == io.EOF &#123;</span><br><span class="line">		fmt.Println(<span class="string">"文件读完了"</span>)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Printf(<span class="string">"读取了%d个字节\n"</span>, n)</span><br><span class="line">	fmt.Printf(<span class="string">"读取到的内容：\n%s"</span>,tmp[:])</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>输出结果如下：</p>
+                                <p><img src="https://tva1.sinaimg.cn/large/0081Kckwgy1gl453fvstjj30su0fg75h.jpg" alt=""></p>
+                                <p>以上很明显是并没有读完的仅读取了部分，原始的全部代码如下</p>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">	<span class="string">"io"</span></span><br><span class="line">	<span class="string">"os"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="comment">// 打开此文件，./main.go为相对路径。在这里是此文件</span></span><br><span class="line">	fileObj, err := os.Open(<span class="string">"./main.go"</span>)</span><br><span class="line">	<span class="comment">// 异常处理</span></span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		fmt.Printf(<span class="string">"Open of File Error, ErrorMessage:%#v\n"</span>, err)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// 尝试打印(此处输出的为地址值)</span></span><br><span class="line">	fmt.Println(&amp;fileObj)</span><br><span class="line">	<span class="comment">// defer 关闭文件</span></span><br><span class="line">	<span class="keyword">defer</span> fileObj.Close()</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 读取文件</span></span><br><span class="line">	<span class="comment">// 定义每次读取的大小</span></span><br><span class="line">	<span class="comment">//var tmp = make([]byte, 128)</span></span><br><span class="line">	<span class="keyword">var</span> tmp  [<span class="number">128</span>]<span class="keyword">byte</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">// n:从开始到结尾的内容</span></span><br><span class="line">	n, err := fileObj.Read(tmp[:])</span><br><span class="line">	<span class="comment">// 异常处理</span></span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		fmt.Printf(<span class="string">"Read of File Error, ErrorMessage:%#v\n"</span>, err)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> err == io.EOF &#123;</span><br><span class="line">		fmt.Println(<span class="string">"文件读完了"</span>)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Printf(<span class="string">"读取了%d个字节\n"</span>, n)</span><br><span class="line">	fmt.Printf(<span class="string">"读取到的内容：\n%s"</span>,tmp[:])</span><br><span class="line">&#125;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h3 id="完整读取"><a href="#完整读取" class="headerlink" title="完整读取"></a>完整读取</h3>
+                                <h4 id="for无线循环读取"><a href="#for无线循环读取" class="headerlink" title="for无线循环读取"></a>for无线循环读取</h4>
+                                <p>由于以上我们并没有读取完整个文件，那么我需要读取全部的该怎么办呢？一个方法是不断的读取下去，然后和在一起就是完整的内容了，示例代码如下</p>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">	<span class="string">"io"</span></span><br><span class="line">	<span class="string">"os"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="comment">// 打开此文件，./main.go为相对路径。在这里是此文件</span></span><br><span class="line">	fileObj, err := os.Open(<span class="string">"./main.go"</span>)</span><br><span class="line">	<span class="comment">// 异常处理</span></span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		fmt.Printf(<span class="string">"Open of File Error, ErrorMessage:%#v\n"</span>, err)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// 尝试打印(此处输出的为地址值)</span></span><br><span class="line">	fmt.Println(&amp;fileObj)</span><br><span class="line">	<span class="comment">// defer 关闭文件</span></span><br><span class="line">	<span class="keyword">defer</span> fileObj.Close()</span><br><span class="line">	<span class="comment">// 循环读取文件</span></span><br><span class="line">	<span class="keyword">var</span> content []<span class="keyword">byte</span></span><br><span class="line">	<span class="keyword">var</span> tmp = <span class="built_in">make</span>([]<span class="keyword">byte</span>, <span class="number">128</span>)</span><br><span class="line">	<span class="keyword">for</span> &#123;</span><br><span class="line">		n, err := fileObj.Read(tmp)</span><br><span class="line">		<span class="keyword">if</span> err == io.EOF &#123;</span><br><span class="line">			fmt.Println(<span class="string">"文件读完了"</span>)</span><br><span class="line">			<span class="keyword">break</span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">			fmt.Printf(<span class="string">"Read of File Error, ErrorMessage:%#v\n"</span>, err)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125;</span><br><span class="line">		content = <span class="built_in">append</span>(content, tmp[:n]...)</span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Println(<span class="keyword">string</span>(content))</span><br><span class="line">&#125;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>主要的思路为：无限循环去读取，读完了之后break掉。然后把读取的内容合并起来</p>
+                                <p>这种读取虽然可行，不过是否有点太麻烦了，那么有什么更简便的方式呢？答案当然是有的，bufio读取</p>
+                                <h4 id="bufio读取"><a href="#bufio读取" class="headerlink" title="bufio读取"></a>bufio读取</h4>
+                                <p>bufio是在file的基础上封装了一层API，支持更多的功能。</p>
+                                <p>主要的部分源码如下所示</p>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="comment">// bufio.NewReader</span></span><br><span class="line"><span class="comment">// NewReader returns a new Reader whose buffer has the default size.</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">NewReader</span><span class="params">(rd io.Reader)</span> *<span class="title">Reader</span></span> &#123;</span><br><span class="line">	<span class="keyword">return</span> NewReaderSize(rd, defaultBufSize)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// NewReaderSize</span></span><br><span class="line"><span class="comment">// NewReaderSize returns a new Reader whose buffer has at least the specified</span></span><br><span class="line"><span class="comment">// size. If the argument io.Reader is already a Reader with large enough</span></span><br><span class="line"><span class="comment">// size, it returns the underlying Reader.</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">NewReaderSize</span><span class="params">(rd io.Reader, size <span class="keyword">int</span>)</span> *<span class="title">Reader</span></span> &#123;</span><br><span class="line">	<span class="comment">// Is it already a Reader?</span></span><br><span class="line">	b, ok := rd.(*Reader)</span><br><span class="line">	<span class="keyword">if</span> ok &amp;&amp; <span class="built_in">len</span>(b.buf) &gt;= size &#123;</span><br><span class="line">		<span class="keyword">return</span> b</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> size &lt; minReadBufferSize &#123;</span><br><span class="line">		size = minReadBufferSize</span><br><span class="line">	&#125;</span><br><span class="line">	r := <span class="built_in">new</span>(Reader)</span><br><span class="line">	r.reset(<span class="built_in">make</span>([]<span class="keyword">byte</span>, size), rd)</span><br><span class="line">	<span class="keyword">return</span> r</span><br><span class="line">&#125;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>它简便的原因是因为已经帮我们定义了文件的指针，以及它还定义了缓冲区，这样我们使用它来读取更加的快与便捷。</p>
+                                <p>bufio.NewReader语法格式</p>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">NewReader</span><span class="params">(rd io.Reader)</span> *<span class="title">Reader</span></span> </span><br><span class="line"><span class="comment">// 其中rd为我们打开文件的对象</span></span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>使用如下</p>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"bufio"</span></span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">	<span class="string">"io"</span></span><br><span class="line">	<span class="string">"os"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="comment">// 打开此文件，./main.go为相对路径。在这里是此文件</span></span><br><span class="line">	fileObj, err := os.Open(<span class="string">"./main.go"</span>)</span><br><span class="line">	<span class="comment">// 异常处理</span></span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		fmt.Printf(<span class="string">"Open of File Error, ErrorMessage:%#v\n"</span>, err)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// 尝试打印(此处输出的为地址值)</span></span><br><span class="line">	fmt.Println(&amp;fileObj)</span><br><span class="line">	<span class="comment">// defer 关闭文件</span></span><br><span class="line">	<span class="keyword">defer</span> fileObj.Close()</span><br><span class="line">	<span class="comment">// bufio读取</span></span><br><span class="line">	reader := bufio.NewReader(fileObj)</span><br><span class="line">	<span class="keyword">for</span> &#123;</span><br><span class="line">		line, err := reader.ReadString(<span class="string">'\n'</span>) <span class="comment">//注意是字符</span></span><br><span class="line">		<span class="keyword">if</span> err == io.EOF &#123;</span><br><span class="line">			<span class="keyword">if</span> <span class="built_in">len</span>(line) != <span class="number">0</span> &#123;</span><br><span class="line">				fmt.Println(line)</span><br><span class="line">			&#125;</span><br><span class="line">			fmt.Println(<span class="string">"文件读完了"</span>)</span><br><span class="line">			<span class="keyword">break</span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">			fmt.Println(<span class="string">"read file failed, err:"</span>, err)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125;</span><br><span class="line">		fmt.Print(line)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>输入结果如上，略。。。</p>
+                                <p>搞了这么多，就没有一键读取的么？当然也是有的，让我们来了体验一下<code>ioutil</code>读取整个文件的愉悦。</p>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">	<span class="string">"io/ioutil"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">// ioutil.ReadFile读取整个文件</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	content, err := ioutil.ReadFile(<span class="string">"./main.go"</span>)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		fmt.Println(<span class="string">"read file failed, err:"</span>, err)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Println(<span class="keyword">string</span>(content))</span><br><span class="line">&#125;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>其内部的实现原理，先预测整个文件的大小。然后一次性全部读取。当然需要做好异常的准备哦</p>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="comment">// ReadFile reads the file named by filename and returns the contents.</span></span><br><span class="line"><span class="comment">// A successful call returns err == nil, not err == EOF. Because ReadFile</span></span><br><span class="line"><span class="comment">// reads the whole file, it does not treat an EOF from Read as an error</span></span><br><span class="line"><span class="comment">// to be reported.</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">ReadFile</span><span class="params">(filename <span class="keyword">string</span>)</span> <span class="params">([]<span class="keyword">byte</span>, error)</span></span> &#123;</span><br><span class="line">	f, err := os.Open(filename)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">nil</span>, err</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">defer</span> f.Close()</span><br><span class="line">	<span class="comment">// It's a good but not certain bet that FileInfo will tell us exactly how much to</span></span><br><span class="line">	<span class="comment">// read, so let's try it but be prepared for the answer to be wrong.</span></span><br><span class="line">	<span class="keyword">var</span> n <span class="keyword">int64</span> = bytes.MinRead</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> fi, err := f.Stat(); err == <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="comment">// As initial capacity for readAll, use Size + a little extra in case Size</span></span><br><span class="line">		<span class="comment">// is zero, and to avoid another allocation after Read has filled the</span></span><br><span class="line">		<span class="comment">// buffer. The readAll call will read into its allocated internal buffer</span></span><br><span class="line">		<span class="comment">// cheaply. If the size was wrong, we'll either waste some space off the end</span></span><br><span class="line">		<span class="comment">// or reallocate as needed, but in the overwhelmingly common case we'll get</span></span><br><span class="line">		<span class="comment">// it just right.</span></span><br><span class="line">		<span class="keyword">if</span> size := fi.Size() + bytes.MinRead; size &gt; n &#123;</span><br><span class="line">			n = size</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> readAll(f, n)</span><br><span class="line">&#125;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h3 id="文件写入操作"><a href="#文件写入操作" class="headerlink" title="文件写入操作"></a>文件写入操作</h3>
+                                <p><code>os.OpenFile()</code>函数能够以指定模式打开文件，从而实现文件写入相关功能。</p>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">OpenFile</span><span class="params">(name <span class="keyword">string</span>, flag <span class="keyword">int</span>, perm FileMode)</span> <span class="params">(*File, error)</span></span> &#123;</span><br><span class="line">	...</span><br><span class="line">&#125;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>其中：</p>
+                                <p><code>name</code>：要打开的文件名 <code>flag</code>：打开文件的模式。 模式有以下几种：</p>
+                                <div class="table-container">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th style="text-align:center">模式</th>
+                                                <th style="text-align:center">含义</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td style="text-align:center"><code>os.O_WRONLY</code></td>
+                                                <td style="text-align:center">只写</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center"><code>os.O_CREATE</code></td>
+                                                <td style="text-align:center">创建文件</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center"><code>os.O_RDONLY</code></td>
+                                                <td style="text-align:center">只读</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center"><code>os.O_RDWR</code></td>
+                                                <td style="text-align:center">读写</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center"><code>os.O_TRUNC</code></td>
+                                                <td style="text-align:center">清空</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center"><code>os.O_APPEND</code></td>
+                                                <td style="text-align:center">追加</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <p><code>perm</code>：文件权限，一个八进制数。r（读）04，w（写）02，x（执行）01。</p>
+                                <h4 id="Write和WriteString"><a href="#Write和WriteString" class="headerlink" title="Write和WriteString"></a>Write和WriteString</h4>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	file, err := os.OpenFile(test.txt<span class="string">", os.O_CREATE|os.O_TRUNC|os.O_WRONLY, 0666)</span></span><br><span class="line"><span class="string">	if err != nil &#123;</span></span><br><span class="line"><span class="string">		fmt.Println("</span>open file failed, err:<span class="string">", err)</span></span><br><span class="line"><span class="string">		return</span></span><br><span class="line"><span class="string">	&#125;</span></span><br><span class="line"><span class="string">	defer file.Close()</span></span><br><span class="line"><span class="string">	str := "</span>hello<span class="string">"</span></span><br><span class="line"><span class="string">	file.Write([]byte(str))       //写入字节切片数据</span></span><br><span class="line"><span class="string">	file.WriteString("</span>hello<span class="string">") //直接写入字符串数据</span></span><br><span class="line"><span class="string">&#125;</span></span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h4 id="bufio-NewWriter"><a href="#bufio-NewWriter" class="headerlink" title="bufio.NewWriter"></a>bufio.NewWriter</h4>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	file, err := os.OpenFile(<span class="string">"xx.txt"</span>, os.O_CREATE|os.O_TRUNC|os.O_WRONLY, <span class="number">0666</span>)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		fmt.Println(<span class="string">"open file failed, err:"</span>, err)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">defer</span> file.Close()</span><br><span class="line">	writer := bufio.NewWriter(file)</span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">10</span>; i++ &#123;</span><br><span class="line">		writer.WriteString(<span class="string">"hello"</span>) <span class="comment">//将数据先写入缓存</span></span><br><span class="line">	&#125;</span><br><span class="line">	writer.Flush() <span class="comment">//将缓存中的内容写入文件</span></span><br><span class="line">&#125;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h4 id="ioutil-WriteFile"><a href="#ioutil-WriteFile" class="headerlink" title="ioutil.WriteFile"></a>ioutil.WriteFile</h4>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	str := <span class="string">"hello"</span></span><br><span class="line">	err := ioutil.WriteFile(<span class="string">"./asd.txt"</span>, []<span class="keyword">byte</span>(str), <span class="number">0666</span>)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		fmt.Println(<span class="string">"write file failed, err:"</span>, err)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>so cool～</p>
+                            </div>
+                            <div class="popular-posts-header">相关文章</div>
+                            <ul class="popular-posts">
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/62372.html" rel="bookmark">Golang-Array</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/17571.html" rel="bookmark">Golang-Defer详解</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/3744.html" rel="bookmark">Golang-Map</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/45903.html" rel="bookmark">Golang-匿名函数与闭包</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/1962.html" rel="bookmark">Golang-接口(interface)</a></div>
+                                </li>
+                            </ul>
+                            <footer class="post-footer">
+                                <div class="post-tags">
+                                    <a href="/tags/Go/" rel="tag"><i class="fa fa-tag"></i> Go</a>
+                                </div>
+                                <div class="post-nav">
+                                    <div class="post-nav-item">
+                                        <a href="/1962.html" rel="prev" title="Golang-接口(interface)">
+                                            <i class="fa fa-chevron-left"></i> Golang-接口(interface) </a>
+                                    </div>
+                                    <div class="post-nav-item">
+                                        <a href="/11529.html" rel="next" title="Golang内置包之time"> Golang内置包之time <i class="fa fa-chevron-right"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </footer>
+                        </article>
+                    </div>
+                    <script>
+                        window.addEventListener('tabs:register', () =>
+                        {
+                            let
+                            {
+                                activeClass
+                            } = CONFIG.comments;
+                            if (CONFIG.comments.storage)
+                            {
+                                activeClass = localStorage.getItem('comments_active') || activeClass;
+                            }
+                            if (activeClass)
+                            {
+                                let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+                                if (activeTab)
+                                {
+                                    activeTab.click();
+                                }
+                            }
+                        });
+                        if (CONFIG.comments.storage)
+                        {
+                            window.addEventListener('tabs:click', event =>
+                            {
+                                if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+                                let commentClass = event.target.classList[1];
+                                localStorage.setItem('comments_active', commentClass);
+                            });
+                        }
+
+                    </script>
+                </div>
+                <div class="toggle sidebar-toggle">
+                    <span class="toggle-line toggle-line-first"></span>
+                    <span class="toggle-line toggle-line-middle"></span>
+                    <span class="toggle-line toggle-line-last"></span>
+                </div>
+                <aside class="sidebar">
+                    <div class="sidebar-inner">
+                        <ul class="sidebar-nav motion-element">
+                            <li class="sidebar-nav-toc"> 文章目录 </li>
+                            <li class="sidebar-nav-overview"> 站点概览 </li>
+                        </ul>
+                        <!--noindex-->
+                        <div class="post-toc-wrap sidebar-panel">
+                            <div class="post-toc motion-element">
+                                <ol class="nav">
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#Golang-文件操作"><span class="nav-number">1.</span> <span class="nav-text">Golang 文件操作</span></a>
+                                        <ol class="nav-child">
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#打开文件"><span class="nav-number">1.1.</span> <span class="nav-text">打开文件</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#读取文件"><span class="nav-number">1.2.</span> <span class="nav-text">读取文件</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#完整读取"><span class="nav-number">1.3.</span> <span class="nav-text">完整读取</span></a>
+                                                <ol class="nav-child">
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#for无线循环读取"><span class="nav-number">1.3.1.</span> <span class="nav-text">for无线循环读取</span></a></li>
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#bufio读取"><span class="nav-number">1.3.2.</span> <span class="nav-text">bufio读取</span></a></li>
+                                                </ol>
+                                            </li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#文件写入操作"><span class="nav-number">1.4.</span> <span class="nav-text">文件写入操作</span></a>
+                                                <ol class="nav-child">
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#Write和WriteString"><span class="nav-number">1.4.1.</span> <span class="nav-text">Write和WriteString</span></a></li>
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#bufio-NewWriter"><span class="nav-number">1.4.2.</span> <span class="nav-text">bufio.NewWriter</span></a></li>
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#ioutil-WriteFile"><span class="nav-number">1.4.3.</span> <span class="nav-text">ioutil.WriteFile</span></a></li>
+                                                </ol>
+                                            </li>
+                                        </ol>
+                                    </li>
+                                </ol>
+                            </div>
+                        </div>
+                        <!--/noindex-->
+                        <div class="site-overview-wrap sidebar-panel">
+                            <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <img class="site-author-image" itemprop="image" alt="吴志鹏" src="/images/favicon/android-chrome-512x512.png">
+                                <p class="site-author-name" itemprop="name">吴志鹏</p>
+                                <div class="site-description" itemprop="description">Talk is free，please state clearly</div>
+                            </div>
+                            <div class="site-state-wrap motion-element">
+                                <nav class="site-state">
+                                    <div class="site-state-item site-state-posts">
+                                        <a href="/archives/">
+                                            <span class="site-state-item-count">136</span>
+                                            <span class="site-state-item-name">日志</span>
+                                        </a>
+                                    </div>
+                                    <div class="site-state-item site-state-categories">
+                                        <a href="/categories/">
+                                            <span class="site-state-item-count">158</span>
+                                            <span class="site-state-item-name">分类</span></a>
+                                    </div>
+                                    <div class="site-state-item site-state-tags">
+                                        <a href="/tags/">
+                                            <span class="site-state-item-count">89</span>
+                                            <span class="site-state-item-name">标签</span></a>
+                                    </div>
+                                </nav>
+                            </div>
+                            <div class="links-of-author motion-element">
+                                <span class="links-of-author-item">
+                                    <a href="https://github.com/Payne-Wu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Payne-Wu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="mailto:wuzhipeng1289690157@gmail.com" title="E-Mail → mailto:wuzhipeng1289690157@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="https://www.zhihu.com/people/wu-zhi-peng-72-78" title="ZhiHu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;wu-zhi-peng-72-78" rel="noopener" target="_blank"><i class="fa fa-magic fa-fw"></i>ZhiHu</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="https://weibo.com/u/6987234483" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;6987234483" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+                <div id="sidebar-dimmer"></div>
+            </div>
+        </main>
+        <footer class="footer">
+            <div class="footer-inner">
+                <div class="copyright"> &copy; <span itemprop="copyrightYear">2022</span>
+                    <span class="with-love">
+                        <i class="fa fa-heart"></i>
+                    </span>
+                    <span class="author" itemprop="copyrightHolder">PayneWu</span>
+                    <span class="post-meta-divider">|</span>
+                    <span class="post-meta-item-icon">
+                        <i class="fa fa-chart-area"></i>
+                    </span>
+                    <span title="站点总字数">255k</span>
+                    <span class="post-meta-divider">|</span>
+                    <span class="post-meta-item-icon">
+                        <i class="fa fa-coffee"></i>
+                    </span>
+                    <span title="站点阅读时长">3:51</span>
+                </div>
+                <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">湘ICP备2021019893号-1 </a>
+                </div>
+                <div style="display: none;">
+                    <script src="//s95.cnzz.com/z_stat.php?id=true&web_id=true"></script>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+    <script src="/js/utils.js"></script>
+    <script src="/.js"></script>
+    <script src="/js/schemes/pisces.js"></script>
+    <script src="/.js"></script>
+    <script src="/js/next-boot.js"></script>
+    <script src="/.js"></script>
+    <script>
+        (function ()
+        {
+            var canonicalURL, curProtocol;
+            //Get the <link> tag
+            var x = document.getElementsByTagName("link");
+            //Find the last canonical URL
+            if (x.length > 0)
+            {
+                for (i = 0; i < x.length; i++)
+                {
+                    if (x[i].rel.toLowerCase() == 'canonical' && x[i].href)
+                    {
+                        canonicalURL = x[i].href;
+                    }
+                }
+            }
+            //Get protocol
+            if (!canonicalURL)
+            {
+                curProtocol = window.location.protocol.split(':')[0];
+            }
+            else
+            {
+                curProtocol = canonicalURL.split(':')[0];
+            }
+            //Get current URL if the canonical URL does not exist
+            if (!canonicalURL) canonicalURL = window.location.href;
+            //Assign script content. Replace current URL with the canonical URL
+            ! function ()
+            {
+                var e = /([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,
+                    r = canonicalURL,
+                    t = document.referrer;
+                if (!e.test(r))
+                {
+                    var n = (String(curProtocol).toLowerCase() === 'https') ? "https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif" : "//api.share.baidu.com/s.gif";
+                    t ? (n += "?r=" + encodeURIComponent(document.referrer), r && (n += "&l=" + r)) : r && (n += "?l=" + r);
+                    var i = new Image;
+                    i.src = n
+                }
+            }(window);
+        })();
+
+    </script>
+    <script src="/js/local-search.js"></script>
+    <script src="/.js"></script>
+</body>
+
+</html>

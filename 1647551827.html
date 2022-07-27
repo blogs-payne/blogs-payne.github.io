@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+    <meta name="theme-color" content="#222">
+    <meta name="generator" content="Hexo 4.2.1">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16-next.png">
+    <link rel="mask-icon" href="/images/favicon/safari-pinned-tab.svg" color="#222">
+    <meta name="msapplication-config" content="/images/favicon/browserconfig.xml">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+    <link rel="stylesheet" href="/lib/pace/pace-theme-mac-osx.min.css">
+    <script src="/lib/pace/pace.min.js"></script>
+    <script id="hexo-configurations">
+        var NexT = window.NexT ||
+        {};
+        var CONFIG = {
+            "hostname": "paynewu.com",
+            "root": "/",
+            "scheme": "Gemini",
+            "version": "7.8.0",
+            "exturl": false,
+            "sidebar":
+            {
+                "position": "right",
+                "width": 240,
+                "display": "post",
+                "padding": 18,
+                "offset": 12,
+                "onmobile": false
+            },
+            "copycode":
+            {
+                "enable": true,
+                "show_result": true,
+                "style": "mac"
+            },
+            "back2top":
+            {
+                "enable": true,
+                "sidebar": false,
+                "scrollpercent": true
+            },
+            "bookmark":
+            {
+                "enable": false,
+                "color": "#222",
+                "save": "auto"
+            },
+            "fancybox": false,
+            "mediumzoom": true,
+            "lazyload": false,
+            "pangu": true,
+            "comments":
+            {
+                "style": "tabs",
+                "active": "valine",
+                "storage": true,
+                "lazyload": false,
+                "nav": null
+            },
+            "algolia":
+            {
+                "hits":
+                {
+                    "per_page": 10
+                },
+                "labels":
+                {
+                    "input_placeholder": "Search for Posts",
+                    "hits_empty": "We didn't find any results for the search: ${query}",
+                    "hits_stats": "${hits} results found in ${time} ms"
+                }
+            },
+            "localsearch":
+            {
+                "enable": true,
+                "trigger": "auto",
+                "top_n_per_article": 8,
+                "unescape": false,
+                "preload": false
+            },
+            "motion":
+            {
+                "enable": false,
+                "async": false,
+                "transition":
+                {
+                    "post_block": "bounceDownIn",
+                    "post_header": "slideDownIn",
+                    "post_body": "slideDownIn",
+                    "coll_header": "slideLeftIn",
+                    "sidebar": "slideUpIn"
+                }
+            },
+            "path": "search.xml"
+        };
+
+    </script>
+    <meta name="description" content="MySQL体系结构 C&#x2F;S(Client&#x2F;Server)模型 ​ C&#x2F;S结构是一种软件系统体系结构， ​ C是英文单词“Client”的首字母，即客户端的意思，C&#x2F;S就是“Client&#x2F;Server”的缩写，即“客户端&#x2F;服务器”模式。MySQL C&#x2F;S 可如下图所示  MySQL 连接 实现MySQL连接的方式主要有两种，      基于TCP&#x2F;IP的连接，适用于远程、本地     基于Socke">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="MySQL数据库体系结构">
+    <meta property="og:url" content="https://paynewu.com/1647551827.html">
+    <meta property="og:site_name" content="吴志鹏｜Payne-Wu">
+    <meta property="og:description" content="MySQL体系结构 C&#x2F;S(Client&#x2F;Server)模型 ​ C&#x2F;S结构是一种软件系统体系结构， ​ C是英文单词“Client”的首字母，即客户端的意思，C&#x2F;S就是“Client&#x2F;Server”的缩写，即“客户端&#x2F;服务器”模式。MySQL C&#x2F;S 可如下图所示  MySQL 连接 实现MySQL连接的方式主要有两种，      基于TCP&#x2F;IP的连接，适用于远程、本地     基于Socke">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNgy1gto7tgqgp1j60js0a8jrl02.jpg">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNgy1gtoa5gogpej60fv0dhjs202.jpg">
+    <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/16956686-127fff46fdb7fea9.png">
+    <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/16956686-bfd40838aef7971b.png">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNgy1gtoc99udhyj60bw0ma0tu02.jpg">
+    <meta property="article:published_time" content="2021-08-21T02:42:42.000Z">
+    <meta property="article:modified_time" content="2022-07-27T09:58:26.876Z">
+    <meta property="article:author" content="吴志鹏">
+    <meta property="article:tag" content="MySQL">
+    <meta property="article:tag" content="数据库">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:image" content="https://tva1.sinaimg.cn/large/008i3skNgy1gto7tgqgp1j60js0a8jrl02.jpg">
+    <link rel="canonical" href="https://paynewu.com/1647551827.html">
+    <script id="page-configurations">
+        // https://hexo.io/docs/variables.html
+        CONFIG.page = {
+            sidebar: "",
+            isHome: false,
+            isPost: true,
+            lang: 'zh-CN'
+        };
+
+    </script>
+    <title>MySQL数据库体系结构 | 吴志鹏｜Payne-Wu</title>
+    <meta name="google-site-verification" content="p_bIcnvirkFzG2dYKuNDivKD8-STet5W7D-01woA2fc" />
+    <noscript>
+        <style>
+            .use-motion .brand,
+            .use-motion .menu-item,
+            .sidebar-inner,
+            .use-motion .post-block,
+            .use-motion .pagination,
+            .use-motion .comments,
+            .use-motion .post-header,
+            .use-motion .post-body,
+            .use-motion .collection-header
+            {
+                opacity: initial;
+            }
+
+            .use-motion .site-title,
+            .use-motion .site-subtitle
+            {
+                opacity: initial;
+                top: initial;
+            }
+
+            .use-motion .logo-line-before i
+            {
+                left: initial;
+            }
+
+            .use-motion .logo-line-after i
+            {
+                right: initial;
+            }
+
+        </style>
+    </noscript>
+    <link rel="alternate" href="/atom.xml" title="吴志鹏｜Payne-Wu" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+    <div class="container">
+        <div class="headband"></div>
+        <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+            <div class="header-inner">
+                <div class="site-brand-container">
+                    <div class="site-nav-toggle">
+                        <div class="toggle" aria-label="切换导航栏">
+                            <span class="toggle-line toggle-line-first"></span>
+                            <span class="toggle-line toggle-line-middle"></span>
+                            <span class="toggle-line toggle-line-last"></span>
+                        </div>
+                    </div>
+                    <div class="site-meta">
+                        <a href="/" class="brand" rel="start">
+                            <span class="logo-line-before"><i></i></span>
+                            <h1 class="site-title">吴志鹏｜Payne-Wu </h1>
+                            <span class="logo-line-after"><i></i></span>
+                        </a>
+                    </div>
+                    <div class="site-nav-right">
+                        <div class="toggle popup-trigger">
+                            <i class="fa fa-search fa-fw fa-lg"></i>
+                        </div>
+                    </div>
+                </div>
+                <nav class="site-nav">
+                    <ul id="menu" class="main-menu menu">
+                        <li class="menu-item menu-item-home">
+                            <a href="/" rel="section">首页</a>
+                        </li>
+                        <li class="menu-item menu-item-archives">
+                            <a href="/archives/" rel="section">文章列表</a>
+                        </li>
+                        <li class="menu-item menu-item-tags">
+                            <a href="/tags/" rel="section">Tags Cloud</a>
+                        </li>
+                        <li class="menu-item menu-item-categories">
+                            <a href="/categories/" rel="section">文章集合</a>
+                        </li>
+                        <li class="menu-item menu-item-about">
+                            <a href="/about/" rel="section">关于我啊</a>
+                        </li>
+                        <li class="menu-item menu-item-message">
+                            <a href="/message/" rel="section">留言与我</a>
+                        </li>
+                        <li class="menu-item menu-item-search">
+                            <a role="button" class="popup-trigger">搜索 </a>
+                        </li>
+                    </ul>
+                </nav>
+                <div class="search-pop-overlay">
+                    <div class="popup search-popup">
+                        <div class="search-header">
+                            <span class="search-icon">
+                                <i class="fa fa-search"></i>
+                            </span>
+                            <div class="search-input-container">
+                                <input autocomplete="off" autocapitalize="off" placeholder="搜索..." spellcheck="false" type="search" class="search-input">
+                            </div>
+                            <span class="popup-btn-close">
+                                <i class="fa fa-times-circle"></i>
+                            </span>
+                        </div>
+                        <div id="search-result">
+                            <div id="no-result">
+                                <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="back-to-top">
+            <i class="fa fa-arrow-up"></i>
+            <span>0%</span>
+        </div>
+        <div class="reading-progress-bar"></div>
+        <main class="main">
+            <div class="main-inner">
+                <div class="content-wrap">
+                    <div class="content post posts-expand">
+                        <article itemscope itemtype="http://schema.org/Article" class="post-block single" lang="zh-CN">
+                            <link itemprop="mainEntityOfPage" href="https://paynewu.com/1647551827.html">
+                            <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <meta itemprop="image" content="/images/favicon/android-chrome-512x512.png">
+                                <meta itemprop="name" content="吴志鹏">
+                                <meta itemprop="description" content="Talk is free，please state clearly">
+                            </span>
+                            <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+                                <meta itemprop="name" content="吴志鹏｜Payne-Wu">
+                            </span>
+                            <header class="post-header">
+                                <h1 class="post-title" itemprop="name headline"> MySQL数据库体系结构 </h1>
+                                <div class="post-meta">
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-user"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">作者</span>
+                                        <span><a href="/authors/Payne" class="author" itemprop="url" rel="index">Payne</a></span>
+                                    </span>
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-calendar"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">发表于</span>
+                                        <time title="创建时间：2021-08-21 10:42:42" itemprop="dateCreated datePublished" datetime="2021-08-21T10:42:42+08:00">2021-08-21</time>
+                                    </span>
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-folder"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">分类于</span>
+                                        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                                            <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a>
+                                        </span> ， <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                                            <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/MySQL/" itemprop="url" rel="index"><span itemprop="name">MySQL</span></a>
+                                        </span>
+                                    </span>
+                                    <br>
+                                    <span class="post-meta-item" title="本文字数">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-file-word"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">本文字数：</span>
+                                        <span>1.1k</span>
+                                    </span>
+                                    <span class="post-meta-item" title="阅读时长">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-clock"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                                        <span>1 分钟</span>
+                                    </span>
+                                </div>
+                            </header>
+                            <div class="post-body" itemprop="articleBody">
+                                <h2 id="MySQL体系结构"><a href="#MySQL体系结构" class="headerlink" title="MySQL体系结构"></a>MySQL体系结构</h2>
+                                <h3 id="C-S-Client-Server-模型"><a href="#C-S-Client-Server-模型" class="headerlink" title="C/S(Client/Server)模型"></a>C/S(Client/Server)模型</h3>
+                                <p>​ C/S结构是一种软件系统体系结构，</p>
+                                <p>​ C是英文单词“Client”的首字母，即客户端的意思，C/S就是“Client/Server”的缩写，即“客户端/服务器”模式。MySQL C/S 可如下图所示</p>
+                                <p><img src="https://tva1.sinaimg.cn/large/008i3skNgy1gto7tgqgp1j60js0a8jrl02.jpg" alt=""></p>
+                                <h4 id="MySQL-连接"><a href="#MySQL-连接" class="headerlink" title="MySQL 连接"></a>MySQL 连接</h4>
+                                <p>实现MySQL连接的方式主要有两种，</p>
+                                <ul>
+                                    <li>基于TCP/IP的连接，适用于远程、本地</li>
+                                    <li>基于Socket方式连接，仅限于本地连接</li>
+                                </ul>
+                                <figure class="highlight sh">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="comment"># TCP/IP方式（远程、本地）</span></span><br><span class="line">mysql -h 192.168.0.51 -P 3306 -u root -p paynepasswd</span><br><span class="line"></span><br><span class="line"><span class="comment"># Socket方式(仅本地)</span></span><br><span class="line">mysql -S /tmp/mysql.sock -u root -p paynepasswd</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <a id="more"></a>
+                                <p>在Linux中<code>/etc/my.cnf</code>文件中显示（已完成MySQL的安装）</p>
+                                <figure class="highlight sh">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">socket=/tmp/mysql.sock</span><br><span class="line"></span><br><span class="line"><span class="comment"># /etc/my.cnf    示例如下                                                                                    </span></span><br><span class="line">[client]</span><br><span class="line"><span class="comment">#password       = your_password</span></span><br><span class="line">port            = 3306</span><br><span class="line">socket          = /tmp/mysql.sock</span><br><span class="line"></span><br><span class="line">[mysqld]</span><br><span class="line">port            = 3306</span><br><span class="line">socket          = /tmp/mysql.sock</span><br><span class="line">datadir = /www/server/data</span><br><span class="line">default_storage_engine = InnoDB</span><br><span class="line">performance_schema_max_table_instances = 400</span><br><span class="line">table_definition_cache = 400</span><br><span class="line">skip-external-locking</span><br><span class="line">key_buffer_size = 1024M</span><br><span class="line"></span><br><span class="line">---略</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h2 id="服务器端-实例"><a href="#服务器端-实例" class="headerlink" title="服务器端(实例):"></a>服务器端(实例):</h2>
+                                <p>实例：My sqld + 工作线程 + 预分配内存</p>
+                                <p>功能：管理数据(增删改查等)</p>
+                                <h3 id="mysqld逻辑结构"><a href="#mysqld逻辑结构" class="headerlink" title="mysqld逻辑结构"></a>mysqld逻辑结构</h3>
+                                <p>mysqld的工作模型可分为两块，<code>server</code>层，<code>引擎层</code>，server层可细分为<code>连接层</code>、<code>SQL层</code></p>
+                                <p><img src="https://tva1.sinaimg.cn/large/008i3skNgy1gtoa5gogpej60fv0dhjs202.jpg" alt=""></p>
+                                <h4 id="连接层"><a href="#连接层" class="headerlink" title="连接层"></a>连接层</h4>
+                                <ul>
+                                    <li>提供连接协议（socket、TCP/IP）</li>
+                                    <li>验证用户（账号名、密码、权限）</li>
+                                    <li>提供用户专用线程</li>
+                                </ul>
+                                <h4 id="SQL层"><a href="#SQL层" class="headerlink" title="SQL层"></a>SQL层</h4>
+                                <ul>
+                                    <li>接收上层传送的SQL语句</li>
+                                    <li>语法验证模块：验证语句语法,是否满足SQL_MODE</li>
+                                    <li>语义检查：判断SQL语句的类型(DDL、DCL、DML、DQL)</li>
+                                    <li>执行权限检查：对语句执行前,进行预处理，生成解析树(执行计划)</li>
+                                    <li>优化器：根据解析器得出的多种执行计划，进行判断，选择最优的执行计划 代价模型：资源（CPU IO MEM）的耗损评估性能好坏</li>
+                                    <li>执行器：根据最优执行计划，执行SQL语句，产生执行结果</li>
+                                    <li>提供查询缓存（默认是没开启的）常使用redis、tair替代查询缓存功能</li>
+                                    <li>提供日志记录（日志管理章节）：binlog，默认是没开启的。</li>
+                                </ul>
+                                <h4 id="存储引擎层"><a href="#存储引擎层" class="headerlink" title="存储引擎层"></a>存储引擎层</h4>
+                                <blockquote>
+                                    <p>类似于Linux中的文件系统</p>
+                                </blockquote>
+                                <ul>
+                                    <li>负责根据SQL层执行的结果，从磁盘上拿数据</li>
+                                    <li>将16进制的磁盘数据，交由SQL结构化化成表</li>
+                                    <li>连接层的专用线程返回给用户</li>
+                                </ul>
+                                <h2 id="数据库逻辑结构"><a href="#数据库逻辑结构" class="headerlink" title="数据库逻辑结构"></a>数据库逻辑结构</h2>
+                                <p><img src="https://upload-images.jianshu.io/upload_images/16956686-127fff46fdb7fea9.png" alt=""></p>
+                                <ul>
+                                    <li>库：库名，库属性</li>
+                                    <li>表：表名、属性、<ul>
+                                            <li>列:列名(字段),列属性(数据类型,约束等)</li>
+                                            <li>数据行(记录)</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                                <p><img src="https://upload-images.jianshu.io/upload_images/16956686-bfd40838aef7971b.png" alt="物理结构"></p>
+                                <p>库的物理存储结构</p>
+                                <ul>
+                                    <li>用文件系统的目录来存储</li>
+                                </ul>
+                                <p>表的物理存储结构</p>
+                                <figure class="highlight angelscript">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">MyISAM（一种引擎）的表：</span><br><span class="line">-rw-r----- <span class="number">1</span> mysql mysql   <span class="number">10816</span> Apr <span class="number">18</span> <span class="number">8</span>:<span class="number">37</span> user.frm</span><br><span class="line">-rw-r----- <span class="number">1</span> mysql mysql     <span class="number">396</span> Apr <span class="number">18</span> <span class="number">11</span>:<span class="number">20</span>  user.MYD</span><br><span class="line">-rw-r----- <span class="number">1</span> mysql mysql    <span class="number">4096</span> Apr <span class="number">18</span> <span class="number">17</span>:<span class="number">48</span> user.MYI</span><br><span class="line"></span><br><span class="line">InnoDB(默认的存储引擎)的表：</span><br><span class="line">-rw-r----- <span class="number">1</span> mysql mysql    <span class="number">8636</span> Apr <span class="number">18</span> <span class="number">9</span>:<span class="number">37</span> time_zone.frm</span><br><span class="line">-rw-r----- <span class="number">1</span> mysql mysql   <span class="number">98304</span> Apr <span class="number">18</span> <span class="number">1</span>:<span class="number">37</span> time_zone.ibd</span><br><span class="line">time_zone.frm：存储列相关信息</span><br><span class="line">time_zone.ibd：数据行+索引</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>表的段、区、页（16k）</p>
+                                <figure class="highlight plain">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">页：最小的存储单元，默认16k</span><br><span class="line">区：64个连续的页，共1M</span><br><span class="line">段：一个表就是一个段，包含一个或多个区</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h2 id="执行SQL流程"><a href="#执行SQL流程" class="headerlink" title="执行SQL流程"></a>执行SQL流程</h2>
+                                <blockquote>
+                                    <p>假设忽略权限验证、表操作验证</p>
+                                </blockquote>
+                                <ol>
+                                    <li>
+                                        <p>客户端发送一条SQL语句给MySQL服务器。</p>
+                                    </li>
+                                    <li>
+                                        <p>MySQL服务器先检查查询缓存，如果查询缓存中存在待查询的结果数据，则会立刻返回查询缓存中的结果数据，否则执行下一阶段的处理。</p>
+                                    </li>
+                                    <li>
+                                        <p>MySQL服务器通过解析器和预处理器对SQL语句进行解析和预处理，并将生成的SQL语句解析树传递给查询优化器。</p>
+                                    </li>
+                                    <li>
+                                        <p>查询优化器将SQL解析树进行进一步处理，生成对应的执行计划。</p>
+                                    </li>
+                                    <li>
+                                        <p>MySQL服务器根据查询优化器生成的执行计划，通过查询执行引擎调用存储引擎的API来执行查询操作。</p>
+                                    </li>
+                                    <li>
+                                        <p>存储引擎查询数据库中的数据，并将结果返回给查询执行引擎。</p>
+                                    </li>
+                                    <li>
+                                        <p>查询执行引擎将结果保存在查询缓存中，并通过数据库连接/线程处理返回给客户端。</p>
+                                    </li>
+                                </ol>
+                                <p><img src="https://tva1.sinaimg.cn/large/008i3skNgy1gtoc99udhyj60bw0ma0tu02.jpg" alt=""></p>
+                            </div>
+                            <div class="popular-posts-header">相关文章</div>
+                            <ul class="popular-posts">
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/507251385.html" rel="bookmark">MySQL优化</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/1336292242.html" rel="bookmark">MySQL存储引擎</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/1376532068.html" rel="bookmark">MySQL数据库一些概念</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/1196530272.html" rel="bookmark">MySQL数据类型</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/3376299280.html" rel="bookmark">MySQL的SQL使用之上</a></div>
+                                </li>
+                            </ul>
+                            <footer class="post-footer">
+                                <div class="post-tags">
+                                    <a href="/tags/MySQL/" rel="tag"><i class="fa fa-tag"></i> MySQL</a>
+                                    <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="tag"><i class="fa fa-tag"></i> 数据库</a>
+                                </div>
+                                <div class="post-nav">
+                                    <div class="post-nav-item">
+                                        <a href="/1376532068.html" rel="prev" title="MySQL数据库一些概念">
+                                            <i class="fa fa-chevron-left"></i> MySQL数据库一些概念 </a>
+                                    </div>
+                                    <div class="post-nav-item">
+                                        <a href="/1196530272.html" rel="next" title="MySQL数据类型"> MySQL数据类型 <i class="fa fa-chevron-right"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </footer>
+                        </article>
+                    </div>
+                    <script>
+                        window.addEventListener('tabs:register', () =>
+                        {
+                            let
+                            {
+                                activeClass
+                            } = CONFIG.comments;
+                            if (CONFIG.comments.storage)
+                            {
+                                activeClass = localStorage.getItem('comments_active') || activeClass;
+                            }
+                            if (activeClass)
+                            {
+                                let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+                                if (activeTab)
+                                {
+                                    activeTab.click();
+                                }
+                            }
+                        });
+                        if (CONFIG.comments.storage)
+                        {
+                            window.addEventListener('tabs:click', event =>
+                            {
+                                if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+                                let commentClass = event.target.classList[1];
+                                localStorage.setItem('comments_active', commentClass);
+                            });
+                        }
+
+                    </script>
+                </div>
+                <div class="toggle sidebar-toggle">
+                    <span class="toggle-line toggle-line-first"></span>
+                    <span class="toggle-line toggle-line-middle"></span>
+                    <span class="toggle-line toggle-line-last"></span>
+                </div>
+                <aside class="sidebar">
+                    <div class="sidebar-inner">
+                        <ul class="sidebar-nav motion-element">
+                            <li class="sidebar-nav-toc"> 文章目录 </li>
+                            <li class="sidebar-nav-overview"> 站点概览 </li>
+                        </ul>
+                        <!--noindex-->
+                        <div class="post-toc-wrap sidebar-panel">
+                            <div class="post-toc motion-element">
+                                <ol class="nav">
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL体系结构"><span class="nav-number">1.</span> <span class="nav-text">MySQL体系结构</span></a>
+                                        <ol class="nav-child">
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#C-S-Client-Server-模型"><span class="nav-number">1.1.</span> <span class="nav-text">C&#x2F;S(Client&#x2F;Server)模型</span></a>
+                                                <ol class="nav-child">
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#MySQL-连接"><span class="nav-number">1.1.1.</span> <span class="nav-text">MySQL 连接</span></a></li>
+                                                </ol>
+                                            </li>
+                                        </ol>
+                                    </li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#服务器端-实例"><span class="nav-number">2.</span> <span class="nav-text">服务器端(实例):</span></a>
+                                        <ol class="nav-child">
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#mysqld逻辑结构"><span class="nav-number">2.1.</span> <span class="nav-text">mysqld逻辑结构</span></a>
+                                                <ol class="nav-child">
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#连接层"><span class="nav-number">2.1.1.</span> <span class="nav-text">连接层</span></a></li>
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#SQL层"><span class="nav-number">2.1.2.</span> <span class="nav-text">SQL层</span></a></li>
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#存储引擎层"><span class="nav-number">2.1.3.</span> <span class="nav-text">存储引擎层</span></a></li>
+                                                </ol>
+                                            </li>
+                                        </ol>
+                                    </li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#数据库逻辑结构"><span class="nav-number">3.</span> <span class="nav-text">数据库逻辑结构</span></a></li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#执行SQL流程"><span class="nav-number">4.</span> <span class="nav-text">执行SQL流程</span></a></li>
+                                </ol>
+                            </div>
+                        </div>
+                        <!--/noindex-->
+                        <div class="site-overview-wrap sidebar-panel">
+                            <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <img class="site-author-image" itemprop="image" alt="吴志鹏" src="/images/favicon/android-chrome-512x512.png">
+                                <p class="site-author-name" itemprop="name">吴志鹏</p>
+                                <div class="site-description" itemprop="description">Talk is free，please state clearly</div>
+                            </div>
+                            <div class="site-state-wrap motion-element">
+                                <nav class="site-state">
+                                    <div class="site-state-item site-state-posts">
+                                        <a href="/archives/">
+                                            <span class="site-state-item-count">136</span>
+                                            <span class="site-state-item-name">日志</span>
+                                        </a>
+                                    </div>
+                                    <div class="site-state-item site-state-categories">
+                                        <a href="/categories/">
+                                            <span class="site-state-item-count">158</span>
+                                            <span class="site-state-item-name">分类</span></a>
+                                    </div>
+                                    <div class="site-state-item site-state-tags">
+                                        <a href="/tags/">
+                                            <span class="site-state-item-count">89</span>
+                                            <span class="site-state-item-name">标签</span></a>
+                                    </div>
+                                </nav>
+                            </div>
+                            <div class="links-of-author motion-element">
+                                <span class="links-of-author-item">
+                                    <a href="https://github.com/Payne-Wu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Payne-Wu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="mailto:wuzhipeng1289690157@gmail.com" title="E-Mail → mailto:wuzhipeng1289690157@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="https://www.zhihu.com/people/wu-zhi-peng-72-78" title="ZhiHu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;wu-zhi-peng-72-78" rel="noopener" target="_blank"><i class="fa fa-magic fa-fw"></i>ZhiHu</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="https://weibo.com/u/6987234483" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;6987234483" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+                <div id="sidebar-dimmer"></div>
+            </div>
+        </main>
+        <footer class="footer">
+            <div class="footer-inner">
+                <div class="copyright"> &copy; <span itemprop="copyrightYear">2022</span>
+                    <span class="with-love">
+                        <i class="fa fa-heart"></i>
+                    </span>
+                    <span class="author" itemprop="copyrightHolder">PayneWu</span>
+                    <span class="post-meta-divider">|</span>
+                    <span class="post-meta-item-icon">
+                        <i class="fa fa-chart-area"></i>
+                    </span>
+                    <span title="站点总字数">255k</span>
+                    <span class="post-meta-divider">|</span>
+                    <span class="post-meta-item-icon">
+                        <i class="fa fa-coffee"></i>
+                    </span>
+                    <span title="站点阅读时长">3:51</span>
+                </div>
+                <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">湘ICP备2021019893号-1 </a>
+                </div>
+                <div style="display: none;">
+                    <script src="//s95.cnzz.com/z_stat.php?id=true&web_id=true"></script>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+    <script src="/js/utils.js"></script>
+    <script src="/.js"></script>
+    <script src="/js/schemes/pisces.js"></script>
+    <script src="/.js"></script>
+    <script src="/js/next-boot.js"></script>
+    <script src="/.js"></script>
+    <script>
+        (function ()
+        {
+            var canonicalURL, curProtocol;
+            //Get the <link> tag
+            var x = document.getElementsByTagName("link");
+            //Find the last canonical URL
+            if (x.length > 0)
+            {
+                for (i = 0; i < x.length; i++)
+                {
+                    if (x[i].rel.toLowerCase() == 'canonical' && x[i].href)
+                    {
+                        canonicalURL = x[i].href;
+                    }
+                }
+            }
+            //Get protocol
+            if (!canonicalURL)
+            {
+                curProtocol = window.location.protocol.split(':')[0];
+            }
+            else
+            {
+                curProtocol = canonicalURL.split(':')[0];
+            }
+            //Get current URL if the canonical URL does not exist
+            if (!canonicalURL) canonicalURL = window.location.href;
+            //Assign script content. Replace current URL with the canonical URL
+            ! function ()
+            {
+                var e = /([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,
+                    r = canonicalURL,
+                    t = document.referrer;
+                if (!e.test(r))
+                {
+                    var n = (String(curProtocol).toLowerCase() === 'https') ? "https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif" : "//api.share.baidu.com/s.gif";
+                    t ? (n += "?r=" + encodeURIComponent(document.referrer), r && (n += "&l=" + r)) : r && (n += "?l=" + r);
+                    var i = new Image;
+                    i.src = n
+                }
+            }(window);
+        })();
+
+    </script>
+    <script src="/js/local-search.js"></script>
+    <script src="/.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+    <meta name="theme-color" content="#222">
+    <meta name="generator" content="Hexo 4.2.1">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16-next.png">
+    <link rel="mask-icon" href="/images/favicon/safari-pinned-tab.svg" color="#222">
+    <meta name="msapplication-config" content="/images/favicon/browserconfig.xml">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+    <link rel="stylesheet" href="/lib/pace/pace-theme-mac-osx.min.css">
+    <script src="/lib/pace/pace.min.js"></script>
+    <script id="hexo-configurations">
+        var NexT = window.NexT ||
+        {};
+        var CONFIG = {
+            "hostname": "paynewu.com",
+            "root": "/",
+            "scheme": "Gemini",
+            "version": "7.8.0",
+            "exturl": false,
+            "sidebar":
+            {
+                "position": "right",
+                "width": 240,
+                "display": "post",
+                "padding": 18,
+                "offset": 12,
+                "onmobile": false
+            },
+            "copycode":
+            {
+                "enable": true,
+                "show_result": true,
+                "style": "mac"
+            },
+            "back2top":
+            {
+                "enable": true,
+                "sidebar": false,
+                "scrollpercent": true
+            },
+            "bookmark":
+            {
+                "enable": false,
+                "color": "#222",
+                "save": "auto"
+            },
+            "fancybox": false,
+            "mediumzoom": true,
+            "lazyload": false,
+            "pangu": true,
+            "comments":
+            {
+                "style": "tabs",
+                "active": "valine",
+                "storage": true,
+                "lazyload": false,
+                "nav": null
+            },
+            "algolia":
+            {
+                "hits":
+                {
+                    "per_page": 10
+                },
+                "labels":
+                {
+                    "input_placeholder": "Search for Posts",
+                    "hits_empty": "We didn't find any results for the search: ${query}",
+                    "hits_stats": "${hits} results found in ${time} ms"
+                }
+            },
+            "localsearch":
+            {
+                "enable": true,
+                "trigger": "auto",
+                "top_n_per_article": 8,
+                "unescape": false,
+                "preload": false
+            },
+            "motion":
+            {
+                "enable": false,
+                "async": false,
+                "transition":
+                {
+                    "post_block": "bounceDownIn",
+                    "post_header": "slideDownIn",
+                    "post_body": "slideDownIn",
+                    "coll_header": "slideLeftIn",
+                    "sidebar": "slideUpIn"
+                }
+            },
+            "path": "search.xml"
+        };
+
+    </script>
+    <meta name="description" content="认识指纹 什么是指纹 设备指纹、浏览器指纹也是同理根据软硬件信息，设备版本、设备操作系统等差异性从而生成唯一的设备指纹。      人的手有手指、手掌握纹，通过凹凸规则、分布状态的差异造就了相对其独一无二的特征。">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="认识设备指纹">
+    <meta property="og:url" content="https://paynewu.com/15990.html">
+    <meta property="og:site_name" content="吴志鹏｜Payne-Wu">
+    <meta property="og:description" content="认识指纹 什么是指纹 设备指纹、浏览器指纹也是同理根据软硬件信息，设备版本、设备操作系统等差异性从而生成唯一的设备指纹。      人的手有手指、手掌握纹，通过凹凸规则、分布状态的差异造就了相对其独一无二的特征。">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="article:published_time" content="2021-07-12T14:09:17.000Z">
+    <meta property="article:modified_time" content="2022-07-27T09:58:26.880Z">
+    <meta property="article:author" content="吴志鹏">
+    <meta property="article:tag" content="Crawler">
+    <meta property="article:tag" content="爬虫">
+    <meta property="article:tag" content="JS">
+    <meta property="article:tag" content="浏览器">
+    <meta property="article:tag" content="调试">
+    <meta property="article:tag" content="Hook">
+    <meta name="twitter:card" content="summary">
+    <link rel="canonical" href="https://paynewu.com/15990.html">
+    <script id="page-configurations">
+        // https://hexo.io/docs/variables.html
+        CONFIG.page = {
+            sidebar: "",
+            isHome: false,
+            isPost: true,
+            lang: 'zh-CN'
+        };
+
+    </script>
+    <title>认识设备指纹 | 吴志鹏｜Payne-Wu</title>
+    <meta name="google-site-verification" content="p_bIcnvirkFzG2dYKuNDivKD8-STet5W7D-01woA2fc" />
+    <noscript>
+        <style>
+            .use-motion .brand,
+            .use-motion .menu-item,
+            .sidebar-inner,
+            .use-motion .post-block,
+            .use-motion .pagination,
+            .use-motion .comments,
+            .use-motion .post-header,
+            .use-motion .post-body,
+            .use-motion .collection-header
+            {
+                opacity: initial;
+            }
+
+            .use-motion .site-title,
+            .use-motion .site-subtitle
+            {
+                opacity: initial;
+                top: initial;
+            }
+
+            .use-motion .logo-line-before i
+            {
+                left: initial;
+            }
+
+            .use-motion .logo-line-after i
+            {
+                right: initial;
+            }
+
+        </style>
+    </noscript>
+    <link rel="alternate" href="/atom.xml" title="吴志鹏｜Payne-Wu" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+    <div class="container">
+        <div class="headband"></div>
+        <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+            <div class="header-inner">
+                <div class="site-brand-container">
+                    <div class="site-nav-toggle">
+                        <div class="toggle" aria-label="切换导航栏">
+                            <span class="toggle-line toggle-line-first"></span>
+                            <span class="toggle-line toggle-line-middle"></span>
+                            <span class="toggle-line toggle-line-last"></span>
+                        </div>
+                    </div>
+                    <div class="site-meta">
+                        <a href="/" class="brand" rel="start">
+                            <span class="logo-line-before"><i></i></span>
+                            <h1 class="site-title">吴志鹏｜Payne-Wu </h1>
+                            <span class="logo-line-after"><i></i></span>
+                        </a>
+                    </div>
+                    <div class="site-nav-right">
+                        <div class="toggle popup-trigger">
+                            <i class="fa fa-search fa-fw fa-lg"></i>
+                        </div>
+                    </div>
+                </div>
+                <nav class="site-nav">
+                    <ul id="menu" class="main-menu menu">
+                        <li class="menu-item menu-item-home">
+                            <a href="/" rel="section">首页</a>
+                        </li>
+                        <li class="menu-item menu-item-archives">
+                            <a href="/archives/" rel="section">文章列表</a>
+                        </li>
+                        <li class="menu-item menu-item-tags">
+                            <a href="/tags/" rel="section">Tags Cloud</a>
+                        </li>
+                        <li class="menu-item menu-item-categories">
+                            <a href="/categories/" rel="section">文章集合</a>
+                        </li>
+                        <li class="menu-item menu-item-about">
+                            <a href="/about/" rel="section">关于我啊</a>
+                        </li>
+                        <li class="menu-item menu-item-message">
+                            <a href="/message/" rel="section">留言与我</a>
+                        </li>
+                        <li class="menu-item menu-item-search">
+                            <a role="button" class="popup-trigger">搜索 </a>
+                        </li>
+                    </ul>
+                </nav>
+                <div class="search-pop-overlay">
+                    <div class="popup search-popup">
+                        <div class="search-header">
+                            <span class="search-icon">
+                                <i class="fa fa-search"></i>
+                            </span>
+                            <div class="search-input-container">
+                                <input autocomplete="off" autocapitalize="off" placeholder="搜索..." spellcheck="false" type="search" class="search-input">
+                            </div>
+                            <span class="popup-btn-close">
+                                <i class="fa fa-times-circle"></i>
+                            </span>
+                        </div>
+                        <div id="search-result">
+                            <div id="no-result">
+                                <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="back-to-top">
+            <i class="fa fa-arrow-up"></i>
+            <span>0%</span>
+        </div>
+        <div class="reading-progress-bar"></div>
+        <main class="main">
+            <div class="main-inner">
+                <div class="content-wrap">
+                    <div class="content post posts-expand">
+                        <article itemscope itemtype="http://schema.org/Article" class="post-block single" lang="zh-CN">
+                            <link itemprop="mainEntityOfPage" href="https://paynewu.com/15990.html">
+                            <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <meta itemprop="image" content="/images/favicon/android-chrome-512x512.png">
+                                <meta itemprop="name" content="吴志鹏">
+                                <meta itemprop="description" content="Talk is free，please state clearly">
+                            </span>
+                            <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+                                <meta itemprop="name" content="吴志鹏｜Payne-Wu">
+                            </span>
+                            <header class="post-header">
+                                <h1 class="post-title" itemprop="name headline"> 认识设备指纹 </h1>
+                                <div class="post-meta">
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-user"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">作者</span>
+                                        <span><a href="/authors/Payne" class="author" itemprop="url" rel="index">Payne</a></span>
+                                    </span>
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-calendar"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">发表于</span>
+                                        <time title="创建时间：2021-07-12 22:09:17" itemprop="dateCreated datePublished" datetime="2021-07-12T22:09:17+08:00">2021-07-12</time>
+                                    </span>
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-folder"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">分类于</span>
+                                        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                                            <a href="/categories/%E7%88%AC%E8%99%AB/" itemprop="url" rel="index"><span itemprop="name">爬虫</span></a>
+                                        </span> ， <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                                            <a href="/categories/%E7%88%AC%E8%99%AB/%E8%B0%83%E8%AF%95/" itemprop="url" rel="index"><span itemprop="name">调试</span></a>
+                                        </span> ， <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                                            <a href="/categories/%E7%88%AC%E8%99%AB/%E8%B0%83%E8%AF%95/Hook/" itemprop="url" rel="index"><span itemprop="name">Hook</span></a>
+                                        </span>
+                                    </span>
+                                    <br>
+                                    <span class="post-meta-item" title="本文字数">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-file-word"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">本文字数：</span>
+                                        <span>2.9k</span>
+                                    </span>
+                                    <span class="post-meta-item" title="阅读时长">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-clock"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                                        <span>3 分钟</span>
+                                    </span>
+                                </div>
+                            </header>
+                            <div class="post-body" itemprop="articleBody">
+                                <h2 id="认识指纹"><a href="#认识指纹" class="headerlink" title="认识指纹"></a>认识指纹</h2>
+                                <h3 id="什么是指纹"><a href="#什么是指纹" class="headerlink" title="什么是指纹"></a>什么是指纹</h3>
+                                <p>设备指纹、浏览器指纹也是同理根据软硬件信息，设备版本、设备操作系统等差异性从而生成唯一的设备指纹。</p>
+                                <blockquote>
+                                    <p>人的手有手指、手掌握纹，通过凹凸规则、分布状态的差异造就了<strong>相对</strong>其独一无二的特征。</p>
+                                </blockquote>
+                                <a id="more"></a>
+                                <h3 id="指纹是怎么产生"><a href="#指纹是怎么产生" class="headerlink" title="指纹是怎么产生"></a>指纹是怎么产生</h3>
+                                <p>手机的操作系统、浏览器厂商为了方便用户与开发者获取用户的设备信息预留了一些API供程序使用，用户和开发者可以通过这些API获取客户端相关的软硬件信息</p>
+                                <p>这些信息因人而异通过部分信息来产生<strong>相对差异</strong>的信息来生成生成相对独立的设备ID。</p>
+                                <blockquote>
+                                    <p>简单理解就是软件信息（部分或全部）、硬件信息（部分或全部）+ 指纹生成算法=生成指纹</p>
+                                </blockquote>
+                                <p>辨识度的信息可以是系统信息、软件信息、地理位置、时区、语言等等，所给予的信息决定了浏览器指纹的准确性。</p>
+                                <h3 id="设备指纹究竟是如何区分的“唯一”"><a href="#设备指纹究竟是如何区分的“唯一”" class="headerlink" title="设备指纹究竟是如何区分的“唯一”"></a>设备指纹究竟是如何区分的“唯一”</h3>
+                                <p>在一般情况下单一维度的差异性并不能形成标识设备的稳定特性，但可以经过收集大量的隐形特征通过数据分析、建模等方式等组合使用，可以更加精准的区分唯一</p>
+                                <blockquote>
+                                    <p>例如：我们常见的双胞胎，它们长相相似、声音神似但根据以上两种特征无法有效的区分，但却可以根据更深层的习惯、喜好，甚至是某种条件反射的特殊因子，还是可以较为有效的降低“指纹”的碰撞率</p>
+                                </blockquote>
+                                <h3 id="什么信息是不能包含作为设备指纹？"><a href="#什么信息是不能包含作为设备指纹？" class="headerlink" title="什么信息是不能包含作为设备指纹？"></a>什么信息是不能包含作为设备指纹？</h3>
+                                <p>根据国家法律要求，以下信息不能被作为指纹的因素</p>
+                                <ul>
+                                    <li>手机号</li>
+                                    <li>通话记录</li>
+                                    <li>短信</li>
+                                    <li>通讯录</li>
+                                    <li>身份证号</li>
+                                    <li>等</li>
+                                </ul>
+                                <blockquote>
+                                    <p>虽然这些信息有非常强的一致性，可以非常有效的提高设备指纹的准确性</p>
+                                    <p>但是涉猎个人隐私的数据都是不可触碰的信息。网上绝非法外之地</p>
+                                </blockquote>
+                                <h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3>
+                                <p>设备指纹相同，很大概率上是同一设备或用户；但设备指纹不同时，不一定不是同一设备或用户</p>
+                                <h2 id="设备指纹实现原理与检测"><a href="#设备指纹实现原理与检测" class="headerlink" title="设备指纹实现原理与检测"></a>设备指纹实现原理与检测</h2>
+                                <p>采集设备指纹需要满足两大特征：较为稳定的环境、篡改监测</p>
+                                <h3 id="手机之Android设备指纹"><a href="#手机之Android设备指纹" class="headerlink" title="手机之Android设备指纹"></a>手机之Android设备指纹</h3>
+                                <p>设备的Id需要兼具稳定性、唯一性，但Android系统的开源和碎片化导致API函数实现不尽相同。下表是Android系统比较稳定的设备参数</p>
+                                <div class="table-container">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th style="text-align:center">采集项</th>
+                                                <th style="text-align:center">中文含义</th>
+                                                <th style="text-align:center">特征</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td style="text-align:center">Android ID</td>
+                                                <td style="text-align:center">设备首次启动时自动随机生成的设备ID</td>
+                                                <td style="text-align:center">1.不需要授权，相同信号的手机小概率碰撞<br />2.恢复出厂设置将被重置</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center">IMEI/MEID</td>
+                                                <td style="text-align:center">设备码<br />移动、联通获取IMEI<br />电信获取MEID</td>
+                                                <td style="text-align:center">1.唯一性质较好，还是存在小概率碰撞<br />2.需要READ_PHONE_STATE权限<br />3.未含有卡槽的设备无法获取</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center">IMSI</td>
+                                                <td style="text-align:center">手机SIM卡识别</td>
+                                                <td style="text-align:center">1.需要READ_PHONE_STATE权限<br />2.更换手机卡会改变</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center">WI-FI MAC</td>
+                                                <td style="text-align:center">网卡MAC地址</td>
+                                                <td style="text-align:center">1.当未连接WI-FI时，有概率获取失败<br />2.个别只读存储器恢复出厂设置会被重置</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center">Bluetooth MAC</td>
+                                                <td style="text-align:center">蓝牙MAC地址</td>
+                                                <td style="text-align:center">高版本Android系统无法获取（约8.0以上）</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center">Serial</td>
+                                                <td style="text-align:center">设备串号</td>
+                                                <td style="text-align:center">同类型号的手机碰撞概率高</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center">Fingerprint</td>
+                                                <td style="text-align:center">设备多个硬件编号统称</td>
+                                                <td style="text-align:center">同类型号的手机碰撞概率高</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center">Storage</td>
+                                                <td style="text-align:center">内存、磁盘空间</td>
+                                                <td style="text-align:center">同类型号的手机碰撞概率高</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center">Adverting ID</td>
+                                                <td style="text-align:center">Google Play广告ID</td>
+                                                <td style="text-align:center">仅限于Google服务用户使用</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <p>Android设备所有采集的项都是Android公开的API，采集项被大面积篡改的情况下不能保持设备ID不变，通常有效的方式就是<strong>检测和监控运行环境</strong>，针对Android设备指纹检测可归纳为</p>
+                                <ol>
+                                    <li>通过安装安装包检测安装环境</li>
+                                    <li>通过特定的特征识别root环境</li>
+                                    <li>通过多种方案采集同一字段信息检测环境是否<strong>异常</strong></li>
+                                    <li>通过通用的修改方式识别（例如中间人攻击、注入、Hook、重放攻击等），从而达到检测环境的效果</li>
+                                    <li>通过特定特征识别（例如Xpose、Frida、模拟器等）检测</li>
+                                </ol>
+                                <h3 id="手机之IOS设备指纹"><a href="#手机之IOS设备指纹" class="headerlink" title="手机之IOS设备指纹"></a>手机之IOS设备指纹</h3>
+                                <p>IOS相对开源的Android系统权限更加严格，且手机型号、系统版本较与Android更单一。由于权限等影响IOS能够获取的设备参数较少。如下表列举了较稳定的IOS设备参数</p>
+                                <div class="table-container">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th style="text-align:center">采集项</th>
+                                                <th style="text-align:center">中文含义</th>
+                                                <th style="text-align:center">特征</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td style="text-align:center">DeviceName</td>
+                                                <td style="text-align:center">设备名称</td>
+                                                <td style="text-align:center">1.用户可以自行修改，默认值存在很大的碰撞<br />2.自定义值有较强的特征</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center">WI-FI MAC</td>
+                                                <td style="text-align:center">网卡MAC地址</td>
+                                                <td style="text-align:center">唯一性好，高版本手机不能稳定性采集</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center">Boot time</td>
+                                                <td style="text-align:center">系统开机时间（μs微秒）</td>
+                                                <td style="text-align:center">1.存在少量碰撞，重启会发生改变<br />2.采集多次可能会发生变化</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center">Storage</td>
+                                                <td style="text-align:center">内存、磁盘空间</td>
+                                                <td style="text-align:center">同类型号的手机碰撞概率高</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center">IDFV</td>
+                                                <td style="text-align:center">厂商标识符</td>
+                                                <td style="text-align:center">1.不能跨合作方<br />2.删除本合作方APP后重新安装发生改变</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center">IDFA</td>
+                                                <td style="text-align:center">广告标识符</td>
+                                                <td style="text-align:center">1.需要广告权限<br />2。用户可以限制广告追踪</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <p>IOS大部分篡改都是基于Hook进行改机，以及模拟器。</p>
+                                <blockquote>
+                                    <p>IOS模拟器其本质为在X86_64架构上运行iPhone自带的模拟器，同时APP需要页数适配才能被安装</p>
+                                </blockquote>
+                                <p>IOS采集指纹检测可分为如下</p>
+                                <ul>
+                                    <li>通过通用的Hook原理进行识别</li>
+                                    <li>通过特定的工具特征识别</li>
+                                    <li>寻找特定空间存储设备标识进行识别</li>
+                                    <li>对抗备份、抹机，进行识别</li>
+                                </ul>
+                                <h3 id="Web设备指纹"><a href="#Web设备指纹" class="headerlink" title="Web设备指纹"></a>Web设备指纹</h3>
+                                <p>Web设备指纹（浏览器指纹）是指用户硬件、软件信息综合计算产生标识</p>
+                                <h4 id="Web指纹特点"><a href="#Web指纹特点" class="headerlink" title="Web指纹特点"></a>Web指纹特点</h4>
+                                <p>通过Javascript采集信息生成对应设备ID，与传统的Cookie技术相比较，Web设备指纹更加稳定</p>
+                                <p>稳定浏览器版本采集参数，如下表所示</p>
+                                <div class="table-container">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th style="text-align:center">采集项</th>
+                                                <th style="text-align:center">中文含义</th>
+                                                <th style="text-align:center">特征</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td style="text-align:center">UserAgent</td>
+                                                <td style="text-align:center">浏览器客户端标识</td>
+                                                <td style="text-align:center">可以任意伪装与修改</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center">Gpu</td>
+                                                <td style="text-align:center">设备GPU特征</td>
+                                                <td style="text-align:center">1.碰撞率高<br />2.可跨浏览器</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center">Canvas</td>
+                                                <td style="text-align:center">2D指纹</td>
+                                                <td style="text-align:center">唯一性好（不同浏览器的指纹不同）</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center">Webgl</td>
+                                                <td style="text-align:center">3D指纹</td>
+                                                <td style="text-align:center">1.碰撞率高<br />2.可跨浏览器</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center">Plugin List</td>
+                                                <td style="text-align:center">浏览器自带插件列表</td>
+                                                <td style="text-align:center">当用户安装特殊插件，相同浏览器碰撞率高</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center">FontList</td>
+                                                <td style="text-align:center">字体列表</td>
+                                                <td style="text-align:center">当用户安装特殊字体，相同浏览器碰撞率高</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center">IP</td>
+                                                <td style="text-align:center">内网IP/外网IP</td>
+                                                <td style="text-align:center">1.切换网络会改变<br />2.内网采集局限性大</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center">TCP</td>
+                                                <td style="text-align:center">网络协议</td>
+                                                <td style="text-align:center">1. 不同操作系统协议差异大<br />2.不易被修改<br />3.用户无感知<br />4.碰撞率极高</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center">Navigator</td>
+                                                <td style="text-align:center">有关浏览器的信息</td>
+                                                <td style="text-align:center">相同系统、相同版本碰撞率极大</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <p>Web指纹采集检测可如下</p>
+                                <ol>
+                                    <li>识别浏览器异常环境</li>
+                                    <li>特征检测（原型链）检测Hook</li>
+                                    <li>特定特征识别JS是否调试与检测（控制台、debugger等）</li>
+                                    <li>特殊方式存储浏览器设备标识（如localStorage）</li>
+                                </ol>
+                                <p>Web指纹采集检测原理可如下</p>
+                                <p><strong>无头浏览器识别</strong></p>
+                                <ul>
+                                    <li>UA识别：检测/Headless Chrome/.test(Navigator.userAgent)</li>
+                                    <li>Webdriver检测: Webdriver是否在 navigator</li>
+                                    <li>selenium检测：检测<code>window.seleium</code></li>
+                                    <li>PhantomJS\nightmare-JS 检测</li>
+                                    <li>等</li>
+                                </ul>
+                                <p><strong>隐身模式识别</strong></p>
+                                <p>Chrome：在隐身模式下，FileSystem API禁止，使用报异常</p>
+                                <p>Firefox：在隐身模式下，IndexedDB执行Open报异常</p>
+                                <p>Safari：在隐身模式下，localStorage对象存在，但运行setItem方法报异常</p>
+                                <p><strong>控制台检测</strong><br>设备 隐式调用元素Id</p>
+                                <p>隐式调用Regexp等toString</p>
+                                <p><strong>Hook检测</strong></p>
+                                <p>自定义Hook检测：在定义函数时将函数整体作为参数生成Hash值在执行该函数时校验Hash值</p>
+                                <p>函数检测：采集调用toString方法对内容进行校验（伪造toString方法即可绕过）</p>
+                                <p>对象检测：通过<code>Object.defineProperty</code>方法修改属性是不可更改的（可复写debugger即可）</p>
+                                <p>其他检测：</p>
+                                <p>SSL/TLS检测（产品：akamai）</p>
+                                <h2 id="推荐阅读"><a href="#推荐阅读" class="headerlink" title="推荐阅读"></a>推荐阅读</h2>
+                                <p>浏览器指纹在线检测：<a href="http://f.vision/" target="_blank" rel="noopener">http://f.vision/</a></p>
+                                <p>修改浏览器指纹：<a href="https://www.cnblogs.com/68xi/p/13353140.html" target="_blank" rel="noopener">https://www.cnblogs.com/68xi/p/13353140.html</a></p>
+                            </div>
+                            <div class="popular-posts-header">相关文章</div>
+                            <ul class="popular-posts">
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/63974.html" rel="bookmark">网站防护总结之pc</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/33650.html" rel="bookmark">网页调试之JSHook</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/14277.html" rel="bookmark">网页调试干扰总结</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/2477.html" rel="bookmark">网页调试之debugger原理与绕过</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/2341116369.html" rel="bookmark">js调试小笔记</a></div>
+                                </li>
+                            </ul>
+                            <footer class="post-footer">
+                                <div class="post-tags">
+                                    <a href="/tags/Crawler/" rel="tag"><i class="fa fa-tag"></i> Crawler</a>
+                                    <a href="/tags/%E7%88%AC%E8%99%AB/" rel="tag"><i class="fa fa-tag"></i> 爬虫</a>
+                                    <a href="/tags/JS/" rel="tag"><i class="fa fa-tag"></i> JS</a>
+                                    <a href="/tags/%E6%B5%8F%E8%A7%88%E5%99%A8/" rel="tag"><i class="fa fa-tag"></i> 浏览器</a>
+                                    <a href="/tags/%E8%B0%83%E8%AF%95/" rel="tag"><i class="fa fa-tag"></i> 调试</a>
+                                    <a href="/tags/Hook/" rel="tag"><i class="fa fa-tag"></i> Hook</a>
+                                </div>
+                                <div class="post-nav">
+                                    <div class="post-nav-item">
+                                        <a href="/63324.html" rel="prev" title="常见安全产品(pc)">
+                                            <i class="fa fa-chevron-left"></i> 常见安全产品(pc) </a>
+                                    </div>
+                                    <div class="post-nav-item">
+                                        <a href="/38968.html" rel="next" title="浏览器指纹在反爬虫领域的应用"> 浏览器指纹在反爬虫领域的应用 <i class="fa fa-chevron-right"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </footer>
+                        </article>
+                    </div>
+                    <script>
+                        window.addEventListener('tabs:register', () =>
+                        {
+                            let
+                            {
+                                activeClass
+                            } = CONFIG.comments;
+                            if (CONFIG.comments.storage)
+                            {
+                                activeClass = localStorage.getItem('comments_active') || activeClass;
+                            }
+                            if (activeClass)
+                            {
+                                let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+                                if (activeTab)
+                                {
+                                    activeTab.click();
+                                }
+                            }
+                        });
+                        if (CONFIG.comments.storage)
+                        {
+                            window.addEventListener('tabs:click', event =>
+                            {
+                                if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+                                let commentClass = event.target.classList[1];
+                                localStorage.setItem('comments_active', commentClass);
+                            });
+                        }
+
+                    </script>
+                </div>
+                <div class="toggle sidebar-toggle">
+                    <span class="toggle-line toggle-line-first"></span>
+                    <span class="toggle-line toggle-line-middle"></span>
+                    <span class="toggle-line toggle-line-last"></span>
+                </div>
+                <aside class="sidebar">
+                    <div class="sidebar-inner">
+                        <ul class="sidebar-nav motion-element">
+                            <li class="sidebar-nav-toc"> 文章目录 </li>
+                            <li class="sidebar-nav-overview"> 站点概览 </li>
+                        </ul>
+                        <!--noindex-->
+                        <div class="post-toc-wrap sidebar-panel">
+                            <div class="post-toc motion-element">
+                                <ol class="nav">
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#认识指纹"><span class="nav-number">1.</span> <span class="nav-text">认识指纹</span></a>
+                                        <ol class="nav-child">
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#什么是指纹"><span class="nav-number">1.1.</span> <span class="nav-text">什么是指纹</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#指纹是怎么产生"><span class="nav-number">1.2.</span> <span class="nav-text">指纹是怎么产生</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#设备指纹究竟是如何区分的“唯一”"><span class="nav-number">1.3.</span> <span class="nav-text">设备指纹究竟是如何区分的“唯一”</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#什么信息是不能包含作为设备指纹？"><span class="nav-number">1.4.</span> <span class="nav-text">什么信息是不能包含作为设备指纹？</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#小结"><span class="nav-number">1.5.</span> <span class="nav-text">小结</span></a></li>
+                                        </ol>
+                                    </li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#设备指纹实现原理与检测"><span class="nav-number">2.</span> <span class="nav-text">设备指纹实现原理与检测</span></a>
+                                        <ol class="nav-child">
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#手机之Android设备指纹"><span class="nav-number">2.1.</span> <span class="nav-text">手机之Android设备指纹</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#手机之IOS设备指纹"><span class="nav-number">2.2.</span> <span class="nav-text">手机之IOS设备指纹</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#Web设备指纹"><span class="nav-number">2.3.</span> <span class="nav-text">Web设备指纹</span></a>
+                                                <ol class="nav-child">
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#Web指纹特点"><span class="nav-number">2.3.1.</span> <span class="nav-text">Web指纹特点</span></a></li>
+                                                </ol>
+                                            </li>
+                                        </ol>
+                                    </li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#推荐阅读"><span class="nav-number">3.</span> <span class="nav-text">推荐阅读</span></a></li>
+                                </ol>
+                            </div>
+                        </div>
+                        <!--/noindex-->
+                        <div class="site-overview-wrap sidebar-panel">
+                            <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <img class="site-author-image" itemprop="image" alt="吴志鹏" src="/images/favicon/android-chrome-512x512.png">
+                                <p class="site-author-name" itemprop="name">吴志鹏</p>
+                                <div class="site-description" itemprop="description">Talk is free，please state clearly</div>
+                            </div>
+                            <div class="site-state-wrap motion-element">
+                                <nav class="site-state">
+                                    <div class="site-state-item site-state-posts">
+                                        <a href="/archives/">
+                                            <span class="site-state-item-count">136</span>
+                                            <span class="site-state-item-name">日志</span>
+                                        </a>
+                                    </div>
+                                    <div class="site-state-item site-state-categories">
+                                        <a href="/categories/">
+                                            <span class="site-state-item-count">158</span>
+                                            <span class="site-state-item-name">分类</span></a>
+                                    </div>
+                                    <div class="site-state-item site-state-tags">
+                                        <a href="/tags/">
+                                            <span class="site-state-item-count">89</span>
+                                            <span class="site-state-item-name">标签</span></a>
+                                    </div>
+                                </nav>
+                            </div>
+                            <div class="links-of-author motion-element">
+                                <span class="links-of-author-item">
+                                    <a href="https://github.com/Payne-Wu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Payne-Wu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="mailto:wuzhipeng1289690157@gmail.com" title="E-Mail → mailto:wuzhipeng1289690157@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="https://www.zhihu.com/people/wu-zhi-peng-72-78" title="ZhiHu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;wu-zhi-peng-72-78" rel="noopener" target="_blank"><i class="fa fa-magic fa-fw"></i>ZhiHu</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="https://weibo.com/u/6987234483" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;6987234483" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+                <div id="sidebar-dimmer"></div>
+            </div>
+        </main>
+        <footer class="footer">
+            <div class="footer-inner">
+                <div class="copyright"> &copy; <span itemprop="copyrightYear">2022</span>
+                    <span class="with-love">
+                        <i class="fa fa-heart"></i>
+                    </span>
+                    <span class="author" itemprop="copyrightHolder">PayneWu</span>
+                    <span class="post-meta-divider">|</span>
+                    <span class="post-meta-item-icon">
+                        <i class="fa fa-chart-area"></i>
+                    </span>
+                    <span title="站点总字数">255k</span>
+                    <span class="post-meta-divider">|</span>
+                    <span class="post-meta-item-icon">
+                        <i class="fa fa-coffee"></i>
+                    </span>
+                    <span title="站点阅读时长">3:51</span>
+                </div>
+                <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">湘ICP备2021019893号-1 </a>
+                </div>
+                <div style="display: none;">
+                    <script src="//s95.cnzz.com/z_stat.php?id=true&web_id=true"></script>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+    <script src="/js/utils.js"></script>
+    <script src="/.js"></script>
+    <script src="/js/schemes/pisces.js"></script>
+    <script src="/.js"></script>
+    <script src="/js/next-boot.js"></script>
+    <script src="/.js"></script>
+    <script>
+        (function ()
+        {
+            var canonicalURL, curProtocol;
+            //Get the <link> tag
+            var x = document.getElementsByTagName("link");
+            //Find the last canonical URL
+            if (x.length > 0)
+            {
+                for (i = 0; i < x.length; i++)
+                {
+                    if (x[i].rel.toLowerCase() == 'canonical' && x[i].href)
+                    {
+                        canonicalURL = x[i].href;
+                    }
+                }
+            }
+            //Get protocol
+            if (!canonicalURL)
+            {
+                curProtocol = window.location.protocol.split(':')[0];
+            }
+            else
+            {
+                curProtocol = canonicalURL.split(':')[0];
+            }
+            //Get current URL if the canonical URL does not exist
+            if (!canonicalURL) canonicalURL = window.location.href;
+            //Assign script content. Replace current URL with the canonical URL
+            ! function ()
+            {
+                var e = /([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,
+                    r = canonicalURL,
+                    t = document.referrer;
+                if (!e.test(r))
+                {
+                    var n = (String(curProtocol).toLowerCase() === 'https') ? "https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif" : "//api.share.baidu.com/s.gif";
+                    t ? (n += "?r=" + encodeURIComponent(document.referrer), r && (n += "&l=" + r)) : r && (n += "?l=" + r);
+                    var i = new Image;
+                    i.src = n
+                }
+            }(window);
+        })();
+
+    </script>
+    <script src="/js/local-search.js"></script>
+    <script src="/.js"></script>
+</body>
+
+</html>

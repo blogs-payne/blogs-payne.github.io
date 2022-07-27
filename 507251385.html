@@ -1,0 +1,1320 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+    <meta name="theme-color" content="#222">
+    <meta name="generator" content="Hexo 4.2.1">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16-next.png">
+    <link rel="mask-icon" href="/images/favicon/safari-pinned-tab.svg" color="#222">
+    <meta name="msapplication-config" content="/images/favicon/browserconfig.xml">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+    <link rel="stylesheet" href="/lib/pace/pace-theme-mac-osx.min.css">
+    <script src="/lib/pace/pace.min.js"></script>
+    <script id="hexo-configurations">
+        var NexT = window.NexT ||
+        {};
+        var CONFIG = {
+            "hostname": "paynewu.com",
+            "root": "/",
+            "scheme": "Gemini",
+            "version": "7.8.0",
+            "exturl": false,
+            "sidebar":
+            {
+                "position": "right",
+                "width": 240,
+                "display": "post",
+                "padding": 18,
+                "offset": 12,
+                "onmobile": false
+            },
+            "copycode":
+            {
+                "enable": true,
+                "show_result": true,
+                "style": "mac"
+            },
+            "back2top":
+            {
+                "enable": true,
+                "sidebar": false,
+                "scrollpercent": true
+            },
+            "bookmark":
+            {
+                "enable": false,
+                "color": "#222",
+                "save": "auto"
+            },
+            "fancybox": false,
+            "mediumzoom": true,
+            "lazyload": false,
+            "pangu": true,
+            "comments":
+            {
+                "style": "tabs",
+                "active": "valine",
+                "storage": true,
+                "lazyload": false,
+                "nav": null
+            },
+            "algolia":
+            {
+                "hits":
+                {
+                    "per_page": 10
+                },
+                "labels":
+                {
+                    "input_placeholder": "Search for Posts",
+                    "hits_empty": "We didn't find any results for the search: ${query}",
+                    "hits_stats": "${hits} results found in ${time} ms"
+                }
+            },
+            "localsearch":
+            {
+                "enable": true,
+                "trigger": "auto",
+                "top_n_per_article": 8,
+                "unescape": false,
+                "preload": false
+            },
+            "motion":
+            {
+                "enable": false,
+                "async": false,
+                "transition":
+                {
+                    "post_block": "bounceDownIn",
+                    "post_header": "slideDownIn",
+                    "post_body": "slideDownIn",
+                    "coll_header": "slideLeftIn",
+                    "sidebar": "slideUpIn"
+                }
+            },
+            "path": "search.xml"
+        };
+
+    </script>
+    <meta name="description" content="mysql优化老生常谈了，但却也离不开业务。脱离业务来讲mysql可以从两个方面进行优化               安全优化（业务持续性）                   性能优化（业务高效性）       所谓优化，个人认为有两大需要提前知道的稳定性和业务可持续性通常比性能更重要，优化是由业务需要驱使的 通常优化也与操作系统、运行环境等息息相关，结合业务适合自己才是最好的。 安全优化 足够">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="MySQL优化">
+    <meta property="og:url" content="https://paynewu.com/507251385.html">
+    <meta property="og:site_name" content="吴志鹏｜Payne-Wu">
+    <meta property="og:description" content="mysql优化老生常谈了，但却也离不开业务。脱离业务来讲mysql可以从两个方面进行优化               安全优化（业务持续性）                   性能优化（业务高效性）       所谓优化，个人认为有两大需要提前知道的稳定性和业务可持续性通常比性能更重要，优化是由业务需要驱使的 通常优化也与操作系统、运行环境等息息相关，结合业务适合自己才是最好的。 安全优化 足够">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNgy1gu5zib6numj60p40ag75902.jpg">
+    <meta property="article:published_time" content="2021-09-03T16:27:43.000Z">
+    <meta property="article:modified_time" content="2022-07-27T09:58:26.876Z">
+    <meta property="article:author" content="吴志鹏">
+    <meta property="article:tag" content="MySQL">
+    <meta property="article:tag" content="数据库">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:image" content="https://tva1.sinaimg.cn/large/008i3skNgy1gu5zib6numj60p40ag75902.jpg">
+    <link rel="canonical" href="https://paynewu.com/507251385.html">
+    <script id="page-configurations">
+        // https://hexo.io/docs/variables.html
+        CONFIG.page = {
+            sidebar: "",
+            isHome: false,
+            isPost: true,
+            lang: 'zh-CN'
+        };
+
+    </script>
+    <title>MySQL优化 | 吴志鹏｜Payne-Wu</title>
+    <meta name="google-site-verification" content="p_bIcnvirkFzG2dYKuNDivKD8-STet5W7D-01woA2fc" />
+    <noscript>
+        <style>
+            .use-motion .brand,
+            .use-motion .menu-item,
+            .sidebar-inner,
+            .use-motion .post-block,
+            .use-motion .pagination,
+            .use-motion .comments,
+            .use-motion .post-header,
+            .use-motion .post-body,
+            .use-motion .collection-header
+            {
+                opacity: initial;
+            }
+
+            .use-motion .site-title,
+            .use-motion .site-subtitle
+            {
+                opacity: initial;
+                top: initial;
+            }
+
+            .use-motion .logo-line-before i
+            {
+                left: initial;
+            }
+
+            .use-motion .logo-line-after i
+            {
+                right: initial;
+            }
+
+        </style>
+    </noscript>
+    <link rel="alternate" href="/atom.xml" title="吴志鹏｜Payne-Wu" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+    <div class="container">
+        <div class="headband"></div>
+        <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+            <div class="header-inner">
+                <div class="site-brand-container">
+                    <div class="site-nav-toggle">
+                        <div class="toggle" aria-label="切换导航栏">
+                            <span class="toggle-line toggle-line-first"></span>
+                            <span class="toggle-line toggle-line-middle"></span>
+                            <span class="toggle-line toggle-line-last"></span>
+                        </div>
+                    </div>
+                    <div class="site-meta">
+                        <a href="/" class="brand" rel="start">
+                            <span class="logo-line-before"><i></i></span>
+                            <h1 class="site-title">吴志鹏｜Payne-Wu </h1>
+                            <span class="logo-line-after"><i></i></span>
+                        </a>
+                    </div>
+                    <div class="site-nav-right">
+                        <div class="toggle popup-trigger">
+                            <i class="fa fa-search fa-fw fa-lg"></i>
+                        </div>
+                    </div>
+                </div>
+                <nav class="site-nav">
+                    <ul id="menu" class="main-menu menu">
+                        <li class="menu-item menu-item-home">
+                            <a href="/" rel="section">首页</a>
+                        </li>
+                        <li class="menu-item menu-item-archives">
+                            <a href="/archives/" rel="section">文章列表</a>
+                        </li>
+                        <li class="menu-item menu-item-tags">
+                            <a href="/tags/" rel="section">Tags Cloud</a>
+                        </li>
+                        <li class="menu-item menu-item-categories">
+                            <a href="/categories/" rel="section">文章集合</a>
+                        </li>
+                        <li class="menu-item menu-item-about">
+                            <a href="/about/" rel="section">关于我啊</a>
+                        </li>
+                        <li class="menu-item menu-item-message">
+                            <a href="/message/" rel="section">留言与我</a>
+                        </li>
+                        <li class="menu-item menu-item-search">
+                            <a role="button" class="popup-trigger">搜索 </a>
+                        </li>
+                    </ul>
+                </nav>
+                <div class="search-pop-overlay">
+                    <div class="popup search-popup">
+                        <div class="search-header">
+                            <span class="search-icon">
+                                <i class="fa fa-search"></i>
+                            </span>
+                            <div class="search-input-container">
+                                <input autocomplete="off" autocapitalize="off" placeholder="搜索..." spellcheck="false" type="search" class="search-input">
+                            </div>
+                            <span class="popup-btn-close">
+                                <i class="fa fa-times-circle"></i>
+                            </span>
+                        </div>
+                        <div id="search-result">
+                            <div id="no-result">
+                                <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="back-to-top">
+            <i class="fa fa-arrow-up"></i>
+            <span>0%</span>
+        </div>
+        <div class="reading-progress-bar"></div>
+        <main class="main">
+            <div class="main-inner">
+                <div class="content-wrap">
+                    <div class="content post posts-expand">
+                        <article itemscope itemtype="http://schema.org/Article" class="post-block single" lang="zh-CN">
+                            <link itemprop="mainEntityOfPage" href="https://paynewu.com/507251385.html">
+                            <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <meta itemprop="image" content="/images/favicon/android-chrome-512x512.png">
+                                <meta itemprop="name" content="吴志鹏">
+                                <meta itemprop="description" content="Talk is free，please state clearly">
+                            </span>
+                            <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+                                <meta itemprop="name" content="吴志鹏｜Payne-Wu">
+                            </span>
+                            <header class="post-header">
+                                <h1 class="post-title" itemprop="name headline"> MySQL优化 </h1>
+                                <div class="post-meta">
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-user"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">作者</span>
+                                        <span><a href="/authors/Payne" class="author" itemprop="url" rel="index">Payne</a></span>
+                                    </span>
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-calendar"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">发表于</span>
+                                        <time title="创建时间：2021-09-04 00:27:43" itemprop="dateCreated datePublished" datetime="2021-09-04T00:27:43+08:00">2021-09-04</time>
+                                    </span>
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-folder"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">分类于</span>
+                                        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                                            <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a>
+                                        </span> ， <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                                            <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/MySQL/" itemprop="url" rel="index"><span itemprop="name">MySQL</span></a>
+                                        </span>
+                                    </span>
+                                    <br>
+                                    <span class="post-meta-item" title="本文字数">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-file-word"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">本文字数：</span>
+                                        <span>8.4k</span>
+                                    </span>
+                                    <span class="post-meta-item" title="阅读时长">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-clock"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                                        <span>8 分钟</span>
+                                    </span>
+                                </div>
+                            </header>
+                            <div class="post-body" itemprop="articleBody">
+                                <p>mysql优化老生常谈了，但却也离不开业务。脱离业务来讲mysql可以从两个方面进行优化</p>
+                                <ul>
+                                    <li>
+                                        <p>安全优化（业务持续性）</p>
+                                    </li>
+                                    <li>
+                                        <p>性能优化（业务高效性）</p>
+                                    </li>
+                                </ul>
+                                <p>所谓优化，个人认为有两大需要提前知道的<strong>稳定性和业务可持续性通常比性能更重要</strong>，<strong>优化是由业务需要驱使的</strong></p>
+                                <p>通常优化也与操作系统、运行环境等息息相关，结合业务适合自己才是最好的。</p>
+                                <h2 id="安全优化"><a href="#安全优化" class="headerlink" title="安全优化"></a>安全优化</h2>
+                                <p>足够强度的安全是保证业务正常运行的基石，安全优化通常可以以系统安全，应用程序安全，与sql安全。</p>
+                                <h3 id="系统安全"><a href="#系统安全" class="headerlink" title="系统安全"></a>系统安全</h3>
+                                <blockquote>
+                                    <p>具体详情请参考Linux系统安全</p>
+                                </blockquote>
+                                <p><strong>物理安全</strong></p>
+                                <p>物理环境安全，小微企业一般使用云服务器，大型企业一般有多个机房，实现异地多活</p>
+                                <p><strong>防火墙策略、关闭或切换不必要的端口</strong></p>
+                                <blockquote>
+                                    <ol>
+                                        <li>修改常见应用默认端口，22、3306、27017、6379等</li>
+                                    </ol>
+                                </blockquote>
+                                <p><strong>账户安全</strong></p>
+                                <p>用户连接权限、用户权限</p>
+                                <blockquote>
+                                    <ol>
+                                        <li>禁止root远程</li>
+                                        <li>账号管理（密码强度、用户权限）</li>
+                                    </ol>
+                                </blockquote>
+                                <p><strong>源代码文件目录权限管理</strong></p>
+                                <p><strong>备份</strong>等</p>
+                                <h3 id="MySQL安全"><a href="#MySQL安全" class="headerlink" title="MySQL安全"></a>MySQL安全</h3>
+                                <blockquote>
+                                    <p><a href="https://www.cnblogs.com/doublexi/p/9732274.html" target="_blank" rel="noopener">https://www.cnblogs.com/doublexi/p/9732274.html</a></p>
+                                </blockquote>
+                                <p>MySQL版本的选择</p>
+                                <p>MySQL的命名机制使用由3个数字和一个后缀组成的版本号。例如，像mysql-5.0.9-beta的版本号这样解释：</p>
+                                <p>数字(5)是主版本号，描述了文件格式。所有版本5的发行都有相同的文件格式。</p>
+                                <p>数字(0)是发行级别。主版本号和发行级别组合到一起便构成了发行序列号。</p>
+                                <p>数字(9)是在此发行系列的版本号，随每个新分发版递增。通常你需要已经选择的发行(release)的最新版本(版本)。</p>
+                                <p>每次更新后，版本字符串的最后一个数字递增。如果相对于前一个版本增加了新功能或有微小的不兼容性，字符串的第二个数字递增。如果文件格式改变，第一个数字递增。</p>
+                                <p>后缀显示发行的稳定性级别。通过一系列后缀显示如何改进稳定性。可能的后缀有：</p>
+                                <p><strong>·alpha表明发行包含大量未被彻底测试的新代码</strong>。已知的缺陷应该在新闻小节被记录。请参见附录D：MySQL变更史。在大多数alpha版本中也有新的命令和扩展。alpha版本也可能有主要代码更改等开发。但我们在发布前一定对其进行测试。</p>
+                                <p><strong>·beta意味着该版本功能是完整的</strong><br>，并且所有的新代码被测试了，没有增加重要的新特征，应该没有已知的缺陷。当alpha版本至少一个月没有出现报导的致命漏洞，并且没有计划增加导致已经实施的功能不稳定的新功能时，版本则从alpha版变为beta版。</p>
+                                <p>在以后的beta版、发布版或产品发布中，所有API、外部可视结构和SQL命令列均不再更改。</p>
+                                <p><strong>·rc是发布代表</strong>；是一个发行了一段时间的beta版本，看起来应该运行正常。只增加了很小的修复。(发布代表即以前所称的gamma版)</p>
+                                <p>·如果没有后缀，这意味着该版本已经在很多地方运行一段时间了，而且没有非平台特定的缺陷报告。只增加了关键漏洞修复修复。这就是我们称为一个产品(稳定)或“通用”版本的东西。</p>
+                                <p>MySQL的命名机制于其它产品稍有不同。一般情况，我们可以很放心地使用已经投放市场两周而没有被相同发布系列的新版本所代替的版本。</p>
+                                <ul>
+                                    <li>稳定不要最新：最新GA版超过10个月或比最新GA版晚3、4个版本的GA版。</li>
+                                    <li>前后无大BUG：要选择前后几个月没有<strong>大的BUG修复的版本</strong>，而不是大量<strong>修复BUG的集中版本</strong>。</li>
+                                    <li>向后少更新：最好向后较长时间没有更新发布的版本，<strong>若目标版本修复的BUG巨多，向前推进一个版本号。</strong></li>
+                                    <li>兼容开发：验证功能瓶颈、性能瓶颈，要考虑开发人员开发程序使用的版本是否兼容你选的版本</li>
+                                    <li>测试先行：作为内部开发测试数据库环境，跑大概3-6个月的时间。</li>
+                                    <li>非核心先行：优先企业非核心业务采用新版本的数据库GA版本软件。</li>
+                                </ul>
+                                <h4 id="用户安全"><a href="#用户安全" class="headerlink" title="用户安全"></a>用户安全</h4>
+                                <p><strong>禁止root账户远程访问</strong></p>
+                                <p>root权限太高，拥有安全隐患，root只允许本地登陆</p>
+                                <p><strong>mysql用户登录shell为nologin</strong></p>
+                                <figure class="highlight bash">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">usermod -s /sbin/nologin mysql</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p><strong>对MySQL运行用户降权，以普通用户身份运行MySQL</strong></p>
+                                <figure class="highlight bash">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="comment"># /etc/my.cnf</span></span><br><span class="line">[mysqld]</span><br><span class="line">user=mysql</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p><strong>删除匿名账号和空口令账号</strong></p>
+                                <figure class="highlight bash">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="comment"># 删除空密码用户</span></span><br><span class="line">delete from mysql.user <span class="built_in">where</span> user is NULL or Password IS NULL;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p><strong>用户与权限管理</strong></p>
+                                <p>遵循权限最小化原则。</p>
+                                <h4 id="连接安全"><a href="#连接安全" class="headerlink" title="连接安全"></a>连接安全</h4>
+                                <p>修改默认端口</p>
+                                <figure class="highlight bash">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="comment"># /etc/my.cnf</span></span><br><span class="line">[mysqld]</span><br><span class="line">port=8912</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h4 id="容灾"><a href="#容灾" class="headerlink" title="容灾"></a>容灾</h4>
+                                <p>在误删除数据的情况下，可以通过二进制日志恢复到某个时间点</p>
+                                <h4 id="二进制日志"><a href="#二进制日志" class="headerlink" title="二进制日志"></a>二进制日志</h4>
+                                <figure class="highlight plain">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"># 查看bin log（sql）</span><br><span class="line">show variables like &#39;%log_bin%&#39;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p><img src="https://tva1.sinaimg.cn/large/008i3skNgy1gu5zib6numj60p40ag75902.jpg" alt="image-20210905193857001"></p>
+                                <p>修改MySQL配置文件my.cnf，加入如下两行</p>
+                                <figure class="highlight bash">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">server-id = 1</span><br><span class="line">log_bin = /data/mysql/mysql-bin</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>重启服务</p>
+                                <h2 id="性能优化"><a href="#性能优化" class="headerlink" title="性能优化"></a>性能优化</h2>
+                                <figure class="highlight bash">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">效果 sql与索引优化&gt;Schema设计&gt;数据库实例优化&gt;文件系统&gt;操作系统&gt;硬件优化</span><br><span class="line">成本 硬件优化&gt;操作系统&gt;文件系统&gt;数据库实例优化&gt;Schema设计&gt;sql与索引优化</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h3 id="硬件优化"><a href="#硬件优化" class="headerlink" title="硬件优化"></a>硬件优化</h3>
+                                <h4 id="主机"><a href="#主机" class="headerlink" title="主机"></a>主机</h4>
+                                <figure class="highlight plain">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">真实的硬件（PC Server）: DELL  R系列 ，华为，浪潮，HP，联想</span><br><span class="line">云产品：ECS、数据库RDS、DRDS</span><br><span class="line">IBM 小型机 P6  570  595   P7 720  750 780     P8</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h4 id="CPU"><a href="#CPU" class="headerlink" title="CPU"></a>CPU</h4>
+                                <blockquote>
+                                    <p>根据业务场景选择</p>
+                                </blockquote>
+                                <p>OLTP \ OLAP IO密集型：线上系统，OLTP主要是IO密集型的业务，高并发 CPU密集型：数据分析数据处理，OLAP，cpu密集型的，需要CPU高计算能力（i系列，IBM power系列） CPU密集型： I<br>系列的，主频很高，核心少 IO密集型： E系列（至强），主频相对低，核心数量多</p>
+                                <h4 id="内存"><a href="#内存" class="headerlink" title="内存"></a>内存</h4>
+                                <p>建议2-3倍cpu核心数量 （ECC）</p>
+                                <h4 id="磁盘选择"><a href="#磁盘选择" class="headerlink" title="磁盘选择"></a>磁盘选择</h4>
+                                <p>SATA-III SAS Fc SSD（sata） pci-e ssd Flash 主机 RAID卡的BBU(Battery Backup Unit)关闭</p>
+                                <h4 id="存储"><a href="#存储" class="headerlink" title="存储"></a>存储</h4>
+                                <p>根据存储数据种类的不同，选择不同的存储设备 配置合理的RAID级别(raid5、raid10、热备盘)<br>r0 :条带化 ,性能高 r1 :镜像，安全 r5 :校验+条带化，安全较高+性能较高（读），写性能较低 （适合于读多写少） r10：安全+性能都很高，最少四块盘，浪费一半的空间（高IO要求）</p>
+                                <h4 id="网络"><a href="#网络" class="headerlink" title="网络"></a>网络</h4>
+                                <p>1、硬件买好的（单卡单口）</p>
+                                <p>2、网卡绑定(bonding)，交换机堆叠 以上问题，提前规避掉。</p>
+                                <h3 id="操作系统优化"><a href="#操作系统优化" class="headerlink" title="操作系统优化"></a>操作系统优化</h3>
+                                <h4 id="Swap调整"><a href="#Swap调整" class="headerlink" title="Swap调整"></a>Swap调整</h4>
+                                <figure class="highlight vim">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="keyword">echo</span> <span class="number">0</span> &gt;/proc/sys/<span class="keyword">vm</span>/swappiness的内容改成<span class="number">0</span>（临时），</span><br><span class="line">/etc/sysctl.<span class="keyword">conf</span></span><br><span class="line">上添加<span class="keyword">vm</span>.swappiness=<span class="number">0</span>（永久）</span><br><span class="line">sysctl -<span class="keyword">p</span></span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>此参数决定了Linux是倾向于使用swap，还是倾向于释放文件系统cache。在内存紧张的情况下，数值越低越倾向于释放文件系统cache。 当然，这个参数只能减少使用swap的概率，并不能避免Linux使用swap。</p>
+                                <p>修改MySQL的配置参数innodb_flush_method，开启O_DIRECT模式 这种情况下，InnoDB的buffer pool会直接绕过文件系统cache来访问磁盘，但是redo<br>log依旧会使用文件系统cache。值得注意的是，Redo log是覆写模式的，即使使用了文件系统的cache，也不会占用太多</p>
+                                <h4 id="IO调度策略"><a href="#IO调度策略" class="headerlink" title="IO调度策略"></a>IO调度策略</h4>
+                                <p>raid、no lvm、ext4或xfs、ssd、IO调度策略</p>
+                                <h3 id="数据库实例优化"><a href="#数据库实例优化" class="headerlink" title="数据库实例优化"></a>数据库实例优化</h3>
+                                <p>查看系统配置</p>
+                                <figure class="highlight plain">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">show variables like “xxx”</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>查看状态</p>
+                                <figure class="highlight sql">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="keyword">show</span> <span class="keyword">status</span> <span class="keyword">like</span></span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h4 id="连接"><a href="#连接" class="headerlink" title="连接"></a>连接</h4>
+                                <h5 id="max-connect-errors"><a href="#max-connect-errors" class="headerlink" title="max_connect_errors"></a>max_connect_errors</h5>
+                                <p>max_connect_errors是一个mysql中与安全有关的计数器值，它负责阻止过多尝试失败的客户端以防止暴力破解密码等情况，当超过指定次数，mysql服务器将禁连接请求，</p>
+                                <p>直到mysql服务器重启或通过flush hosts命令清空此host的相关信息 max_connect_errors的值与性能并无太大关系。</p>
+                                <figure class="highlight jboss-cli">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">修改<span class="string">/etc/my.cnf</span>文件，在[mysqld]下面添加如下内容</span><br><span class="line">max_<span class="keyword">connect</span>_errors=1000</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h5 id="Max-connections"><a href="#Max-connections" class="headerlink" title="Max_connections"></a>Max_connections</h5>
+                                <blockquote>
+                                    <p>Mysql的最大连接数，如果服务器的并发请求量比较大，可以调高这个值，当然这是要建立在机器能够支撑的情况下，因为如果连接数越来越多，mysql会为每个连接提供缓冲区，就会开销的越多的内存，所以需要适当的调整该值，不能随便去提高设值</p>
+                                </blockquote>
+                                <p>开启数据库时,临时设置一个比较大的测试值, 观察show status like ‘Max_used_connections’;变化<br>如果max_used_connections跟max_connections相同,那么就是max_connections设置过低或者超过服务器的负载上限了，低于10%则设置过大.</p>
+                                <h5 id="back-log"><a href="#back-log" class="headerlink" title="back_log"></a>back_log</h5>
+                                <blockquote>
+                                    <p>mysql能暂存的连接数量，当主要mysql线程在一个很短时间内得到非常多的连接请求时候它就会起作用，如果mysql的连接数据达到max_connections时候，新来的请求将会被存在堆栈中，等待某一连接释放资源，该推栈的数量及back_log,如果等待连接的数量超过back_log，将不被授予连接资源。<br>back_log值指出在mysql暂时停止回答新请求之前的短时间内有多少个请求可以被存在推栈中，只有如果期望在一个短时间内有很多连接的时候需要增加它</p>
+                                </blockquote>
+                                <p><strong>判断依据</strong></p>
+                                <figure class="highlight plain">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">show full processlist</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>发现大量的待连接进程时，就需要加大back_log或者加大max_connections的值</p>
+                                <figure class="highlight bash">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="comment"># vim /etc/my.cnf </span></span><br><span class="line">back_log=xxx</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h5 id="wait-timeout"><a href="#wait-timeout" class="headerlink" title="wait_timeout"></a>wait_timeout</h5>
+                                <blockquote>
+                                    <p>wait_timeout：指的是mysql在关闭一个非交互的连接之前所要等待的秒数，如果设置太小，那么连接关闭的就很快，从而使一些持久的连接不起作用。长连接的应用，为了不去反复的回收和分配资源，降低额外的开销。</p>
+                                </blockquote>
+                                <p>如果设置太大，容易造成连接打开时间过长，在show processlist时候，能看到很多的连接 ，一般希望wait_timeout尽可能低</p>
+                                <h5 id="interactive-timeout"><a href="#interactive-timeout" class="headerlink" title="interactive_timeout"></a>interactive_timeout</h5>
+                                <blockquote>
+                                    <p>如果设置太大，容易造成连接打开时间过长造成资源损耗，在show processlist时候，能看到很多的连接 ，一般希望wait_timeout尽可能低</p>
+                                </blockquote>
+                                <p>关闭一个交互的连接之前所需要等待的秒数，比如我们在终端上进行mysql管理，使用的即使交互的连接，这时候，如果没有操作的时间超过了interactive_time设置的时间就会自动的断开，默认的是28800，可调优为7200</p>
+                                <h5 id="key-buffer-size"><a href="#key-buffer-size" class="headerlink" title="key_buffer_size"></a>key_buffer_size</h5>
+                                <p>key_buffer_size指定索引缓冲区的大小，它决定索引处理的速度，尤其是索引读的速度</p>
+                                <figure class="highlight dart">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">临时表的创建有关（多表链接、子查询中、union）</span><br><span class="line">     在有以上查询语句出现的时候，需要创建临时表，用完之后会被丢弃</span><br><span class="line">     临时表有两种创建方式：</span><br><span class="line">                        内存中-------&gt;key_buffer_size</span><br><span class="line">                        磁盘上-------&gt;ibdata1(<span class="number">5.6</span>)</span><br><span class="line">                                      ibtmp1 (<span class="number">5.7</span>）</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h4 id="处理"><a href="#处理" class="headerlink" title="处理"></a>处理</h4>
+                                <h5 id="sort-buffer-size"><a href="#sort-buffer-size" class="headerlink" title="sort_buffer_size"></a>sort_buffer_size</h5>
+                                <blockquote>
+                                    <p>每个需要进行排序的线程分配该大小的一个缓冲区。增加这值加速</p>
+                                </blockquote>
+                                <figure class="highlight crystal">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">ORDER BY </span><br><span class="line">GROUP BY</span><br><span class="line">distinct</span><br><span class="line"><span class="class"><span class="keyword">union</span></span></span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>Sort_Buffer_Size并不是越大越好，由于是connection级的参数，过大的设置+高并发可能会耗尽系统内存资源。 列如：500个连接将会消耗500*sort_buffer_size（2M）=1G内存</p>
+                                <p><strong>配置方法</strong><br>修改/etc/my.cnf文件，在[mysqld]下面添加如下： sort_buffer_size=1M</p>
+                                <h5 id="max-allowed-packet"><a href="#max-allowed-packet" class="headerlink" title="max_allowed_packet"></a>max_allowed_packet</h5>
+                                <blockquote>
+                                    <p>mysql根据配置文件会限制，server接受的数据包大小</p>
+                                </blockquote>
+                                <p>有时候大的插入和更新会受max_allowed_packet参数限制，导致写入或者更新失败，更大值是1GB，必须设置1024的倍数</p>
+                                <figure class="highlight ini">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="attr">max_allowed_packet</span>=<span class="number">32</span>M</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h5 id="join-buffer-size"><a href="#join-buffer-size" class="headerlink" title="join_buffer_size"></a>join_buffer_size</h5>
+                                <p>用于表间关联缓存的大小，和sort_buffer_size一样，该参数对应的分配内存也是每个连接独享。 尽量在SQL与方面进行优化，效果较为明显。 优化的方法：在on条件列加索引，至少应当是有MUL索引</p>
+                                <h5 id="thread-cache-size"><a href="#thread-cache-size" class="headerlink" title="thread_cache_size"></a>thread_cache_size</h5>
+                                <blockquote>
+                                    <p>服务器线程缓存，这个值表示可以重新利用保存在缓存中线程的数量,当断开连接时,那么客户端的线程将被放到缓存中以响应下一个客户而不是销毁(前提是缓存数未达上限),如果线程重新被请求，那么请求将从缓存中读取,如果缓存中是空的或者是新的请求，那么这个线程将被重新创建,如果有很多新的线程，增加这个值可以改善系统性能</p>
+                                </blockquote>
+                                <p>通过比较 Connections 和 Threads_created 状态的变量，可以看到这个变量的作用。 设置规则如下：1GB 内存配置为8，2GB配置为16，3GB配置为32，4GB或更高内存，可配置更大。<br>服务器处理此客户的线程将会缓存起来以响应下一个客户而不是销毁(前提是缓存数未达上限)</p>
+                                <div class="table-container">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th style="text-align:left">Variable_name</th>
+                                                <th style="text-align:left">Value</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td style="text-align:left">Threads_cached</td>
+                                                <td style="text-align:left">178</td>
+                                                <td>当前此时此刻线程缓存中有多少空闲线程</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:left">Threads_connected</td>
+                                                <td style="text-align:left">78</td>
+                                                <td>当前已建立连接的数量，因为一个连接就需要一个线程，所以也可以看成当前被使用的线程数</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:left">Threads_created</td>
+                                                <td style="text-align:left">479</td>
+                                                <td>从最近一次服务启动，已创建线程的数量，如果发现Threads_created值过大的话，表明MySQL服务器一直在创建线程，这也是比较耗cpu SYS资源，可以适当增加配置文件中thread_cache_size值</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:left">Threads_running</td>
+                                                <td style="text-align:left">2</td>
+                                                <td>当前激活的（非睡眠状态）线程数。并不是代表正在使用的线程数，有时候连接已建立，但是连接处于sleep状态</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <p>Threads_created ：一般在架构设计阶段，会设置一个测试值，做压力测试。 结合zabbix监控，看一段时间内此状态的变化。 如果在一段时间内，Threads_created趋于平稳，说明对应参数设定是OK。<br>如果一直陡峭的增长，或者出现大量峰值，那么继续增加此值的大小，在系统资源够用的情况下（内存）</p>
+                                <h5 id="innodb-buffer-pool-size"><a href="#innodb-buffer-pool-size" class="headerlink" title="innodb_buffer_pool_size"></a>innodb_buffer_pool_size</h5>
+                                <blockquote>
+                                    <p>对于InnoDB表来说，innodb_buffer_pool_size的作用就相当于key_buffer_size对于MyISAM表的作用一样。</p>
+                                </blockquote>
+                                <p><em><u>配置依据</u></em></p>
+                                <p>InnoDB使用该参数指定大小的内存来缓冲数据和索引。</p>
+                                <p>对于单独的MySQL数据库服务器，最大可以把该值设置成物理内存的80%,一般我们建议不要超过物理内存的70%。</p>
+                                <p><u><em>配置方法</em></u></p>
+                                <p>innodb_buffer_pool_size=2048M</p>
+                                <h5 id="innodb-flush-log-at-trx-commit"><a href="#innodb-flush-log-at-trx-commit" class="headerlink" title="innodb_flush_log_at_trx_commit"></a>innodb_flush_log_at_trx_commit</h5>
+                                <p>主要控制了innodb将log buffer中的数据写入日志文件并flush磁盘的时间点，取值分别为0、1、2三个。 0，表示当事务提交时，不做日志写入操作，而是每秒钟将log buffer中的数据写入日志文件并flush磁盘一次；<br>1，每次事务的提交都会引起redo日志文件写入、flush磁盘的操作，确保了事务的ACID； 2，每次事务提交引起写入日志文件的动作,但每秒钟完成一次flush磁盘操作。</p>
+                                <p><em>配置依据</em><br>实际测试发现，该值对插入数据的速度影响非常大，设置为2时插入10000条记录只需要2秒，设置为0时只需要1秒，而设置为1时则需要229秒。因此，MySQL手册也建议尽量将插入操作合并成一个事务，这样可以大幅提高速度。<br>根据MySQL官方文档，在允许丢失最近部分事务的危险的前提下，可以把该值设为0或2。</p>
+                                <p><u><em>配置方法</em></u></p>
+                                <p>innodb_flush_log_at_trx_commit=1 双1标准中的一个1</p>
+                                <h5 id="innodb-thread-concurrency"><a href="#innodb-thread-concurrency" class="headerlink" title="innodb_thread_concurrency"></a>innodb_thread_concurrency</h5>
+                                <blockquote>
+                                    <p>此参数用来设置innodb线程的并发数量，默认值为0表示不限制。</p>
+                                </blockquote>
+                                <p>在官方文档上，对于innodb_thread_concurrency的使用，也给出了一些建议，如下：</p>
+                                <ul>
+                                    <li>如果一个工作负载中，并发用户线程的数量小于64，建议设置innodb_thread_concurrency=0；</li>
+                                    <li>如果工作负载一直较为严重甚至偶尔达到顶峰，建议先设置innodb_thread_concurrency=128， 并通过不断的降低这个参数，96, 80, 64等等，直到发现能够提供最佳性能的线程数，</li>
+                                </ul>
+                                <p>假设系统通常有40到50个用户，但定期的数量增加至60，70，甚至200。你会发现， 性能在80个并发用户设置时表现稳定，如果高于这个数，性能反而下降。在这种情况下，<br>建议设置innodb_thread_concurrency参数为80，以避免影响性能。</p>
+                                <p>如果你不希望InnoDB使用的虚拟CPU数量比用户线程使用的虚拟CPU更多（比如20个虚拟CPU）， 建议通过设置innodb_thread_concurrency 参数为这个值（也可能更低，这取决于性能体现），</p>
+                                <p>如果你的目标是将MySQL与其他应用隔离，你可以l考虑绑定mysqld进程到专有的虚拟CPU。 但是需 要注意的是，这种绑定，在myslqd进程一直不是很忙的情况下，可能会导致非最优的硬件使用率。在这种情况下，<br>你可能会设置mysqld进程绑定的虚拟 CPU，允许其他应用程序使用虚拟CPU的一部分或全部。 在某些情况下，最佳的innodb_thread_concurrency参数设置可以比虚拟CPU的数量小。<br>定期检测和分析系统，负载量、用户数或者工作环境的改变可能都需要对innodb_thread_concurrency参数的设置进行调整</p>
+                                <p>128 ——-&gt; top cpu<br><u><em>设置标准</em></u><br>1、当前系统cpu使用情况，均不均匀 top</p>
+                                <p>2、当前的连接数，有没有达到顶峰 show status like ‘threads_%’; show processlist; （3）配置方法： innodb_thread_concurrency=8 方法:</p>
+                                <figure class="highlight tex">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">看top ,观察每个cpu的各自的负载情况</span><br><span class="line">发现不平均,先设置参数为cpu个数,然后不断增加(一倍)这个数值</span><br><span class="line">一直观察top状态,直到达到比较均匀时,说明已经到位了.</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h5 id="innodb-log-buffer-size"><a href="#innodb-log-buffer-size" class="headerlink" title="innodb_log_buffer_size"></a><strong>innodb_log_buffer_size</strong></h5>
+                                <figure class="highlight tex">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">此参数确定些日志文件所用的内存大小，以M为单位。缓冲区更大能提高性能，对于较大的事务，可以增大缓存大小。</span><br><span class="line">innodb_log_buffer_size=128M</span><br><span class="line">设定依据：</span><br><span class="line">1、大事务： 存储过程调用 CALL</span><br><span class="line">2、多事务</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h5 id="innodb-log-file-size-100M"><a href="#innodb-log-file-size-100M" class="headerlink" title="innodb_log_file_size = 100M"></a>innodb_log_file_size = 100M</h5>
+                                <figure class="highlight tex">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">设置 ib_logfile0  ib_logfile1 </span><br><span class="line">此参数确定数据日志文件的大小，以M为单位，更大的设置可以提高性能.</span><br><span class="line">innodb_log_file_size = 100M</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h5 id="innodb-log-files-in-group-3"><a href="#innodb-log-files-in-group-3" class="headerlink" title="innodb_log_files_in_group = 3"></a>innodb_log_files_in_group = 3</h5>
+                                <figure class="highlight tex">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">为提高性能，MySQL可以以循环方式将日志文件写到多个文件。推荐设置为3</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h5 id="read-buffer-size-1M"><a href="#read-buffer-size-1M" class="headerlink" title="read_buffer_size = 1M"></a>read_buffer_size = 1M</h5>
+                                <figure class="highlight tex">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">MySql读入缓冲区大小。对表进行顺序扫描的请求将分配一个读入缓冲区，MySql会为它分配一段内存缓冲区。如果对表的顺序扫描请求非常频繁，并且你认为频繁扫描进行得太慢，可以通过增加该变量值以及内存缓冲区大小提高其性能。和 sort_buffer_size一样，该参数对应的分配内存也是每个连接独享</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h5 id="read-rnd-buffer-size-1M"><a href="#read-rnd-buffer-size-1M" class="headerlink" title="read_rnd_buffer_size = 1M"></a>read_rnd_buffer_size = 1M</h5>
+                                <figure class="highlight tex">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">MySql的随机读（查询操作）缓冲区大小。当按任意顺序读取行时(例如，按照排序顺序)，将分配一个随机读缓存区。进行排序查询时，MySql会首先扫描一遍该缓冲，以避免磁盘搜索，提高查询速度，如果需要排序大量数据，可适当调高该值。但MySql会为每个客户连接发放该缓冲空间，所以应尽量适当设置该值，以避免内存开销过大。</span><br><span class="line">注：顺序读是指根据索引的叶节点数据就能顺序地读取所需要的行数据。随机读是指一般需要根据辅助索引叶节点中的主键寻找实际行数据，而辅助索引和主键所在的数据段不同，因此访问方式是随机的。</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h5 id="bulk-insert-buffer-size-8M"><a href="#bulk-insert-buffer-size-8M" class="headerlink" title="bulk_insert_buffer_size = 8M"></a>bulk_insert_buffer_size = 8M</h5>
+                                <figure class="highlight tex">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">批量插入数据缓存大小，可以有效提高插入效率，默认为8M</span><br><span class="line">tokuDB    percona</span><br><span class="line">myrocks   </span><br><span class="line">RocksDB</span><br><span class="line">TiDB</span><br><span class="line">MongoDB</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h5 id="binary-log"><a href="#binary-log" class="headerlink" title="binary log"></a>binary log</h5>
+                                <figure class="highlight">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="attr">log-bin</span> = /data/mysql-bin</span><br><span class="line"><span class="attr">binlog_cache_size</span> = <span class="number">2</span>M //为每个session 分配的内存，在事务过程中用来存储二进制日志的缓存, 提高记录bin-log的效率。没有什么大事务，dml也不是很频繁的情况下可以设置小一点，如果事务大而且多，dml操作也频繁，则可以适当的调大一点。前者建议是--<span class="number">1</span>M，后者建议是：即 <span class="number">2</span>--<span class="number">4</span>M</span><br><span class="line"><span class="attr">max_binlog_cache_size</span> = <span class="number">8</span>M //表示的是binlog 能够使用的最大cache 内存大小</span><br><span class="line"><span class="attr">max_binlog_size</span> = <span class="number">512</span>M //指定binlog日志文件的大小，如果当前的日志大小达到max_binlog_size，还会自动创建新的二进制日志。你不能将该变量设置为大于<span class="number">1</span>GB或小于<span class="number">4096</span>字节。默认值是<span class="number">1</span>GB。在导入大容量的sql文件时，建议关闭sql_log_bin，否则硬盘扛不住，而且建议定期做删除。</span><br><span class="line"><span class="attr">expire_logs_days</span> = <span class="number">7</span> //定义了mysql清除过期日志的时间。</span><br><span class="line">二进制日志自动删除的天数。默认值为0,表示“没有自动删除”。</span><br><span class="line"><span class="attr">log-bin</span> = /mysql-bin</span><br><span class="line"><span class="attr">binlog_format</span> = row</span><br><span class="line"><span class="attr">sync_binlog</span> = <span class="number">1</span></span><br><span class="line">双1标准(基于安全的控制)：</span><br><span class="line"><span class="attr">sync_binlog</span> = <span class="number">1</span>   // 什么时候刷新binlog到磁盘，每次事务commit</span><br><span class="line"><span class="attr">innodb_flush_log_at_trx_commit</span> = <span class="number">1</span></span><br><span class="line">set sql_log_bin = 0;</span><br><span class="line">show status like 'com_%';</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <figure class="highlight ini">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="section">[mysqld]</span></span><br><span class="line"><span class="attr">basedir</span> = /data/mysql</span><br><span class="line"><span class="attr">datadir</span> = /data/mysql/data</span><br><span class="line"><span class="attr">socket</span> = /tmp/mysql.sock</span><br><span class="line"><span class="attr">log-error</span> = /var/log/mysql.log</span><br><span class="line"><span class="attr">log_bin</span> = /data/binlog/mysql-bin</span><br><span class="line"><span class="attr">binlog_format</span> = row</span><br><span class="line">skip-name-resolve</span><br><span class="line"><span class="attr">server-id</span> = <span class="number">52</span></span><br><span class="line"><span class="attr">gtid-mode</span> = <span class="literal">on</span></span><br><span class="line"><span class="attr">enforce-gtid-consistency</span> = <span class="literal">true</span></span><br><span class="line"><span class="attr">log-slave-updates</span> = <span class="number">1</span></span><br><span class="line"><span class="attr">relay_log_purge</span> = <span class="number">0</span></span><br><span class="line"><span class="attr">max_connections</span> = <span class="number">1024</span></span><br><span class="line"><span class="attr">back_log</span> = <span class="number">128</span></span><br><span class="line"><span class="attr">wait_timeout</span> = <span class="number">60</span></span><br><span class="line"><span class="attr">interactive_timeout</span> = <span class="number">7200</span></span><br><span class="line"><span class="attr">key_buffer_size</span> = <span class="number">16</span>M</span><br><span class="line"><span class="attr">query_cache_size</span> = <span class="number">64</span>M</span><br><span class="line"><span class="attr">query_cache_type</span> = <span class="number">1</span></span><br><span class="line"><span class="attr">query_cache_limit</span> = <span class="number">50</span>M</span><br><span class="line"><span class="attr">max_connect_errors</span> = <span class="number">20</span></span><br><span class="line"><span class="attr">sort_buffer_size</span> = <span class="number">2</span>M</span><br><span class="line"><span class="attr">max_allowed_packet</span> = <span class="number">32</span>M</span><br><span class="line"><span class="attr">join_buffer_size</span> = <span class="number">2</span>M</span><br><span class="line"><span class="attr">thread_cache_size</span> = <span class="number">200</span></span><br><span class="line"><span class="attr">innodb_buffer_pool_size</span> = <span class="number">1024</span>M</span><br><span class="line"><span class="attr">innodb_flush_log_at_trx_commit</span> = <span class="number">1</span></span><br><span class="line"><span class="attr">innodb_log_buffer_size</span> = <span class="number">32</span>M</span><br><span class="line"><span class="attr">innodb_log_file_size</span> = <span class="number">128</span>M</span><br><span class="line"><span class="attr">innodb_log_files_in_group</span> = <span class="number">3</span></span><br><span class="line"><span class="attr">binlog_cache_size</span> = <span class="number">2</span>M</span><br><span class="line"><span class="attr">max_binlog_cache_size</span> = <span class="number">8</span>M</span><br><span class="line"><span class="attr">max_binlog_size</span> = <span class="number">512</span>M</span><br><span class="line"><span class="attr">expire_logs_days</span> = <span class="number">7</span></span><br><span class="line"><span class="attr">read_buffer_size</span> = <span class="number">2</span>M</span><br><span class="line"><span class="attr">read_rnd_buffer_size</span> = <span class="number">2</span>M</span><br><span class="line"><span class="attr">bulk_insert_buffer_size</span> = <span class="number">8</span>M</span><br><span class="line"><span class="section">[client]</span></span><br><span class="line"><span class="attr">socket</span> = /tmp/mysql.sock</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h2 id="sql与索引优化"><a href="#sql与索引优化" class="headerlink" title="sql与索引优化"></a>sql与索引优化</h2>
+                                <h3 id="sql使用建议"><a href="#sql使用建议" class="headerlink" title="sql使用建议"></a>sql使用建议</h3>
+                                <ol>
+                                    <li>
+                                        <p>对查询进行优化，应尽量避免全表扫描，首先应考虑在 where 及 order by 涉及的列上建立索引。</p>
+                                    </li>
+                                    <li>
+                                        <p>应尽量避免在 where 子句中对字段进行 null 值判断，否则将导致引擎放弃使用索引而进行全表扫描，如：</p>
+                                    </li>
+                                </ol>
+                                <figure class="highlight sql">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="keyword">select</span> <span class="keyword">id</span></span><br><span class="line"><span class="keyword">from</span> t</span><br><span class="line"><span class="keyword">where</span> <span class="keyword">num</span> <span class="keyword">is</span> <span class="literal">null</span> <span class="comment"># 可以在num上设置默认值0，确保表中num列没有null值，然后这样查询：</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">id</span></span><br><span class="line"><span class="keyword">from</span> t</span><br><span class="line"><span class="keyword">where</span> <span class="keyword">num</span> = <span class="number">0</span></span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <ol>
+                                    <li>
+                                        <p>应尽量避免在 where 子句中使用!=或&lt;&gt;操作符，否则将引擎放弃使用索引而进行全表扫描。</p>
+                                    </li>
+                                    <li>
+                                        <p>应尽量避免在 where 子句中使用 or 来连接条件，否则将导致引擎放弃使用索引而进行全表扫描，如：</p>
+                                    </li>
+                                </ol>
+                                <figure class="highlight sql">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="keyword">select</span> <span class="keyword">id</span></span><br><span class="line"><span class="keyword">from</span> t</span><br><span class="line"><span class="keyword">where</span> <span class="keyword">num</span> = <span class="number">10</span></span><br><span class="line">   <span class="keyword">or</span> <span class="keyword">num</span> = <span class="number">20</span> <span class="comment"># 可以这样查询：</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">id</span></span><br><span class="line"><span class="keyword">from</span> t</span><br><span class="line"><span class="keyword">where</span> <span class="keyword">num</span> = <span class="number">10</span></span><br><span class="line"><span class="keyword">union</span> <span class="keyword">all</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">id</span></span><br><span class="line"><span class="keyword">from</span> t</span><br><span class="line"><span class="keyword">where</span> <span class="keyword">num</span> = <span class="number">20</span></span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <ol>
+                                    <li>in 和 not in 也要慎用，否则会导致全表扫描，如：</li>
+                                </ol>
+                                <figure class="highlight sql">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="keyword">select</span> <span class="keyword">id</span></span><br><span class="line"><span class="keyword">from</span> t</span><br><span class="line"><span class="keyword">where</span> <span class="keyword">num</span> <span class="keyword">in</span> (<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>) <span class="comment"># 对于连续的数值，能用 between 就不要用 in 了：</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">id</span></span><br><span class="line"><span class="keyword">from</span> t</span><br><span class="line"><span class="keyword">where</span> <span class="keyword">num</span> <span class="keyword">between</span> <span class="number">1</span> <span class="keyword">and</span> <span class="number">3</span></span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <ol>
+                                    <li>下面的查询也将导致全表扫描：</li>
+                                </ol>
+                                <figure class="highlight sql">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="keyword">select</span> <span class="keyword">id</span></span><br><span class="line"><span class="keyword">from</span> t</span><br><span class="line"><span class="keyword">where</span> <span class="keyword">name</span> <span class="keyword">like</span> <span class="string">'%abc%'</span></span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <ol>
+                                    <li>应尽量避免在 where 子句中对字段进行表达式操作，这将导致引擎放弃使用索引而进行全表扫描。如：</li>
+                                </ol>
+                                <figure class="highlight sql">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="keyword">select</span> <span class="keyword">id</span></span><br><span class="line"><span class="keyword">from</span> t</span><br><span class="line"><span class="keyword">where</span> <span class="keyword">num</span> / <span class="number">2</span> = <span class="number">100</span> <span class="comment"># 应改为:</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">id</span></span><br><span class="line"><span class="keyword">from</span> t</span><br><span class="line"><span class="keyword">where</span> <span class="keyword">num</span> = <span class="number">100</span> * <span class="number">2</span></span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <ol>
+                                    <li>应尽量避免在where子句中对字段进行函数操作，这将导致引擎放弃使用索引而进行全表扫描。如：</li>
+                                </ol>
+                                <figure class="highlight sql">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="keyword">select</span> <span class="keyword">id</span></span><br><span class="line"><span class="keyword">from</span> t</span><br><span class="line"><span class="keyword">where</span> <span class="keyword">substring</span>(<span class="keyword">name</span>, <span class="number">1</span>, <span class="number">3</span>) = <span class="string">'abc'</span><span class="comment">--name以abc开头的id   </span></span><br><span class="line">    <span class="comment"># 应改为:</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">id</span></span><br><span class="line"><span class="keyword">from</span> t</span><br><span class="line"><span class="keyword">where</span> <span class="keyword">name</span> <span class="keyword">like</span> <span class="string">'abc%'</span></span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <ol>
+                                    <li>
+                                        <p>不要在 where 子句中的“=”左边进行函数、算术运算或其他表达式运算，否则系统将可能无法正确使用索引。</p>
+                                    </li>
+                                    <li>
+                                        <p>在使用索引字段作为条件时，如果该索引是复合索引，那么必须使用到该索引中的第一个字段作为条件时才能保证系统使用该索引，否则该索引将不会被使用，并且应尽可能的让字段顺序与索引顺序相一致。</p>
+                                    </li>
+                                    <li>
+                                        <p>不要写一些没有意义的查询，如需要生成一个空表结构</p>
+                                    </li>
+                                    <li>
+                                        <p>很多时候用 exists 代替 in 是一个好的选择：</p>
+                                    </li>
+                                </ol>
+                                <figure class="highlight sql">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="keyword">select</span> <span class="keyword">num</span></span><br><span class="line"><span class="keyword">from</span> a</span><br><span class="line"><span class="keyword">where</span> <span class="keyword">num</span> <span class="keyword">in</span> (<span class="keyword">select</span> <span class="keyword">num</span> <span class="keyword">from</span> b) <span class="comment"># 用下面的语句替换：</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">num</span></span><br><span class="line"><span class="keyword">from</span> a</span><br><span class="line"><span class="keyword">where</span> <span class="keyword">exists</span>(<span class="keyword">select</span> <span class="number">1</span> <span class="keyword">from</span> b <span class="keyword">where</span> <span class="keyword">num</span> = a.num)</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <ol>
+                                    <li>
+                                        <p>并不是所有索引对查询都有效，SQL是根据表中数据来进行查询优化的，当索引列有大量数据重复时，SQL查询可能不会去利用索引，如一表中有字段sex，male、female几乎各一半，那么即使在sex上建了索引也对查询效率起不了作用。</p>
+                                    </li>
+                                    <li>
+                                        <p>索引并不是越多越好，索引固然可以提高相应的 select 的效率，但同时也降低了 insert 及 update 的效率， 因为 insert 或 update 时有可能会重建索引，所以怎样建索引需要慎重考虑，视具体情况而定。<br>一个表的索引数最好不要超过6个，若太多则应考虑一些不常使用到的列上建的索引是否有必要。</p>
+                                    </li>
+                                    <li>
+                                        <p>尽量使用数字型字段，若只含数值信息的字段尽量不要设计为字符型，这会降低查询和连接的性能，并会增加存储开销。 这是因为引擎在处理查询和连接时会逐个比较字符串中每一个字符，而对于数字型而言只需要比较一次就够了。</p>
+                                    </li>
+                                    <li>
+                                        <p>尽可能的使用 varchar 代替 char ，因为首先变长字段存储空间小，可以节省存储空间，<br>其次对于查询来说，在一个相对较小的字段内搜索效率显然要高些。</p>
+                                    </li>
+                                    <li>
+                                        <p>任何地方都不要使用 select <em> from t ，用具体的字段列表代替“</em>”，不要返回用不到的任何字段。</p>
+                                    </li>
+                                    <li>
+                                        <p>避免频繁创建和删除临时表，以减少系统表资源的消耗。</p>
+                                    </li>
+                                    <li>
+                                        <p>临时表并不是不可使用，适当地使用它们可以使某些例程更有效，例如，当需要重复引用大型表或常用表中的某个数据集时。但是，对于一次性事件，最好使用导出表。</p>
+                                    </li>
+                                    <li>
+                                        <p>在新建临时表时，如果一次性插入数据量很大，那么可以使用 select into 代替 create table，避免造成大量 log ，<br>以提高速度；如果数据量不大，为了缓和系统表的资源，应先create table，然后insert。</p>
+                                    </li>
+                                    <li>
+                                        <p>如果使用到了临时表，在存储过程的最后务必将所有的临时表显式删除，先 truncate table ，然后 drop table ，这样可以避免系统表的较长时间锁定。</p>
+                                    </li>
+                                    <li>
+                                        <p>尽量避免使用游标，因为游标的效率较差，如果游标操作的数据超过1万行，那么就应该考虑改写。</p>
+                                    </li>
+                                    <li>
+                                        <p>使用基于游标的方法或临时表方法之前，应先寻找基于集的解决方案来解决问题，基于集的方法通常更有效。</p>
+                                    </li>
+                                    <li>
+                                        <p>与临时表一样，游标并不是不可使用。对小型数据集使用 FAST_FORWARD 游标通常要优于其他逐行处理方法，尤其是在必须引用几个表才能获得所需的数据时。</p>
+                                    </li>
+                                </ol>
+                                <p>在结果集中包括“合计”的例程通常要比使用游标执行的速度快。如果开发时间允许，基于游标的方法和基于集的方法都可以尝试一下，看哪一种方法的效果更好。</p>
+                                <ol>
+                                    <li>
+                                        <p>尽量避免大事务操作，提高系统并发能力。</p>
+                                    </li>
+                                    <li>
+                                        <p>尽量避免向客户端返回大数据量，若数据量过大，应该考虑相应需求是否合理。</p>
+                                    </li>
+                                </ol>
+                                <h3 id="sql调优思路"><a href="#sql调优思路" class="headerlink" title="sql调优思路"></a>sql调优思路</h3>
+                                <ol>
+                                    <li>slow_query_log 收集慢日志 结合explain分析索引命中与进行索引优化</li>
+                                    <li>减少索引扫描行数，对于慢sql进行优化</li>
+                                    <li>建立联合索引，由于联合索引的每个叶子节点都包含检索字段信息，按最左原则匹配，按照其他条件过滤，减少回表的数据量</li>
+                                    <li>使用虚拟列和联合索引来提升复杂查询执行效率</li>
+                                </ol>
+                                <h3 id="索引失效"><a href="#索引失效" class="headerlink" title="索引失效"></a>索引失效</h3>
+                                <ol>
+                                    <li>联合索引不遵循最左匹配原则</li>
+                                    <li><code>SELECT *</code>使用不当</li>
+                                    <li>索引列参与计算—查询条件使用函数在索引列上，或者对索引列进行运算，运算包括(+，-，*，/，! 等)</li>
+                                    <li>错误的使用<code>lIKE</code>, 进行模糊查询</li>
+                                    <li>查询条件与索引列类型不一致，造成类型转换</li>
+                                    <li>WHERE 子查询中<code>OR</code> 使用不当</li>
+                                    <li><code>&lt; &gt;</code>、<code>IS NOT NULL</code> 、<code>NOT IN</code>、<code>NOT EXISTS</code></li>
+                                    <li><code>ORDER BY</code> 多个字段时不走索引</li>
+                                    <li>优化器判断失误不走索引</li>
+                                </ol>
+                            </div>
+                            <div class="popular-posts-header">相关文章</div>
+                            <ul class="popular-posts">
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/1336292242.html" rel="bookmark">MySQL存储引擎</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/1376532068.html" rel="bookmark">MySQL数据库一些概念</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/1647551827.html" rel="bookmark">MySQL数据库体系结构</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/1196530272.html" rel="bookmark">MySQL数据类型</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/3376299280.html" rel="bookmark">MySQL的SQL使用之上</a></div>
+                                </li>
+                            </ul>
+                            <footer class="post-footer">
+                                <div class="post-tags">
+                                    <a href="/tags/MySQL/" rel="tag"><i class="fa fa-tag"></i> MySQL</a>
+                                    <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="tag"><i class="fa fa-tag"></i> 数据库</a>
+                                </div>
+                                <div class="post-nav">
+                                    <div class="post-nav-item">
+                                        <a href="/2760374101.html" rel="prev" title="kubernetes NFS实践">
+                                            <i class="fa fa-chevron-left"></i> kubernetes NFS实践 </a>
+                                    </div>
+                                    <div class="post-nav-item">
+                                        <a href="/3847153486.html" rel="next" title="ssh结合actions实现源码分离部署"> ssh结合actions实现源码分离部署 <i class="fa fa-chevron-right"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </footer>
+                        </article>
+                    </div>
+                    <script>
+                        window.addEventListener('tabs:register', () =>
+                        {
+                            let
+                            {
+                                activeClass
+                            } = CONFIG.comments;
+                            if (CONFIG.comments.storage)
+                            {
+                                activeClass = localStorage.getItem('comments_active') || activeClass;
+                            }
+                            if (activeClass)
+                            {
+                                let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+                                if (activeTab)
+                                {
+                                    activeTab.click();
+                                }
+                            }
+                        });
+                        if (CONFIG.comments.storage)
+                        {
+                            window.addEventListener('tabs:click', event =>
+                            {
+                                if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+                                let commentClass = event.target.classList[1];
+                                localStorage.setItem('comments_active', commentClass);
+                            });
+                        }
+
+                    </script>
+                </div>
+                <div class="toggle sidebar-toggle">
+                    <span class="toggle-line toggle-line-first"></span>
+                    <span class="toggle-line toggle-line-middle"></span>
+                    <span class="toggle-line toggle-line-last"></span>
+                </div>
+                <aside class="sidebar">
+                    <div class="sidebar-inner">
+                        <ul class="sidebar-nav motion-element">
+                            <li class="sidebar-nav-toc"> 文章目录 </li>
+                            <li class="sidebar-nav-overview"> 站点概览 </li>
+                        </ul>
+                        <!--noindex-->
+                        <div class="post-toc-wrap sidebar-panel">
+                            <div class="post-toc motion-element">
+                                <ol class="nav">
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#安全优化"><span class="nav-number">1.</span> <span class="nav-text">安全优化</span></a>
+                                        <ol class="nav-child">
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#系统安全"><span class="nav-number">1.1.</span> <span class="nav-text">系统安全</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#MySQL安全"><span class="nav-number">1.2.</span> <span class="nav-text">MySQL安全</span></a>
+                                                <ol class="nav-child">
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#用户安全"><span class="nav-number">1.2.1.</span> <span class="nav-text">用户安全</span></a></li>
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#连接安全"><span class="nav-number">1.2.2.</span> <span class="nav-text">连接安全</span></a></li>
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#容灾"><span class="nav-number">1.2.3.</span> <span class="nav-text">容灾</span></a></li>
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#二进制日志"><span class="nav-number">1.2.4.</span> <span class="nav-text">二进制日志</span></a></li>
+                                                </ol>
+                                            </li>
+                                        </ol>
+                                    </li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#性能优化"><span class="nav-number">2.</span> <span class="nav-text">性能优化</span></a>
+                                        <ol class="nav-child">
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#硬件优化"><span class="nav-number">2.1.</span> <span class="nav-text">硬件优化</span></a>
+                                                <ol class="nav-child">
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#主机"><span class="nav-number">2.1.1.</span> <span class="nav-text">主机</span></a></li>
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#CPU"><span class="nav-number">2.1.2.</span> <span class="nav-text">CPU</span></a></li>
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#内存"><span class="nav-number">2.1.3.</span> <span class="nav-text">内存</span></a></li>
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#磁盘选择"><span class="nav-number">2.1.4.</span> <span class="nav-text">磁盘选择</span></a></li>
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#存储"><span class="nav-number">2.1.5.</span> <span class="nav-text">存储</span></a></li>
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#网络"><span class="nav-number">2.1.6.</span> <span class="nav-text">网络</span></a></li>
+                                                </ol>
+                                            </li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#操作系统优化"><span class="nav-number">2.2.</span> <span class="nav-text">操作系统优化</span></a>
+                                                <ol class="nav-child">
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#Swap调整"><span class="nav-number">2.2.1.</span> <span class="nav-text">Swap调整</span></a></li>
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#IO调度策略"><span class="nav-number">2.2.2.</span> <span class="nav-text">IO调度策略</span></a></li>
+                                                </ol>
+                                            </li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#数据库实例优化"><span class="nav-number">2.3.</span> <span class="nav-text">数据库实例优化</span></a>
+                                                <ol class="nav-child">
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#连接"><span class="nav-number">2.3.1.</span> <span class="nav-text">连接</span></a>
+                                                        <ol class="nav-child">
+                                                            <li class="nav-item nav-level-5"><a class="nav-link" href="#max-connect-errors"><span class="nav-number">2.3.1.1.</span> <span class="nav-text">max_connect_errors</span></a></li>
+                                                            <li class="nav-item nav-level-5"><a class="nav-link" href="#Max-connections"><span class="nav-number">2.3.1.2.</span> <span class="nav-text">Max_connections</span></a></li>
+                                                            <li class="nav-item nav-level-5"><a class="nav-link" href="#back-log"><span class="nav-number">2.3.1.3.</span> <span class="nav-text">back_log</span></a></li>
+                                                            <li class="nav-item nav-level-5"><a class="nav-link" href="#wait-timeout"><span class="nav-number">2.3.1.4.</span> <span class="nav-text">wait_timeout</span></a></li>
+                                                            <li class="nav-item nav-level-5"><a class="nav-link" href="#interactive-timeout"><span class="nav-number">2.3.1.5.</span> <span class="nav-text">interactive_timeout</span></a></li>
+                                                            <li class="nav-item nav-level-5"><a class="nav-link" href="#key-buffer-size"><span class="nav-number">2.3.1.6.</span> <span class="nav-text">key_buffer_size</span></a></li>
+                                                        </ol>
+                                                    </li>
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#处理"><span class="nav-number">2.3.2.</span> <span class="nav-text">处理</span></a>
+                                                        <ol class="nav-child">
+                                                            <li class="nav-item nav-level-5"><a class="nav-link" href="#sort-buffer-size"><span class="nav-number">2.3.2.1.</span> <span class="nav-text">sort_buffer_size</span></a></li>
+                                                            <li class="nav-item nav-level-5"><a class="nav-link" href="#max-allowed-packet"><span class="nav-number">2.3.2.2.</span> <span class="nav-text">max_allowed_packet</span></a></li>
+                                                            <li class="nav-item nav-level-5"><a class="nav-link" href="#join-buffer-size"><span class="nav-number">2.3.2.3.</span> <span class="nav-text">join_buffer_size</span></a></li>
+                                                            <li class="nav-item nav-level-5"><a class="nav-link" href="#thread-cache-size"><span class="nav-number">2.3.2.4.</span> <span class="nav-text">thread_cache_size</span></a></li>
+                                                            <li class="nav-item nav-level-5"><a class="nav-link" href="#innodb-buffer-pool-size"><span class="nav-number">2.3.2.5.</span> <span class="nav-text">innodb_buffer_pool_size</span></a></li>
+                                                            <li class="nav-item nav-level-5"><a class="nav-link" href="#innodb-flush-log-at-trx-commit"><span class="nav-number">2.3.2.6.</span> <span class="nav-text">innodb_flush_log_at_trx_commit</span></a></li>
+                                                            <li class="nav-item nav-level-5"><a class="nav-link" href="#innodb-thread-concurrency"><span class="nav-number">2.3.2.7.</span> <span class="nav-text">innodb_thread_concurrency</span></a></li>
+                                                            <li class="nav-item nav-level-5"><a class="nav-link" href="#innodb-log-buffer-size"><span class="nav-number">2.3.2.8.</span> <span class="nav-text">innodb_log_buffer_size</span></a></li>
+                                                            <li class="nav-item nav-level-5"><a class="nav-link" href="#innodb-log-file-size-100M"><span class="nav-number">2.3.2.9.</span> <span class="nav-text">innodb_log_file_size &#x3D; 100M</span></a></li>
+                                                            <li class="nav-item nav-level-5"><a class="nav-link" href="#innodb-log-files-in-group-3"><span class="nav-number">2.3.2.10.</span> <span class="nav-text">innodb_log_files_in_group &#x3D; 3</span></a></li>
+                                                            <li class="nav-item nav-level-5"><a class="nav-link" href="#read-buffer-size-1M"><span class="nav-number">2.3.2.11.</span> <span class="nav-text">read_buffer_size &#x3D; 1M</span></a></li>
+                                                            <li class="nav-item nav-level-5"><a class="nav-link" href="#read-rnd-buffer-size-1M"><span class="nav-number">2.3.2.12.</span> <span class="nav-text">read_rnd_buffer_size &#x3D; 1M</span></a></li>
+                                                            <li class="nav-item nav-level-5"><a class="nav-link" href="#bulk-insert-buffer-size-8M"><span class="nav-number">2.3.2.13.</span> <span class="nav-text">bulk_insert_buffer_size &#x3D; 8M</span></a></li>
+                                                            <li class="nav-item nav-level-5"><a class="nav-link" href="#binary-log"><span class="nav-number">2.3.2.14.</span> <span class="nav-text">binary log</span></a></li>
+                                                        </ol>
+                                                    </li>
+                                                </ol>
+                                            </li>
+                                        </ol>
+                                    </li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#sql与索引优化"><span class="nav-number">3.</span> <span class="nav-text">sql与索引优化</span></a>
+                                        <ol class="nav-child">
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#sql使用建议"><span class="nav-number">3.1.</span> <span class="nav-text">sql使用建议</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#sql调优思路"><span class="nav-number">3.2.</span> <span class="nav-text">sql调优思路</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#索引失效"><span class="nav-number">3.3.</span> <span class="nav-text">索引失效</span></a></li>
+                                        </ol>
+                                    </li>
+                                </ol>
+                            </div>
+                        </div>
+                        <!--/noindex-->
+                        <div class="site-overview-wrap sidebar-panel">
+                            <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <img class="site-author-image" itemprop="image" alt="吴志鹏" src="/images/favicon/android-chrome-512x512.png">
+                                <p class="site-author-name" itemprop="name">吴志鹏</p>
+                                <div class="site-description" itemprop="description">Talk is free，please state clearly</div>
+                            </div>
+                            <div class="site-state-wrap motion-element">
+                                <nav class="site-state">
+                                    <div class="site-state-item site-state-posts">
+                                        <a href="/archives/">
+                                            <span class="site-state-item-count">136</span>
+                                            <span class="site-state-item-name">日志</span>
+                                        </a>
+                                    </div>
+                                    <div class="site-state-item site-state-categories">
+                                        <a href="/categories/">
+                                            <span class="site-state-item-count">158</span>
+                                            <span class="site-state-item-name">分类</span></a>
+                                    </div>
+                                    <div class="site-state-item site-state-tags">
+                                        <a href="/tags/">
+                                            <span class="site-state-item-count">89</span>
+                                            <span class="site-state-item-name">标签</span></a>
+                                    </div>
+                                </nav>
+                            </div>
+                            <div class="links-of-author motion-element">
+                                <span class="links-of-author-item">
+                                    <a href="https://github.com/Payne-Wu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Payne-Wu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="mailto:wuzhipeng1289690157@gmail.com" title="E-Mail → mailto:wuzhipeng1289690157@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="https://www.zhihu.com/people/wu-zhi-peng-72-78" title="ZhiHu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;wu-zhi-peng-72-78" rel="noopener" target="_blank"><i class="fa fa-magic fa-fw"></i>ZhiHu</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="https://weibo.com/u/6987234483" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;6987234483" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+                <div id="sidebar-dimmer"></div>
+            </div>
+        </main>
+        <footer class="footer">
+            <div class="footer-inner">
+                <div class="copyright"> &copy; <span itemprop="copyrightYear">2022</span>
+                    <span class="with-love">
+                        <i class="fa fa-heart"></i>
+                    </span>
+                    <span class="author" itemprop="copyrightHolder">PayneWu</span>
+                    <span class="post-meta-divider">|</span>
+                    <span class="post-meta-item-icon">
+                        <i class="fa fa-chart-area"></i>
+                    </span>
+                    <span title="站点总字数">255k</span>
+                    <span class="post-meta-divider">|</span>
+                    <span class="post-meta-item-icon">
+                        <i class="fa fa-coffee"></i>
+                    </span>
+                    <span title="站点阅读时长">3:51</span>
+                </div>
+                <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">湘ICP备2021019893号-1 </a>
+                </div>
+                <div style="display: none;">
+                    <script src="//s95.cnzz.com/z_stat.php?id=true&web_id=true"></script>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+    <script src="/js/utils.js"></script>
+    <script src="/.js"></script>
+    <script src="/js/schemes/pisces.js"></script>
+    <script src="/.js"></script>
+    <script src="/js/next-boot.js"></script>
+    <script src="/.js"></script>
+    <script>
+        (function ()
+        {
+            var canonicalURL, curProtocol;
+            //Get the <link> tag
+            var x = document.getElementsByTagName("link");
+            //Find the last canonical URL
+            if (x.length > 0)
+            {
+                for (i = 0; i < x.length; i++)
+                {
+                    if (x[i].rel.toLowerCase() == 'canonical' && x[i].href)
+                    {
+                        canonicalURL = x[i].href;
+                    }
+                }
+            }
+            //Get protocol
+            if (!canonicalURL)
+            {
+                curProtocol = window.location.protocol.split(':')[0];
+            }
+            else
+            {
+                curProtocol = canonicalURL.split(':')[0];
+            }
+            //Get current URL if the canonical URL does not exist
+            if (!canonicalURL) canonicalURL = window.location.href;
+            //Assign script content. Replace current URL with the canonical URL
+            ! function ()
+            {
+                var e = /([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,
+                    r = canonicalURL,
+                    t = document.referrer;
+                if (!e.test(r))
+                {
+                    var n = (String(curProtocol).toLowerCase() === 'https') ? "https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif" : "//api.share.baidu.com/s.gif";
+                    t ? (n += "?r=" + encodeURIComponent(document.referrer), r && (n += "&l=" + r)) : r && (n += "?l=" + r);
+                    var i = new Image;
+                    i.src = n
+                }
+            }(window);
+        })();
+
+    </script>
+    <script src="/js/local-search.js"></script>
+    <script src="/.js"></script>
+</body>
+
+</html>

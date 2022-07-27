@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+    <meta name="theme-color" content="#222">
+    <meta name="generator" content="Hexo 4.2.1">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16-next.png">
+    <link rel="mask-icon" href="/images/favicon/safari-pinned-tab.svg" color="#222">
+    <meta name="msapplication-config" content="/images/favicon/browserconfig.xml">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+    <link rel="stylesheet" href="/lib/pace/pace-theme-mac-osx.min.css">
+    <script src="/lib/pace/pace.min.js"></script>
+    <script id="hexo-configurations">
+        var NexT = window.NexT ||
+        {};
+        var CONFIG = {
+            "hostname": "paynewu.com",
+            "root": "/",
+            "scheme": "Gemini",
+            "version": "7.8.0",
+            "exturl": false,
+            "sidebar":
+            {
+                "position": "right",
+                "width": 240,
+                "display": "post",
+                "padding": 18,
+                "offset": 12,
+                "onmobile": false
+            },
+            "copycode":
+            {
+                "enable": true,
+                "show_result": true,
+                "style": "mac"
+            },
+            "back2top":
+            {
+                "enable": true,
+                "sidebar": false,
+                "scrollpercent": true
+            },
+            "bookmark":
+            {
+                "enable": false,
+                "color": "#222",
+                "save": "auto"
+            },
+            "fancybox": false,
+            "mediumzoom": true,
+            "lazyload": false,
+            "pangu": true,
+            "comments":
+            {
+                "style": "tabs",
+                "active": "valine",
+                "storage": true,
+                "lazyload": false,
+                "nav": null
+            },
+            "algolia":
+            {
+                "hits":
+                {
+                    "per_page": 10
+                },
+                "labels":
+                {
+                    "input_placeholder": "Search for Posts",
+                    "hits_empty": "We didn't find any results for the search: ${query}",
+                    "hits_stats": "${hits} results found in ${time} ms"
+                }
+            },
+            "localsearch":
+            {
+                "enable": true,
+                "trigger": "auto",
+                "top_n_per_article": 8,
+                "unescape": false,
+                "preload": false
+            },
+            "motion":
+            {
+                "enable": false,
+                "async": false,
+                "transition":
+                {
+                    "post_block": "bounceDownIn",
+                    "post_header": "slideDownIn",
+                    "post_body": "slideDownIn",
+                    "coll_header": "slideLeftIn",
+                    "sidebar": "slideUpIn"
+                }
+            },
+            "path": "search.xml"
+        };
+
+    </script>
+    <meta name="description" content="什么是虚拟环境？ - 由百度百科 )得知： 以专利的实时动态程序行为修饰与模拟算法，直接利用本机的 OS，模拟出自带与本机相容 OS 的虚拟机（Vista 下可模拟 Vista、XP，Windows 7 下则可模拟 Windows 7、Vista、XP），也称为 “虚拟环境”      功能： 每一个环境都相当于一个新的 Python 环境。你可以在这个新的环境里安装库，运行代码等">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="pipenv 让你的虚拟环境更加funny一点">
+    <meta property="og:url" content="https://paynewu.com/22141.html">
+    <meta property="og:site_name" content="吴志鹏｜Payne-Wu">
+    <meta property="og:description" content="什么是虚拟环境？ - 由百度百科 )得知： 以专利的实时动态程序行为修饰与模拟算法，直接利用本机的 OS，模拟出自带与本机相容 OS 的虚拟机（Vista 下可模拟 Vista、XP，Windows 7 下则可模拟 Windows 7、Vista、XP），也称为 “虚拟环境”      功能： 每一个环境都相当于一个新的 Python 环境。你可以在这个新的环境里安装库，运行代码等">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwgy1glvroonkofj30ly07i0so.jpg">
+    <meta property="article:published_time" content="2020-12-21T16:34:28.000Z">
+    <meta property="article:modified_time" content="2022-07-27T09:58:26.880Z">
+    <meta property="article:author" content="吴志鹏">
+    <meta property="article:tag" content="Python">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:image" content="https://tva1.sinaimg.cn/large/0081Kckwgy1glvroonkofj30ly07i0so.jpg">
+    <link rel="canonical" href="https://paynewu.com/22141.html">
+    <script id="page-configurations">
+        // https://hexo.io/docs/variables.html
+        CONFIG.page = {
+            sidebar: "",
+            isHome: false,
+            isPost: true,
+            lang: 'zh-CN'
+        };
+
+    </script>
+    <title>pipenv 让你的虚拟环境更加funny一点 | 吴志鹏｜Payne-Wu</title>
+    <meta name="google-site-verification" content="p_bIcnvirkFzG2dYKuNDivKD8-STet5W7D-01woA2fc" />
+    <noscript>
+        <style>
+            .use-motion .brand,
+            .use-motion .menu-item,
+            .sidebar-inner,
+            .use-motion .post-block,
+            .use-motion .pagination,
+            .use-motion .comments,
+            .use-motion .post-header,
+            .use-motion .post-body,
+            .use-motion .collection-header
+            {
+                opacity: initial;
+            }
+
+            .use-motion .site-title,
+            .use-motion .site-subtitle
+            {
+                opacity: initial;
+                top: initial;
+            }
+
+            .use-motion .logo-line-before i
+            {
+                left: initial;
+            }
+
+            .use-motion .logo-line-after i
+            {
+                right: initial;
+            }
+
+        </style>
+    </noscript>
+    <link rel="alternate" href="/atom.xml" title="吴志鹏｜Payne-Wu" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+    <div class="container">
+        <div class="headband"></div>
+        <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+            <div class="header-inner">
+                <div class="site-brand-container">
+                    <div class="site-nav-toggle">
+                        <div class="toggle" aria-label="切换导航栏">
+                            <span class="toggle-line toggle-line-first"></span>
+                            <span class="toggle-line toggle-line-middle"></span>
+                            <span class="toggle-line toggle-line-last"></span>
+                        </div>
+                    </div>
+                    <div class="site-meta">
+                        <a href="/" class="brand" rel="start">
+                            <span class="logo-line-before"><i></i></span>
+                            <h1 class="site-title">吴志鹏｜Payne-Wu </h1>
+                            <span class="logo-line-after"><i></i></span>
+                        </a>
+                    </div>
+                    <div class="site-nav-right">
+                        <div class="toggle popup-trigger">
+                            <i class="fa fa-search fa-fw fa-lg"></i>
+                        </div>
+                    </div>
+                </div>
+                <nav class="site-nav">
+                    <ul id="menu" class="main-menu menu">
+                        <li class="menu-item menu-item-home">
+                            <a href="/" rel="section">首页</a>
+                        </li>
+                        <li class="menu-item menu-item-archives">
+                            <a href="/archives/" rel="section">文章列表</a>
+                        </li>
+                        <li class="menu-item menu-item-tags">
+                            <a href="/tags/" rel="section">Tags Cloud</a>
+                        </li>
+                        <li class="menu-item menu-item-categories">
+                            <a href="/categories/" rel="section">文章集合</a>
+                        </li>
+                        <li class="menu-item menu-item-about">
+                            <a href="/about/" rel="section">关于我啊</a>
+                        </li>
+                        <li class="menu-item menu-item-message">
+                            <a href="/message/" rel="section">留言与我</a>
+                        </li>
+                        <li class="menu-item menu-item-search">
+                            <a role="button" class="popup-trigger">搜索 </a>
+                        </li>
+                    </ul>
+                </nav>
+                <div class="search-pop-overlay">
+                    <div class="popup search-popup">
+                        <div class="search-header">
+                            <span class="search-icon">
+                                <i class="fa fa-search"></i>
+                            </span>
+                            <div class="search-input-container">
+                                <input autocomplete="off" autocapitalize="off" placeholder="搜索..." spellcheck="false" type="search" class="search-input">
+                            </div>
+                            <span class="popup-btn-close">
+                                <i class="fa fa-times-circle"></i>
+                            </span>
+                        </div>
+                        <div id="search-result">
+                            <div id="no-result">
+                                <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="back-to-top">
+            <i class="fa fa-arrow-up"></i>
+            <span>0%</span>
+        </div>
+        <div class="reading-progress-bar"></div>
+        <main class="main">
+            <div class="main-inner">
+                <div class="content-wrap">
+                    <div class="content post posts-expand">
+                        <article itemscope itemtype="http://schema.org/Article" class="post-block single" lang="zh-CN">
+                            <link itemprop="mainEntityOfPage" href="https://paynewu.com/22141.html">
+                            <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <meta itemprop="image" content="/images/favicon/android-chrome-512x512.png">
+                                <meta itemprop="name" content="吴志鹏">
+                                <meta itemprop="description" content="Talk is free，please state clearly">
+                            </span>
+                            <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+                                <meta itemprop="name" content="吴志鹏｜Payne-Wu">
+                            </span>
+                            <header class="post-header">
+                                <h1 class="post-title" itemprop="name headline"> pipenv 让你的虚拟环境更加funny一点 </h1>
+                                <div class="post-meta">
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-user"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">作者</span>
+                                        <span><a href="/authors/Payne" class="author" itemprop="url" rel="index">Payne</a></span>
+                                    </span>
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-calendar"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">发表于</span>
+                                        <time title="创建时间：2020-12-22 00:34:28" itemprop="dateCreated datePublished" datetime="2020-12-22T00:34:28+08:00">2020-12-22</time>
+                                    </span>
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-folder"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">分类于</span>
+                                        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                                            <a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+                                        </span> ， <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                                            <a href="/categories/Python/%E6%8A%80%E6%9C%AF%E6%9D%82%E8%B0%88/" itemprop="url" rel="index"><span itemprop="name">技术杂谈</span></a>
+                                        </span>
+                                    </span>
+                                    <br>
+                                    <span class="post-meta-item" title="本文字数">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-file-word"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">本文字数：</span>
+                                        <span>3.3k</span>
+                                    </span>
+                                    <span class="post-meta-item" title="阅读时长">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-clock"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                                        <span>3 分钟</span>
+                                    </span>
+                                </div>
+                            </header>
+                            <div class="post-body" itemprop="articleBody">
+                                <h2 id="什么是虚拟环境？"><a href="#什么是虚拟环境？" class="headerlink" title="什么是虚拟环境？"></a>什么是虚拟环境？</h2>
+                                <p>-</p>
+                                <p>由<a href="https://cuiqingcai.com/[https://baike.baidu.com/item/虚拟环境/6529153?fr=aladdin](https://baike.baidu.com/item/虚拟环境/6529153?fr=aladdin" target="_blank" rel="noopener">百度百科</a> )<br>得知： 以专利的实时动态程序行为修饰与模拟算法，直接利用本机的 OS，模拟出自带与本机相容 OS 的虚拟机（Vista 下可模拟 Vista、XP，Windows 7 下则可模拟 Windows 7、Vista、XP），也称为 “虚拟环境”</p>
+                                <ul>
+                                    <li>功能： 每一个环境都相当于一个新的 Python 环境。你可以在这个新的环境里安装库，运行代码等</li>
+                                </ul>
+                                <a id="more"></a>
+                                <h2 id="为什么需要使用虚拟环境？"><a href="#为什么需要使用虚拟环境？" class="headerlink" title="为什么需要使用虚拟环境？"></a>为什么需要使用虚拟环境？</h2>
+                                <ul>
+                                    <li>众所周知 Python 的强大在于其兼容性，其强大的社区等。正因为第三方库多，层次不齐造成了许多的第三方库并不兼容</li>
+                                    <li>真实环境与虚拟环境二者相对关联，并非绝对关联，可以在虚拟环境里面随便造。</li>
+                                    <li>虚拟环境中进行了隔离，更方便我们部署上线</li>
+                                </ul>
+                                <h2 id="什么时候需要使用虚拟环境？"><a href="#什么时候需要使用虚拟环境？" class="headerlink" title="什么时候需要使用虚拟环境？"></a>什么时候需要使用虚拟环境？</h2>
+                                <p><strong>例如：</strong></p>
+                                <ul>
+                                    <li>项目依赖版本不同时</li>
+                                    <li>所需包与其他包(非此项目所需，但却存在)产生冲突时</li>
+                                    <li>等等</li>
+                                </ul>
+                                <h2 id="为什么虚拟环境使用pipenv好一点？"><a href="#为什么虚拟环境使用pipenv好一点？" class="headerlink" title="为什么虚拟环境使用pipenv好一点？"></a>为什么虚拟环境使用<code>pipenv</code>好一点？</h2>
+                                <p><strong>Pipenv</strong>是一种工具，旨在将所有包装领域（捆扎机，作曲家，npm，货物，纱线等）中的最佳产品引入Python世界。<em>Windows是我们世界上的头等公民。</em></p>
+                                <p>它会自动为您的项目创建和管理virtualenv，并<code>Pipfile</code>在您安装/卸载软件包时从您的软件包中添加/删除软件包。它还会生成非常重要的<code>Pipfile.lock</code>，用于生成确定性构建。</p>
+                                <p>Pipenv的主要目的是为应用程序的用户和开发人员提供一种简单的方法来设置工作环境。有关库和应用程序之间的区别以及使用<code>setup.py</code>vs<code>Pipfile</code><br>定义依赖<a href="https://docs.pipenv.org/advanced/#pipfile-vs-setuppy" target="_blank" rel="noopener">项的区别</a>，请参见<a href="https://docs.pipenv.org/advanced/#pipfile-vs-setuppy" target="_blank" rel="noopener">☤Pipfile vs<br>setup.py</a>。</p>
+                                <p>Pipenv试图解决的问题是多方面的：</p>
+                                <ul>
+                                    <li>您不再需要使用<code>pip</code>和<code>virtualenv</code>分开。他们一起工作。</li>
+                                    <li>管理<code>requirements.txt</code>文件可能会出现问题，因此Pipenv使用<code>Pipfile</code>和<code>Pipfile.lock</code>将抽象依赖声明与上次测试的组合分开。</li>
+                                    <li>哈希值随处可见。安全。自动公开安全漏洞。</li>
+                                    <li>强烈建议使用最新版本的依赖项，以最大程度地减少由于过时的组件引起的安全风险。</li>
+                                    <li>让您深入了解依赖关系图（例如）。<code>$ pipenv graph</code></li>
+                                    <li>通过加载<code>.env</code>文件来简化开发工作流程。</li>
+                                </ul>
+                                <h2 id="pipenv安装"><a href="#pipenv安装" class="headerlink" title="pipenv安装"></a>pipenv安装</h2>
+                                <p>建议使用<code>pip3</code>, mac还是服务器上的Linux一般都会有<code>python2.x</code>版本。在这种场景大多情况下，<code>pip</code>指向<code>python2.x</code>,并非<code>python3.x</code></p>
+                                <figure class="highlight sh">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">pip3 install --upgrade pip</span><br><span class="line"><span class="comment"># 推荐使用pip来安装</span></span><br><span class="line">pip3 install pipenv</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>其他几种安装方式</p>
+                                <figure class="highlight sh">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="comment"># If you’re on MacOS, you can install Pipenv easily with Homebrew:</span></span><br><span class="line">brew install pipenv</span><br><span class="line"></span><br><span class="line"><span class="comment"># Or, if you’re using Fedora 28:</span></span><br><span class="line">sudo dnf install pipenv</span><br><span class="line"></span><br><span class="line"><span class="comment"># if you're using centos</span></span><br><span class="line">sudo yum install -y pipenv</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>反正安装都一样,无论是使用其他的包管理工具还是pip，都可以</p>
+                                <h2 id="创建虚拟环境"><a href="#创建虚拟环境" class="headerlink" title="创建虚拟环境"></a>创建虚拟环境</h2>
+                                <figure class="highlight bash">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="comment"># python3 环境创建</span></span><br><span class="line">pipenv --python 3.x</span><br><span class="line">pipenv --three</span><br><span class="line">pipenv install</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建完成后，虚拟环境的pip。并不是你真实环境的pip版本，如果有需要，需要升级一下pip 的版本</span></span><br><span class="line">python3 -m pip install --upgrade pip</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <blockquote>
+                                    <p>值得一提的是，首先必须得安装了相对应的Python 版本才能创建虚拟环境。可能点萌萌哒。举个栗子，例如我的电脑环境中只有python3.7，而我想创建一个python2.7 这样是不能创建的</p>
+                                    <p>Pip3安装的pipenv 只能python3 只能使用</p>
+                                </blockquote>
+                                <h2 id="安装删除第三方库"><a href="#安装删除第三方库" class="headerlink" title="安装删除第三方库"></a>安装删除第三方库</h2>
+                                <figure class="highlight bash">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">pipenv install packageName</span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装多个包，中间以空格分隔即可</span></span><br><span class="line">pipenv install packageName-1 packageName-2 packageNama-3</span><br><span class="line"></span><br><span class="line">pipenv uninstall packageName</span><br><span class="line"></span><br><span class="line"><span class="comment"># 当然还可以使用-r </span></span><br><span class="line">pipenv install -r requirements.txt</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h2 id="Terminal激活虚拟环境"><a href="#Terminal激活虚拟环境" class="headerlink" title="Terminal激活虚拟环境"></a>Terminal激活虚拟环境</h2>
+                                <figure class="highlight sh">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">pipenv shell</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <blockquote>
+                                    <ul>
+                                        <li>此时终端会在最前面显示<code>(xxx)</code>, xxx一般为项目文件名。证明退出成功</li>
+                                        <li>并不需要关心虚拟环境的具体位置，只需要在当前目录下。有<code>Pipfile</code>即可</li>
+                                    </ul>
+                                </blockquote>
+                                <h2 id="Terminal中退出虚拟环境"><a href="#Terminal中退出虚拟环境" class="headerlink" title="Terminal中退出虚拟环境"></a>Terminal中退出虚拟环境</h2>
+                                <p>在其他包的虚拟环境中退出可能是使用<code>deactivate</code>,在conda 中使用<code>conda deactivate</code>,而在pipenv 中直接使用</p>
+                                <figure class="highlight sh">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="built_in">exit</span></span><br><span class="line"><span class="comment"># 即可退出</span></span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <blockquote>
+                                    <p>如果使用deactivate，然后在使用<code>pipenv shell</code>,造成本终端页面进入虚拟环境失败。请参考勘误2</p>
+                                </blockquote>
+                                <h2 id="删除虚拟环境"><a href="#删除虚拟环境" class="headerlink" title="删除虚拟环境"></a>删除虚拟环境</h2>
+                                <p>在此项目目录下只需一下命令</p>
+                                <figure class="highlight sh">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">pipenv --rm</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h2 id="镜像源安装第三方包"><a href="#镜像源安装第三方包" class="headerlink" title="镜像源安装第三方包"></a>镜像源安装第三方包</h2>
+                                <p>我相信你也和我一样遇见过或尽力过下载第三方包失效包很慢，或者干脆出现<code>timeout</code>导致第三方包下载失败的情况，那么接下来让我们来使用国内的镜像源进行安装第三方包。速度嗖嗖嗖～</p>
+                                <h3 id="单一的安装"><a href="#单一的安装" class="headerlink" title="单一的安装"></a>单一的安装</h3>
+                                <figure class="highlight sh">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="comment"># 以requests 为栗子</span></span><br><span class="line"> pipenv install requests  --pypi-mirror https://pypi.tuna.tsinghua.edu.cn/simple/</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h3 id="修改配置文件"><a href="#修改配置文件" class="headerlink" title="修改配置文件"></a>修改配置文件</h3>
+                                <p>使用pipenv创建虚拟环境之后会在项目目录下生成<code>Pipfile</code>,的文件。</p>
+                                <figure class="highlight sh">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="comment"># Pipfile</span></span><br><span class="line">[[<span class="built_in">source</span>]]</span><br><span class="line">url = <span class="string">"https://pypi.tuna.tsinghua.edu.cn/simple/"</span></span><br><span class="line">verify_ssl = <span class="literal">true</span></span><br><span class="line">name = <span class="string">"pypi"</span></span><br><span class="line"></span><br><span class="line">[packages]</span><br><span class="line">requests = <span class="string">"*"</span></span><br><span class="line"></span><br><span class="line">[dev-packages]</span><br><span class="line"></span><br><span class="line">[requires]</span><br><span class="line">python_version = <span class="string">"3.8"</span></span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h3 id="获取包依赖"><a href="#获取包依赖" class="headerlink" title="获取包依赖"></a>获取包依赖</h3>
+                                <p>我们可以使用命令来清晰地呈现出当前安装的 Python 包版本及之间的依赖关系，命令如下：</p>
+                                <figure class="highlight ebnf">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="attribute">pipenv graph</span></span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <blockquote>
+                                    <p>~ ProjectNote % pipenv graph<br>lxml==4.6.2<br>requests==2.25.1</p>
+                                    <ul>
+                                        <li>certifi [required: &gt;=2017.4.17, installed: 2020.12.5]</li>
+                                        <li>chardet [required: &gt;=3.0.2,&lt;5, installed: 4.0.0]</li>
+                                        <li>idna [required: &gt;=2.5,&lt;3, installed: 2.10]</li>
+                                        <li>urllib3 [required: &gt;=1.21.1,&lt;1.27, installed: 1.26.2]</li>
+                                    </ul>
+                                </blockquote>
+                                <h3 id="产生-Pipfile-lock"><a href="#产生-Pipfile-lock" class="headerlink" title="产生 Pipfile.lock"></a>产生 Pipfile.lock</h3>
+                                <p>有时候可能 Pipfile.lock 文件不存在或被删除了，这时候我们可以使用如下命令生成：</p>
+                                <figure class="highlight cos">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">pipenv <span class="keyword">lock</span></span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>以上就是pipenv基础使用了，但这还不够哦。接下来让我们深入探究一下</p>
+                                <h2 id="不知道但常用"><a href="#不知道但常用" class="headerlink" title="不知道但常用"></a>不知道但常用</h2>
+                                <figure class="highlight sh">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">Usage: pipenv [OPTIONS] COMMAND [ARGS]...</span><br><span class="line"></span><br><span class="line">Options:</span><br><span class="line">  --<span class="built_in">where</span>                         Output project home information.</span><br><span class="line">  --venv                          Output virtualenv information.</span><br><span class="line">  --py                            Output Python interpreter information.</span><br><span class="line">  --envs                          Output Environment Variable options.</span><br><span class="line">  --rm                            Remove the virtualenv.</span><br><span class="line">  --bare                          Minimal output.</span><br><span class="line">  --completion                    Output completion (to be executed by the</span><br><span class="line">                                  shell).</span><br><span class="line"></span><br><span class="line">  --man                           Display manpage.</span><br><span class="line">  --support                       Output diagnostic information <span class="keyword">for</span> use <span class="keyword">in</span></span><br><span class="line">                                  GitHub issues.</span><br><span class="line"></span><br><span class="line">  --site-packages / --no-site-packages</span><br><span class="line">                                  Enable site-packages <span class="keyword">for</span> the virtualenv.</span><br><span class="line">                                  [env var: PIPENV_SITE_PACKAGES]</span><br><span class="line"></span><br><span class="line">  --python TEXT                   Specify <span class="built_in">which</span> version of Python virtualenv</span><br><span class="line">                                  should use.</span><br><span class="line"></span><br><span class="line">  --three / --two                 Use Python 3/2 when creating virtualenv.</span><br><span class="line">  --clear                         Clears caches (pipenv, pip, and pip-tools).</span><br><span class="line">                                  [env var: PIPENV_CLEAR]</span><br><span class="line"></span><br><span class="line">  -v, --verbose                   Verbose mode.</span><br><span class="line">  --pypi-mirror TEXT              Specify a PyPI mirror.</span><br><span class="line">  --version                       Show the version and <span class="built_in">exit</span>.</span><br><span class="line">  -h, --<span class="built_in">help</span>                      Show this message and <span class="built_in">exit</span>.</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Usage Examples:</span><br><span class="line">   Create a new project using Python 3.7, specifically:</span><br><span class="line">   $ pipenv --python 3.7</span><br><span class="line"></span><br><span class="line">   Remove project virtualenv (inferred from current directory):</span><br><span class="line">   $ pipenv --rm</span><br><span class="line"></span><br><span class="line">   Install all dependencies <span class="keyword">for</span> a project (including dev):</span><br><span class="line">   $ pipenv install --dev</span><br><span class="line"></span><br><span class="line">   Create a lockfile containing pre-releases:</span><br><span class="line">   $ pipenv lock --pre</span><br><span class="line"></span><br><span class="line">   Show a graph of your installed dependencies:</span><br><span class="line">   $ pipenv graph</span><br><span class="line"></span><br><span class="line">   Check your installed dependencies <span class="keyword">for</span> security vulnerabilities:</span><br><span class="line">   $ pipenv check</span><br><span class="line"></span><br><span class="line">   Install a <span class="built_in">local</span> setup.py into your virtual environment/Pipfile:</span><br><span class="line">   $ pipenv install -e .</span><br><span class="line"></span><br><span class="line">   Use a lower-level pip <span class="built_in">command</span>:</span><br><span class="line">   $ pipenv run pip freeze</span><br><span class="line"></span><br><span class="line">Commands:</span><br><span class="line">  check      Checks <span class="keyword">for</span> PyUp Safety security vulnerabilities and against PEP</span><br><span class="line">             508 markers provided <span class="keyword">in</span> Pipfile.</span><br><span class="line"></span><br><span class="line">  clean      Uninstalls all packages not specified <span class="keyword">in</span> Pipfile.lock.</span><br><span class="line">  graph      Displays currently-installed dependency graph information.</span><br><span class="line">  install    Installs provided packages and adds them to Pipfile, or (<span class="keyword">if</span> no</span><br><span class="line">             packages are given), installs all packages from Pipfile.</span><br><span class="line"></span><br><span class="line">  lock       Generates Pipfile.lock.</span><br><span class="line">  open       View a given module <span class="keyword">in</span> your editor.</span><br><span class="line">  run        Spawns a <span class="built_in">command</span> installed into the virtualenv.</span><br><span class="line">  scripts    Lists scripts <span class="keyword">in</span> current environment config.</span><br><span class="line">  shell      Spawns a shell within the virtualenv.</span><br><span class="line">  sync       Installs all packages specified <span class="keyword">in</span> Pipfile.lock.</span><br><span class="line">  uninstall  Uninstalls a provided package and removes it from Pipfile.</span><br><span class="line">  update     Runs lock, <span class="keyword">then</span> sync.</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h3 id="在真实环境中使用虚拟环境中包并运行"><a href="#在真实环境中使用虚拟环境中包并运行" class="headerlink" title="在真实环境中使用虚拟环境中包并运行"></a>在真实环境中使用虚拟环境中包并运行</h3>
+                                <blockquote>
+                                    <p>场景如下：</p>
+                                    <p>假设正式环境中为一个干净的仓库,有且仅有初始的包</p>
+                                    <p>虚拟环境中有所需要的第三方包。</p>
+                                    <p>如何实现在真实环境中使用虚拟环境中的第三方包并运行</p>
+                                </blockquote>
+                                <figure class="highlight dockerfile">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">pipenv <span class="keyword">run</span><span class="bash"> python xxx.py</span></span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h3 id="产生-Pipfile-lock-1"><a href="#产生-Pipfile-lock-1" class="headerlink" title="产生 Pipfile.lock"></a>产生 Pipfile.lock</h3>
+                                <p>有时候可能 Pipfile.lock 文件不存在或被删除了，这时候我们可以使用以下命令生成：</p>
+                                <figure class="highlight cos">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">pipenv <span class="keyword">lock</span></span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h2 id="批量安装第三方依赖包"><a href="#批量安装第三方依赖包" class="headerlink" title="批量安装第三方依赖包"></a>批量安装第三方依赖包</h2>
+                                <p>部署的时候只需要将此执行一下命令即可安装所有的依赖包，它是依靠Pipfile.lock的</p>
+                                <figure class="highlight sh">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">pipenv sync</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h3 id="示例-使用pipenv-对接docker或其他的部署"><a href="#示例-使用pipenv-对接docker或其他的部署" class="headerlink" title="示例:使用pipenv 对接docker或其他的部署"></a>示例:使用pipenv 对接docker或其他的部署</h3>
+                                <p>只说不做假把式，只做不说傻把式。搞了这么多，来个case实现与项目接轨吧。这里为以docker部署为栗子</p>
+                                <p>首先在项目中我们也使用虚拟环境去开发,当然也建议这样去做。没错，我是在教你做事。嘻嘻～</p>
+                                <p>此时的项目应该差不多如下,此时两个为必须存在一个是<code>Pipfile</code>, 一个是项目文件(文件夹)。<code>deploy</code>，<code>Dockerfile</code>为后实现</p>
+                                <p><img src="https://tva1.sinaimg.cn/large/0081Kckwgy1glvroonkofj30ly07i0so.jpg" alt=""></p>
+                                <p>书写Dockerfile，拿docker部署没有Dockerfile是不阔能滴</p>
+                                <p>Dockerfile实现如下,可以按需修改</p>
+                                <figure class="highlight dockerfile">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="keyword">FROM</span> python:<span class="number">3.8</span></span><br><span class="line"><span class="keyword">COPY</span><span class="bash"> . /code</span></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="bash"> /code</span></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> sh deploy.sh</span></span><br><span class="line"><span class="keyword">CMD</span><span class="bash"> [<span class="string">"pipenv"</span>, <span class="string">"run"</span>, <span class="string">"python3"</span>, <span class="string">"testfile.py"</span>]</span></span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>Deploy.sh如下</p>
+                                <p>其实deploy 其中的内容可以直接放到dockerfile中，我自己喜欢这样。更加清晰一点。啊，如此清晰的逻辑与结构，无敌～。我又在教你做事，大哥别杀我</p>
+                                <figure class="highlight sh">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="comment"># 保持pip版本为最新版，及安装pipenv</span></span><br><span class="line">python3 -m pip install --upgrade pip  &amp;&amp; pip3 install pipenv</span><br><span class="line"><span class="comment"># 创建虚拟环境</span></span><br><span class="line">pipenv --python 3.8</span><br><span class="line"><span class="comment"># 安装环境依赖(第三方包)</span></span><br><span class="line">pipenv update</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <blockquote>
+                                    <p>这里需要注意的是，我建议你使用<code>pipenv update</code>,更加保险。</p>
+                                    <p>什么， 你问我为什么不用sync？</p>
+                                    <p>既然你诚心诚意的发问了，那我就大发慈悲的告诉你吧。哈哈～</p>
+                                    <p><code>pipenv update</code>相当于执行了<code>pipenv lock</code>和<code>pipenv sync</code>两个命令</p>
+                                    <p>如果用<code>pipenv sync</code>，而此时的你如果没有<code>Pipfile.lock</code>,那岂不是很尬</p>
+                                </blockquote>
+                                <p>Docker build 执行结果如下</p>
+                                <figure class="highlight sh">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">Sending build context to Docker daemon  99.33kB</span><br><span class="line">Step 1/5 : FROM python:3.8</span><br><span class="line"> ---&gt; d1bfb3dd9268</span><br><span class="line">Step 2/5 : WORKDIR /code</span><br><span class="line"> ---&gt; Running <span class="keyword">in</span> 74cda17b1483</span><br><span class="line">Removing intermediate container 74cda17b1483</span><br><span class="line"> ---&gt; ecfd46d28538</span><br><span class="line">Step 3/5 : COPY . /code</span><br><span class="line"> ---&gt; 8a89f329a4f9</span><br><span class="line">Step 4/5 : RUN pip install pipenv &amp;&amp; sh deploy.bash.sh</span><br><span class="line"> ---&gt; Running <span class="keyword">in</span> cea95051d481</span><br><span class="line">Collecting pipenv</span><br><span class="line">  Downloading pipenv-2020.11.15-py2.py3-none-any.whl (3.9 MB)</span><br><span class="line">Requirement already satisfied: setuptools&gt;=36.2.1 <span class="keyword">in</span> /usr/<span class="built_in">local</span>/lib/python3.8/site-packages (from pipenv) (51.0.0)</span><br><span class="line">Requirement already satisfied: pip&gt;=18.0 <span class="keyword">in</span> /usr/<span class="built_in">local</span>/lib/python3.8/site-packages (from pipenv) (20.3.3)</span><br><span class="line">Collecting virtualenv-clone&gt;=0.2.5</span><br><span class="line">  Downloading virtualenv_clone-0.5.4-py2.py3-none-any.whl (6.6 kB)</span><br><span class="line">Collecting certifi</span><br><span class="line">  Downloading certifi-2020.12.5-py2.py3-none-any.whl (147 kB)</span><br><span class="line">Collecting virtualenv</span><br><span class="line">  Downloading virtualenv-20.2.2-py2.py3-none-any.whl (5.7 MB)</span><br><span class="line">Collecting appdirs&lt;2,&gt;=1.4.3</span><br><span class="line">  Downloading appdirs-1.4.4-py2.py3-none-any.whl (9.6 kB)</span><br><span class="line">Collecting distlib&lt;1,&gt;=0.3.1</span><br><span class="line">  Downloading distlib-0.3.1-py2.py3-none-any.whl (335 kB)</span><br><span class="line">Collecting filelock&lt;4,&gt;=3.0.0</span><br><span class="line">  Downloading filelock-3.0.12-py3-none-any.whl (7.6 kB)</span><br><span class="line">Collecting six&lt;2,&gt;=1.9.0</span><br><span class="line">  Downloading six-1.15.0-py2.py3-none-any.whl (10 kB)</span><br><span class="line">Installing collected packages: six, filelock, distlib, appdirs, virtualenv-clone, virtualenv, certifi, pipenv</span><br><span class="line">Successfully installed appdirs-1.4.4 certifi-2020.12.5 distlib-0.3.1 filelock-3.0.12 pipenv-2020.11.15 six-1.15.0 virtualenv-20.2.2 virtualenv-clone-0.5.4</span><br><span class="line">Creating a virtualenv <span class="keyword">for</span> this project...</span><br><span class="line">Pipfile: /code/Pipfile</span><br><span class="line">Using /usr/<span class="built_in">local</span>/bin/python3.8 (3.8.6) to create virtualenv...</span><br><span class="line">⠦ Creating virtual environment...created virtual environment CPython3.8.6.final.0-64 <span class="keyword">in</span> 1079ms</span><br><span class="line">  creator CPython3Posix(dest=/root/.<span class="built_in">local</span>/share/virtualenvs/code-_Py8Si6I, clear=False, no_vcs_ignore=False, global=False)</span><br><span class="line">  seeder FromAppData(download=False, pip=bundle, setuptools=bundle, wheel=bundle, via=copy, app_data_dir=/root/.<span class="built_in">local</span>/share/virtualenv)</span><br><span class="line">    added seed packages: pip==20.3.1, setuptools==51.0.0, wheel==0.36.1</span><br><span class="line">  activators BashActivator,CShellActivator,FishActivator,PowerShellActivator,PythonActivator,XonshActivator</span><br><span class="line">                                                                                                                                                                           ✔ Successfully created virtual environment! </span><br><span class="line">Virtualenv location: /root/.<span class="built_in">local</span>/share/virtualenvs/code-_Py8Si6I</span><br><span class="line">Installing dependencies from Pipfile.lock (d2a522)...</span><br><span class="line">To activate this project<span class="string">'s virtualenv, run pipenv shell.</span></span><br><span class="line"><span class="string">Alternatively, run a command inside the virtualenv with pipenv run.</span></span><br><span class="line"><span class="string">All dependencies are now up-to-date!</span></span><br><span class="line"><span class="string">Removing intermediate container cea95051d481</span></span><br><span class="line"><span class="string"> ---&gt; 5bc79a1c17b6</span></span><br><span class="line"><span class="string">Step 5/5 : CMD ["pipenv", "run", "python3", "testfile.py"]</span></span><br><span class="line"><span class="string"> ---&gt; Running in d86af926715c</span></span><br><span class="line"><span class="string">Removing intermediate container d86af926715c</span></span><br><span class="line"><span class="string"> ---&gt; a64b6bc63353</span></span><br><span class="line"><span class="string">Successfully built a64b6bc63353</span></span><br><span class="line"><span class="string">Successfully tagged test:1</span></span><br><span class="line"><span class="string">(ProjectNote) stringle-004@zhixiankeji-004s-MacBook-Pro ProjectNote % docker run  test:1</span></span><br><span class="line"><span class="string">&lt;Response [200]&gt;</span></span><br><span class="line"><span class="string">&lt;!DOCTYPE html&gt;</span></span><br><span class="line"><span class="string">&lt;!--STATUS OK--&gt;&lt;html&gt; &lt;head&gt;&lt;meta http-equiv=content-type content=text/html;charset=utf-8&gt;&lt;meta http-equiv=X-UA-Compatible content=IE=Edge&gt;&lt;meta content=always name=referrer&gt;&lt;link rel=stylesheet type=text/css href=https://ss1.bdstatic.com/5eN1bjq8AAUYm2zgoY3K/r/www/cache/bdorz/baidu.min.css&gt;&lt;title&gt;百度一下，你就知道&lt;/title&gt;&lt;/head&gt; &lt;body link &lt;div id=wrapper&gt; &lt;div id=head&gt; &lt;div class=head_wrapper&gt; &lt;div class=s_form&gt; &lt;div class=s_form_wrapper&gt; &lt;div id=lg&gt; &lt;img hidefocus=true src=//www.baidu.com/img/bd_logo1.png width=270 height=129&gt; &lt;/div&gt; &lt;form id=form name=f action=//www.baidu.com/s class=fm&gt; &lt;input type=hidden name=bdorz_come value=1&gt; &lt;input type=hidden name=ie value=utf-8&gt; &lt;input type=hidden name=f value=8&gt; &lt;input type=hidden name=rsv_bp value=1&gt; &lt;input type=hidden name=rsv_idx value=1&gt; &lt;input type=hidden name=tn value=baidu&gt;&lt;span class="bg s_ipt_wr"&gt;&lt;input id=kw name=wd class=s_ipt value maxlength=255 autocomplete=off autofocus=autofocus&gt;&lt;/span&gt;&lt;span class="bg s_btn_wr"&gt;&lt;input type=submit id=su value=百度一下 clabg s_btn" autofocus&gt;&lt;/span&gt; &lt;/form&gt; &lt;/div&gt; &lt;/div&gt; &lt;div id=u1&gt; &lt;a href=http://news.baidu.com name=tj_trnews class=mnav&gt;新闻&lt;/a&gt; &lt;a href=https://www.hao123.com name=tj_trhao1 class=mnav&gt;hao123&lt;/a&gt; &lt;a href=http://map.baidu.com name=tj_trmap class=mnav&gt;地图&lt;/a&gt; &lt;a href=http://v.baidu.com name=tj_trvideo class=mnav&gt;视频&lt;/a&gt; &lt;a href=http://tieba.bacom name=tj_trtieba class=mnav&gt;贴吧&lt;/a&gt; &lt;noscript&gt; &lt;a href=http://www.baidu.com/bdorz/login.gif?login&amp;amp;tpl=mn&amp;amp;u=http%3A%2F%2Fwww.baidu.com%2f%3fbdorz_come%3d1 name=tlogin class=lb&gt;登录&lt;/a&gt; &lt;/noscript&gt; &lt;script&gt;document.write('</span>&lt;a href=<span class="string">"http://www.baidu.com/bdorz/login.gif?login&amp;tpl=mn&amp;u='+ encodeURIComponent(window.location.href+ (windowocation.search === "</span><span class="string">" ? "</span>?<span class="string">" : "</span>&amp;<span class="string">")+ "</span>bdorz_come=1<span class="string">")+ '"</span> name=<span class="string">"tj_login"</span> class=<span class="string">"lb"</span>&gt;登录&lt;/a&gt;<span class="string">');</span></span><br><span class="line"><span class="string">                &lt;/script&gt; &lt;a href=//www.baidu.com/more/ name=tj_briicon class=bri style="display: block;"&gt;更多产品&lt;/a&gt; &lt;/div&gt; &lt;/div&gt; &lt;/div&gt; &lt;div id=ftCon&gt; &lt;div id=ftConw&gt; &lt;p id=lh&gt; &lt;a href=http://home.baidu.com&gt;关于百度&lt;/a&gt; &lt;a href=http://ir.baidu.com&gt;About Baidu&lt;/a&gt; &lt;/p&gt; &lt;p id=cp&gt;&amp;copy;2017&amp;nbsp;Baidu&amp;nbsp;&lt;a href=http://www.baidu.com/duty/&gt;前必读&lt;/a&gt;&amp;nbsp; &lt;a href=http://jianyi.baidu.com/ class=cp-feedback&gt;意见反馈&lt;/a&gt;&amp;nbsp;京ICP证030173号&amp;nbsp; &lt;img src=//www.baidu.com/img/gs.gif&gt; &lt;/p&gt; &lt;/div&gt; &lt;/div&gt; &lt;/div&gt; &lt;tml&gt;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">&lt;Element html at 0x7fbfe776d100&gt;</span></span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>Docker 构建注意事项：</p>
+                                <ol>
+                                    <li>
+                                        <p>```sh</p>
+                                        <h1 id="Pipfile文件"><a href="#Pipfile文件" class="headerlink" title="Pipfile文件"></a>Pipfile文件</h1>
+                                        <p>[requires]<br>python_version = “3.8”</p>
+                                        <h1 id="dockerfile"><a href="#dockerfile" class="headerlink" title="dockerfile"></a>dockerfile</h1>
+                                        <p>FROM python:3.8</p>
+                                        <p>这两个后面跟的版本号必须一致，否则将会构建失败</p>
+                                        <figure class="highlight n1ql">
+                                            <table>
+                                                <tr>
+                                                    <td class="gutter">
+                                                        <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre>
+                                                    </td>
+                                                    <td class="code">
+                                                        <pre><span class="line"></span><br><span class="line">2. 使用`pipenv <span class="keyword">update</span> <span class="symbol">`而不是`</span>pipenv sync<span class="symbol">`,为什么，我就不告诉你了。看上面就好</span></span><br><span class="line"><span class="symbol"></span></span><br><span class="line"><span class="symbol">## 勘误</span></span><br><span class="line"><span class="symbol"></span></span><br><span class="line"><span class="symbol">### 1.pip版本过低造成安装失败</span></span><br><span class="line"><span class="symbol"></span></span><br><span class="line"><span class="symbol">还记得我之前在服务器上，无论怎么安装就是安装不上，无论是其他包还是`</span>pipenv<span class="symbol">`.后来硬是找不到什么原因。直到。。。</span></span><br><span class="line"><span class="symbol"></span></span><br><span class="line"><span class="symbol">`</span><span class="symbol">``</span>sh</span><br><span class="line"># 查看pip 版本</span><br><span class="line">pip3 -V</span><br><span class="line"># <span class="keyword">or</span></span><br><span class="line">pip3 --version</span><br></pre>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </figure>
+                                    </li>
+                                </ol>
+                                <blockquote>
+                                    <p>输出结果类似如下</p>
+                                    <figure class="highlight sh">
+                                        <table>
+                                            <tr>
+                                                <td class="gutter">
+                                                    <pre><span class="line">1</span><br><span class="line">2</span><br></pre>
+                                                </td>
+                                                <td class="code">
+                                                    <pre><span class="line">~ % pip3 -V</span><br><span class="line">pip 20.3.3 from /usr/<span class="built_in">local</span>/lib/python3.9/site-packages/pip (python 3.9)</span><br></pre>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </figure>
+                                </blockquote>
+                                <p>如果pip 的版本还不是20版本的，需要进行升级</p>
+                                <figure class="highlight sh">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="comment"># 推荐</span></span><br><span class="line">python3 -m pip install --upgrade pip [--user]</span><br><span class="line"><span class="comment"># 或者</span></span><br><span class="line">python3 -m pip install -U pip [--user]</span><br><span class="line"><span class="comment"># 不推荐</span></span><br><span class="line">pip3 install --upgrade pip</span><br><span class="line">pip3 install -U pip</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <blockquote>
+                                    <ul>
+                                        <li>
+                                            <p>其中[—user] 为可选参数，最好加上。一般情况下不加也没事</p>
+                                        </li>
+                                        <li>
+                                            <p><code>-m</code>:run library module as a script (terminates option list) 将库模块作为脚本运行（终止选项列表）</p>
+                                        </li>
+                                    </ul>
+                                </blockquote>
+                                <h3 id="2-虚拟环境重载错误"><a href="#2-虚拟环境重载错误" class="headerlink" title="2.虚拟环境重载错误"></a>2.虚拟环境重载错误</h3>
+                                <p>之前使用其他的python虚拟环境工具的时候，使用<code>deactivate</code>,退出虚拟环境。而<code>pipenv</code>, 并不是这样</p>
+                                <p>使用<code>deactivate</code>,退出虚拟环境后又使用`pipenv shell, 进入虚拟环境，结果显示…</p>
+                                <blockquote>
+                                    <p>Shell for UNKNOWN_VIRTUAL_ENVIRONMENT already activated.<br>No action taken to avoid nested environments.</p>
+                                </blockquote>
+                                <figure class="highlight sh">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="comment"># 先exit 一下即可，然后使用</span></span><br><span class="line">pipenv shell</span><br><span class="line"><span class="comment"># 即可重新进入虚拟环境</span></span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <ol>
+                                    <li>
+                                        <p>创建虚拟环境需注意 pipenv 并不支持嵌套的虚拟环境，默认使用此文件的父级目录中的pipfile</p>
+                                        <blockquote>
+                                            <p>比如：在projectfile中有文件src-1，pipfile, src-2,如果进入src-1 中执行<code>pipenv install</code>or<code>pipenv --python 3.8</code>or <code>pipenv tree</code>,中任何一个命令都会优先使用projectfile/pipfile</p>
+                                        </blockquote>
+                                    </li>
+                                </ol>
+                                <p>&gt;</p>
+                                <h2 id="Referer"><a href="#Referer" class="headerlink" title="Referer"></a>Referer</h2>
+                                <p><a href="https://docs.pipenv.org/" target="_blank" rel="noopener">pipenv官方文档</a></p>
+                                <p><a href="https://pypi.org/project/pipenv/" target="_blank" rel="noopener">pipenv pypi</a></p>
+                            </div>
+                            <footer class="post-footer">
+                                <div class="post-tags">
+                                    <a href="/tags/Python/" rel="tag"><i class="fa fa-tag"></i> Python</a>
+                                </div>
+                                <div class="post-nav">
+                                    <div class="post-nav-item">
+                                        <a href="/3018.html" rel="prev" title="scrapy-splash对接代理">
+                                            <i class="fa fa-chevron-left"></i> scrapy-splash对接代理 </a>
+                                    </div>
+                                    <div class="post-nav-item">
+                                        <a href="/32262.html" rel="next" title="谈谈生活中那些与学习的事儿"> 谈谈生活中那些与学习的事儿 <i class="fa fa-chevron-right"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </footer>
+                        </article>
+                    </div>
+                    <script>
+                        window.addEventListener('tabs:register', () =>
+                        {
+                            let
+                            {
+                                activeClass
+                            } = CONFIG.comments;
+                            if (CONFIG.comments.storage)
+                            {
+                                activeClass = localStorage.getItem('comments_active') || activeClass;
+                            }
+                            if (activeClass)
+                            {
+                                let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+                                if (activeTab)
+                                {
+                                    activeTab.click();
+                                }
+                            }
+                        });
+                        if (CONFIG.comments.storage)
+                        {
+                            window.addEventListener('tabs:click', event =>
+                            {
+                                if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+                                let commentClass = event.target.classList[1];
+                                localStorage.setItem('comments_active', commentClass);
+                            });
+                        }
+
+                    </script>
+                </div>
+                <div class="toggle sidebar-toggle">
+                    <span class="toggle-line toggle-line-first"></span>
+                    <span class="toggle-line toggle-line-middle"></span>
+                    <span class="toggle-line toggle-line-last"></span>
+                </div>
+                <aside class="sidebar">
+                    <div class="sidebar-inner">
+                        <ul class="sidebar-nav motion-element">
+                            <li class="sidebar-nav-toc"> 文章目录 </li>
+                            <li class="sidebar-nav-overview"> 站点概览 </li>
+                        </ul>
+                        <!--noindex-->
+                        <div class="post-toc-wrap sidebar-panel">
+                            <div class="post-toc motion-element">
+                                <ol class="nav">
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#什么是虚拟环境？"><span class="nav-number">1.</span> <span class="nav-text">什么是虚拟环境？</span></a></li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#为什么需要使用虚拟环境？"><span class="nav-number">2.</span> <span class="nav-text">为什么需要使用虚拟环境？</span></a></li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#什么时候需要使用虚拟环境？"><span class="nav-number">3.</span> <span class="nav-text">什么时候需要使用虚拟环境？</span></a></li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#为什么虚拟环境使用pipenv好一点？"><span class="nav-number">4.</span> <span class="nav-text">为什么虚拟环境使用pipenv好一点？</span></a></li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#pipenv安装"><span class="nav-number">5.</span> <span class="nav-text">pipenv安装</span></a></li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#创建虚拟环境"><span class="nav-number">6.</span> <span class="nav-text">创建虚拟环境</span></a></li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#安装删除第三方库"><span class="nav-number">7.</span> <span class="nav-text">安装删除第三方库</span></a></li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#Terminal激活虚拟环境"><span class="nav-number">8.</span> <span class="nav-text">Terminal激活虚拟环境</span></a></li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#Terminal中退出虚拟环境"><span class="nav-number">9.</span> <span class="nav-text">Terminal中退出虚拟环境</span></a></li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#删除虚拟环境"><span class="nav-number">10.</span> <span class="nav-text">删除虚拟环境</span></a></li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#镜像源安装第三方包"><span class="nav-number">11.</span> <span class="nav-text">镜像源安装第三方包</span></a>
+                                        <ol class="nav-child">
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#单一的安装"><span class="nav-number">11.1.</span> <span class="nav-text">单一的安装</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#修改配置文件"><span class="nav-number">11.2.</span> <span class="nav-text">修改配置文件</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#获取包依赖"><span class="nav-number">11.3.</span> <span class="nav-text">获取包依赖</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#产生-Pipfile-lock"><span class="nav-number">11.4.</span> <span class="nav-text">产生 Pipfile.lock</span></a></li>
+                                        </ol>
+                                    </li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#不知道但常用"><span class="nav-number">12.</span> <span class="nav-text">不知道但常用</span></a>
+                                        <ol class="nav-child">
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#在真实环境中使用虚拟环境中包并运行"><span class="nav-number">12.1.</span> <span class="nav-text">在真实环境中使用虚拟环境中包并运行</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#产生-Pipfile-lock-1"><span class="nav-number">12.2.</span> <span class="nav-text">产生 Pipfile.lock</span></a></li>
+                                        </ol>
+                                    </li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#批量安装第三方依赖包"><span class="nav-number">13.</span> <span class="nav-text">批量安装第三方依赖包</span></a>
+                                        <ol class="nav-child">
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#示例-使用pipenv-对接docker或其他的部署"><span class="nav-number">13.1.</span> <span class="nav-text">示例:使用pipenv 对接docker或其他的部署</span></a></li>
+                                        </ol>
+                                    </li>
+                                </ol>
+                                </li>
+                                <li class="nav-item nav-level-1"><a class="nav-link" href="#Pipfile文件"><span class="nav-number"></span> <span class="nav-text">Pipfile文件</span></a></li>
+                                <li class="nav-item nav-level-1"><a class="nav-link" href="#dockerfile"><span class="nav-number"></span> <span class="nav-text">dockerfile</span></a>
+                                    <ol class="nav-child">
+                                        <li class="nav-item nav-level-3"><a class="nav-link" href="#2-虚拟环境重载错误"><span class="nav-number">0.1.</span> <span class="nav-text">2.虚拟环境重载错误</span></a></li>
+                                    </ol>
+                                </li>
+                                <li class="nav-item nav-level-2"><a class="nav-link" href="#Referer"><span class="nav-number">1.</span> <span class="nav-text">Referer</span></a></li>
+                                </ol>
+                            </div>
+                        </div>
+                        <!--/noindex-->
+                        <div class="site-overview-wrap sidebar-panel">
+                            <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <img class="site-author-image" itemprop="image" alt="吴志鹏" src="/images/favicon/android-chrome-512x512.png">
+                                <p class="site-author-name" itemprop="name">吴志鹏</p>
+                                <div class="site-description" itemprop="description">Talk is free，please state clearly</div>
+                            </div>
+                            <div class="site-state-wrap motion-element">
+                                <nav class="site-state">
+                                    <div class="site-state-item site-state-posts">
+                                        <a href="/archives/">
+                                            <span class="site-state-item-count">136</span>
+                                            <span class="site-state-item-name">日志</span>
+                                        </a>
+                                    </div>
+                                    <div class="site-state-item site-state-categories">
+                                        <a href="/categories/">
+                                            <span class="site-state-item-count">158</span>
+                                            <span class="site-state-item-name">分类</span></a>
+                                    </div>
+                                    <div class="site-state-item site-state-tags">
+                                        <a href="/tags/">
+                                            <span class="site-state-item-count">89</span>
+                                            <span class="site-state-item-name">标签</span></a>
+                                    </div>
+                                </nav>
+                            </div>
+                            <div class="links-of-author motion-element">
+                                <span class="links-of-author-item">
+                                    <a href="https://github.com/Payne-Wu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Payne-Wu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="mailto:wuzhipeng1289690157@gmail.com" title="E-Mail → mailto:wuzhipeng1289690157@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="https://www.zhihu.com/people/wu-zhi-peng-72-78" title="ZhiHu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;wu-zhi-peng-72-78" rel="noopener" target="_blank"><i class="fa fa-magic fa-fw"></i>ZhiHu</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="https://weibo.com/u/6987234483" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;6987234483" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+                <div id="sidebar-dimmer"></div>
+            </div>
+        </main>
+        <footer class="footer">
+            <div class="footer-inner">
+                <div class="copyright"> &copy; <span itemprop="copyrightYear">2022</span>
+                    <span class="with-love">
+                        <i class="fa fa-heart"></i>
+                    </span>
+                    <span class="author" itemprop="copyrightHolder">PayneWu</span>
+                    <span class="post-meta-divider">|</span>
+                    <span class="post-meta-item-icon">
+                        <i class="fa fa-chart-area"></i>
+                    </span>
+                    <span title="站点总字数">255k</span>
+                    <span class="post-meta-divider">|</span>
+                    <span class="post-meta-item-icon">
+                        <i class="fa fa-coffee"></i>
+                    </span>
+                    <span title="站点阅读时长">3:51</span>
+                </div>
+                <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">湘ICP备2021019893号-1 </a>
+                </div>
+                <div style="display: none;">
+                    <script src="//s95.cnzz.com/z_stat.php?id=true&web_id=true"></script>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+    <script src="/js/utils.js"></script>
+    <script src="/.js"></script>
+    <script src="/js/schemes/pisces.js"></script>
+    <script src="/.js"></script>
+    <script src="/js/next-boot.js"></script>
+    <script src="/.js"></script>
+    <script>
+        (function ()
+        {
+            var canonicalURL, curProtocol;
+            //Get the <link> tag
+            var x = document.getElementsByTagName("link");
+            //Find the last canonical URL
+            if (x.length > 0)
+            {
+                for (i = 0; i < x.length; i++)
+                {
+                    if (x[i].rel.toLowerCase() == 'canonical' && x[i].href)
+                    {
+                        canonicalURL = x[i].href;
+                    }
+                }
+            }
+            //Get protocol
+            if (!canonicalURL)
+            {
+                curProtocol = window.location.protocol.split(':')[0];
+            }
+            else
+            {
+                curProtocol = canonicalURL.split(':')[0];
+            }
+            //Get current URL if the canonical URL does not exist
+            if (!canonicalURL) canonicalURL = window.location.href;
+            //Assign script content. Replace current URL with the canonical URL
+            ! function ()
+            {
+                var e = /([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,
+                    r = canonicalURL,
+                    t = document.referrer;
+                if (!e.test(r))
+                {
+                    var n = (String(curProtocol).toLowerCase() === 'https') ? "https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif" : "//api.share.baidu.com/s.gif";
+                    t ? (n += "?r=" + encodeURIComponent(document.referrer), r && (n += "&l=" + r)) : r && (n += "?l=" + r);
+                    var i = new Image;
+                    i.src = n
+                }
+            }(window);
+        })();
+
+    </script>
+    <script src="/js/local-search.js"></script>
+    <script src="/.js"></script>
+</body>
+
+</html>

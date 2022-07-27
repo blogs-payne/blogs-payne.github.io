@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+    <meta name="theme-color" content="#222">
+    <meta name="generator" content="Hexo 4.2.1">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16-next.png">
+    <link rel="mask-icon" href="/images/favicon/safari-pinned-tab.svg" color="#222">
+    <meta name="msapplication-config" content="/images/favicon/browserconfig.xml">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+    <link rel="stylesheet" href="/lib/pace/pace-theme-mac-osx.min.css">
+    <script src="/lib/pace/pace.min.js"></script>
+    <script id="hexo-configurations">
+        var NexT = window.NexT ||
+        {};
+        var CONFIG = {
+            "hostname": "paynewu.com",
+            "root": "/",
+            "scheme": "Gemini",
+            "version": "7.8.0",
+            "exturl": false,
+            "sidebar":
+            {
+                "position": "right",
+                "width": 240,
+                "display": "post",
+                "padding": 18,
+                "offset": 12,
+                "onmobile": false
+            },
+            "copycode":
+            {
+                "enable": true,
+                "show_result": true,
+                "style": "mac"
+            },
+            "back2top":
+            {
+                "enable": true,
+                "sidebar": false,
+                "scrollpercent": true
+            },
+            "bookmark":
+            {
+                "enable": false,
+                "color": "#222",
+                "save": "auto"
+            },
+            "fancybox": false,
+            "mediumzoom": true,
+            "lazyload": false,
+            "pangu": true,
+            "comments":
+            {
+                "style": "tabs",
+                "active": "valine",
+                "storage": true,
+                "lazyload": false,
+                "nav": null
+            },
+            "algolia":
+            {
+                "hits":
+                {
+                    "per_page": 10
+                },
+                "labels":
+                {
+                    "input_placeholder": "Search for Posts",
+                    "hits_empty": "We didn't find any results for the search: ${query}",
+                    "hits_stats": "${hits} results found in ${time} ms"
+                }
+            },
+            "localsearch":
+            {
+                "enable": true,
+                "trigger": "auto",
+                "top_n_per_article": 8,
+                "unescape": false,
+                "preload": false
+            },
+            "motion":
+            {
+                "enable": false,
+                "async": false,
+                "transition":
+                {
+                    "post_block": "bounceDownIn",
+                    "post_header": "slideDownIn",
+                    "post_body": "slideDownIn",
+                    "coll_header": "slideLeftIn",
+                    "sidebar": "slideUpIn"
+                }
+            },
+            "path": "search.xml"
+        };
+
+    </script>
+    <meta name="description" content="Go标准库 Go标准库中的unsafe包非常简洁，如下所示                                             12345678910111213141516171819202122232425                                           &#x2F;&#x2F; 用于获取一个表达式值的大小func Sizeof(x ArbitraryTyp">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="go-unsafe">
+    <meta property="og:url" content="https://paynewu.com/984068165.html">
+    <meta property="og:site_name" content="吴志鹏｜Payne-Wu">
+    <meta property="og:description" content="Go标准库 Go标准库中的unsafe包非常简洁，如下所示                                             12345678910111213141516171819202122232425                                           &#x2F;&#x2F; 用于获取一个表达式值的大小func Sizeof(x ArbitraryTyp">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="article:published_time" content="2022-05-01T09:05:31.000Z">
+    <meta property="article:modified_time" content="2022-07-27T09:58:26.876Z">
+    <meta property="article:author" content="吴志鹏">
+    <meta property="article:tag" content="go">
+    <meta name="twitter:card" content="summary">
+    <link rel="canonical" href="https://paynewu.com/984068165.html">
+    <script id="page-configurations">
+        // https://hexo.io/docs/variables.html
+        CONFIG.page = {
+            sidebar: "",
+            isHome: false,
+            isPost: true,
+            lang: 'zh-CN'
+        };
+
+    </script>
+    <title>go-unsafe | 吴志鹏｜Payne-Wu</title>
+    <meta name="google-site-verification" content="p_bIcnvirkFzG2dYKuNDivKD8-STet5W7D-01woA2fc" />
+    <noscript>
+        <style>
+            .use-motion .brand,
+            .use-motion .menu-item,
+            .sidebar-inner,
+            .use-motion .post-block,
+            .use-motion .pagination,
+            .use-motion .comments,
+            .use-motion .post-header,
+            .use-motion .post-body,
+            .use-motion .collection-header
+            {
+                opacity: initial;
+            }
+
+            .use-motion .site-title,
+            .use-motion .site-subtitle
+            {
+                opacity: initial;
+                top: initial;
+            }
+
+            .use-motion .logo-line-before i
+            {
+                left: initial;
+            }
+
+            .use-motion .logo-line-after i
+            {
+                right: initial;
+            }
+
+        </style>
+    </noscript>
+    <link rel="alternate" href="/atom.xml" title="吴志鹏｜Payne-Wu" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+    <div class="container">
+        <div class="headband"></div>
+        <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+            <div class="header-inner">
+                <div class="site-brand-container">
+                    <div class="site-nav-toggle">
+                        <div class="toggle" aria-label="切换导航栏">
+                            <span class="toggle-line toggle-line-first"></span>
+                            <span class="toggle-line toggle-line-middle"></span>
+                            <span class="toggle-line toggle-line-last"></span>
+                        </div>
+                    </div>
+                    <div class="site-meta">
+                        <a href="/" class="brand" rel="start">
+                            <span class="logo-line-before"><i></i></span>
+                            <h1 class="site-title">吴志鹏｜Payne-Wu </h1>
+                            <span class="logo-line-after"><i></i></span>
+                        </a>
+                    </div>
+                    <div class="site-nav-right">
+                        <div class="toggle popup-trigger">
+                            <i class="fa fa-search fa-fw fa-lg"></i>
+                        </div>
+                    </div>
+                </div>
+                <nav class="site-nav">
+                    <ul id="menu" class="main-menu menu">
+                        <li class="menu-item menu-item-home">
+                            <a href="/" rel="section">首页</a>
+                        </li>
+                        <li class="menu-item menu-item-archives">
+                            <a href="/archives/" rel="section">文章列表</a>
+                        </li>
+                        <li class="menu-item menu-item-tags">
+                            <a href="/tags/" rel="section">Tags Cloud</a>
+                        </li>
+                        <li class="menu-item menu-item-categories">
+                            <a href="/categories/" rel="section">文章集合</a>
+                        </li>
+                        <li class="menu-item menu-item-about">
+                            <a href="/about/" rel="section">关于我啊</a>
+                        </li>
+                        <li class="menu-item menu-item-message">
+                            <a href="/message/" rel="section">留言与我</a>
+                        </li>
+                        <li class="menu-item menu-item-search">
+                            <a role="button" class="popup-trigger">搜索 </a>
+                        </li>
+                    </ul>
+                </nav>
+                <div class="search-pop-overlay">
+                    <div class="popup search-popup">
+                        <div class="search-header">
+                            <span class="search-icon">
+                                <i class="fa fa-search"></i>
+                            </span>
+                            <div class="search-input-container">
+                                <input autocomplete="off" autocapitalize="off" placeholder="搜索..." spellcheck="false" type="search" class="search-input">
+                            </div>
+                            <span class="popup-btn-close">
+                                <i class="fa fa-times-circle"></i>
+                            </span>
+                        </div>
+                        <div id="search-result">
+                            <div id="no-result">
+                                <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="back-to-top">
+            <i class="fa fa-arrow-up"></i>
+            <span>0%</span>
+        </div>
+        <div class="reading-progress-bar"></div>
+        <main class="main">
+            <div class="main-inner">
+                <div class="content-wrap">
+                    <div class="content post posts-expand">
+                        <article itemscope itemtype="http://schema.org/Article" class="post-block single" lang="zh-CN">
+                            <link itemprop="mainEntityOfPage" href="https://paynewu.com/984068165.html">
+                            <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <meta itemprop="image" content="/images/favicon/android-chrome-512x512.png">
+                                <meta itemprop="name" content="吴志鹏">
+                                <meta itemprop="description" content="Talk is free，please state clearly">
+                            </span>
+                            <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+                                <meta itemprop="name" content="吴志鹏｜Payne-Wu">
+                            </span>
+                            <header class="post-header">
+                                <h1 class="post-title" itemprop="name headline"> go-unsafe </h1>
+                                <div class="post-meta">
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-user"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">作者</span>
+                                        <span><a href="/authors/Payne" class="author" itemprop="url" rel="index">Payne</a></span>
+                                    </span>
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-calendar"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">发表于</span>
+                                        <time title="创建时间：2022-05-01 17:05:31" itemprop="dateCreated datePublished" datetime="2022-05-01T17:05:31+08:00">2022-05-01</time>
+                                    </span>
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-folder"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">分类于</span>
+                                        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                                            <a href="/categories/go/" itemprop="url" rel="index"><span itemprop="name">go</span></a>
+                                        </span> ， <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                                            <a href="/categories/go/unsafe/" itemprop="url" rel="index"><span itemprop="name">unsafe</span></a>
+                                        </span>
+                                    </span>
+                                    <br>
+                                    <span class="post-meta-item" title="本文字数">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-file-word"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">本文字数：</span>
+                                        <span>2.1k</span>
+                                    </span>
+                                    <span class="post-meta-item" title="阅读时长">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-clock"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                                        <span>2 分钟</span>
+                                    </span>
+                                </div>
+                            </header>
+                            <div class="post-body" itemprop="articleBody">
+                                <h2 id="Go标准库"><a href="#Go标准库" class="headerlink" title="Go标准库"></a>Go标准库</h2>
+                                <p>Go标准库中的unsafe包非常简洁，如下所示</p>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="comment">// 用于获取一个表达式值的大小</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Sizeof</span><span class="params">(x ArbitraryType)</span> <span class="title">uintptr</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 用于获取结构体中某字段段地址偏移量（相对于结构体变量的地址）</span></span><br><span class="line"><span class="comment">// Offsetof函数应用面较窄，仅用于结构体某字段的偏移值</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Offsetof</span><span class="params">(x ArbitraryType)</span> <span class="title">uintptr</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Alignof用于获取一个表达式的内存补齐系数</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Alignof</span><span class="params">(x ArbitraryType)</span> <span class="title">uintptr</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Add 将 len 添加到 ptr 并返回更新后的指针 Pointer(uintptr(ptr) + uintptr(len))。</span></span><br><span class="line"><span class="comment">// len 参数必须是整数类型或无类型常量。</span></span><br><span class="line"><span class="comment">// 一个常量 len 参数必须可以用一个 int 类型的值来表示；</span></span><br><span class="line"><span class="comment">// 如果它是一个无类型常量，它被赋予 int 类型。 Pointer 的有效使用规则仍然适用。</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Add</span><span class="params">(ptr Pointer, <span class="built_in">len</span> IntegerType)</span> <span class="title">Pointer</span></span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 函数 Slice 返回一个切片，其底层数组从 ptr 开始，长度和容量为 len。 </span></span><br><span class="line"><span class="comment">// Slice(ptr, len) 等价于 ([len]ArbitraryType)(unsafe.Pointer(ptr))[:] ，</span></span><br><span class="line"><span class="comment">// 除了作为特殊情况，如果 ptr 为 nil 且 len 为零，Slice 返回 nil。 </span></span><br><span class="line"><span class="comment">// len 参数必须是整数类型或无类型常量。</span></span><br><span class="line"><span class="comment">// 一个常量 len 参数必须是非负的并且可以用一个int类型的值来表示；</span></span><br><span class="line"><span class="comment">// 如果它是一个无类型常量，它被赋予int类型。在运行时，</span></span><br><span class="line"><span class="comment">// 如果len为负数，或者ptr为nil且len不为零，则会发生运行时恐慌</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Slice</span><span class="params">(ptr *ArbitraryType, <span class="built_in">len</span> IntegerType)</span> []<span class="title">ArbitraryType</span></span></span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h3 id="典型使用"><a href="#典型使用" class="headerlink" title="典型使用"></a>典型使用</h3>
+                                <p>怎么理解Go核心团队在尽力保证go类型安全的情况下，又提供了可以打破安全屏障的<code>unsafe.Pointer</code> 这一行为？</p>
+                                <p>首先被广泛应用于Go标准库和Go 运行时的实现当中，reflect、sync、syscall、runtime都是unsafe包的重度用户。</p>
+                                <h4 id="reflect"><a href="#reflect" class="headerlink" title="reflect"></a>reflect</h4>
+                                <p>ValueOf 和TypeOf函数是reflect包中用得最多的两个API，他们是进入运行时反射层、获取发射层信息的入口。这两个函数均将任意类型变量转化为一个<code>interface{}</code> 类型变量，再利用<code>unsafe.Pointer</code><br>将这个变量绑定的内存区域重新解释为reflect.emptyInterface类型，以获得传入变量的类型和值类的信息</p>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="comment">// $GOROOT/src/reflect/values.go</span></span><br><span class="line"><span class="comment">// emptyInterface is the header for an interface&#123;&#125; value.</span></span><br><span class="line"><span class="keyword">type</span> emptyInterface <span class="keyword">struct</span> &#123;</span><br><span class="line">	typ  *rtype</span><br><span class="line">	word unsafe.Pointer</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// unpackEface converts the empty interface i to a Value.</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">unpackEface</span><span class="params">(i any)</span> <span class="title">Value</span></span> &#123;</span><br><span class="line">	e := (*emptyInterface)(unsafe.Pointer(&amp;i))</span><br><span class="line">	<span class="comment">// <span class="doctag">NOTE:</span> don't read e.word until we know whether it is really a pointer or not.</span></span><br><span class="line">	t := e.typ</span><br><span class="line">	<span class="keyword">if</span> t == <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> Value&#123;&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	f := flag(t.Kind())</span><br><span class="line">	<span class="keyword">if</span> ifaceIndir(t) &#123;</span><br><span class="line">		f |= flagIndir</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> Value&#123;t, e.word, f&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// $GOROOT/src/reflect/type.go</span></span><br><span class="line"><span class="comment">// If i is a nil interface value, TypeOf returns nil.</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">TypeOf</span><span class="params">(i any)</span> <span class="title">Type</span></span> &#123;</span><br><span class="line">	eface := *(*emptyInterface)(unsafe.Pointer(&amp;i))</span><br><span class="line">	<span class="keyword">return</span> toType(eface.typ)</span><br><span class="line">&#125;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h4 id="sync"><a href="#sync" class="headerlink" title="sync"></a>sync</h4>
+                                <p>sync.Pool 是个并发安全的高性能临时对象缓冲池。Pool 为每个P分配了一个本地缓冲池，并通过下列函数为每个P分配啦一个本地的缓冲池，并通过如下函数实现快速定位P的本地缓冲池。</p>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">indexLocal</span><span class="params">(l unsafe.Pointer, i <span class="keyword">int</span>)</span> *<span class="title">poolLocal</span></span> &#123;</span><br><span class="line">	lp := unsafe.Pointer(<span class="keyword">uintptr</span>(l) + <span class="keyword">uintptr</span>(i)*unsafe.Sizeof(poolLocal&#123;&#125;))</span><br><span class="line">	<span class="keyword">return</span> (*poolLocal)(lp)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// indexLocal函数的本地缓冲池快速定位时通过结合unsafe.Pointer包与uinptr的指针运算实现</span></span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>标准库中的saycall包封装了与操作系统交互的系统调用接口，比如Statfs、Listen、Select</p>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="comment">// $GOROOT/src/syscall/zsyscall_linux_amd64.go</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Statfs</span><span class="params">(path <span class="keyword">string</span>, buf *Statfs_t)</span> <span class="params">(err error)</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> _p0 *<span class="keyword">byte</span></span><br><span class="line">	_p0, err = BytePtrFromString(path)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	_, _, e1 := Syscall(SYS_STATFS, <span class="keyword">uintptr</span>(unsafe.Pointer(_p0)), <span class="keyword">uintptr</span>(unsafe.Pointer(buf)), <span class="number">0</span>)</span><br><span class="line">	<span class="keyword">if</span> e1 != <span class="number">0</span> &#123;</span><br><span class="line">		err = errnoErr(e1)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Listen</span><span class="params">(s <span class="keyword">int</span>, n <span class="keyword">int</span>)</span> <span class="params">(err error)</span></span> &#123;</span><br><span class="line">	_, _, e1 := Syscall(SYS_LISTEN, <span class="keyword">uintptr</span>(s), <span class="keyword">uintptr</span>(n), <span class="number">0</span>)</span><br><span class="line">	<span class="keyword">if</span> e1 != <span class="number">0</span> &#123;</span><br><span class="line">		err = errnoErr(e1)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Select</span><span class="params">(nfd <span class="keyword">int</span>, r *FdSet, w *FdSet, e *FdSet, timeout *Timeval)</span> <span class="params">(n <span class="keyword">int</span>, err error)</span></span> &#123;</span><br><span class="line">	r0, _, e1 := Syscall6(SYS_SELECT, <span class="keyword">uintptr</span>(nfd), <span class="keyword">uintptr</span>(unsafe.Pointer(r)), <span class="keyword">uintptr</span>(unsafe.Pointer(w)), <span class="keyword">uintptr</span>(unsafe.Pointer(e)), <span class="keyword">uintptr</span>(unsafe.Pointer(timeout)), <span class="number">0</span>)</span><br><span class="line">	n = <span class="keyword">int</span>(r0)</span><br><span class="line">	<span class="keyword">if</span> e1 != <span class="number">0</span> &#123;</span><br><span class="line">		err = errnoErr(e1)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span></span><br><span class="line">&#125;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>这类的高级调用的最终都会落到调用函数下面一系列的Syscall和RawSyscall函数上面。</p>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Syscall</span><span class="params">(trap, a1, a2, a3 <span class="keyword">uintptr</span>)</span> <span class="params">(r1, r2 <span class="keyword">uintptr</span>, err Errno)</span></span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Syscall6</span><span class="params">(trap, a1, a2, a3, a4, a5, a6 <span class="keyword">uintptr</span>)</span> <span class="params">(r1, r2 <span class="keyword">uintptr</span>, err Errno)</span></span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">RawSyscall</span><span class="params">(trap, a1, a2, a3 <span class="keyword">uintptr</span>)</span> <span class="params">(r1, r2 <span class="keyword">uintptr</span>, err Errno)</span></span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">RawSyscall6</span><span class="params">(trap, a1, a2, a3, a4, a5, a6 <span class="keyword">uintptr</span>)</span> <span class="params">(r1, r2 <span class="keyword">uintptr</span>, err Errno)</span></span></span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>这些Saycall系列的函数接受的参数类型均为uintptr，这样当封装的系统调用的参数为指针类型时（比如上面Select的参数r、w、e等）。只能只能通过unsafe.uintptr值，就像上面Select函数实现中那样。因此，syscall包是unsafe重度使用者，它的实现离不开的unsafe.Pointer。</p>
+                                <h4 id="runtime包中的unsafe包的典型应用"><a href="#runtime包中的unsafe包的典型应用" class="headerlink" title="runtime包中的unsafe包的典型应用"></a>runtime包中的unsafe包的典型应用</h4>
+                                <p>runtime 包实现的goroutine调度和内存管理（包括GC）都有unsafe包的身影以goroutine的栈管理为例：</p>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="comment">// $GOROOT/src/runtime/stack.go</span></span><br><span class="line"><span class="keyword">type</span> stack <span class="keyword">struct</span> &#123;</span><br><span class="line">	lo <span class="keyword">uintptr</span></span><br><span class="line">	hi <span class="keyword">uintptr</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// $GOROOT/src/runtime/runtime.go</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">stackalloc</span><span class="params">(n <span class="keyword">uint32</span>)</span> <span class="title">stack</span></span> &#123;</span><br><span class="line">	<span class="comment">// Stackalloc must be called on scheduler stack, so that we</span></span><br><span class="line">	<span class="comment">// never try to grow the stack during the code that stackalloc runs.</span></span><br><span class="line">	<span class="comment">// Doing so would cause a deadlock (issue 1547).</span></span><br><span class="line">	thisg := getg()</span><br><span class="line">	<span class="keyword">if</span> thisg != thisg.m.g0 &#123;</span><br><span class="line">		throw(<span class="string">"stackalloc not on scheduler stack"</span>)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> n&amp;(n<span class="number">-1</span>) != <span class="number">0</span> &#123;</span><br><span class="line">		throw(<span class="string">"stack size not a power of 2"</span>)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> stackDebug &gt;= <span class="number">1</span> &#123;</span><br><span class="line">		<span class="built_in">print</span>(<span class="string">"stackalloc "</span>, n, <span class="string">"\n"</span>)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> debug.efence != <span class="number">0</span> || stackFromSystem != <span class="number">0</span> &#123;</span><br><span class="line">		n = <span class="keyword">uint32</span>(alignUp(<span class="keyword">uintptr</span>(n), physPageSize))</span><br><span class="line">		v := sysAlloc(<span class="keyword">uintptr</span>(n), &amp;memstats.stacks_sys)</span><br><span class="line">		<span class="keyword">if</span> v == <span class="literal">nil</span> &#123;</span><br><span class="line">			throw(<span class="string">"out of memory (stackalloc)"</span>)</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> stack&#123;<span class="keyword">uintptr</span>(v), <span class="keyword">uintptr</span>(v) + <span class="keyword">uintptr</span>(n)&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Small stacks are allocated with a fixed-size free-list allocator.</span></span><br><span class="line">	<span class="comment">// If we need a stack of a bigger size, we fall back on allocating</span></span><br><span class="line">	<span class="comment">// a dedicated span.</span></span><br><span class="line">	<span class="keyword">var</span> v unsafe.Pointer</span><br><span class="line">	<span class="keyword">if</span> n &lt; _FixedStack&lt;&lt;_NumStackOrders &amp;&amp; n &lt; _StackCacheSize &#123;</span><br><span class="line">		order := <span class="keyword">uint8</span>(<span class="number">0</span>)</span><br><span class="line">		n2 := n</span><br><span class="line">		<span class="keyword">for</span> n2 &gt; _FixedStack &#123;</span><br><span class="line">			order++</span><br><span class="line">			n2 &gt;&gt;= <span class="number">1</span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">var</span> x gclinkptr</span><br><span class="line">		<span class="keyword">if</span> stackNoCache != <span class="number">0</span> || thisg.m.p == <span class="number">0</span> || thisg.m.preemptoff != <span class="string">""</span> &#123;</span><br><span class="line">			<span class="comment">// thisg.m.p == 0 can happen in the guts of exitsyscall</span></span><br><span class="line">			<span class="comment">// or procresize. Just get a stack from the global pool.</span></span><br><span class="line">			<span class="comment">// Also don't touch stackcache during gc</span></span><br><span class="line">			<span class="comment">// as it's flushed concurrently.</span></span><br><span class="line">			lock(&amp;stackpool[order].item.mu)</span><br><span class="line">			x = stackpoolalloc(order)</span><br><span class="line">			unlock(&amp;stackpool[order].item.mu)</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			c := thisg.m.p.ptr().mcache</span><br><span class="line">			x = c.stackcache[order].list</span><br><span class="line">			<span class="keyword">if</span> x.ptr() == <span class="literal">nil</span> &#123;</span><br><span class="line">				stackcacherefill(c, order)</span><br><span class="line">				x = c.stackcache[order].list</span><br><span class="line">			&#125;</span><br><span class="line">			c.stackcache[order].list = x.ptr().next</span><br><span class="line">			c.stackcache[order].size -= <span class="keyword">uintptr</span>(n)</span><br><span class="line">		&#125;</span><br><span class="line">		v = unsafe.Pointer(x)</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="keyword">var</span> s *mspan</span><br><span class="line">		npage := <span class="keyword">uintptr</span>(n) &gt;&gt; _PageShift</span><br><span class="line">		log2npage := stacklog2(npage)</span><br><span class="line"></span><br><span class="line">		<span class="comment">// Try to get a stack from the large stack cache.</span></span><br><span class="line">		lock(&amp;stackLarge.lock)</span><br><span class="line">		<span class="keyword">if</span> !stackLarge.free[log2npage].isEmpty() &#123;</span><br><span class="line">			s = stackLarge.free[log2npage].first</span><br><span class="line">			stackLarge.free[log2npage].remove(s)</span><br><span class="line">		&#125;</span><br><span class="line">		unlock(&amp;stackLarge.lock)</span><br><span class="line"></span><br><span class="line">		lockWithRankMayAcquire(&amp;mheap_.lock, lockRankMheap)</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> s == <span class="literal">nil</span> &#123;</span><br><span class="line">			<span class="comment">// Allocate a new stack from the heap.</span></span><br><span class="line">			s = mheap_.allocManual(npage, spanAllocStack)</span><br><span class="line">			<span class="keyword">if</span> s == <span class="literal">nil</span> &#123;</span><br><span class="line">				throw(<span class="string">"out of memory"</span>)</span><br><span class="line">			&#125;</span><br><span class="line">			osStackAlloc(s)</span><br><span class="line">			s.elemsize = <span class="keyword">uintptr</span>(n)</span><br><span class="line">		&#125;</span><br><span class="line">		v = unsafe.Pointer(s.base())</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> raceenabled &#123;</span><br><span class="line">		racemalloc(v, <span class="keyword">uintptr</span>(n))</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> msanenabled &#123;</span><br><span class="line">		msanmalloc(v, <span class="keyword">uintptr</span>(n))</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> asanenabled &#123;</span><br><span class="line">		asanunpoison(v, <span class="keyword">uintptr</span>(n))</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> stackDebug &gt;= <span class="number">1</span> &#123;</span><br><span class="line">		<span class="built_in">print</span>(<span class="string">"  allocated "</span>, v, <span class="string">"\n"</span>)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> stack&#123;<span class="keyword">uintptr</span>(v), <span class="keyword">uintptr</span>(v) + <span class="keyword">uintptr</span>(n)&#125;</span><br><span class="line">&#125;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h2 id="unsafe-Pointer-与-uintptr"><a href="#unsafe-Pointer-与-uintptr" class="headerlink" title="unsafe.Pointer 与 uintptr"></a>unsafe.Pointer 与 uintptr</h2>
+                                <p>作为Go类型安全层上的一个“后门”，unsafe包在带来强大的低级编程能力的同时，也极容易导致代码出现错误。而出现浙西错误的原因主要就是对unsafe.Pointer和uintptr的理解不到位。因此正确理解unsafe.Pointer和uintptr对于安全使用unsafe包非常有必要。</p>
+                                <p>Go语言内存管理是基于垃圾回收的，垃圾回收会定期进行，如歌一块内存没有被任何对象引用，他就会被垃圾回收器回收掉，而对象引用是通过指针实现的。</p>
+                                <p>unsafe.Pointer 和其他常规类型的指针一样，可以作为对象引用。如果一个对象仍然被某个unsafe.Pointer 变量引用着则该对象不会被回收（垃圾回收）。</p>
+                                <p><strong>即使他存储的是某个对象的内存地址值，它也不会被算作该对象的被算作对该对象的引用</strong></p>
+                                <p><strong>如果认为将对象地址存储在一个uintptr变量中，该对象就不会被垃圾回收器回收，那是对uintptr的最大误解</strong></p>
+                                <h2 id="安全使用"><a href="#安全使用" class="headerlink" title="安全使用"></a>安全使用</h2>
+                                <p>我们既需要unsafe.Pointer打破类型的安全屏障，又需要器能够被安全的使用。如下有几条安全法则</p>
+                                <h3 id="T1-gt-unsafe-Pointer-gt-T2"><a href="#T1-gt-unsafe-Pointer-gt-T2" class="headerlink" title="*T1 -&gt; unsafe.Pointer -&gt; *T2"></a><code>*T1</code> -&gt; unsafe.Pointer -&gt; <code>*T2</code></h3>
+                                <p>其本质就是内存重解释，将原本解释为T1的类型内存重新解释为T2类型。</p>
+                                <blockquote>
+                                    <p>这是unsafe.Pointer 突破Go类型安全的屏障的基本使用模式</p>
+                                </blockquote>
+                                <p>注意：转换后类型T2, 对对其系数不能比转换前类型T1的对其系数<strong>更严格</strong>，即Alignof(T1) =&gt; Alignof(T2)</p>
+                                <h3 id="unsafe-Pointer-gt-uintptr"><a href="#unsafe-Pointer-gt-uintptr" class="headerlink" title="unsafe.Pointer -&gt; uintptr"></a>unsafe.Pointer -&gt; uintptr</h3>
+                                <p>将unsafe.Pointer 显示转换为uinptr，并且转换后的uintptr类型不会在转换回unsafe.Pointer 只用于打印输出，并不参与其他操作。</p>
+                                <h3 id="模拟指针运算"><a href="#模拟指针运算" class="headerlink" title="模拟指针运算"></a>模拟指针运算</h3>
+                                <p>操作任意内存地址上的数据都离不开指针运算。Go常规语法不支持指针运算，但我们可以使用unsafe.Pointer的第三种安全使用模式来模拟指针运算，即在一个表达式中，将unsafe.Pointer转换为uintptr类型，使用uintptr类型的值进行算术运算后，再转换回unsafe.Pointer</p>
+                                <p>经常用于访问结构体内字段或数组中的元素，也常用于实现对某内存对象的步进式检查</p>
+                                <p>注意事项:</p>
+                                <ul>
+                                    <li>不要越界offset理论上可以是任意值，这就存在算术运算之后的地址超出原内存对象边界的可能。 经过转换后，p指向的地址已经超出原数组a的边界，访问这块内存区域是有风险的，尤其是当你尝试去修改它的时候。</li>
+                                    <li>unsafe.Pointer -&gt; uintptr -&gt; unsafe.Pointer的转换要在一个表达式中</li>
+                                </ul>
+                                <h3 id="调用syscall-Syscall系列函数时指针类型到uintptr类型参数的转换"><a href="#调用syscall-Syscall系列函数时指针类型到uintptr类型参数的转换" class="headerlink" title="调用syscall.Syscall系列函数时指针类型到uintptr类型参数的转换"></a>调用syscall.Syscall系列函数时指针类型到uintptr类型参数的转换</h3>
+                                <h3 id="将reflect-Value-Pointer或reflect-Value-UnsafeAddr转换为指针"><a href="#将reflect-Value-Pointer或reflect-Value-UnsafeAddr转换为指针" class="headerlink" title="将reflect.Value.Pointer或reflect.Value.UnsafeAddr转换为指针"></a>将reflect.Value.Pointer或reflect.Value.UnsafeAddr转换为指针</h3>
+                                <h3 id="reflect-SliceHeader和reflect-StringHeader必须通过unsafe-Pointer-gt-uintptr构建"><a href="#reflect-SliceHeader和reflect-StringHeader必须通过unsafe-Pointer-gt-uintptr构建" class="headerlink" title="reflect.SliceHeader和reflect.StringHeader必须通过unsafe.Pointer -&gt; uintptr构建"></a>reflect.SliceHeader和reflect.StringHeader必须通过<code>unsafe.Pointer -&gt; uintptr</code>构建</h3>
+                                <h2 id="Tips"><a href="#Tips" class="headerlink" title="Tips:"></a>Tips:</h2>
+                                <p>使用unsfa包前，请牢记并理解unsafe.Pointer 的六条安全使用模式</p>
+                                <p>如果使用了unsafe包，请使用<code>go vet</code> 等工具对代码进行unsafe包使用合规性检查</p>
+                            </div>
+                            <div class="popular-posts-header">相关文章</div>
+                            <ul class="popular-posts">
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/1679977151.html" rel="bookmark">go code tips</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/3870895095.html" rel="bookmark">go-concurrency</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/586178490.html" rel="bookmark">go-reflect</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/1752556181.html" rel="bookmark">go异常处理</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/3675738859.html" rel="bookmark">go语言相关资料</a></div>
+                                </li>
+                            </ul>
+                            <footer class="post-footer">
+                                <div class="post-tags">
+                                    <a href="/tags/go/" rel="tag"><i class="fa fa-tag"></i> go</a>
+                                </div>
+                                <div class="post-nav">
+                                    <div class="post-nav-item">
+                                        <a href="/1679977151.html" rel="prev" title="go code tips">
+                                            <i class="fa fa-chevron-left"></i> go code tips </a>
+                                    </div>
+                                    <div class="post-nav-item">
+                                        <a href="/586178490.html" rel="next" title="go-reflect"> go-reflect <i class="fa fa-chevron-right"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </footer>
+                        </article>
+                    </div>
+                    <script>
+                        window.addEventListener('tabs:register', () =>
+                        {
+                            let
+                            {
+                                activeClass
+                            } = CONFIG.comments;
+                            if (CONFIG.comments.storage)
+                            {
+                                activeClass = localStorage.getItem('comments_active') || activeClass;
+                            }
+                            if (activeClass)
+                            {
+                                let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+                                if (activeTab)
+                                {
+                                    activeTab.click();
+                                }
+                            }
+                        });
+                        if (CONFIG.comments.storage)
+                        {
+                            window.addEventListener('tabs:click', event =>
+                            {
+                                if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+                                let commentClass = event.target.classList[1];
+                                localStorage.setItem('comments_active', commentClass);
+                            });
+                        }
+
+                    </script>
+                </div>
+                <div class="toggle sidebar-toggle">
+                    <span class="toggle-line toggle-line-first"></span>
+                    <span class="toggle-line toggle-line-middle"></span>
+                    <span class="toggle-line toggle-line-last"></span>
+                </div>
+                <aside class="sidebar">
+                    <div class="sidebar-inner">
+                        <ul class="sidebar-nav motion-element">
+                            <li class="sidebar-nav-toc"> 文章目录 </li>
+                            <li class="sidebar-nav-overview"> 站点概览 </li>
+                        </ul>
+                        <!--noindex-->
+                        <div class="post-toc-wrap sidebar-panel">
+                            <div class="post-toc motion-element">
+                                <ol class="nav">
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#Go标准库"><span class="nav-number">1.</span> <span class="nav-text">Go标准库</span></a>
+                                        <ol class="nav-child">
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#典型使用"><span class="nav-number">1.1.</span> <span class="nav-text">典型使用</span></a>
+                                                <ol class="nav-child">
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#reflect"><span class="nav-number">1.1.1.</span> <span class="nav-text">reflect</span></a></li>
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#sync"><span class="nav-number">1.1.2.</span> <span class="nav-text">sync</span></a></li>
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#runtime包中的unsafe包的典型应用"><span class="nav-number">1.1.3.</span> <span class="nav-text">runtime包中的unsafe包的典型应用</span></a></li>
+                                                </ol>
+                                            </li>
+                                        </ol>
+                                    </li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#unsafe-Pointer-与-uintptr"><span class="nav-number">2.</span> <span class="nav-text">unsafe.Pointer 与 uintptr</span></a></li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#安全使用"><span class="nav-number">3.</span> <span class="nav-text">安全使用</span></a>
+                                        <ol class="nav-child">
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#T1-gt-unsafe-Pointer-gt-T2"><span class="nav-number">3.1.</span> <span class="nav-text">*T1 -&gt; unsafe.Pointer -&gt; *T2</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#unsafe-Pointer-gt-uintptr"><span class="nav-number">3.2.</span> <span class="nav-text">unsafe.Pointer -&gt; uintptr</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#模拟指针运算"><span class="nav-number">3.3.</span> <span class="nav-text">模拟指针运算</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#调用syscall-Syscall系列函数时指针类型到uintptr类型参数的转换"><span class="nav-number">3.4.</span> <span class="nav-text">调用syscall.Syscall系列函数时指针类型到uintptr类型参数的转换</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#将reflect-Value-Pointer或reflect-Value-UnsafeAddr转换为指针"><span class="nav-number">3.5.</span> <span class="nav-text">将reflect.Value.Pointer或reflect.Value.UnsafeAddr转换为指针</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#reflect-SliceHeader和reflect-StringHeader必须通过unsafe-Pointer-gt-uintptr构建"><span class="nav-number">3.6.</span> <span class="nav-text">reflect.SliceHeader和reflect.StringHeader必须通过unsafe.Pointer -&gt; uintptr构建</span></a></li>
+                                        </ol>
+                                    </li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#Tips"><span class="nav-number">4.</span> <span class="nav-text">Tips:</span></a></li>
+                                </ol>
+                            </div>
+                        </div>
+                        <!--/noindex-->
+                        <div class="site-overview-wrap sidebar-panel">
+                            <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <img class="site-author-image" itemprop="image" alt="吴志鹏" src="/images/favicon/android-chrome-512x512.png">
+                                <p class="site-author-name" itemprop="name">吴志鹏</p>
+                                <div class="site-description" itemprop="description">Talk is free，please state clearly</div>
+                            </div>
+                            <div class="site-state-wrap motion-element">
+                                <nav class="site-state">
+                                    <div class="site-state-item site-state-posts">
+                                        <a href="/archives/">
+                                            <span class="site-state-item-count">136</span>
+                                            <span class="site-state-item-name">日志</span>
+                                        </a>
+                                    </div>
+                                    <div class="site-state-item site-state-categories">
+                                        <a href="/categories/">
+                                            <span class="site-state-item-count">158</span>
+                                            <span class="site-state-item-name">分类</span></a>
+                                    </div>
+                                    <div class="site-state-item site-state-tags">
+                                        <a href="/tags/">
+                                            <span class="site-state-item-count">89</span>
+                                            <span class="site-state-item-name">标签</span></a>
+                                    </div>
+                                </nav>
+                            </div>
+                            <div class="links-of-author motion-element">
+                                <span class="links-of-author-item">
+                                    <a href="https://github.com/Payne-Wu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Payne-Wu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="mailto:wuzhipeng1289690157@gmail.com" title="E-Mail → mailto:wuzhipeng1289690157@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="https://www.zhihu.com/people/wu-zhi-peng-72-78" title="ZhiHu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;wu-zhi-peng-72-78" rel="noopener" target="_blank"><i class="fa fa-magic fa-fw"></i>ZhiHu</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="https://weibo.com/u/6987234483" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;6987234483" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+                <div id="sidebar-dimmer"></div>
+            </div>
+        </main>
+        <footer class="footer">
+            <div class="footer-inner">
+                <div class="copyright"> &copy; <span itemprop="copyrightYear">2022</span>
+                    <span class="with-love">
+                        <i class="fa fa-heart"></i>
+                    </span>
+                    <span class="author" itemprop="copyrightHolder">PayneWu</span>
+                    <span class="post-meta-divider">|</span>
+                    <span class="post-meta-item-icon">
+                        <i class="fa fa-chart-area"></i>
+                    </span>
+                    <span title="站点总字数">255k</span>
+                    <span class="post-meta-divider">|</span>
+                    <span class="post-meta-item-icon">
+                        <i class="fa fa-coffee"></i>
+                    </span>
+                    <span title="站点阅读时长">3:51</span>
+                </div>
+                <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">湘ICP备2021019893号-1 </a>
+                </div>
+                <div style="display: none;">
+                    <script src="//s95.cnzz.com/z_stat.php?id=true&web_id=true"></script>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+    <script src="/js/utils.js"></script>
+    <script src="/.js"></script>
+    <script src="/js/schemes/pisces.js"></script>
+    <script src="/.js"></script>
+    <script src="/js/next-boot.js"></script>
+    <script src="/.js"></script>
+    <script>
+        (function ()
+        {
+            var canonicalURL, curProtocol;
+            //Get the <link> tag
+            var x = document.getElementsByTagName("link");
+            //Find the last canonical URL
+            if (x.length > 0)
+            {
+                for (i = 0; i < x.length; i++)
+                {
+                    if (x[i].rel.toLowerCase() == 'canonical' && x[i].href)
+                    {
+                        canonicalURL = x[i].href;
+                    }
+                }
+            }
+            //Get protocol
+            if (!canonicalURL)
+            {
+                curProtocol = window.location.protocol.split(':')[0];
+            }
+            else
+            {
+                curProtocol = canonicalURL.split(':')[0];
+            }
+            //Get current URL if the canonical URL does not exist
+            if (!canonicalURL) canonicalURL = window.location.href;
+            //Assign script content. Replace current URL with the canonical URL
+            ! function ()
+            {
+                var e = /([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,
+                    r = canonicalURL,
+                    t = document.referrer;
+                if (!e.test(r))
+                {
+                    var n = (String(curProtocol).toLowerCase() === 'https') ? "https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif" : "//api.share.baidu.com/s.gif";
+                    t ? (n += "?r=" + encodeURIComponent(document.referrer), r && (n += "&l=" + r)) : r && (n += "?l=" + r);
+                    var i = new Image;
+                    i.src = n
+                }
+            }(window);
+        })();
+
+    </script>
+    <script src="/js/local-search.js"></script>
+    <script src="/.js"></script>
+</body>
+
+</html>

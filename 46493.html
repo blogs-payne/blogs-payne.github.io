@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+    <meta name="theme-color" content="#222">
+    <meta name="generator" content="Hexo 4.2.1">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16-next.png">
+    <link rel="mask-icon" href="/images/favicon/safari-pinned-tab.svg" color="#222">
+    <meta name="msapplication-config" content="/images/favicon/browserconfig.xml">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+    <link rel="stylesheet" href="/lib/pace/pace-theme-mac-osx.min.css">
+    <script src="/lib/pace/pace.min.js"></script>
+    <script id="hexo-configurations">
+        var NexT = window.NexT ||
+        {};
+        var CONFIG = {
+            "hostname": "paynewu.com",
+            "root": "/",
+            "scheme": "Gemini",
+            "version": "7.8.0",
+            "exturl": false,
+            "sidebar":
+            {
+                "position": "right",
+                "width": 240,
+                "display": "post",
+                "padding": 18,
+                "offset": 12,
+                "onmobile": false
+            },
+            "copycode":
+            {
+                "enable": true,
+                "show_result": true,
+                "style": "mac"
+            },
+            "back2top":
+            {
+                "enable": true,
+                "sidebar": false,
+                "scrollpercent": true
+            },
+            "bookmark":
+            {
+                "enable": false,
+                "color": "#222",
+                "save": "auto"
+            },
+            "fancybox": false,
+            "mediumzoom": true,
+            "lazyload": false,
+            "pangu": true,
+            "comments":
+            {
+                "style": "tabs",
+                "active": "valine",
+                "storage": true,
+                "lazyload": false,
+                "nav": null
+            },
+            "algolia":
+            {
+                "hits":
+                {
+                    "per_page": 10
+                },
+                "labels":
+                {
+                    "input_placeholder": "Search for Posts",
+                    "hits_empty": "We didn't find any results for the search: ${query}",
+                    "hits_stats": "${hits} results found in ${time} ms"
+                }
+            },
+            "localsearch":
+            {
+                "enable": true,
+                "trigger": "auto",
+                "top_n_per_article": 8,
+                "unescape": false,
+                "preload": false
+            },
+            "motion":
+            {
+                "enable": false,
+                "async": false,
+                "transition":
+                {
+                    "post_block": "bounceDownIn",
+                    "post_header": "slideDownIn",
+                    "post_body": "slideDownIn",
+                    "coll_header": "slideLeftIn",
+                    "sidebar": "slideUpIn"
+                }
+            },
+            "path": "search.xml"
+        };
+
+    </script>
+    <meta name="description" content="在上篇数据类型-Array中写到因为数组的长度是固定的并且数组长度属于类型的一部分,所以数组有很多的局限性">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Golang切片-slice">
+    <meta property="og:url" content="https://paynewu.com/46493.html">
+    <meta property="og:site_name" content="吴志鹏｜Payne-Wu">
+    <meta property="og:description" content="在上篇数据类型-Array中写到因为数组的长度是固定的并且数组长度属于类型的一部分,所以数组有很多的局限性">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwgy1gkl8xaagu0j318e0l2abf.jpg">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwgy1gkl8xvn3bdj318e0l2q4b.jpg">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwgy1gklp4pox1sj30t608875i.jpg">
+    <meta property="article:published_time" content="2020-11-21T14:10:19.000Z">
+    <meta property="article:modified_time" content="2022-07-27T09:58:26.872Z">
+    <meta property="article:author" content="吴志鹏">
+    <meta property="article:tag" content="Go">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:image" content="https://tva1.sinaimg.cn/large/0081Kckwgy1gkl8xaagu0j318e0l2abf.jpg">
+    <link rel="canonical" href="https://paynewu.com/46493.html">
+    <script id="page-configurations">
+        // https://hexo.io/docs/variables.html
+        CONFIG.page = {
+            sidebar: "",
+            isHome: false,
+            isPost: true,
+            lang: 'zh-CN'
+        };
+
+    </script>
+    <title>Golang切片-slice | 吴志鹏｜Payne-Wu</title>
+    <meta name="google-site-verification" content="p_bIcnvirkFzG2dYKuNDivKD8-STet5W7D-01woA2fc" />
+    <noscript>
+        <style>
+            .use-motion .brand,
+            .use-motion .menu-item,
+            .sidebar-inner,
+            .use-motion .post-block,
+            .use-motion .pagination,
+            .use-motion .comments,
+            .use-motion .post-header,
+            .use-motion .post-body,
+            .use-motion .collection-header
+            {
+                opacity: initial;
+            }
+
+            .use-motion .site-title,
+            .use-motion .site-subtitle
+            {
+                opacity: initial;
+                top: initial;
+            }
+
+            .use-motion .logo-line-before i
+            {
+                left: initial;
+            }
+
+            .use-motion .logo-line-after i
+            {
+                right: initial;
+            }
+
+        </style>
+    </noscript>
+    <link rel="alternate" href="/atom.xml" title="吴志鹏｜Payne-Wu" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+    <div class="container">
+        <div class="headband"></div>
+        <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+            <div class="header-inner">
+                <div class="site-brand-container">
+                    <div class="site-nav-toggle">
+                        <div class="toggle" aria-label="切换导航栏">
+                            <span class="toggle-line toggle-line-first"></span>
+                            <span class="toggle-line toggle-line-middle"></span>
+                            <span class="toggle-line toggle-line-last"></span>
+                        </div>
+                    </div>
+                    <div class="site-meta">
+                        <a href="/" class="brand" rel="start">
+                            <span class="logo-line-before"><i></i></span>
+                            <h1 class="site-title">吴志鹏｜Payne-Wu </h1>
+                            <span class="logo-line-after"><i></i></span>
+                        </a>
+                    </div>
+                    <div class="site-nav-right">
+                        <div class="toggle popup-trigger">
+                            <i class="fa fa-search fa-fw fa-lg"></i>
+                        </div>
+                    </div>
+                </div>
+                <nav class="site-nav">
+                    <ul id="menu" class="main-menu menu">
+                        <li class="menu-item menu-item-home">
+                            <a href="/" rel="section">首页</a>
+                        </li>
+                        <li class="menu-item menu-item-archives">
+                            <a href="/archives/" rel="section">文章列表</a>
+                        </li>
+                        <li class="menu-item menu-item-tags">
+                            <a href="/tags/" rel="section">Tags Cloud</a>
+                        </li>
+                        <li class="menu-item menu-item-categories">
+                            <a href="/categories/" rel="section">文章集合</a>
+                        </li>
+                        <li class="menu-item menu-item-about">
+                            <a href="/about/" rel="section">关于我啊</a>
+                        </li>
+                        <li class="menu-item menu-item-message">
+                            <a href="/message/" rel="section">留言与我</a>
+                        </li>
+                        <li class="menu-item menu-item-search">
+                            <a role="button" class="popup-trigger">搜索 </a>
+                        </li>
+                    </ul>
+                </nav>
+                <div class="search-pop-overlay">
+                    <div class="popup search-popup">
+                        <div class="search-header">
+                            <span class="search-icon">
+                                <i class="fa fa-search"></i>
+                            </span>
+                            <div class="search-input-container">
+                                <input autocomplete="off" autocapitalize="off" placeholder="搜索..." spellcheck="false" type="search" class="search-input">
+                            </div>
+                            <span class="popup-btn-close">
+                                <i class="fa fa-times-circle"></i>
+                            </span>
+                        </div>
+                        <div id="search-result">
+                            <div id="no-result">
+                                <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="back-to-top">
+            <i class="fa fa-arrow-up"></i>
+            <span>0%</span>
+        </div>
+        <div class="reading-progress-bar"></div>
+        <main class="main">
+            <div class="main-inner">
+                <div class="content-wrap">
+                    <div class="content post posts-expand">
+                        <article itemscope itemtype="http://schema.org/Article" class="post-block single" lang="zh-CN">
+                            <link itemprop="mainEntityOfPage" href="https://paynewu.com/46493.html">
+                            <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <meta itemprop="image" content="/images/favicon/android-chrome-512x512.png">
+                                <meta itemprop="name" content="吴志鹏">
+                                <meta itemprop="description" content="Talk is free，please state clearly">
+                            </span>
+                            <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+                                <meta itemprop="name" content="吴志鹏｜Payne-Wu">
+                            </span>
+                            <header class="post-header">
+                                <h1 class="post-title" itemprop="name headline"> Golang切片-slice </h1>
+                                <div class="post-meta">
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-user"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">作者</span>
+                                        <span><a href="/authors/Payne" class="author" itemprop="url" rel="index">Payne</a></span>
+                                    </span>
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-calendar"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">发表于</span>
+                                        <time title="创建时间：2020-11-21 22:10:19" itemprop="dateCreated datePublished" datetime="2020-11-21T22:10:19+08:00">2020-11-21</time>
+                                    </span>
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-folder"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">分类于</span>
+                                        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                                            <a href="/categories/Go/" itemprop="url" rel="index"><span itemprop="name">Go</span></a>
+                                        </span>
+                                    </span>
+                                    <br>
+                                    <span class="post-meta-item" title="本文字数">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-file-word"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">本文字数：</span>
+                                        <span>1.9k</span>
+                                    </span>
+                                    <span class="post-meta-item" title="阅读时长">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-clock"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                                        <span>2 分钟</span>
+                                    </span>
+                                </div>
+                            </header>
+                            <div class="post-body" itemprop="articleBody">
+                                <p>在上篇数据类型-Array中写到<strong>因为数组的长度是固定的并且数组长度属于类型的一部分</strong>,所以数组有很多的局限性</p>
+                                <a id="more"></a>
+                                <blockquote>
+                                    <figure class="highlight go">
+                                        <table>
+                                            <tr>
+                                                <td class="gutter">
+                                                    <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre>
+                                                </td>
+                                                <td class="code">
+                                                    <pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">arraySum</span><span class="params">(x [5]<span class="keyword">int</span>)</span> <span class="title">int</span></span>&#123;</span><br><span class="line"> sum := <span class="number">0</span></span><br><span class="line"> <span class="keyword">for</span> _, v := <span class="keyword">range</span> x&#123;</span><br><span class="line">     sum = sum + v</span><br><span class="line"> &#125;</span><br><span class="line"> <span class="keyword">return</span> sum</span><br><span class="line">&#125;</span><br></pre>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </figure>
+                                    <p>这个求和函数只能接受<code>[5]int</code>类型，其他的都不支持。 再比如，</p>
+                                    <figure class="highlight go">
+                                        <table>
+                                            <tr>
+                                                <td class="gutter">
+                                                    <pre><span class="line">1</span><br></pre>
+                                                </td>
+                                                <td class="code">
+                                                    <pre><span class="line">a := [<span class="number">5</span>]<span class="keyword">int</span>&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>&#125;</span><br></pre>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </figure>
+                                    <p>数组a中已经有五个元素了，我们不能再继续往数组a中添加新元素了。</p>
+                                </blockquote>
+                                <h2 id="切片的本质"><a href="#切片的本质" class="headerlink" title="切片的本质"></a>切片的本质</h2>
+                                <p>切片的本质就是对底层数组的封装，它包含了三个信息：</p>
+                                <ul>
+                                    <li>底层数组的指针</li>
+                                    <li>切片的长度（len）</li>
+                                    <li>切片的容量（cap)</li>
+                                </ul>
+                                <p>举个例子，现在有一个数组<code>a := [8]int{0, 1, 2, 3, 4, 5, 6, 7}</code>，切片<code>s1 := a[:5]</code>，相应示意图如下。</p>
+                                <p><img src="https://tva1.sinaimg.cn/large/0081Kckwgy1gkl8xaagu0j318e0l2abf.jpg" alt=""></p>
+                                <p>切片<code>s2 := a[3:6]</code>，相应示意图如下：</p>
+                                <p><img src="https://tva1.sinaimg.cn/large/0081Kckwgy1gkl8xvn3bdj318e0l2q4b.jpg" alt=""></p>
+                                <h2 id="切片的定义"><a href="#切片的定义" class="headerlink" title="切片的定义"></a>切片的定义</h2>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="comment">// 初始化定义</span></span><br><span class="line"><span class="comment">// 基于var，var定义的时仅会声明，不会申请内存！！！</span></span><br><span class="line"><span class="keyword">var</span> 变量名 []类型</span><br><span class="line"><span class="comment">// make([]T, size, cap) make初始化分配内存</span></span><br><span class="line"><span class="built_in">make</span>([]类型, 切片中元素的数量, 切片的容量)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 自定义</span></span><br><span class="line">变量名 := []类型&#123;值<span class="number">1</span>，值<span class="number">2</span>。。。&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 示例</span></span><br><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">  <span class="comment">// var</span></span><br><span class="line">	<span class="keyword">var</span> s1 []<span class="keyword">int</span>             <span class="comment">//var定义的时仅会声明，不会申请内存</span></span><br><span class="line">	fmt.Println(s1)          <span class="comment">// []</span></span><br><span class="line">	fmt.Println(s1 == <span class="literal">nil</span>)   <span class="comment">// true</span></span><br><span class="line">	s1 = []<span class="keyword">int</span>&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>&#125;</span><br><span class="line">	fmt.Println(s1[<span class="number">0</span>:<span class="number">2</span>])     <span class="comment">// [1 2]</span></span><br><span class="line">	<span class="comment">// make</span></span><br><span class="line">	s2 := <span class="built_in">make</span>([]<span class="keyword">int</span>, <span class="number">4</span>, <span class="number">6</span>)   <span class="comment">// make初始化分配内存</span></span><br><span class="line">	fmt.Println(s2)           <span class="comment">// [0 0 0 0]</span></span><br><span class="line">	fmt.Println(s2 == <span class="literal">nil</span>)    <span class="comment">// false</span></span><br><span class="line">	s2 = []<span class="keyword">int</span>&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>&#125;</span><br><span class="line">	fmt.Println(s2[<span class="number">0</span>:<span class="number">2</span>])       <span class="comment">// [1 2]</span></span><br><span class="line">&#125;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h3 id="var-声明切片"><a href="#var-声明切片" class="headerlink" title="var 声明切片"></a>var 声明切片</h3>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="comment">// 声明切片类型</span></span><br><span class="line">	<span class="keyword">var</span> s1 []<span class="keyword">string</span>              <span class="comment">//声明一个字符串切片</span></span><br><span class="line">  <span class="keyword">var</span> s2 = []<span class="keyword">int</span>&#123;&#125;             <span class="comment">//声明一个整型切片并初始化(不规范写法，注意！！！)</span></span><br><span class="line">	<span class="keyword">var</span> s3 = []<span class="keyword">bool</span>&#123;<span class="literal">false</span>, <span class="literal">true</span>&#125; <span class="comment">//声明一个布尔切片并初始化</span></span><br><span class="line">	<span class="keyword">var</span> s4 = []<span class="keyword">bool</span>&#123;<span class="literal">false</span>, <span class="literal">true</span>&#125; <span class="comment">//声明一个布尔切片并初始化</span></span><br><span class="line">	fmt.Println(s1)              <span class="comment">//[]</span></span><br><span class="line">	fmt.Println(s2)              <span class="comment">//[]</span></span><br><span class="line">	fmt.Println(s3)              <span class="comment">//[false true]</span></span><br><span class="line">	fmt.Println(s4)              <span class="comment">//[false true]</span></span><br><span class="line">	fmt.Println(s1 == <span class="literal">nil</span>)       <span class="comment">//true</span></span><br><span class="line">	fmt.Println(s2 == <span class="literal">nil</span>)       <span class="comment">//false</span></span><br><span class="line">	fmt.Println(s3 == <span class="literal">nil</span>)       <span class="comment">//false</span></span><br><span class="line">	fmt.Println(s4 == <span class="literal">nil</span>)       <span class="comment">//false</span></span><br><span class="line">	<span class="comment">// fmt.Println(s3 == s4)       //切片是引用类型，不支持直接比较，只能和nil比较</span></span><br><span class="line">&#125;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h3 id="Make-初始化切片"><a href="#Make-初始化切片" class="headerlink" title="Make 初始化切片"></a>Make 初始化切片</h3>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="comment">// make 初始化切片</span></span><br><span class="line">	s1 := <span class="built_in">make</span>([]<span class="keyword">int</span>, <span class="number">4</span>, <span class="number">6</span>)        </span><br><span class="line">	s2 := <span class="built_in">make</span>([]<span class="keyword">string</span>, <span class="number">4</span>, <span class="number">6</span>)     </span><br><span class="line">	s3 := <span class="built_in">make</span>([]<span class="keyword">bool</span>,<span class="number">2</span>, <span class="number">4</span>)        </span><br><span class="line">	fmt.Println(s1)                <span class="comment">// [0 0 0 0]</span></span><br><span class="line">	fmt.Println(s2)                <span class="comment">// [       ]</span></span><br><span class="line">	fmt.Println(s3)                <span class="comment">// [false false]</span></span><br><span class="line">	fmt.Println(s1 == <span class="literal">nil</span>)         <span class="comment">// false</span></span><br><span class="line">	fmt.Println(s2 == <span class="literal">nil</span>)         <span class="comment">// false</span></span><br><span class="line">	fmt.Println(s3 == <span class="literal">nil</span>)         <span class="comment">// false</span></span><br><span class="line">	<span class="comment">//fmt.Println(s2 == s3)        // 切片是引用类型，不支持直接比较，只能和nil比较</span></span><br><span class="line">&#125;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h2 id="判断切片是否为空"><a href="#判断切片是否为空" class="headerlink" title="判断切片是否为空"></a>判断切片是否为空</h2>
+                                <p>要检查切片是否为空，请始终使用<code>len(s) == 0</code>来判断，而不应该使用<code>s == nil</code>来判断。</p>
+                                <h3 id="切片不能直接比较"><a href="#切片不能直接比较" class="headerlink" title="切片不能直接比较"></a>切片不能直接比较</h3>
+                                <p>切片之间是不能比较的，我们不能使用<code>==</code>操作符来判断两个切片是否含有全部相等元素。 切片唯一合法的比较操作是和<code>nil</code>比较。 一个<code>nil</code>值的切片并没有底层数组，一个<code>nil</code><br>值的切片的长度和容量都是0。但是我们不能说一个长度和容量都是0的切片一定是<code>nil</code>，例如下面的示例：</p>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="keyword">var</span> s1 []<span class="keyword">int</span>         <span class="comment">//len(s1)=0;cap(s1)=0;s1==nil</span></span><br><span class="line">s2 := []<span class="keyword">int</span>&#123;&#125;        <span class="comment">//len(s2)=0;cap(s2)=0;s2!=nil</span></span><br><span class="line">s3 := <span class="built_in">make</span>([]<span class="keyword">int</span>, <span class="number">0</span>) <span class="comment">//len(s3)=0;cap(s3)=0;s3!=nil</span></span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>所以要判断一个切片是否是空的，要是用<code>len(s) == 0</code>来判断，不应该使用<code>s == nil</code>来判断。</p>
+                                <h2 id="切片的赋值拷贝"><a href="#切片的赋值拷贝" class="headerlink" title="切片的赋值拷贝"></a>切片的赋值拷贝</h2>
+                                <p>下面的代码中演示了拷贝前后两个变量共享底层数组，对一个切片的修改会影响另一个切片的内容，这点需要特别注意。</p>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="comment">// 切片的赋值拷贝</span></span><br><span class="line">	s1 := <span class="built_in">make</span>([]<span class="keyword">int</span>, <span class="number">2</span>, <span class="number">4</span>)</span><br><span class="line">	s2 := s1</span><br><span class="line">	s1[<span class="number">0</span>] = <span class="number">80</span></span><br><span class="line">	s2[<span class="number">1</span>] = <span class="number">100</span></span><br><span class="line">	fmt.Println(s1)    <span class="comment">// [80 100]</span></span><br><span class="line">	fmt.Println(s2)    <span class="comment">// [80 100]</span></span><br><span class="line">&#125;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h2 id="切片遍历"><a href="#切片遍历" class="headerlink" title="切片遍历"></a>切片遍历</h2>
+                                <p>切片的遍历方式和数组(Array)是一致的，支持索引遍历和<code>for range</code>遍历。</p>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	s := []<span class="keyword">int</span>&#123;<span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="built_in">len</span>(s); i++ &#123;</span><br><span class="line">		fmt.Println(i, s[i])</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> index, value := <span class="keyword">range</span> s &#123;</span><br><span class="line">		fmt.Println(index, value)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h2 id="切片添加元素"><a href="#切片添加元素" class="headerlink" title="切片添加元素"></a>切片添加元素</h2>
+                                <p>Go语言的内建函数<code>append()</code>可以为切片动态添加元素。 可以一次添加一个元素，可以添加多个元素，也可以添加另一个切片中的元素（后面加…）。</p>
+                                <figure class="highlight isbl">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">目标变量 = <span class="function"><span class="title">append</span>(需被加入切片的变量名， 需追加的常量或者切片的变量名)</span></span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="keyword">var</span> s []<span class="keyword">int</span></span><br><span class="line">  <span class="comment">// 添加单个元素</span></span><br><span class="line">	s = <span class="built_in">append</span>(s, <span class="number">1</span>)        <span class="comment">// [1]</span></span><br><span class="line">  <span class="comment">// 添加多个元素</span></span><br><span class="line">	s = <span class="built_in">append</span>(s, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>)  <span class="comment">// [1 2 3 4]</span></span><br><span class="line">	s2 := []<span class="keyword">int</span>&#123;<span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>&#125;  </span><br><span class="line">  <span class="comment">// 添加切片</span></span><br><span class="line">	s = <span class="built_in">append</span>(s, s2...)    <span class="comment">// [1 2 3 4 5 6 7]</span></span><br><span class="line">&#125;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p><strong>注意：</strong>通过var声明的零值切片，在<code>append()</code>函数中可直接使用，无需初始化。</p>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="comment">// 可以这样做，但没必要</span></span><br><span class="line">	s := []<span class="keyword">int</span>&#123;&#125; <span class="comment">// 没有必要初始化</span></span><br><span class="line">	s = <span class="built_in">append</span>(s, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>)</span><br><span class="line">	fmt.Println(s)		<span class="comment">// 1,2,3,4,5,6</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 错误写法</span></span><br><span class="line">	<span class="keyword">var</span> s = <span class="built_in">make</span>([]<span class="keyword">int</span>) </span><br><span class="line">	s = <span class="built_in">append</span>(s, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>)</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h2 id="切片底层内存原理探究"><a href="#切片底层内存原理探究" class="headerlink" title="切片底层内存原理探究"></a>切片底层内存原理探究</h2>
+                                <h3 id="引入"><a href="#引入" class="headerlink" title="引入"></a>引入</h3>
+                                <blockquote>
+                                    <p>每个切片会指向一个底层数组，这个数组的容量够用就添加新增元素。当底层数组不能容纳新增的元素时，切片就会自动按照一定的策略进行“扩容”，此时该切片指向的底层数组就会更换。“扩容”操作往往发生在<code>append()</code>函数调用时，所以我们通常都需要用原变量接收append函数的返回值。</p>
+                                    <p><img src="https://tva1.sinaimg.cn/large/0081Kckwgy1gklp4pox1sj30t608875i.jpg" alt=""></p>
+                                    <p>从上面的结果可以看出：</p>
+                                    <ol>
+                                        <li><code>append()</code>函数将元素追加到切片的最后并返回该切片。</li>
+                                        <li>切片numSlice的容量按照1，2，4，8，16这样的规则自动进行扩容，每次扩容后都是扩容前的2倍。</li>
+                                    </ol>
+                                </blockquote>
+                                <h3 id="源码解读"><a href="#源码解读" class="headerlink" title="源码解读"></a>源码解读</h3>
+                                <p><code>$GOROOT/src/runtime/slice.go</code></p>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="comment">// Copyright 2009 The Go Authors. All rights reserved.</span></span><br><span class="line"><span class="comment">// Use of this source code is governed by a BSD-style</span></span><br><span class="line"><span class="comment">// license that can be found in the LICENSE file.</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">package</span> runtime</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"runtime/internal/math"</span></span><br><span class="line">	<span class="string">"runtime/internal/sys"</span></span><br><span class="line">	<span class="string">"unsafe"</span></span><br><span class="line">)</span><br><span class="line"><span class="comment">// 自定义类型定义了一个全新的类型。基于内置的基本类型定义，也可以通过struct定义</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// slice是一种新类型，同时也包含了struct所具有的特性</span></span><br><span class="line"><span class="keyword">type</span> slice <span class="keyword">struct</span> &#123; <span class="comment">// 自定义类型名为slice，struct类型。</span></span><br><span class="line">	array unsafe.Pointer</span><br><span class="line">	<span class="built_in">len</span>   <span class="keyword">int</span></span><br><span class="line">	<span class="built_in">cap</span>   <span class="keyword">int</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// A notInHeapSlice is a slice backed by go:notinheap memory.</span></span><br><span class="line"><span class="comment">// notInHeapSlice是go：notinheap内存支持的切片</span></span><br><span class="line"><span class="keyword">type</span> notInHeapSlice <span class="keyword">struct</span> &#123;</span><br><span class="line">	array *notInHeap</span><br><span class="line">	<span class="built_in">len</span>   <span class="keyword">int</span></span><br><span class="line">	<span class="built_in">cap</span>   <span class="keyword">int</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">panicmakeslicelen</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="built_in">panic</span>(errorString(<span class="string">"makeslice: len out of range"</span>))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">panicmakeslicecap</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="built_in">panic</span>(errorString(<span class="string">"makeslice: cap out of range"</span>))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// makeslicecopy allocates a slice of "tolen" elements of type "et",</span></span><br><span class="line"><span class="comment">// then copies "fromlen" elements of type "et" into that new allocation from "from".</span></span><br><span class="line"><span class="comment">// makeslicecopy会分配一片类型为“ et”的“ tolen”元素，然后将类型为“ et”的“ fromlen”元素复制到“ from”的新分配中。</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">makeslicecopy</span><span class="params">(et *_type, tolen <span class="keyword">int</span>, fromlen <span class="keyword">int</span>, from unsafe.Pointer)</span> <span class="title">unsafe</span>.<span class="title">Pointer</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> tomem, copymem <span class="keyword">uintptr</span></span><br><span class="line">	<span class="keyword">if</span> <span class="keyword">uintptr</span>(tolen) &gt; <span class="keyword">uintptr</span>(fromlen) &#123;</span><br><span class="line">		<span class="keyword">var</span> overflow <span class="keyword">bool</span></span><br><span class="line">		tomem, overflow = math.MulUintptr(et.size, <span class="keyword">uintptr</span>(tolen))</span><br><span class="line">		<span class="keyword">if</span> overflow || tomem &gt; maxAlloc || tolen &lt; <span class="number">0</span> &#123;</span><br><span class="line">			panicmakeslicelen()</span><br><span class="line">		&#125;</span><br><span class="line">		copymem = et.size * <span class="keyword">uintptr</span>(fromlen)</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="comment">// fromlen is a known good length providing and equal or greater than tolen,</span></span><br><span class="line">		<span class="comment">// thereby making tolen a good slice length too as from and to slices have the</span></span><br><span class="line">		<span class="comment">// same element width.</span></span><br><span class="line">    <span class="comment">// fromlen是已知的良好长度，提供并等于或大于tolen，因此也使tolen具有良好的切片长度，因为from和to切片具有//相同的元素宽度。</span></span><br><span class="line">		tomem = et.size * <span class="keyword">uintptr</span>(tolen)</span><br><span class="line">		copymem = tomem</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">var</span> to unsafe.Pointer</span><br><span class="line">	<span class="keyword">if</span> et.ptrdata == <span class="number">0</span> &#123;</span><br><span class="line">		to = mallocgc(tomem, <span class="literal">nil</span>, <span class="literal">false</span>)</span><br><span class="line">		<span class="keyword">if</span> copymem &lt; tomem &#123;</span><br><span class="line">			memclrNoHeapPointers(add(to, copymem), tomem-copymem)</span><br><span class="line">		&#125;</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="comment">// Note: can't use rawmem (which avoids zeroing of memory), because then GC can scan uninitialized memory.</span></span><br><span class="line">    <span class="comment">// 注意：不能使用rawmem（这样可以避免内存清零），因为GC可以扫描未初始化的内存。</span></span><br><span class="line">		to = mallocgc(tomem, et, <span class="literal">true</span>)</span><br><span class="line">		<span class="keyword">if</span> copymem &gt; <span class="number">0</span> &amp;&amp; writeBarrier.enabled &#123;</span><br><span class="line">			<span class="comment">// Only shade the pointers in old.array since we know the destination slice to</span></span><br><span class="line">			<span class="comment">// only contains nil pointers because it has been cleared during alloc.</span></span><br><span class="line">      <span class="comment">//因为我们知道到//的目标切片仅包含nil指针，所以仅在old.array中隐藏了指针，因为在分配过程中已将其清除。</span></span><br><span class="line">			bulkBarrierPreWriteSrcOnly(<span class="keyword">uintptr</span>(to), <span class="keyword">uintptr</span>(from), copymem)</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> raceenabled &#123;</span><br><span class="line">		callerpc := getcallerpc()</span><br><span class="line">		pc := funcPC(makeslicecopy)</span><br><span class="line">		racereadrangepc(from, copymem, callerpc, pc)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> msanenabled &#123;</span><br><span class="line">		msanread(from, copymem)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	memmove(to, from, copymem)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> to</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">makeslice</span><span class="params">(et *_type, <span class="built_in">len</span>, <span class="built_in">cap</span> <span class="keyword">int</span>)</span> <span class="title">unsafe</span>.<span class="title">Pointer</span></span> &#123;</span><br><span class="line">	mem, overflow := math.MulUintptr(et.size, <span class="keyword">uintptr</span>(<span class="built_in">cap</span>))</span><br><span class="line">	<span class="keyword">if</span> overflow || mem &gt; maxAlloc || <span class="built_in">len</span> &lt; <span class="number">0</span> || <span class="built_in">len</span> &gt; <span class="built_in">cap</span> &#123;</span><br><span class="line">		<span class="comment">// <span class="doctag">NOTE:</span> Produce a 'len out of range' error instead of a</span></span><br><span class="line">		<span class="comment">// 'cap out of range' error when someone does make([]T, bignumber).</span></span><br><span class="line">		<span class="comment">// 'cap out of range' is true too, but since the cap is only being</span></span><br><span class="line">		<span class="comment">// supplied implicitly, saying len is clearer.</span></span><br><span class="line">		<span class="comment">// See golang.org/issue/4085.</span></span><br><span class="line">    <span class="comment">////注意：当有人进行make（[] T，bignumber）时，产生一个'len out of range'错误，而不是一个'cap cap out range'错误。 “上限超出范围”也是正确的，但是由于上限是隐式提供的，因此说len更清楚。 参见golang.org/issue/4085。</span></span><br><span class="line">		mem, overflow := math.MulUintptr(et.size, <span class="keyword">uintptr</span>(<span class="built_in">len</span>))</span><br><span class="line">		<span class="keyword">if</span> overflow || mem &gt; maxAlloc || <span class="built_in">len</span> &lt; <span class="number">0</span> &#123;</span><br><span class="line">			panicmakeslicelen()</span><br><span class="line">		&#125;</span><br><span class="line">		panicmakeslicecap()</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> mallocgc(mem, et, <span class="literal">true</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">makeslice64</span><span class="params">(et *_type, len64, cap64 <span class="keyword">int64</span>)</span> <span class="title">unsafe</span>.<span class="title">Pointer</span></span> &#123;</span><br><span class="line">	<span class="built_in">len</span> := <span class="keyword">int</span>(len64)</span><br><span class="line">	<span class="keyword">if</span> <span class="keyword">int64</span>(<span class="built_in">len</span>) != len64 &#123;</span><br><span class="line">		panicmakeslicelen()</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="built_in">cap</span> := <span class="keyword">int</span>(cap64)</span><br><span class="line">	<span class="keyword">if</span> <span class="keyword">int64</span>(<span class="built_in">cap</span>) != cap64 &#123;</span><br><span class="line">		panicmakeslicecap()</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> makeslice(et, <span class="built_in">len</span>, <span class="built_in">cap</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// growslice handles slice growth during append.</span></span><br><span class="line"><span class="comment">// It is passed the slice element type, the old slice, and the desired new minimum capacity,</span></span><br><span class="line"><span class="comment">// and it returns a new slice with at least that capacity, with the old data</span></span><br><span class="line"><span class="comment">// copied into it.</span></span><br><span class="line"><span class="comment">// The new slice's length is set to the old slice's length,</span></span><br><span class="line"><span class="comment">// NOT to the new requested capacity.</span></span><br><span class="line"><span class="comment">// This is for codegen convenience. The old slice's length is used immediately</span></span><br><span class="line"><span class="comment">// to calculate where to write new values during an append.</span></span><br><span class="line"><span class="comment">// <span class="doctag">TODO:</span> When the old backend is gone, reconsider this decision.</span></span><br><span class="line"><span class="comment">// The SSA backend might prefer the new length or to return only ptr/cap and save stack space.</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">growslice</span><span class="params">(et *_type, old slice, <span class="built_in">cap</span> <span class="keyword">int</span>)</span> <span class="title">slice</span></span> &#123;</span><br><span class="line">	<span class="keyword">if</span> raceenabled &#123;</span><br><span class="line">		callerpc := getcallerpc()</span><br><span class="line">		racereadrangepc(old.array, <span class="keyword">uintptr</span>(old.<span class="built_in">len</span>*<span class="keyword">int</span>(et.size)), callerpc, funcPC(growslice))</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> msanenabled &#123;</span><br><span class="line">		msanread(old.array, <span class="keyword">uintptr</span>(old.<span class="built_in">len</span>*<span class="keyword">int</span>(et.size)))</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> <span class="built_in">cap</span> &lt; old.<span class="built_in">cap</span> &#123;</span><br><span class="line">		<span class="built_in">panic</span>(errorString(<span class="string">"growslice: cap out of range"</span>))</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> et.size == <span class="number">0</span> &#123;</span><br><span class="line">		<span class="comment">// append should not create a slice with nil pointer but non-zero len.</span></span><br><span class="line">		<span class="comment">// We assume that append doesn't need to preserve old.array in this case.</span></span><br><span class="line">		<span class="keyword">return</span> slice&#123;unsafe.Pointer(&amp;zerobase), old.<span class="built_in">len</span>, <span class="built_in">cap</span>&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	newcap := old.<span class="built_in">cap</span></span><br><span class="line">	doublecap := newcap + newcap</span><br><span class="line">	<span class="keyword">if</span> <span class="built_in">cap</span> &gt; doublecap &#123;</span><br><span class="line">		newcap = <span class="built_in">cap</span></span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="keyword">if</span> old.<span class="built_in">len</span> &lt; <span class="number">1024</span> &#123;</span><br><span class="line">			newcap = doublecap</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="comment">// Check 0 &lt; newcap to detect overflow</span></span><br><span class="line">			<span class="comment">// and prevent an infinite loop.</span></span><br><span class="line">			<span class="keyword">for</span> <span class="number">0</span> &lt; newcap &amp;&amp; newcap &lt; <span class="built_in">cap</span> &#123;</span><br><span class="line">				newcap += newcap / <span class="number">4</span></span><br><span class="line">			&#125;</span><br><span class="line">			<span class="comment">// Set newcap to the requested cap when</span></span><br><span class="line">			<span class="comment">// the newcap calculation overflowed.</span></span><br><span class="line">			<span class="keyword">if</span> newcap &lt;= <span class="number">0</span> &#123;</span><br><span class="line">				newcap = <span class="built_in">cap</span></span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">var</span> overflow <span class="keyword">bool</span></span><br><span class="line">	<span class="keyword">var</span> lenmem, newlenmem, capmem <span class="keyword">uintptr</span></span><br><span class="line">	<span class="comment">// Specialize for common values of et.size.</span></span><br><span class="line">	<span class="comment">// For 1 we don't need any division/multiplication.</span></span><br><span class="line">	<span class="comment">// For sys.PtrSize, compiler will optimize division/multiplication into a shift by a constant.</span></span><br><span class="line">	<span class="comment">// For powers of 2, use a variable shift.</span></span><br><span class="line">	<span class="keyword">switch</span> &#123;</span><br><span class="line">	<span class="keyword">case</span> et.size == <span class="number">1</span>:</span><br><span class="line">		lenmem = <span class="keyword">uintptr</span>(old.<span class="built_in">len</span>)</span><br><span class="line">		newlenmem = <span class="keyword">uintptr</span>(<span class="built_in">cap</span>)</span><br><span class="line">		capmem = roundupsize(<span class="keyword">uintptr</span>(newcap))</span><br><span class="line">		overflow = <span class="keyword">uintptr</span>(newcap) &gt; maxAlloc</span><br><span class="line">		newcap = <span class="keyword">int</span>(capmem)</span><br><span class="line">	<span class="keyword">case</span> et.size == sys.PtrSize:</span><br><span class="line">		lenmem = <span class="keyword">uintptr</span>(old.<span class="built_in">len</span>) * sys.PtrSize</span><br><span class="line">		newlenmem = <span class="keyword">uintptr</span>(<span class="built_in">cap</span>) * sys.PtrSize</span><br><span class="line">		capmem = roundupsize(<span class="keyword">uintptr</span>(newcap) * sys.PtrSize)</span><br><span class="line">		overflow = <span class="keyword">uintptr</span>(newcap) &gt; maxAlloc/sys.PtrSize</span><br><span class="line">		newcap = <span class="keyword">int</span>(capmem / sys.PtrSize)</span><br><span class="line">	<span class="keyword">case</span> isPowerOfTwo(et.size):</span><br><span class="line">		<span class="keyword">var</span> shift <span class="keyword">uintptr</span></span><br><span class="line">		<span class="keyword">if</span> sys.PtrSize == <span class="number">8</span> &#123;</span><br><span class="line">			<span class="comment">// Mask shift for better code generation.</span></span><br><span class="line">			shift = <span class="keyword">uintptr</span>(sys.Ctz64(<span class="keyword">uint64</span>(et.size))) &amp; <span class="number">63</span></span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			shift = <span class="keyword">uintptr</span>(sys.Ctz32(<span class="keyword">uint32</span>(et.size))) &amp; <span class="number">31</span></span><br><span class="line">		&#125;</span><br><span class="line">		lenmem = <span class="keyword">uintptr</span>(old.<span class="built_in">len</span>) &lt;&lt; shift</span><br><span class="line">		newlenmem = <span class="keyword">uintptr</span>(<span class="built_in">cap</span>) &lt;&lt; shift</span><br><span class="line">		capmem = roundupsize(<span class="keyword">uintptr</span>(newcap) &lt;&lt; shift)</span><br><span class="line">		overflow = <span class="keyword">uintptr</span>(newcap) &gt; (maxAlloc &gt;&gt; shift)</span><br><span class="line">		newcap = <span class="keyword">int</span>(capmem &gt;&gt; shift)</span><br><span class="line">	<span class="keyword">default</span>:</span><br><span class="line">		lenmem = <span class="keyword">uintptr</span>(old.<span class="built_in">len</span>) * et.size</span><br><span class="line">		newlenmem = <span class="keyword">uintptr</span>(<span class="built_in">cap</span>) * et.size</span><br><span class="line">		capmem, overflow = math.MulUintptr(et.size, <span class="keyword">uintptr</span>(newcap))</span><br><span class="line">		capmem = roundupsize(capmem)</span><br><span class="line">		newcap = <span class="keyword">int</span>(capmem / et.size)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// The check of overflow in addition to capmem &gt; maxAlloc is needed</span></span><br><span class="line">	<span class="comment">// to prevent an overflow which can be used to trigger a segfault</span></span><br><span class="line">	<span class="comment">// on 32bit architectures with this example program:</span></span><br><span class="line">	<span class="comment">//</span></span><br><span class="line">	<span class="comment">// type T [1&lt;&lt;27 + 1]int64</span></span><br><span class="line">	<span class="comment">//</span></span><br><span class="line">	<span class="comment">// var d T</span></span><br><span class="line">	<span class="comment">// var s []T</span></span><br><span class="line">	<span class="comment">//</span></span><br><span class="line">	<span class="comment">// func main() &#123;</span></span><br><span class="line">	<span class="comment">//   s = append(s, d, d, d, d)</span></span><br><span class="line">	<span class="comment">//   print(len(s), "\n")</span></span><br><span class="line">	<span class="comment">// &#125;</span></span><br><span class="line">	<span class="keyword">if</span> overflow || capmem &gt; maxAlloc &#123;</span><br><span class="line">		<span class="built_in">panic</span>(errorString(<span class="string">"growslice: cap out of range"</span>))</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">var</span> p unsafe.Pointer</span><br><span class="line">	<span class="keyword">if</span> et.ptrdata == <span class="number">0</span> &#123;</span><br><span class="line">		p = mallocgc(capmem, <span class="literal">nil</span>, <span class="literal">false</span>)</span><br><span class="line">		<span class="comment">// The append() that calls growslice is going to overwrite from old.len to cap (which will be the new length).</span></span><br><span class="line">		<span class="comment">// Only clear the part that will not be overwritten.</span></span><br><span class="line">		memclrNoHeapPointers(add(p, newlenmem), capmem-newlenmem)</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="comment">// Note: can't use rawmem (which avoids zeroing of memory), because then GC can scan uninitialized memory.</span></span><br><span class="line">		p = mallocgc(capmem, et, <span class="literal">true</span>)</span><br><span class="line">		<span class="keyword">if</span> lenmem &gt; <span class="number">0</span> &amp;&amp; writeBarrier.enabled &#123;</span><br><span class="line">			<span class="comment">// Only shade the pointers in old.array since we know the destination slice p</span></span><br><span class="line">			<span class="comment">// only contains nil pointers because it has been cleared during alloc.</span></span><br><span class="line">			bulkBarrierPreWriteSrcOnly(<span class="keyword">uintptr</span>(p), <span class="keyword">uintptr</span>(old.array), lenmem-et.size+et.ptrdata)</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	memmove(p, old.array, lenmem)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> slice&#123;p, old.<span class="built_in">len</span>, newcap&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">isPowerOfTwo</span><span class="params">(x <span class="keyword">uintptr</span>)</span> <span class="title">bool</span></span> &#123;</span><br><span class="line">	<span class="keyword">return</span> x&amp;(x<span class="number">-1</span>) == <span class="number">0</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">slicecopy</span><span class="params">(toPtr unsafe.Pointer, toLen <span class="keyword">int</span>, fmPtr unsafe.Pointer, fmLen <span class="keyword">int</span>, width <span class="keyword">uintptr</span>)</span> <span class="title">int</span></span> &#123;</span><br><span class="line">	<span class="keyword">if</span> fmLen == <span class="number">0</span> || toLen == <span class="number">0</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	n := fmLen</span><br><span class="line">	<span class="keyword">if</span> toLen &lt; n &#123;</span><br><span class="line">		n = toLen</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> width == <span class="number">0</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> n</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> raceenabled &#123;</span><br><span class="line">		callerpc := getcallerpc()</span><br><span class="line">		pc := funcPC(slicecopy)</span><br><span class="line">		racereadrangepc(fmPtr, <span class="keyword">uintptr</span>(n*<span class="keyword">int</span>(width)), callerpc, pc)</span><br><span class="line">		racewriterangepc(toPtr, <span class="keyword">uintptr</span>(n*<span class="keyword">int</span>(width)), callerpc, pc)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> msanenabled &#123;</span><br><span class="line">		msanread(fmPtr, <span class="keyword">uintptr</span>(n*<span class="keyword">int</span>(width)))</span><br><span class="line">		msanwrite(toPtr, <span class="keyword">uintptr</span>(n*<span class="keyword">int</span>(width)))</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	size := <span class="keyword">uintptr</span>(n) * width</span><br><span class="line">	<span class="keyword">if</span> size == <span class="number">1</span> &#123; <span class="comment">// common case worth about 2x to do here</span></span><br><span class="line">		<span class="comment">// <span class="doctag">TODO:</span> is this still worth it with new memmove impl?</span></span><br><span class="line">		*(*<span class="keyword">byte</span>)(toPtr) = *(*<span class="keyword">byte</span>)(fmPtr) <span class="comment">// known to be a byte pointer</span></span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		memmove(toPtr, fmPtr, size)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> n</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">slicestringcopy</span><span class="params">(toPtr *<span class="keyword">byte</span>, toLen <span class="keyword">int</span>, fm <span class="keyword">string</span>)</span> <span class="title">int</span></span> &#123;</span><br><span class="line">	<span class="keyword">if</span> <span class="built_in">len</span>(fm) == <span class="number">0</span> || toLen == <span class="number">0</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	n := <span class="built_in">len</span>(fm)</span><br><span class="line">	<span class="keyword">if</span> toLen &lt; n &#123;</span><br><span class="line">		n = toLen</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> raceenabled &#123;</span><br><span class="line">		callerpc := getcallerpc()</span><br><span class="line">		pc := funcPC(slicestringcopy)</span><br><span class="line">		racewriterangepc(unsafe.Pointer(toPtr), <span class="keyword">uintptr</span>(n), callerpc, pc)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> msanenabled &#123;</span><br><span class="line">		msanwrite(unsafe.Pointer(toPtr), <span class="keyword">uintptr</span>(n))</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	memmove(unsafe.Pointer(toPtr), stringStructOf(&amp;fm).str, <span class="keyword">uintptr</span>(n))</span><br><span class="line">	<span class="keyword">return</span> n</span><br><span class="line">&#125;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>内存分配部分，重点部分</p>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">newcap := old.<span class="built_in">cap</span></span><br><span class="line">doublecap := newcap + newcap</span><br><span class="line"><span class="keyword">if</span> <span class="built_in">cap</span> &gt; doublecap &#123;</span><br><span class="line">	newcap = <span class="built_in">cap</span></span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">	<span class="keyword">if</span> old.<span class="built_in">len</span> &lt; <span class="number">1024</span> &#123;</span><br><span class="line">		newcap = doublecap</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="comment">// Check 0 &lt; newcap to detect overflow</span></span><br><span class="line">		<span class="comment">// and prevent an infinite loop.</span></span><br><span class="line">		<span class="keyword">for</span> <span class="number">0</span> &lt; newcap &amp;&amp; newcap &lt; <span class="built_in">cap</span> &#123;</span><br><span class="line">			newcap += newcap / <span class="number">4</span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// Set newcap to the requested cap when</span></span><br><span class="line">		<span class="comment">// the newcap calculation overflowed.</span></span><br><span class="line">		<span class="keyword">if</span> newcap &lt;= <span class="number">0</span> &#123;</span><br><span class="line">			newcap = <span class="built_in">cap</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <blockquote>
+                                    <ul>
+                                        <li>首先判断，如果新申请容量（cap）大于2倍的旧容量（old.cap），最终容量（newcap）就是新申请的容量（cap）。</li>
+                                        <li>否则判断，如果旧切片的长度小于1024，则最终容量(newcap)就是旧容量(old.cap)的两倍，即（newcap=doublecap），</li>
+                                        <li>否则判断，如果旧切片长度大于等于1024，则最终容量（newcap）从旧容量（old.cap）开始循环增加原来的1/4，即（newcap=old.cap,for {newcap += newcap/4}）直到最终容量（newcap）大于等于新申请的容量(cap)，即（newcap &gt;= cap）</li>
+                                        <li>如果最终容量（cap）计算值溢出，则最终容量（cap）就是新申请容量（cap）。</li>
+                                    </ul>
+                                    <p>需要注意的是，切片扩容还会根据切片中元素的类型不同而做不同的处理，比如<code>int</code>和<code>string</code>类型的处理方式就不一样。</p>
+                                </blockquote>
+                                <h2 id="复制切片"><a href="#复制切片" class="headerlink" title="复制切片"></a>复制切片</h2>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="comment">// 疑问</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	a := []<span class="keyword">int</span>&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>&#125;</span><br><span class="line">	b := a</span><br><span class="line">	fmt.Println(a) <span class="comment">//[1 2 3 4 5]</span></span><br><span class="line">	fmt.Println(b) <span class="comment">//[1 2 3 4 5]</span></span><br><span class="line">	b[<span class="number">0</span>] = <span class="number">1000</span></span><br><span class="line">	fmt.Println(a) <span class="comment">//[1000 2 3 4 5]</span></span><br><span class="line">	fmt.Println(b) <span class="comment">//[1000 2 3 4 5]</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 缘由：由于切片是引用类型，所以a和b其实都指向了同一块内存地址。修改b的同时a的值也会发生变化。</span></span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>Go语言内建的<code>copy()</code>函数可以迅速地将一个切片的数据复制到另外一个切片空间中，<code>copy()</code>函数的使用格式如下：</p>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="built_in">copy</span>(destSlice, srcSlice []T)</span><br><span class="line"><span class="comment">// 其中：</span></span><br><span class="line">- srcSlice: 数据来源切片</span><br><span class="line">- destSlice: 目标切片</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>示例如下</p>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line"><span class="comment">// copy()复制切片</span></span><br><span class="line">	s1 := []<span class="keyword">int</span>&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;</span><br><span class="line">	s2 := <span class="built_in">make</span>([]<span class="keyword">int</span>, <span class="number">5</span>, <span class="number">5</span>)</span><br><span class="line">	<span class="built_in">copy</span>(s2, s1)     <span class="comment">//使用copy()函数将切片a中的元素复制到切片s2</span></span><br><span class="line">	fmt.Println(s1) <span class="comment">//[1 2 3]</span></span><br><span class="line">	fmt.Println(s2) <span class="comment">// [1 2 3 0 0]</span></span><br><span class="line">	s2[<span class="number">0</span>] = <span class="number">10</span></span><br><span class="line">	fmt.Println(s1) <span class="comment">//[1 2 3]</span></span><br><span class="line">	fmt.Println(s2) <span class="comment">//[10 2 3 0 0]</span></span><br><span class="line">&#125;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h2 id="删除元素"><a href="#删除元素" class="headerlink" title="删除元素"></a>删除元素</h2>
+                                <p>Go语言中并没有删除切片元素的专用方法，我们可以使用切片本身的特性来删除元素。 代码如下：</p>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="comment">// 从切片中删除元素</span></span><br><span class="line">	a := []<span class="keyword">int</span>&#123;<span class="number">30</span>, <span class="number">31</span>, <span class="number">32</span>, <span class="number">33</span>, <span class="number">34</span>, <span class="number">35</span>, <span class="number">36</span>, <span class="number">37</span>&#125;</span><br><span class="line">	<span class="comment">// 要删除索引为2的元素</span></span><br><span class="line">	a = <span class="built_in">append</span>(a[:<span class="number">2</span>], a[<span class="number">3</span>:]...)</span><br><span class="line">	fmt.Println(a) <span class="comment">//[30 31 33 34 35 36 37]</span></span><br><span class="line">&#125;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>总结：要从切片a中删除索引为<code>index</code>的元素，操作方法是<code>a = append(a[:index], a[index+1:]...)</code></p>
+                                <h2 id="总结及注意点"><a href="#总结及注意点" class="headerlink" title="总结及注意点"></a>总结及注意点</h2>
+                                <ul>
+                                    <li>底层数组的指针、切片的长度（len）、切片的容量（cap)</li>
+                                    <li><code>var</code>与<code>make</code>基于var，var定义的时仅会声明，不会申请内存。make初始化会分配内存。其内容为初始值。(string: 空、int：0、bool：false、Array：var时为nil\make时为”[]”<br>的内部有Len-1个0)</li>
+                                    <li>通过var声明的零值切片可以在<code>append()</code>函数直接使用，无需初始化。</li>
+                                    <li>Append可以一次添加一个元素，可以添加多个元素，也可以添加另一个切片中的元素（后面需要加…）。</li>
+                                    <li>当内存小于1024时，每次扩宽两倍。当1024每次增加原本的1/4倍</li>
+                                    <li>要从切片a中删除索引为<code>index</code>的元素，操作方法是<code>a = append(a[:index], a[index+1:]...)</code></li>
+                                </ul>
+                            </div>
+                            <div class="popular-posts-header">相关文章</div>
+                            <ul class="popular-posts">
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/62372.html" rel="bookmark">Golang-Array</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/17571.html" rel="bookmark">Golang-Defer详解</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/3744.html" rel="bookmark">Golang-Map</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/45903.html" rel="bookmark">Golang-匿名函数与闭包</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/1962.html" rel="bookmark">Golang-接口(interface)</a></div>
+                                </li>
+                            </ul>
+                            <footer class="post-footer">
+                                <div class="post-tags">
+                                    <a href="/tags/Go/" rel="tag"><i class="fa fa-tag"></i> Go</a>
+                                </div>
+                                <div class="post-nav">
+                                    <div class="post-nav-item">
+                                        <a href="/10520.html" rel="prev" title="Golang介绍">
+                                            <i class="fa fa-chevron-left"></i> Golang介绍 </a>
+                                    </div>
+                                    <div class="post-nav-item">
+                                        <a href="/10091.html" rel="next" title="Golang指针-pointer"> Golang指针-pointer <i class="fa fa-chevron-right"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </footer>
+                        </article>
+                    </div>
+                    <script>
+                        window.addEventListener('tabs:register', () =>
+                        {
+                            let
+                            {
+                                activeClass
+                            } = CONFIG.comments;
+                            if (CONFIG.comments.storage)
+                            {
+                                activeClass = localStorage.getItem('comments_active') || activeClass;
+                            }
+                            if (activeClass)
+                            {
+                                let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+                                if (activeTab)
+                                {
+                                    activeTab.click();
+                                }
+                            }
+                        });
+                        if (CONFIG.comments.storage)
+                        {
+                            window.addEventListener('tabs:click', event =>
+                            {
+                                if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+                                let commentClass = event.target.classList[1];
+                                localStorage.setItem('comments_active', commentClass);
+                            });
+                        }
+
+                    </script>
+                </div>
+                <div class="toggle sidebar-toggle">
+                    <span class="toggle-line toggle-line-first"></span>
+                    <span class="toggle-line toggle-line-middle"></span>
+                    <span class="toggle-line toggle-line-last"></span>
+                </div>
+                <aside class="sidebar">
+                    <div class="sidebar-inner">
+                        <ul class="sidebar-nav motion-element">
+                            <li class="sidebar-nav-toc"> 文章目录 </li>
+                            <li class="sidebar-nav-overview"> 站点概览 </li>
+                        </ul>
+                        <!--noindex-->
+                        <div class="post-toc-wrap sidebar-panel">
+                            <div class="post-toc motion-element">
+                                <ol class="nav">
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#切片的本质"><span class="nav-number">1.</span> <span class="nav-text">切片的本质</span></a></li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#切片的定义"><span class="nav-number">2.</span> <span class="nav-text">切片的定义</span></a>
+                                        <ol class="nav-child">
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#var-声明切片"><span class="nav-number">2.1.</span> <span class="nav-text">var 声明切片</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#Make-初始化切片"><span class="nav-number">2.2.</span> <span class="nav-text">Make 初始化切片</span></a></li>
+                                        </ol>
+                                    </li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#判断切片是否为空"><span class="nav-number">3.</span> <span class="nav-text">判断切片是否为空</span></a>
+                                        <ol class="nav-child">
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#切片不能直接比较"><span class="nav-number">3.1.</span> <span class="nav-text">切片不能直接比较</span></a></li>
+                                        </ol>
+                                    </li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#切片的赋值拷贝"><span class="nav-number">4.</span> <span class="nav-text">切片的赋值拷贝</span></a></li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#切片遍历"><span class="nav-number">5.</span> <span class="nav-text">切片遍历</span></a></li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#切片添加元素"><span class="nav-number">6.</span> <span class="nav-text">切片添加元素</span></a></li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#切片底层内存原理探究"><span class="nav-number">7.</span> <span class="nav-text">切片底层内存原理探究</span></a>
+                                        <ol class="nav-child">
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#引入"><span class="nav-number">7.1.</span> <span class="nav-text">引入</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#源码解读"><span class="nav-number">7.2.</span> <span class="nav-text">源码解读</span></a></li>
+                                        </ol>
+                                    </li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#复制切片"><span class="nav-number">8.</span> <span class="nav-text">复制切片</span></a></li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#删除元素"><span class="nav-number">9.</span> <span class="nav-text">删除元素</span></a></li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#总结及注意点"><span class="nav-number">10.</span> <span class="nav-text">总结及注意点</span></a></li>
+                                </ol>
+                            </div>
+                        </div>
+                        <!--/noindex-->
+                        <div class="site-overview-wrap sidebar-panel">
+                            <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <img class="site-author-image" itemprop="image" alt="吴志鹏" src="/images/favicon/android-chrome-512x512.png">
+                                <p class="site-author-name" itemprop="name">吴志鹏</p>
+                                <div class="site-description" itemprop="description">Talk is free，please state clearly</div>
+                            </div>
+                            <div class="site-state-wrap motion-element">
+                                <nav class="site-state">
+                                    <div class="site-state-item site-state-posts">
+                                        <a href="/archives/">
+                                            <span class="site-state-item-count">136</span>
+                                            <span class="site-state-item-name">日志</span>
+                                        </a>
+                                    </div>
+                                    <div class="site-state-item site-state-categories">
+                                        <a href="/categories/">
+                                            <span class="site-state-item-count">158</span>
+                                            <span class="site-state-item-name">分类</span></a>
+                                    </div>
+                                    <div class="site-state-item site-state-tags">
+                                        <a href="/tags/">
+                                            <span class="site-state-item-count">89</span>
+                                            <span class="site-state-item-name">标签</span></a>
+                                    </div>
+                                </nav>
+                            </div>
+                            <div class="links-of-author motion-element">
+                                <span class="links-of-author-item">
+                                    <a href="https://github.com/Payne-Wu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Payne-Wu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="mailto:wuzhipeng1289690157@gmail.com" title="E-Mail → mailto:wuzhipeng1289690157@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="https://www.zhihu.com/people/wu-zhi-peng-72-78" title="ZhiHu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;wu-zhi-peng-72-78" rel="noopener" target="_blank"><i class="fa fa-magic fa-fw"></i>ZhiHu</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="https://weibo.com/u/6987234483" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;6987234483" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+                <div id="sidebar-dimmer"></div>
+            </div>
+        </main>
+        <footer class="footer">
+            <div class="footer-inner">
+                <div class="copyright"> &copy; <span itemprop="copyrightYear">2022</span>
+                    <span class="with-love">
+                        <i class="fa fa-heart"></i>
+                    </span>
+                    <span class="author" itemprop="copyrightHolder">PayneWu</span>
+                    <span class="post-meta-divider">|</span>
+                    <span class="post-meta-item-icon">
+                        <i class="fa fa-chart-area"></i>
+                    </span>
+                    <span title="站点总字数">255k</span>
+                    <span class="post-meta-divider">|</span>
+                    <span class="post-meta-item-icon">
+                        <i class="fa fa-coffee"></i>
+                    </span>
+                    <span title="站点阅读时长">3:51</span>
+                </div>
+                <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">湘ICP备2021019893号-1 </a>
+                </div>
+                <div style="display: none;">
+                    <script src="//s95.cnzz.com/z_stat.php?id=true&web_id=true"></script>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+    <script src="/js/utils.js"></script>
+    <script src="/.js"></script>
+    <script src="/js/schemes/pisces.js"></script>
+    <script src="/.js"></script>
+    <script src="/js/next-boot.js"></script>
+    <script src="/.js"></script>
+    <script>
+        (function ()
+        {
+            var canonicalURL, curProtocol;
+            //Get the <link> tag
+            var x = document.getElementsByTagName("link");
+            //Find the last canonical URL
+            if (x.length > 0)
+            {
+                for (i = 0; i < x.length; i++)
+                {
+                    if (x[i].rel.toLowerCase() == 'canonical' && x[i].href)
+                    {
+                        canonicalURL = x[i].href;
+                    }
+                }
+            }
+            //Get protocol
+            if (!canonicalURL)
+            {
+                curProtocol = window.location.protocol.split(':')[0];
+            }
+            else
+            {
+                curProtocol = canonicalURL.split(':')[0];
+            }
+            //Get current URL if the canonical URL does not exist
+            if (!canonicalURL) canonicalURL = window.location.href;
+            //Assign script content. Replace current URL with the canonical URL
+            ! function ()
+            {
+                var e = /([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,
+                    r = canonicalURL,
+                    t = document.referrer;
+                if (!e.test(r))
+                {
+                    var n = (String(curProtocol).toLowerCase() === 'https') ? "https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif" : "//api.share.baidu.com/s.gif";
+                    t ? (n += "?r=" + encodeURIComponent(document.referrer), r && (n += "&l=" + r)) : r && (n += "?l=" + r);
+                    var i = new Image;
+                    i.src = n
+                }
+            }(window);
+        })();
+
+    </script>
+    <script src="/js/local-search.js"></script>
+    <script src="/.js"></script>
+</body>
+
+</html>

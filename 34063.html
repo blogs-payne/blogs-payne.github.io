@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+    <meta name="theme-color" content="#222">
+    <meta name="generator" content="Hexo 4.2.1">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16-next.png">
+    <link rel="mask-icon" href="/images/favicon/safari-pinned-tab.svg" color="#222">
+    <meta name="msapplication-config" content="/images/favicon/browserconfig.xml">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+    <link rel="stylesheet" href="/lib/pace/pace-theme-mac-osx.min.css">
+    <script src="/lib/pace/pace.min.js"></script>
+    <script id="hexo-configurations">
+        var NexT = window.NexT ||
+        {};
+        var CONFIG = {
+            "hostname": "paynewu.com",
+            "root": "/",
+            "scheme": "Gemini",
+            "version": "7.8.0",
+            "exturl": false,
+            "sidebar":
+            {
+                "position": "right",
+                "width": 240,
+                "display": "post",
+                "padding": 18,
+                "offset": 12,
+                "onmobile": false
+            },
+            "copycode":
+            {
+                "enable": true,
+                "show_result": true,
+                "style": "mac"
+            },
+            "back2top":
+            {
+                "enable": true,
+                "sidebar": false,
+                "scrollpercent": true
+            },
+            "bookmark":
+            {
+                "enable": false,
+                "color": "#222",
+                "save": "auto"
+            },
+            "fancybox": false,
+            "mediumzoom": true,
+            "lazyload": false,
+            "pangu": true,
+            "comments":
+            {
+                "style": "tabs",
+                "active": "valine",
+                "storage": true,
+                "lazyload": false,
+                "nav": null
+            },
+            "algolia":
+            {
+                "hits":
+                {
+                    "per_page": 10
+                },
+                "labels":
+                {
+                    "input_placeholder": "Search for Posts",
+                    "hits_empty": "We didn't find any results for the search: ${query}",
+                    "hits_stats": "${hits} results found in ${time} ms"
+                }
+            },
+            "localsearch":
+            {
+                "enable": true,
+                "trigger": "auto",
+                "top_n_per_article": 8,
+                "unescape": false,
+                "preload": false
+            },
+            "motion":
+            {
+                "enable": false,
+                "async": false,
+                "transition":
+                {
+                    "post_block": "bounceDownIn",
+                    "post_header": "slideDownIn",
+                    "post_body": "slideDownIn",
+                    "coll_header": "slideLeftIn",
+                    "sidebar": "slideUpIn"
+                }
+            },
+            "path": "search.xml"
+        };
+
+    </script>
+    <meta name="description" content="协程控制需要 重学编程之Golang的plan中的上一篇文章我向大家介绍了，并发编程基础，goroutine的创建，channel，正由于go语言的简洁性,我们可以简易快速的创建任意个协程。同时也留下了许多隐患，如果没有更加深入的学习，其实很难直接将其运用到实际项目中，实际生活中。为什么呢？并发的场景许许多多，但一味的只知道其创建，是很难有效的解决问题。例如以下场景-资源竞争">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Golang并发深入了解">
+    <meta property="og:url" content="https://paynewu.com/34063.html">
+    <meta property="og:site_name" content="吴志鹏｜Payne-Wu">
+    <meta property="og:description" content="协程控制需要 重学编程之Golang的plan中的上一篇文章我向大家介绍了，并发编程基础，goroutine的创建，channel，正由于go语言的简洁性,我们可以简易快速的创建任意个协程。同时也留下了许多隐患，如果没有更加深入的学习，其实很难直接将其运用到实际项目中，实际生活中。为什么呢？并发的场景许许多多，但一味的只知道其创建，是很难有效的解决问题。例如以下场景-资源竞争">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwgy1gldr8ifn5pj31aa0ti7al.jpg">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/0081Kckwgy1gldr9uujd0j31dn0u0n4z.jpg">
+    <meta property="article:published_time" content="2020-12-06T02:46:37.000Z">
+    <meta property="article:modified_time" content="2022-07-27T09:58:26.872Z">
+    <meta property="article:author" content="吴志鹏">
+    <meta property="article:tag" content="Go">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:image" content="https://tva1.sinaimg.cn/large/0081Kckwgy1gldr8ifn5pj31aa0ti7al.jpg">
+    <link rel="canonical" href="https://paynewu.com/34063.html">
+    <script id="page-configurations">
+        // https://hexo.io/docs/variables.html
+        CONFIG.page = {
+            sidebar: "",
+            isHome: false,
+            isPost: true,
+            lang: 'zh-CN'
+        };
+
+    </script>
+    <title>Golang并发深入了解 | 吴志鹏｜Payne-Wu</title>
+    <meta name="google-site-verification" content="p_bIcnvirkFzG2dYKuNDivKD8-STet5W7D-01woA2fc" />
+    <noscript>
+        <style>
+            .use-motion .brand,
+            .use-motion .menu-item,
+            .sidebar-inner,
+            .use-motion .post-block,
+            .use-motion .pagination,
+            .use-motion .comments,
+            .use-motion .post-header,
+            .use-motion .post-body,
+            .use-motion .collection-header
+            {
+                opacity: initial;
+            }
+
+            .use-motion .site-title,
+            .use-motion .site-subtitle
+            {
+                opacity: initial;
+                top: initial;
+            }
+
+            .use-motion .logo-line-before i
+            {
+                left: initial;
+            }
+
+            .use-motion .logo-line-after i
+            {
+                right: initial;
+            }
+
+        </style>
+    </noscript>
+    <link rel="alternate" href="/atom.xml" title="吴志鹏｜Payne-Wu" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+    <div class="container">
+        <div class="headband"></div>
+        <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+            <div class="header-inner">
+                <div class="site-brand-container">
+                    <div class="site-nav-toggle">
+                        <div class="toggle" aria-label="切换导航栏">
+                            <span class="toggle-line toggle-line-first"></span>
+                            <span class="toggle-line toggle-line-middle"></span>
+                            <span class="toggle-line toggle-line-last"></span>
+                        </div>
+                    </div>
+                    <div class="site-meta">
+                        <a href="/" class="brand" rel="start">
+                            <span class="logo-line-before"><i></i></span>
+                            <h1 class="site-title">吴志鹏｜Payne-Wu </h1>
+                            <span class="logo-line-after"><i></i></span>
+                        </a>
+                    </div>
+                    <div class="site-nav-right">
+                        <div class="toggle popup-trigger">
+                            <i class="fa fa-search fa-fw fa-lg"></i>
+                        </div>
+                    </div>
+                </div>
+                <nav class="site-nav">
+                    <ul id="menu" class="main-menu menu">
+                        <li class="menu-item menu-item-home">
+                            <a href="/" rel="section">首页</a>
+                        </li>
+                        <li class="menu-item menu-item-archives">
+                            <a href="/archives/" rel="section">文章列表</a>
+                        </li>
+                        <li class="menu-item menu-item-tags">
+                            <a href="/tags/" rel="section">Tags Cloud</a>
+                        </li>
+                        <li class="menu-item menu-item-categories">
+                            <a href="/categories/" rel="section">文章集合</a>
+                        </li>
+                        <li class="menu-item menu-item-about">
+                            <a href="/about/" rel="section">关于我啊</a>
+                        </li>
+                        <li class="menu-item menu-item-message">
+                            <a href="/message/" rel="section">留言与我</a>
+                        </li>
+                        <li class="menu-item menu-item-search">
+                            <a role="button" class="popup-trigger">搜索 </a>
+                        </li>
+                    </ul>
+                </nav>
+                <div class="search-pop-overlay">
+                    <div class="popup search-popup">
+                        <div class="search-header">
+                            <span class="search-icon">
+                                <i class="fa fa-search"></i>
+                            </span>
+                            <div class="search-input-container">
+                                <input autocomplete="off" autocapitalize="off" placeholder="搜索..." spellcheck="false" type="search" class="search-input">
+                            </div>
+                            <span class="popup-btn-close">
+                                <i class="fa fa-times-circle"></i>
+                            </span>
+                        </div>
+                        <div id="search-result">
+                            <div id="no-result">
+                                <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="back-to-top">
+            <i class="fa fa-arrow-up"></i>
+            <span>0%</span>
+        </div>
+        <div class="reading-progress-bar"></div>
+        <main class="main">
+            <div class="main-inner">
+                <div class="content-wrap">
+                    <div class="content post posts-expand">
+                        <article itemscope itemtype="http://schema.org/Article" class="post-block single" lang="zh-CN">
+                            <link itemprop="mainEntityOfPage" href="https://paynewu.com/34063.html">
+                            <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <meta itemprop="image" content="/images/favicon/android-chrome-512x512.png">
+                                <meta itemprop="name" content="吴志鹏">
+                                <meta itemprop="description" content="Talk is free，please state clearly">
+                            </span>
+                            <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+                                <meta itemprop="name" content="吴志鹏｜Payne-Wu">
+                            </span>
+                            <header class="post-header">
+                                <h1 class="post-title" itemprop="name headline"> Golang并发深入了解 </h1>
+                                <div class="post-meta">
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-user"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">作者</span>
+                                        <span><a href="/authors/Payne" class="author" itemprop="url" rel="index">Payne</a></span>
+                                    </span>
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-calendar"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">发表于</span>
+                                        <time title="创建时间：2020-12-06 10:46:37" itemprop="dateCreated datePublished" datetime="2020-12-06T10:46:37+08:00">2020-12-06</time>
+                                    </span>
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-folder"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">分类于</span>
+                                        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                                            <a href="/categories/Go/" itemprop="url" rel="index"><span itemprop="name">Go</span></a>
+                                        </span>
+                                    </span>
+                                    <br>
+                                    <span class="post-meta-item" title="本文字数">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-file-word"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">本文字数：</span>
+                                        <span>2.9k</span>
+                                    </span>
+                                    <span class="post-meta-item" title="阅读时长">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-clock"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                                        <span>3 分钟</span>
+                                    </span>
+                                </div>
+                            </header>
+                            <div class="post-body" itemprop="articleBody">
+                                <h2 id="协程控制需要"><a href="#协程控制需要" class="headerlink" title="协程控制需要"></a>协程控制需要</h2>
+                                <p>重学编程之Golang的plan中的上一篇文章我向大家介绍了，<code>并发编程基础</code>，<code>goroutine的创建</code>，<code>channel</code><br>，正由于go语言的简洁性,我们可以简易快速的创建任意个协程。同时也留下了许多隐患，如果没有更加深入的学习，其实很难直接将其运用到实际项目中，实际生活中。为什么呢？并发的场景许许多多，但一味的只知道其创建，是很难有效的解决问题。例如以下场景-资源竞争</p>
+                                <a id="more"></a>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">	<span class="string">"time"</span></span><br><span class="line">)</span><br><span class="line"><span class="comment">// 公共资源</span></span><br><span class="line"><span class="keyword">var</span> sum = <span class="number">0</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">add</span><span class="params">(i <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">	sum += i</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="comment">//开启1000个协程让sum+1</span></span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">1000</span>; i++ &#123;</span><br><span class="line">		<span class="keyword">go</span> add(<span class="number">1</span>)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//防止提前退出</span></span><br><span class="line">	time.Sleep(<span class="number">2</span> * time.Second)</span><br><span class="line">	fmt.Println(<span class="string">"和为:"</span>, sum)</span><br><span class="line">&#125;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>也许你的期望值是1000,可惜结果总会差强人意，造成其终究原因是资源竞争，也就是当<code>goroutine1</code>与<code>goroutineN</code>多次执行了同一步骤</p>
+                                <p><img src="https://tva1.sinaimg.cn/large/0081Kckwgy1gldr8ifn5pj31aa0ti7al.jpg" style="zoom:25%;" /><img src="https://tva1.sinaimg.cn/large/0081Kckwgy1gldr9uujd0j31dn0u0n4z.jpg" style="zoom:25%;" /></p>
+                                <h2 id="协程控制原理与实现"><a href="#协程控制原理与实现" class="headerlink" title="协程控制原理与实现"></a>协程控制原理与实现</h2>
+                                <p>协程的控制原理基本是就是加各种锁，防止<code>意外</code>发送，牺牲无序的高速，带来相对有序正确执行。例如<code>互斥锁、读写锁、等等</code></p>
+                                <h3 id="同任务唯一执行-互斥锁"><a href="#同任务唯一执行-互斥锁" class="headerlink" title="同任务唯一执行-互斥锁"></a>同任务唯一执行-互斥锁</h3>
+                                <p><strong>互斥锁</strong>（英语：Mutual exclusion，缩写<br>Mutex）是一种用于<a href="https://bk.tw.lvfukeji.com/baike-多线程" target="_blank" rel="noopener">多线程</a><a href="https://bk.tw.lvfukeji.com/baike-编程" target="_blank" rel="noopener">编程</a>中，防止两条<a href="https://bk.tw.lvfukeji.com/baike-线程" target="_blank" rel="noopener">线程</a>同时对同一公共资源（比如<a href="https://bk.tw.lvfukeji.com/baike-全域變數" target="_blank" rel="noopener">全局变量</a>）进行读写的机制。该目的通过将代码切片成一个一个的<a href="https://bk.tw.lvfukeji.com/baike-临界区域" target="_blank" rel="noopener">临界区域</a>（critical<br>section）达成。临界区域指的是一块对公共资源进行访问的代码，并非一种机制或是算法。一个程序、进程、线程可以拥有多个临界区域，但是并不一定会应用互斥锁。</p>
+                                <p>例如：一段代码（甲）正在分步修改一块数据。这时，另一条线程（乙）由于一些原因被唤醒。如果乙此时去读取甲正在修改的数据，而甲碰巧还没有完成整个修改过程，这个时候这块数据的状态就处在极大的不确定状态中，读取到的数据当然也是有问题的。更严重的情况是乙也往这块地方写数据，这样的一来，后果将变得不可收拾。因此，多个线程间共享的数据必须被保护。达到这个目的的方法，就是确保同一时间只有一个临界区域处于运行状态，而其他的临界区域，无论是读是写，都必须被挂起并且不能获得运行机会。</p>
+                                <p>在golang里面实现互斥锁也非常的粗暴，简单可分为三步，声明互斥锁，加锁、执行业务代码、释放锁、下一次执行步骤。更深入理解可参考<a href="https://bk.tw.lvfukeji.com/wiki/%E4%BA%92%E6%96%A5%E9%94%81" target="_blank" rel="noopener">wiki互斥锁</a>，示例如下</p>
+                                <p>示例一：</p>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">	<span class="string">"sync"</span></span><br><span class="line">	<span class="string">"time"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> (</span><br><span class="line">	sum <span class="keyword">int</span>		<span class="comment">// 全局资源sum</span></span><br><span class="line">	mutex sync.Mutex		<span class="comment">// 互斥锁</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">add</span><span class="params">(i <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">	mutex.Lock()		<span class="comment">// 加锁</span></span><br><span class="line">	sum += i				<span class="comment">// 执行业务代码</span></span><br><span class="line">	mutex.Unlock()	<span class="comment">// 释放锁，进行下一步骤</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="comment">//开启1000个协程让sum+1</span></span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">1000</span>; i++ &#123;</span><br><span class="line">		<span class="keyword">go</span> add(<span class="number">1</span>)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//防止提前退出</span></span><br><span class="line">	time.Sleep(<span class="number">2</span> * time.Second)</span><br><span class="line">	fmt.Println(<span class="string">"和为:"</span>, sum)</span><br><span class="line">&#125;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>示例二：当我们的业务代码不再是如此简单，可能会忘记释放互斥锁，而造成BUG，我们可以借助<code>defer</code>关键字，以免忘记</p>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">	<span class="string">"sync"</span></span><br><span class="line">	<span class="string">"time"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> (</span><br><span class="line">	sum <span class="keyword">int</span>		<span class="comment">// 全局资源sum</span></span><br><span class="line">	mutex sync.Mutex		<span class="comment">// 互斥锁</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">add</span><span class="params">(i <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">	mutex.Lock()</span><br><span class="line">	<span class="keyword">defer</span> mutex.Unlock()</span><br><span class="line">	sum += i</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="comment">//开启1000个协程让sum+1</span></span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">1000</span>; i++ &#123;</span><br><span class="line">		<span class="keyword">go</span> add(<span class="number">1</span>)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//防止提前退出</span></span><br><span class="line">	time.Sleep(<span class="number">2</span> * time.Second)</span><br><span class="line">	fmt.Println(<span class="string">"和为:"</span>, sum)</span><br><span class="line">&#125;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>使用互斥锁能够保证同一时间有且只有一个<code>goroutine</code>进入临界区，其他的<code>goroutine</code>则在等待锁；当互斥锁释放后，等待的<code>goroutine</code>才可以获取锁进入临界区，多个<code>goroutine</code>同时等待一个锁时，<strong><br>唤醒的策略是随机的</strong>。</p>
+                                <h3 id="读多写少、读少写多-读写锁"><a href="#读多写少、读少写多-读写锁" class="headerlink" title="读多写少、读少写多-读写锁"></a>读多写少、读少写多-读写锁</h3>
+                                <p>现在我们解决了多个 goroutine 同时读写的资源竞争问题，但是又遇到另外一个问题——性能。因为每次读写共享资源都要加锁，所以性能低下。</p>
+                                <p>这个特殊场景的出现，有以下几种情况：</p>
+                                <ol>
+                                    <li>写的时候不能同时读，因为这个时候读取的话可能读到脏数据（不正确的数据）；</li>
+                                    <li>读的时候不能同时写，因为也可能产生不可预料的结果；</li>
+                                    <li>读的时候可以同时读，因为数据不会改变，所以不管多少个 goroutine 读都是并发安全的。</li>
+                                </ol>
+                                <p>所以就可以通过读写锁 sync.RWMutex 来优化这段代码，提升性能。现在我将以上示例改为读写锁，来实现我们想要的结果，如下所示：</p>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">	<span class="string">"sync"</span></span><br><span class="line">	<span class="string">"time"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> (</span><br><span class="line">	sum <span class="keyword">int</span> <span class="comment">// 全局资源sum</span></span><br><span class="line">	mutex sync.Mutex		<span class="comment">// 互斥锁</span></span><br><span class="line">	mutexRW sync.RWMutex <span class="comment">// 读写锁</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 此处为写</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">add</span><span class="params">(i <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">	<span class="comment">// 互斥锁</span></span><br><span class="line">	mutex.Lock()</span><br><span class="line">	<span class="keyword">defer</span> mutex.Unlock()</span><br><span class="line">	sum += i</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//增加了一个读取的函数，便于演示并发读业务场景</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">readSum</span><span class="params">()</span> <span class="title">int</span></span> &#123;</span><br><span class="line">	<span class="comment">//只获取读锁</span></span><br><span class="line">	mutexRW.RLock()</span><br><span class="line">	<span class="keyword">defer</span> mutexRW.RUnlock()</span><br><span class="line">	b := sum</span><br><span class="line">	<span class="keyword">return</span> b</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="comment">// 开启 1000个</span></span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">10000</span>; i++ &#123;</span><br><span class="line">		<span class="keyword">go</span> add(<span class="number">1</span>)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">10</span>; i++ &#123;</span><br><span class="line">		<span class="keyword">go</span> fmt.Println(<span class="string">"和为:"</span>, readSum())</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// 防止提前退出</span></span><br><span class="line">	time.Sleep(<span class="number">5</span> * time.Second)</span><br><span class="line">&#125;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h3 id="高效率决策完成时间-WaitGroup"><a href="#高效率决策完成时间-WaitGroup" class="headerlink" title="高效率决策完成时间-WaitGroup"></a>高效率决策完成时间-WaitGroup</h3>
+                                <p>相信你注意到了这段 time.Sleep(2 * time.Second) 代码，这是为了防止主函数 main 返回使用，一旦 main 函数返回了，程序也就退出了。因为我们不知道 10000 个执行 add 的协程和 10 个执行<br>readSum 的协程什么时候完全执行完毕，所以设置了一个比较长的等待时间。</p>
+                                <p>但在实际的项目，如果运行一个较大的业务，需要运行的时间，我们无法预估，且并不合理。那我们该如何解决它？其实我们可以使用<code>WaitGroup</code>来进行阻塞主程序，防止退出。在这里相当实现了一个<code>生产者</code>与<code>消费者</code>模型</p>
+                                <p>示例如下</p>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">	<span class="string">"math"</span></span><br><span class="line">	<span class="string">"sync"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> (</span><br><span class="line">	sum     <span class="keyword">int</span>          <span class="comment">// 全局资源sum</span></span><br><span class="line">	mutex   sync.Mutex   <span class="comment">// 互斥锁</span></span><br><span class="line">	mutexRW sync.RWMutex <span class="comment">// 读写锁</span></span><br><span class="line">	round =  <span class="keyword">int</span>(math.Pow(<span class="number">100</span>, <span class="number">2</span>)) + <span class="number">100</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">add</span><span class="params">(i <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">	<span class="comment">// 互斥锁</span></span><br><span class="line">	mutex.Lock()</span><br><span class="line">	<span class="keyword">defer</span> mutex.Unlock()</span><br><span class="line">	sum += i</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">readSum</span><span class="params">()</span> <span class="title">int</span></span> &#123;</span><br><span class="line">	<span class="comment">//只获取读锁</span></span><br><span class="line">	mutexRW.RLock()</span><br><span class="line">	<span class="keyword">defer</span> mutexRW.RUnlock()</span><br><span class="line">	b := sum</span><br><span class="line">	<span class="keyword">return</span> b</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">run</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> wg sync.WaitGroup</span><br><span class="line">	<span class="comment">//因为要监控110个协程，所以设置计数器为110</span></span><br><span class="line">	<span class="comment">//round =  int(math.Pow(100, 2)) + 100</span></span><br><span class="line">	wg.Add(round)</span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">100</span>; i++ &#123;</span><br><span class="line">		<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">			<span class="comment">//计数器值减1</span></span><br><span class="line">			<span class="keyword">defer</span> wg.Done()</span><br><span class="line">			add(<span class="number">10</span>)</span><br><span class="line">		&#125;()</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="keyword">int</span>(math.Pow(<span class="number">100</span>, <span class="number">2</span>)); i++ &#123;</span><br><span class="line">		<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">			<span class="comment">//计数器值减1</span></span><br><span class="line">			<span class="keyword">defer</span> wg.Done()</span><br><span class="line">			fmt.Println(<span class="string">"和为:"</span>, readSum())</span><br><span class="line">		&#125;()</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//一直等待，直到计数器值为0</span></span><br><span class="line">	wg.Wait()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	run()</span><br><span class="line">&#125;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <blockquote>
+                                    <p>注意</p>
+                                    <ul>
+                                        <li>
+                                            <p>在这里的生产者<code>round</code>与总消费者的和必须相等。</p>
+                                        </li>
+                                        <li>
+                                            <p><code>sync.WaitGroup</code>是一个结构体，传递的时候要传递指针。</p>
+                                        </li>
+                                    </ul>
+                                </blockquote>
+                                <h3 id="执行且只执行一次协程单例-sync-Once"><a href="#执行且只执行一次协程单例-sync-Once" class="headerlink" title="执行且只执行一次协程单例-sync.Once"></a>执行且只执行一次协程单例-sync.Once</h3>
+                                <p>在编程的很多场景下我们需要确保某些操作在高并发的场景下只执行一次，例如只加载一次配置文件、只关闭一次通道等。</p>
+                                <p>Go语言中的<code>sync</code>包中提供了一个针对只执行一次场景的解决方案–<code>sync.Once</code>。</p>
+                                <p><code>sync.Once</code>只有一个<code>Do</code>方法，其签名如下：</p>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(o *Once)</span> <span class="title">Do</span><span class="params">(f <span class="keyword">func</span>()</span>)</span> &#123;&#125;</span><br><span class="line"><span class="comment">// *备注：如果要执行的函数`f`需要传递参数就需要搭配闭包来使用。*</span></span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h4 id="加载配置文件示例"><a href="#加载配置文件示例" class="headerlink" title="加载配置文件示例"></a>加载配置文件示例</h4>
+                                <p>延迟一个开销很大的初始化操作到真正用到它的时候再执行是一个很好的实践。因为预先初始化一个变量（比如在init函数中完成初始化）会增加程序的启动耗时，而且有可能实际执行过程中这个变量没有用上，那么这个初始化操作就不是必须要做的。我们来看一个例子：</p>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="keyword">var</span> icons <span class="keyword">map</span>[<span class="keyword">string</span>]image.Image</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">loadIcons</span><span class="params">()</span></span> &#123;</span><br><span class="line">	icons = <span class="keyword">map</span>[<span class="keyword">string</span>]image.Image&#123;</span><br><span class="line">		<span class="string">"left"</span>:  loadIcon(<span class="string">"left.png"</span>),</span><br><span class="line">		<span class="string">"up"</span>:    loadIcon(<span class="string">"up.png"</span>),</span><br><span class="line">		<span class="string">"right"</span>: loadIcon(<span class="string">"right.png"</span>),</span><br><span class="line">		<span class="string">"down"</span>:  loadIcon(<span class="string">"down.png"</span>),</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Icon 被多个goroutine调用时不是并发安全的</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Icon</span><span class="params">(name <span class="keyword">string</span>)</span> <span class="title">image</span>.<span class="title">Image</span></span> &#123;</span><br><span class="line">	<span class="keyword">if</span> icons == <span class="literal">nil</span> &#123;</span><br><span class="line">		loadIcons()</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> icons[name]</span><br><span class="line">&#125;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>多个<code>goroutine</code>并发调用Icon函数时不是并发安全的，现代的编译器和CPU可能会在保证每个<code>goroutine</code>都满足串行一致的基础上自由地重排访问内存的顺序。loadIcons函数可能会被重排为以下结果：</p>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">loadIcons</span><span class="params">()</span></span> &#123;</span><br><span class="line">	icons = <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">string</span>]image.Image)</span><br><span class="line">	icons[<span class="string">"left"</span>] = loadIcon(<span class="string">"left.png"</span>)</span><br><span class="line">	icons[<span class="string">"up"</span>] = loadIcon(<span class="string">"up.png"</span>)</span><br><span class="line">	icons[<span class="string">"right"</span>] = loadIcon(<span class="string">"right.png"</span>)</span><br><span class="line">	icons[<span class="string">"down"</span>] = loadIcon(<span class="string">"down.png"</span>)</span><br><span class="line">&#125;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>在这种情况下就会出现即使判断了<code>icons</code>不是nil也不意味着变量初始化完成了。考虑到这种情况，我们能想到的办法就是添加互斥锁，保证初始化<code>icons</code>的时候不会被其他的<code>goroutine</code>操作，但是这样做又会引发性能问题。</p>
+                                <p>使用<code>sync.Once</code>改造的示例代码如下：</p>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="keyword">var</span> （</span><br><span class="line">	icons <span class="keyword">map</span>[<span class="keyword">string</span>]image.Image </span><br><span class="line">	loadIconsOnce sync.Once</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">loadIcons</span><span class="params">()</span></span> &#123;</span><br><span class="line">	icons = <span class="keyword">map</span>[<span class="keyword">string</span>]image.Image&#123;</span><br><span class="line">		<span class="string">"left"</span>:  loadIcon(<span class="string">"left.png"</span>),</span><br><span class="line">		<span class="string">"up"</span>:    loadIcon(<span class="string">"up.png"</span>),</span><br><span class="line">		<span class="string">"right"</span>: loadIcon(<span class="string">"right.png"</span>),</span><br><span class="line">		<span class="string">"down"</span>:  loadIcon(<span class="string">"down.png"</span>),</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Icon 是并发安全的</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Icon</span><span class="params">(name <span class="keyword">string</span>)</span> <span class="title">image</span>.<span class="title">Image</span></span> &#123;</span><br><span class="line">	loadIconsOnce.Do(loadIcons)</span><br><span class="line">	<span class="keyword">return</span> icons[name]</span><br><span class="line">&#125;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h4 id="并发安全的单例"><a href="#并发安全的单例" class="headerlink" title="并发安全的单例"></a>并发安全的单例</h4>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">	<span class="string">"sync"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">doOnce</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="comment">// 声明协程单例</span></span><br><span class="line">	<span class="keyword">var</span> once sync.Once</span><br><span class="line">	onceBody := <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">		fmt.Println(<span class="string">"Only Once Do"</span>)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 建立搞并发场景</span></span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">100</span>; i++ &#123;</span><br><span class="line">		<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">			<span class="comment">// 实现仅实现一次</span></span><br><span class="line">			once.Do(onceBody)</span><br><span class="line">		&#125;()</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	doOnce()</span><br><span class="line">&#125;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h3 id="协控制随心所欲-sync-Cond"><a href="#协控制随心所欲-sync-Cond" class="headerlink" title="协控制随心所欲-sync.Cond"></a>协控制随心所欲-sync.Cond</h3>
+                                <p>在 Go 语言中，sync.WaitGroup 用于最终完成的场景，关键点在于一定要等待所有协程都执行完毕。</p>
+                                <p>而 sync.Cond 可以用于发号施令，一声令下所有协程都可以开始执行，关键点在于协程开始的时候是等待的，要等待 sync.Cond 唤醒才能执行。</p>
+                                <p>sync.Cond 从字面意思看是条件变量，它具有阻塞协程和唤醒协程的功能，所以可以在满足一定条件的情况下唤醒协程，但条件变量只是它的一种使用场景。</p>
+                                <p>sync.Cond 有三个方法，它们分别是：</p>
+                                <ol>
+                                    <li><strong>Wait</strong>，阻塞当前协程，直到被其他协程调用 Broadcast 或者 Signal 方法唤醒，使用的时候需要加锁，使用 sync.Cond 中的锁即可，也就是 L 字段。</li>
+                                    <li><strong>Signal</strong>，唤醒一个等待时间最长的协程。</li>
+                                    <li><strong>Broadcast</strong>，唤醒所有等待的协程。</li>
+                                </ol>
+                                <blockquote>
+                                    <p>在调用 Signal 或者 Broadcast 之前，要确保目标协程处于 Wait 阻塞状态，不然会出现死锁问题。</p>
+                                </blockquote>
+                                <p>下面我们以 10 个人赛跑为例来演示 sync.Cond 的用法。在这个示例中有一个裁判，裁判要先等这 10 个人准备就绪，然后一声发令枪响，这 10 个人就可以开始跑了，如下所示：</p>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">	<span class="string">"sync"</span></span><br><span class="line">	<span class="string">"time"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">//10个人赛跑，1个裁判发号施令</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">race</span><span class="params">()</span></span>&#123;</span><br><span class="line">	cond :=sync.NewCond(&amp;sync.Mutex&#123;&#125;)</span><br><span class="line">	<span class="keyword">var</span> wg sync.WaitGroup</span><br><span class="line">	wg.Add(<span class="number">11</span>)</span><br><span class="line">	<span class="keyword">for</span> i:=<span class="number">0</span>;i&lt;<span class="number">10</span>; i++ &#123;</span><br><span class="line">		<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">(num <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">			<span class="keyword">defer</span>  wg.Done()</span><br><span class="line">			fmt.Println(num,<span class="string">"号已经就位"</span>)</span><br><span class="line">			cond.L.Lock()</span><br><span class="line">			cond.Wait()<span class="comment">//等待发令枪响</span></span><br><span class="line">			fmt.Println(num,<span class="string">"号开始跑……"</span>)</span><br><span class="line">			cond.L.Unlock()</span><br><span class="line">		&#125;(i)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//等待所有goroutine都进入wait状态</span></span><br><span class="line">	time.Sleep(<span class="number">2</span>*time.Second)</span><br><span class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">		<span class="keyword">defer</span>  wg.Done()</span><br><span class="line">		fmt.Println(<span class="string">"裁判已经就位，准备发令枪"</span>)</span><br><span class="line">		fmt.Println(<span class="string">"比赛开始～"</span>)</span><br><span class="line">		cond.Broadcast()<span class="comment">//发令枪响</span></span><br><span class="line">	&#125;()</span><br><span class="line">	<span class="comment">//防止函数提前返回退出</span></span><br><span class="line">	wg.Wait()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	race()</span><br><span class="line">&#125;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h3 id="sync-Map"><a href="#sync-Map" class="headerlink" title="sync.Map"></a>sync.Map</h3>
+                                <p>Go语言中内置的map不是并发安全的。请看下面的示例：</p>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="keyword">var</span> m = <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">int</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">get</span><span class="params">(key <span class="keyword">string</span>)</span> <span class="title">int</span></span> &#123;</span><br><span class="line">	<span class="keyword">return</span> m[key]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">set</span><span class="params">(key <span class="keyword">string</span>, value <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">	m[key] = value</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	wg := sync.WaitGroup&#123;&#125;</span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">20</span>; i++ &#123;</span><br><span class="line">		wg.Add(<span class="number">1</span>)</span><br><span class="line">		<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">(n <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">			key := strconv.Itoa(n)</span><br><span class="line">			set(key, n)</span><br><span class="line">			fmt.Printf(<span class="string">"k=:%v,v:=%v\n"</span>, key, get(key))</span><br><span class="line">			wg.Done()</span><br><span class="line">		&#125;(i)</span><br><span class="line">	&#125;</span><br><span class="line">	wg.Wait()</span><br><span class="line">&#125;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>上面的代码开启少量几个<code>goroutine</code>的时候可能没什么问题，当并发多了之后执行上面的代码就会报<code>fatal error: concurrent map writes</code>错误。</p>
+                                <p>像这种场景下就需要为map加锁来保证并发的安全性了，Go语言的<code>sync</code>包中提供了一个开箱即用的并发安全版map–<code>sync.Map</code>。开箱即用表示不用像内置的map一样使用make函数初始化就能直接使用。同时<code>sync.Map</code><br>内置了诸如<code>Store</code>、<code>Load</code>、<code>LoadOrStore</code>、<code>Delete</code>、<code>Range</code>等操作方法。</p>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="keyword">var</span> m = sync.Map&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	wg := sync.WaitGroup&#123;&#125;</span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">20</span>; i++ &#123;</span><br><span class="line">		wg.Add(<span class="number">1</span>)</span><br><span class="line">		<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">(n <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">			key := strconv.Itoa(n)</span><br><span class="line">			m.Store(key, n)</span><br><span class="line">			value, _ := m.Load(key)</span><br><span class="line">			fmt.Printf(<span class="string">"k=:%v,v:=%v\n"</span>, key, value)</span><br><span class="line">			wg.Done()</span><br><span class="line">		&#125;(i)</span><br><span class="line">	&#125;</span><br><span class="line">	wg.Wait()</span><br><span class="line">&#125;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                            </div>
+                            <div class="popular-posts-header">相关文章</div>
+                            <ul class="popular-posts">
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/62372.html" rel="bookmark">Golang-Array</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/17571.html" rel="bookmark">Golang-Defer详解</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/3744.html" rel="bookmark">Golang-Map</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/45903.html" rel="bookmark">Golang-匿名函数与闭包</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/1962.html" rel="bookmark">Golang-接口(interface)</a></div>
+                                </li>
+                            </ul>
+                            <footer class="post-footer">
+                                <div class="post-tags">
+                                    <a href="/tags/Go/" rel="tag"><i class="fa fa-tag"></i> Go</a>
+                                </div>
+                                <div class="post-nav">
+                                    <div class="post-nav-item">
+                                        <a href="/52507.html" rel="prev" title="Golang并发编程">
+                                            <i class="fa fa-chevron-left"></i> Golang并发编程 </a>
+                                    </div>
+                                    <div class="post-nav-item">
+                                        <a href="/4479.html" rel="next" title="docker部署控制"> docker部署控制 <i class="fa fa-chevron-right"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </footer>
+                        </article>
+                    </div>
+                    <script>
+                        window.addEventListener('tabs:register', () =>
+                        {
+                            let
+                            {
+                                activeClass
+                            } = CONFIG.comments;
+                            if (CONFIG.comments.storage)
+                            {
+                                activeClass = localStorage.getItem('comments_active') || activeClass;
+                            }
+                            if (activeClass)
+                            {
+                                let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+                                if (activeTab)
+                                {
+                                    activeTab.click();
+                                }
+                            }
+                        });
+                        if (CONFIG.comments.storage)
+                        {
+                            window.addEventListener('tabs:click', event =>
+                            {
+                                if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+                                let commentClass = event.target.classList[1];
+                                localStorage.setItem('comments_active', commentClass);
+                            });
+                        }
+
+                    </script>
+                </div>
+                <div class="toggle sidebar-toggle">
+                    <span class="toggle-line toggle-line-first"></span>
+                    <span class="toggle-line toggle-line-middle"></span>
+                    <span class="toggle-line toggle-line-last"></span>
+                </div>
+                <aside class="sidebar">
+                    <div class="sidebar-inner">
+                        <ul class="sidebar-nav motion-element">
+                            <li class="sidebar-nav-toc"> 文章目录 </li>
+                            <li class="sidebar-nav-overview"> 站点概览 </li>
+                        </ul>
+                        <!--noindex-->
+                        <div class="post-toc-wrap sidebar-panel">
+                            <div class="post-toc motion-element">
+                                <ol class="nav">
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#协程控制需要"><span class="nav-number">1.</span> <span class="nav-text">协程控制需要</span></a></li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#协程控制原理与实现"><span class="nav-number">2.</span> <span class="nav-text">协程控制原理与实现</span></a>
+                                        <ol class="nav-child">
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#同任务唯一执行-互斥锁"><span class="nav-number">2.1.</span> <span class="nav-text">同任务唯一执行-互斥锁</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#读多写少、读少写多-读写锁"><span class="nav-number">2.2.</span> <span class="nav-text">读多写少、读少写多-读写锁</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#高效率决策完成时间-WaitGroup"><span class="nav-number">2.3.</span> <span class="nav-text">高效率决策完成时间-WaitGroup</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#执行且只执行一次协程单例-sync-Once"><span class="nav-number">2.4.</span> <span class="nav-text">执行且只执行一次协程单例-sync.Once</span></a>
+                                                <ol class="nav-child">
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#加载配置文件示例"><span class="nav-number">2.4.1.</span> <span class="nav-text">加载配置文件示例</span></a></li>
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#并发安全的单例"><span class="nav-number">2.4.2.</span> <span class="nav-text">并发安全的单例</span></a></li>
+                                                </ol>
+                                            </li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#协控制随心所欲-sync-Cond"><span class="nav-number">2.5.</span> <span class="nav-text">协控制随心所欲-sync.Cond</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#sync-Map"><span class="nav-number">2.6.</span> <span class="nav-text">sync.Map</span></a></li>
+                                        </ol>
+                                    </li>
+                                </ol>
+                            </div>
+                        </div>
+                        <!--/noindex-->
+                        <div class="site-overview-wrap sidebar-panel">
+                            <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <img class="site-author-image" itemprop="image" alt="吴志鹏" src="/images/favicon/android-chrome-512x512.png">
+                                <p class="site-author-name" itemprop="name">吴志鹏</p>
+                                <div class="site-description" itemprop="description">Talk is free，please state clearly</div>
+                            </div>
+                            <div class="site-state-wrap motion-element">
+                                <nav class="site-state">
+                                    <div class="site-state-item site-state-posts">
+                                        <a href="/archives/">
+                                            <span class="site-state-item-count">136</span>
+                                            <span class="site-state-item-name">日志</span>
+                                        </a>
+                                    </div>
+                                    <div class="site-state-item site-state-categories">
+                                        <a href="/categories/">
+                                            <span class="site-state-item-count">158</span>
+                                            <span class="site-state-item-name">分类</span></a>
+                                    </div>
+                                    <div class="site-state-item site-state-tags">
+                                        <a href="/tags/">
+                                            <span class="site-state-item-count">89</span>
+                                            <span class="site-state-item-name">标签</span></a>
+                                    </div>
+                                </nav>
+                            </div>
+                            <div class="links-of-author motion-element">
+                                <span class="links-of-author-item">
+                                    <a href="https://github.com/Payne-Wu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Payne-Wu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="mailto:wuzhipeng1289690157@gmail.com" title="E-Mail → mailto:wuzhipeng1289690157@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="https://www.zhihu.com/people/wu-zhi-peng-72-78" title="ZhiHu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;wu-zhi-peng-72-78" rel="noopener" target="_blank"><i class="fa fa-magic fa-fw"></i>ZhiHu</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="https://weibo.com/u/6987234483" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;6987234483" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+                <div id="sidebar-dimmer"></div>
+            </div>
+        </main>
+        <footer class="footer">
+            <div class="footer-inner">
+                <div class="copyright"> &copy; <span itemprop="copyrightYear">2022</span>
+                    <span class="with-love">
+                        <i class="fa fa-heart"></i>
+                    </span>
+                    <span class="author" itemprop="copyrightHolder">PayneWu</span>
+                    <span class="post-meta-divider">|</span>
+                    <span class="post-meta-item-icon">
+                        <i class="fa fa-chart-area"></i>
+                    </span>
+                    <span title="站点总字数">255k</span>
+                    <span class="post-meta-divider">|</span>
+                    <span class="post-meta-item-icon">
+                        <i class="fa fa-coffee"></i>
+                    </span>
+                    <span title="站点阅读时长">3:51</span>
+                </div>
+                <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">湘ICP备2021019893号-1 </a>
+                </div>
+                <div style="display: none;">
+                    <script src="//s95.cnzz.com/z_stat.php?id=true&web_id=true"></script>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+    <script src="/js/utils.js"></script>
+    <script src="/.js"></script>
+    <script src="/js/schemes/pisces.js"></script>
+    <script src="/.js"></script>
+    <script src="/js/next-boot.js"></script>
+    <script src="/.js"></script>
+    <script>
+        (function ()
+        {
+            var canonicalURL, curProtocol;
+            //Get the <link> tag
+            var x = document.getElementsByTagName("link");
+            //Find the last canonical URL
+            if (x.length > 0)
+            {
+                for (i = 0; i < x.length; i++)
+                {
+                    if (x[i].rel.toLowerCase() == 'canonical' && x[i].href)
+                    {
+                        canonicalURL = x[i].href;
+                    }
+                }
+            }
+            //Get protocol
+            if (!canonicalURL)
+            {
+                curProtocol = window.location.protocol.split(':')[0];
+            }
+            else
+            {
+                curProtocol = canonicalURL.split(':')[0];
+            }
+            //Get current URL if the canonical URL does not exist
+            if (!canonicalURL) canonicalURL = window.location.href;
+            //Assign script content. Replace current URL with the canonical URL
+            ! function ()
+            {
+                var e = /([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,
+                    r = canonicalURL,
+                    t = document.referrer;
+                if (!e.test(r))
+                {
+                    var n = (String(curProtocol).toLowerCase() === 'https') ? "https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif" : "//api.share.baidu.com/s.gif";
+                    t ? (n += "?r=" + encodeURIComponent(document.referrer), r && (n += "&l=" + r)) : r && (n += "?l=" + r);
+                    var i = new Image;
+                    i.src = n
+                }
+            }(window);
+        })();
+
+    </script>
+    <script src="/js/local-search.js"></script>
+    <script src="/.js"></script>
+</body>
+
+</html>

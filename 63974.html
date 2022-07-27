@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+    <meta name="theme-color" content="#222">
+    <meta name="generator" content="Hexo 4.2.1">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16-next.png">
+    <link rel="mask-icon" href="/images/favicon/safari-pinned-tab.svg" color="#222">
+    <meta name="msapplication-config" content="/images/favicon/browserconfig.xml">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+    <link rel="stylesheet" href="/lib/pace/pace-theme-mac-osx.min.css">
+    <script src="/lib/pace/pace.min.js"></script>
+    <script id="hexo-configurations">
+        var NexT = window.NexT ||
+        {};
+        var CONFIG = {
+            "hostname": "paynewu.com",
+            "root": "/",
+            "scheme": "Gemini",
+            "version": "7.8.0",
+            "exturl": false,
+            "sidebar":
+            {
+                "position": "right",
+                "width": 240,
+                "display": "post",
+                "padding": 18,
+                "offset": 12,
+                "onmobile": false
+            },
+            "copycode":
+            {
+                "enable": true,
+                "show_result": true,
+                "style": "mac"
+            },
+            "back2top":
+            {
+                "enable": true,
+                "sidebar": false,
+                "scrollpercent": true
+            },
+            "bookmark":
+            {
+                "enable": false,
+                "color": "#222",
+                "save": "auto"
+            },
+            "fancybox": false,
+            "mediumzoom": true,
+            "lazyload": false,
+            "pangu": true,
+            "comments":
+            {
+                "style": "tabs",
+                "active": "valine",
+                "storage": true,
+                "lazyload": false,
+                "nav": null
+            },
+            "algolia":
+            {
+                "hits":
+                {
+                    "per_page": 10
+                },
+                "labels":
+                {
+                    "input_placeholder": "Search for Posts",
+                    "hits_empty": "We didn't find any results for the search: ${query}",
+                    "hits_stats": "${hits} results found in ${time} ms"
+                }
+            },
+            "localsearch":
+            {
+                "enable": true,
+                "trigger": "auto",
+                "top_n_per_article": 8,
+                "unescape": false,
+                "preload": false
+            },
+            "motion":
+            {
+                "enable": false,
+                "async": false,
+                "transition":
+                {
+                    "post_block": "bounceDownIn",
+                    "post_header": "slideDownIn",
+                    "post_body": "slideDownIn",
+                    "coll_header": "slideLeftIn",
+                    "sidebar": "slideUpIn"
+                }
+            },
+            "path": "search.xml"
+        };
+
+    </script>
+    <meta name="description" content="为什么需要数据防护？ 当今如今大数据时代，数据重要不言而喻，网页和 App 作为主流的数据载体，如果其数据没有任何的保护措施，在爬虫工程师解决了一些基本的反爬如User-Agent、cookies、验证码等的防护措施之后，那么数据依旧可被轻易的获取。 数据防护主要体现在何处？">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="网站防护总结之pc">
+    <meta property="og:url" content="https://paynewu.com/63974.html">
+    <meta property="og:site_name" content="吴志鹏｜Payne-Wu">
+    <meta property="og:description" content="为什么需要数据防护？ 当今如今大数据时代，数据重要不言而喻，网页和 App 作为主流的数据载体，如果其数据没有任何的保护措施，在爬虫工程师解决了一些基本的反爬如User-Agent、cookies、验证码等的防护措施之后，那么数据依旧可被轻易的获取。 数据防护主要体现在何处？">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="article:published_time" content="2021-07-02T09:25:18.000Z">
+    <meta property="article:modified_time" content="2022-07-27T09:58:26.880Z">
+    <meta property="article:author" content="吴志鹏">
+    <meta property="article:tag" content="Crawler">
+    <meta property="article:tag" content="爬虫">
+    <meta property="article:tag" content="JS">
+    <meta property="article:tag" content="浏览器">
+    <meta property="article:tag" content="调试">
+    <meta property="article:tag" content="Hook">
+    <meta name="twitter:card" content="summary">
+    <link rel="canonical" href="https://paynewu.com/63974.html">
+    <script id="page-configurations">
+        // https://hexo.io/docs/variables.html
+        CONFIG.page = {
+            sidebar: "",
+            isHome: false,
+            isPost: true,
+            lang: 'zh-CN'
+        };
+
+    </script>
+    <title>网站防护总结之pc | 吴志鹏｜Payne-Wu</title>
+    <meta name="google-site-verification" content="p_bIcnvirkFzG2dYKuNDivKD8-STet5W7D-01woA2fc" />
+    <noscript>
+        <style>
+            .use-motion .brand,
+            .use-motion .menu-item,
+            .sidebar-inner,
+            .use-motion .post-block,
+            .use-motion .pagination,
+            .use-motion .comments,
+            .use-motion .post-header,
+            .use-motion .post-body,
+            .use-motion .collection-header
+            {
+                opacity: initial;
+            }
+
+            .use-motion .site-title,
+            .use-motion .site-subtitle
+            {
+                opacity: initial;
+                top: initial;
+            }
+
+            .use-motion .logo-line-before i
+            {
+                left: initial;
+            }
+
+            .use-motion .logo-line-after i
+            {
+                right: initial;
+            }
+
+        </style>
+    </noscript>
+    <link rel="alternate" href="/atom.xml" title="吴志鹏｜Payne-Wu" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+    <div class="container">
+        <div class="headband"></div>
+        <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+            <div class="header-inner">
+                <div class="site-brand-container">
+                    <div class="site-nav-toggle">
+                        <div class="toggle" aria-label="切换导航栏">
+                            <span class="toggle-line toggle-line-first"></span>
+                            <span class="toggle-line toggle-line-middle"></span>
+                            <span class="toggle-line toggle-line-last"></span>
+                        </div>
+                    </div>
+                    <div class="site-meta">
+                        <a href="/" class="brand" rel="start">
+                            <span class="logo-line-before"><i></i></span>
+                            <h1 class="site-title">吴志鹏｜Payne-Wu </h1>
+                            <span class="logo-line-after"><i></i></span>
+                        </a>
+                    </div>
+                    <div class="site-nav-right">
+                        <div class="toggle popup-trigger">
+                            <i class="fa fa-search fa-fw fa-lg"></i>
+                        </div>
+                    </div>
+                </div>
+                <nav class="site-nav">
+                    <ul id="menu" class="main-menu menu">
+                        <li class="menu-item menu-item-home">
+                            <a href="/" rel="section">首页</a>
+                        </li>
+                        <li class="menu-item menu-item-archives">
+                            <a href="/archives/" rel="section">文章列表</a>
+                        </li>
+                        <li class="menu-item menu-item-tags">
+                            <a href="/tags/" rel="section">Tags Cloud</a>
+                        </li>
+                        <li class="menu-item menu-item-categories">
+                            <a href="/categories/" rel="section">文章集合</a>
+                        </li>
+                        <li class="menu-item menu-item-about">
+                            <a href="/about/" rel="section">关于我啊</a>
+                        </li>
+                        <li class="menu-item menu-item-message">
+                            <a href="/message/" rel="section">留言与我</a>
+                        </li>
+                        <li class="menu-item menu-item-search">
+                            <a role="button" class="popup-trigger">搜索 </a>
+                        </li>
+                    </ul>
+                </nav>
+                <div class="search-pop-overlay">
+                    <div class="popup search-popup">
+                        <div class="search-header">
+                            <span class="search-icon">
+                                <i class="fa fa-search"></i>
+                            </span>
+                            <div class="search-input-container">
+                                <input autocomplete="off" autocapitalize="off" placeholder="搜索..." spellcheck="false" type="search" class="search-input">
+                            </div>
+                            <span class="popup-btn-close">
+                                <i class="fa fa-times-circle"></i>
+                            </span>
+                        </div>
+                        <div id="search-result">
+                            <div id="no-result">
+                                <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="back-to-top">
+            <i class="fa fa-arrow-up"></i>
+            <span>0%</span>
+        </div>
+        <div class="reading-progress-bar"></div>
+        <main class="main">
+            <div class="main-inner">
+                <div class="content-wrap">
+                    <div class="content post posts-expand">
+                        <article itemscope itemtype="http://schema.org/Article" class="post-block single" lang="zh-CN">
+                            <link itemprop="mainEntityOfPage" href="https://paynewu.com/63974.html">
+                            <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <meta itemprop="image" content="/images/favicon/android-chrome-512x512.png">
+                                <meta itemprop="name" content="吴志鹏">
+                                <meta itemprop="description" content="Talk is free，please state clearly">
+                            </span>
+                            <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+                                <meta itemprop="name" content="吴志鹏｜Payne-Wu">
+                            </span>
+                            <header class="post-header">
+                                <h1 class="post-title" itemprop="name headline"> 网站防护总结之pc </h1>
+                                <div class="post-meta">
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-user"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">作者</span>
+                                        <span><a href="/authors/Payne" class="author" itemprop="url" rel="index">Payne</a></span>
+                                    </span>
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-calendar"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">发表于</span>
+                                        <time title="创建时间：2021-07-02 17:25:18" itemprop="dateCreated datePublished" datetime="2021-07-02T17:25:18+08:00">2021-07-02</time>
+                                    </span>
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-folder"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">分类于</span>
+                                        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                                            <a href="/categories/%E7%88%AC%E8%99%AB/" itemprop="url" rel="index"><span itemprop="name">爬虫</span></a>
+                                        </span> ， <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                                            <a href="/categories/%E7%88%AC%E8%99%AB/%E8%B0%83%E8%AF%95/" itemprop="url" rel="index"><span itemprop="name">调试</span></a>
+                                        </span> ， <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                                            <a href="/categories/%E7%88%AC%E8%99%AB/%E8%B0%83%E8%AF%95/Hook/" itemprop="url" rel="index"><span itemprop="name">Hook</span></a>
+                                        </span>
+                                    </span>
+                                    <br>
+                                    <span class="post-meta-item" title="本文字数">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-file-word"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">本文字数：</span>
+                                        <span>1.9k</span>
+                                    </span>
+                                    <span class="post-meta-item" title="阅读时长">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-clock"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                                        <span>2 分钟</span>
+                                    </span>
+                                </div>
+                            </header>
+                            <div class="post-body" itemprop="articleBody">
+                                <h2 id="为什么需要数据防护？"><a href="#为什么需要数据防护？" class="headerlink" title="为什么需要数据防护？"></a>为什么需要数据防护？</h2>
+                                <p>当今如今大数据时代，数据重要不言而喻，网页和 App 作为主流的数据载体，如果其数据没有任何的保护措施，在爬虫工程师解决了一些基本的反爬如User-Agent、cookies、验证码等的防护措施之后，那么数据依旧可被轻易的获取。</p>
+                                <h2 id="数据防护主要体现在何处？"><a href="#数据防护主要体现在何处？" class="headerlink" title="数据防护主要体现在何处？"></a>数据防护主要体现在何处？</h2>
+                                <a id="more"></a>
+                                <p>数据防护可简略的划分为请求防护、数据内容防护、验证码</p>
+                                <h3 id="请求防护"><a href="#请求防护" class="headerlink" title="请求防护"></a>请求防护</h3>
+                                <ul>
+                                    <li>User-Agent</li>
+                                    <li>Cookie</li>
+                                    <li>签名验证</li>
+                                    <li>握手验证</li>
+                                    <li>协议</li>
+                                    <li>。。。</li>
+                                </ul>
+                                <h3 id="数据内容防护"><a href="#数据内容防护" class="headerlink" title="数据内容防护"></a>数据内容防护</h3>
+                                <ul>
+                                    <li>CSS字体偏移</li>
+                                    <li>SVG字体映射</li>
+                                    <li>图片数据</li>
+                                    <li>。。。</li>
+                                </ul>
+                                <h3 id="验证码"><a href="#验证码" class="headerlink" title="验证码"></a>验证码</h3>
+                                <p>个人总结为以下几种类型，具体体现不在过多赘述。（注，几者之间无明显的分割标准，在此以侧重点划分）</p>
+                                <ul>
+                                    <li>识别点选或输入型</li>
+                                    <li>滑轨、滑块型</li>
+                                    <li>短信或语音验证型</li>
+                                </ul>
+                                <h2 id="思"><a href="#思" class="headerlink" title="思"></a>思</h2>
+                                <p>实现这一切的一切，这些究竟是基于什么实现的？这一切绝可能是凭空出现！！！</p>
+                                <p>其实无论是ajax，User-Agent、还是Cookie等等大部分都是基于Javascript实现。而且由于JavaScript在客户端中为完全透明，用户可以随意的查看与调试，这无异于代码裸奔。虽然以上的反爬虫虽然不错，但如果仔细分析的，这难度也仅是“工作量”的问题。</p>
+                                <h2 id="Javascript防护分类"><a href="#Javascript防护分类" class="headerlink" title="Javascript防护分类"></a>Javascript防护分类</h2>
+                                <p>完全透明的JS代码，虽然可以有效的防止。但这还不够，其根本原因还是JavaScript为明文。而这一切的一切都是“治标不治本”，虽然可以但还不够。也正因为对JavaScript的各种防护，所以才让这些加密“动”起来，无法轻易的分析。对JavaScript“加密”可分为如下几种大类</p>
+                                <h3 id="代码压缩"><a href="#代码压缩" class="headerlink" title="代码压缩"></a>代码压缩</h3>
+                                <p>JavaScript 压缩是指去除 JavaScript 代码中的不必要的空格、换行等内容，或者将一些可能公用的代码进行处理实现共享，最后输出的结果都被压缩为几行内容，代码可读性变差，提高分析难度同时也能提高网站加载速度。</p>
+                                <p>整体来说，压缩技术只能在很小的程度上起到防护作用，要想真正提高防护效果还得依靠混淆与加密技术。</p>
+                                <h3 id="代码混淆"><a href="#代码混淆" class="headerlink" title="代码混淆"></a>代码混淆</h3>
+                                <p>代码混淆是增加分析难度而牺牲部分性能的一种方案，此方案大部分是体现在通过逻辑转换换等方式将代码转化为难以分析的代码。难以分析是混淆的目的，等价转换是需要确保混淆前后的代码需不影响运行的功能。对于混淆可以又分为如下四种：布局混淆、数据混淆、控制混淆、预防混淆</p>
+                                <h4 id="布局混淆"><a href="#布局混淆" class="headerlink" title="布局混淆"></a>布局混淆</h4>
+                                <p>布局混淆指在源代码中删除原有无用代码，处理常量名、变量名函数名等标识符，增加对于代码的阅读与分析。</p>
+                                <p>无用代码：注释、调试信息、缩进、换行、无用函数与数据等</p>
+                                <p>处理常量名、变量名函数名等标识符：</p>
+                                <ul>
+                                    <li>标识重命名：将原有代码重命名为无具体意义的字符，例如 将name 重命名为a</li>
+                                </ul>
+                                <p>注意点：</p>
+                                <ul>
+                                    <li>作用域内标识符碰撞情况</li>
+                                </ul>
+                                <p><strong>小结</strong></p>
+                                <p>布局混淆并不会影响执行的过程、内存开销，甚至代码体积反而减少了。</p>
+                                <h4 id="数据混淆"><a href="#数据混淆" class="headerlink" title="数据混淆"></a>数据混淆</h4>
+                                <p>JS拥有常见的7种数据类型，number、string、boolean、unfined、null、Object</p>
+                                <p><strong>数字混淆</strong></p>
+                                <p>数据混淆有常见：进制转换、数字分治、其他</p>
+                                <ul>
+                                    <li>进制转换</li>
+                                </ul>
+                                <p>将十进制转化为二进制、八进制、十六进制等，从而达到“混淆”的目的</p>
+                                <ul>
+                                    <li><strong>数学分治</strong></li>
+                                </ul>
+                                <p>简而言之就是将数拆开，例如 2 = 1 + 1，再辅以数学公式等</p>
+                                <ul>
+                                    <li>
+                                        <p>其他</p>
+                                        <p>重新赋值等</p>
+                                    </li>
+                                </ul>
+                                <p><strong>字符串混淆</strong></p>
+                                <p>字符串混淆常见的有编码转换、加密。常见的有hash、base64、md5等</p>
+                                <p><strong>boolean</strong></p>
+                                <p>我们都知道Boolean值为True、False。根据对boolean的处理，变成难以显示阅读的代码。例如![] = False, !![] = True.</p>
+                                <p><strong>控制混淆</strong></p>
+                                <p>控制混淆是指对程序的控制流进行转换变化，常见的方式有插入僵尸代码、控制流平坦化</p>
+                                <p>插入僵尸代码：插入僵尸代码即插入无用的代码，增强调试难度</p>
+                                <p>控制流平坦化：控制流平坦化,将原本的的执行流程平坦化。具体可自行搜索</p>
+                                <p><strong>预防混淆</strong></p>
+                                <p>主要体现在 提高反混淆的难度或检测现有混淆器中的漏洞设计</p>
+                                <h3 id="代码混淆总结"><a href="#代码混淆总结" class="headerlink" title="代码混淆总结"></a>代码混淆总结</h3>
+                                <p>万变不离其宗，无论是代码压缩、代码混淆都离不开一个宗旨，在不改变原有的<strong>结果</strong>情况下对代码（这里指JS）进行处理。处理的方式包含但不限于，等值转换、运算分割。</p>
+                                <h2 id="设备指纹防护"><a href="#设备指纹防护" class="headerlink" title="设备指纹防护"></a>设备指纹防护</h2>
+                                <p>设备指纹通过收集客户端设备的特征信息对用户与“机器人”进行甄别。web设备指纹主要包含：</p>
+                                <p>浏览器端环境检测</p>
+                                <p>浏览器设别标识</p>
+                                <p>特征识别Hook</p>
+                                <p>JS特征识别</p>
+                                <p>做爬虫的朋友一定使用过NodeJs，这个工具。也时常借用与Nodejs来模拟JS，但Nodejs的api和指纹浏览器有不一样。如果服务端获取到客户端，那么就可以对指纹不一致的机器人，进行防范。</p>
+                                <p>正如你我所知的那般，知道的越多，不知道的越多。</p>
+                                <h2 id="推荐阅读与了解"><a href="#推荐阅读与了解" class="headerlink" title="推荐阅读与了解"></a>推荐阅读与了解</h2>
+                                <p>风控要略：互联网业务反欺诈之路</p>
+                                <p>Jsfuck（github）：<a href="https://github.com/aemkei/jsfuck" target="_blank" rel="noopener">https://github.com/aemkei/jsfuck</a></p>
+                                <p>基于控制混淆和布局混淆的代码混淆系统-王岩（论文）</p>
+                            </div>
+                            <div class="popular-posts-header">相关文章</div>
+                            <ul class="popular-posts">
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/33650.html" rel="bookmark">网页调试之JSHook</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/14277.html" rel="bookmark">网页调试干扰总结</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/15990.html" rel="bookmark">认识设备指纹</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/2477.html" rel="bookmark">网页调试之debugger原理与绕过</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/2341116369.html" rel="bookmark">js调试小笔记</a></div>
+                                </li>
+                            </ul>
+                            <footer class="post-footer">
+                                <div class="post-tags">
+                                    <a href="/tags/Crawler/" rel="tag"><i class="fa fa-tag"></i> Crawler</a>
+                                    <a href="/tags/%E7%88%AC%E8%99%AB/" rel="tag"><i class="fa fa-tag"></i> 爬虫</a>
+                                    <a href="/tags/JS/" rel="tag"><i class="fa fa-tag"></i> JS</a>
+                                    <a href="/tags/%E6%B5%8F%E8%A7%88%E5%99%A8/" rel="tag"><i class="fa fa-tag"></i> 浏览器</a>
+                                    <a href="/tags/%E8%B0%83%E8%AF%95/" rel="tag"><i class="fa fa-tag"></i> 调试</a>
+                                    <a href="/tags/Hook/" rel="tag"><i class="fa fa-tag"></i> Hook</a>
+                                </div>
+                                <div class="post-nav">
+                                    <div class="post-nav-item">
+                                        <a href="/33650.html" rel="prev" title="网页调试之JSHook">
+                                            <i class="fa fa-chevron-left"></i> 网页调试之JSHook </a>
+                                    </div>
+                                    <div class="post-nav-item">
+                                        <a href="/14277.html" rel="next" title="网页调试干扰总结"> 网页调试干扰总结 <i class="fa fa-chevron-right"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </footer>
+                        </article>
+                    </div>
+                    <script>
+                        window.addEventListener('tabs:register', () =>
+                        {
+                            let
+                            {
+                                activeClass
+                            } = CONFIG.comments;
+                            if (CONFIG.comments.storage)
+                            {
+                                activeClass = localStorage.getItem('comments_active') || activeClass;
+                            }
+                            if (activeClass)
+                            {
+                                let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+                                if (activeTab)
+                                {
+                                    activeTab.click();
+                                }
+                            }
+                        });
+                        if (CONFIG.comments.storage)
+                        {
+                            window.addEventListener('tabs:click', event =>
+                            {
+                                if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+                                let commentClass = event.target.classList[1];
+                                localStorage.setItem('comments_active', commentClass);
+                            });
+                        }
+
+                    </script>
+                </div>
+                <div class="toggle sidebar-toggle">
+                    <span class="toggle-line toggle-line-first"></span>
+                    <span class="toggle-line toggle-line-middle"></span>
+                    <span class="toggle-line toggle-line-last"></span>
+                </div>
+                <aside class="sidebar">
+                    <div class="sidebar-inner">
+                        <ul class="sidebar-nav motion-element">
+                            <li class="sidebar-nav-toc"> 文章目录 </li>
+                            <li class="sidebar-nav-overview"> 站点概览 </li>
+                        </ul>
+                        <!--noindex-->
+                        <div class="post-toc-wrap sidebar-panel">
+                            <div class="post-toc motion-element">
+                                <ol class="nav">
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#为什么需要数据防护？"><span class="nav-number">1.</span> <span class="nav-text">为什么需要数据防护？</span></a></li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#数据防护主要体现在何处？"><span class="nav-number">2.</span> <span class="nav-text">数据防护主要体现在何处？</span></a>
+                                        <ol class="nav-child">
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#请求防护"><span class="nav-number">2.1.</span> <span class="nav-text">请求防护</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#数据内容防护"><span class="nav-number">2.2.</span> <span class="nav-text">数据内容防护</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#验证码"><span class="nav-number">2.3.</span> <span class="nav-text">验证码</span></a></li>
+                                        </ol>
+                                    </li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#思"><span class="nav-number">3.</span> <span class="nav-text">思</span></a></li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#Javascript防护分类"><span class="nav-number">4.</span> <span class="nav-text">Javascript防护分类</span></a>
+                                        <ol class="nav-child">
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#代码压缩"><span class="nav-number">4.1.</span> <span class="nav-text">代码压缩</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#代码混淆"><span class="nav-number">4.2.</span> <span class="nav-text">代码混淆</span></a>
+                                                <ol class="nav-child">
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#布局混淆"><span class="nav-number">4.2.1.</span> <span class="nav-text">布局混淆</span></a></li>
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#数据混淆"><span class="nav-number">4.2.2.</span> <span class="nav-text">数据混淆</span></a></li>
+                                                </ol>
+                                            </li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#代码混淆总结"><span class="nav-number">4.3.</span> <span class="nav-text">代码混淆总结</span></a></li>
+                                        </ol>
+                                    </li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#设备指纹防护"><span class="nav-number">5.</span> <span class="nav-text">设备指纹防护</span></a></li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#推荐阅读与了解"><span class="nav-number">6.</span> <span class="nav-text">推荐阅读与了解</span></a></li>
+                                </ol>
+                            </div>
+                        </div>
+                        <!--/noindex-->
+                        <div class="site-overview-wrap sidebar-panel">
+                            <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <img class="site-author-image" itemprop="image" alt="吴志鹏" src="/images/favicon/android-chrome-512x512.png">
+                                <p class="site-author-name" itemprop="name">吴志鹏</p>
+                                <div class="site-description" itemprop="description">Talk is free，please state clearly</div>
+                            </div>
+                            <div class="site-state-wrap motion-element">
+                                <nav class="site-state">
+                                    <div class="site-state-item site-state-posts">
+                                        <a href="/archives/">
+                                            <span class="site-state-item-count">136</span>
+                                            <span class="site-state-item-name">日志</span>
+                                        </a>
+                                    </div>
+                                    <div class="site-state-item site-state-categories">
+                                        <a href="/categories/">
+                                            <span class="site-state-item-count">158</span>
+                                            <span class="site-state-item-name">分类</span></a>
+                                    </div>
+                                    <div class="site-state-item site-state-tags">
+                                        <a href="/tags/">
+                                            <span class="site-state-item-count">89</span>
+                                            <span class="site-state-item-name">标签</span></a>
+                                    </div>
+                                </nav>
+                            </div>
+                            <div class="links-of-author motion-element">
+                                <span class="links-of-author-item">
+                                    <a href="https://github.com/Payne-Wu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Payne-Wu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="mailto:wuzhipeng1289690157@gmail.com" title="E-Mail → mailto:wuzhipeng1289690157@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="https://www.zhihu.com/people/wu-zhi-peng-72-78" title="ZhiHu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;wu-zhi-peng-72-78" rel="noopener" target="_blank"><i class="fa fa-magic fa-fw"></i>ZhiHu</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="https://weibo.com/u/6987234483" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;6987234483" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+                <div id="sidebar-dimmer"></div>
+            </div>
+        </main>
+        <footer class="footer">
+            <div class="footer-inner">
+                <div class="copyright"> &copy; <span itemprop="copyrightYear">2022</span>
+                    <span class="with-love">
+                        <i class="fa fa-heart"></i>
+                    </span>
+                    <span class="author" itemprop="copyrightHolder">PayneWu</span>
+                    <span class="post-meta-divider">|</span>
+                    <span class="post-meta-item-icon">
+                        <i class="fa fa-chart-area"></i>
+                    </span>
+                    <span title="站点总字数">255k</span>
+                    <span class="post-meta-divider">|</span>
+                    <span class="post-meta-item-icon">
+                        <i class="fa fa-coffee"></i>
+                    </span>
+                    <span title="站点阅读时长">3:51</span>
+                </div>
+                <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">湘ICP备2021019893号-1 </a>
+                </div>
+                <div style="display: none;">
+                    <script src="//s95.cnzz.com/z_stat.php?id=true&web_id=true"></script>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+    <script src="/js/utils.js"></script>
+    <script src="/.js"></script>
+    <script src="/js/schemes/pisces.js"></script>
+    <script src="/.js"></script>
+    <script src="/js/next-boot.js"></script>
+    <script src="/.js"></script>
+    <script>
+        (function ()
+        {
+            var canonicalURL, curProtocol;
+            //Get the <link> tag
+            var x = document.getElementsByTagName("link");
+            //Find the last canonical URL
+            if (x.length > 0)
+            {
+                for (i = 0; i < x.length; i++)
+                {
+                    if (x[i].rel.toLowerCase() == 'canonical' && x[i].href)
+                    {
+                        canonicalURL = x[i].href;
+                    }
+                }
+            }
+            //Get protocol
+            if (!canonicalURL)
+            {
+                curProtocol = window.location.protocol.split(':')[0];
+            }
+            else
+            {
+                curProtocol = canonicalURL.split(':')[0];
+            }
+            //Get current URL if the canonical URL does not exist
+            if (!canonicalURL) canonicalURL = window.location.href;
+            //Assign script content. Replace current URL with the canonical URL
+            ! function ()
+            {
+                var e = /([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,
+                    r = canonicalURL,
+                    t = document.referrer;
+                if (!e.test(r))
+                {
+                    var n = (String(curProtocol).toLowerCase() === 'https') ? "https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif" : "//api.share.baidu.com/s.gif";
+                    t ? (n += "?r=" + encodeURIComponent(document.referrer), r && (n += "&l=" + r)) : r && (n += "?l=" + r);
+                    var i = new Image;
+                    i.src = n
+                }
+            }(window);
+        })();
+
+    </script>
+    <script src="/js/local-search.js"></script>
+    <script src="/.js"></script>
+</body>
+
+</html>

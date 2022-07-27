@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+    <meta name="theme-color" content="#222">
+    <meta name="generator" content="Hexo 4.2.1">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16-next.png">
+    <link rel="mask-icon" href="/images/favicon/safari-pinned-tab.svg" color="#222">
+    <meta name="msapplication-config" content="/images/favicon/browserconfig.xml">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+    <link rel="stylesheet" href="/lib/pace/pace-theme-mac-osx.min.css">
+    <script src="/lib/pace/pace.min.js"></script>
+    <script id="hexo-configurations">
+        var NexT = window.NexT ||
+        {};
+        var CONFIG = {
+            "hostname": "paynewu.com",
+            "root": "/",
+            "scheme": "Gemini",
+            "version": "7.8.0",
+            "exturl": false,
+            "sidebar":
+            {
+                "position": "right",
+                "width": 240,
+                "display": "post",
+                "padding": 18,
+                "offset": 12,
+                "onmobile": false
+            },
+            "copycode":
+            {
+                "enable": true,
+                "show_result": true,
+                "style": "mac"
+            },
+            "back2top":
+            {
+                "enable": true,
+                "sidebar": false,
+                "scrollpercent": true
+            },
+            "bookmark":
+            {
+                "enable": false,
+                "color": "#222",
+                "save": "auto"
+            },
+            "fancybox": false,
+            "mediumzoom": true,
+            "lazyload": false,
+            "pangu": true,
+            "comments":
+            {
+                "style": "tabs",
+                "active": "valine",
+                "storage": true,
+                "lazyload": false,
+                "nav": null
+            },
+            "algolia":
+            {
+                "hits":
+                {
+                    "per_page": 10
+                },
+                "labels":
+                {
+                    "input_placeholder": "Search for Posts",
+                    "hits_empty": "We didn't find any results for the search: ${query}",
+                    "hits_stats": "${hits} results found in ${time} ms"
+                }
+            },
+            "localsearch":
+            {
+                "enable": true,
+                "trigger": "auto",
+                "top_n_per_article": 8,
+                "unescape": false,
+                "preload": false
+            },
+            "motion":
+            {
+                "enable": false,
+                "async": false,
+                "transition":
+                {
+                    "post_block": "bounceDownIn",
+                    "post_header": "slideDownIn",
+                    "post_body": "slideDownIn",
+                    "coll_header": "slideLeftIn",
+                    "sidebar": "slideUpIn"
+                }
+            },
+            "path": "search.xml"
+        };
+
+    </script>
+    <meta name="description" content="B Tree B树的种类      B Tree     B+ Tree     B* Tree  B 树的定义">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="SQL,何必在忆之一(索引与执行计划篇)">
+    <meta property="og:url" content="https://paynewu.com/18675.html">
+    <meta property="og:site_name" content="吴志鹏｜Payne-Wu">
+    <meta property="og:description" content="B Tree B树的种类      B Tree     B+ Tree     B* Tree  B 树的定义">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gmk5199byij313u0g6mzl.jpg">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gmk5zbc02dj30ta0cmaa0.jpg">
+    <meta property="og:image" content="http://static.oschina.net/uploads/space/2011/0509/171056_sAnR_135650.jpg">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gmlbo3s5wmj319e02sgln.jpg">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24egy1h0k838iw2ij223g0s6adu.jpg">
+    <meta property="article:published_time" content="2021-01-13T12:41:20.000Z">
+    <meta property="article:modified_time" content="2022-07-27T09:58:26.876Z">
+    <meta property="article:author" content="吴志鹏">
+    <meta property="article:tag" content="MySQL">
+    <meta property="article:tag" content="数据库">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gmk5199byij313u0g6mzl.jpg">
+    <link rel="canonical" href="https://paynewu.com/18675.html">
+    <script id="page-configurations">
+        // https://hexo.io/docs/variables.html
+        CONFIG.page = {
+            sidebar: "",
+            isHome: false,
+            isPost: true,
+            lang: 'zh-CN'
+        };
+
+    </script>
+    <title>SQL,何必在忆之一(索引与执行计划篇) | 吴志鹏｜Payne-Wu</title>
+    <meta name="google-site-verification" content="p_bIcnvirkFzG2dYKuNDivKD8-STet5W7D-01woA2fc" />
+    <noscript>
+        <style>
+            .use-motion .brand,
+            .use-motion .menu-item,
+            .sidebar-inner,
+            .use-motion .post-block,
+            .use-motion .pagination,
+            .use-motion .comments,
+            .use-motion .post-header,
+            .use-motion .post-body,
+            .use-motion .collection-header
+            {
+                opacity: initial;
+            }
+
+            .use-motion .site-title,
+            .use-motion .site-subtitle
+            {
+                opacity: initial;
+                top: initial;
+            }
+
+            .use-motion .logo-line-before i
+            {
+                left: initial;
+            }
+
+            .use-motion .logo-line-after i
+            {
+                right: initial;
+            }
+
+        </style>
+    </noscript>
+    <link rel="alternate" href="/atom.xml" title="吴志鹏｜Payne-Wu" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+    <div class="container">
+        <div class="headband"></div>
+        <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+            <div class="header-inner">
+                <div class="site-brand-container">
+                    <div class="site-nav-toggle">
+                        <div class="toggle" aria-label="切换导航栏">
+                            <span class="toggle-line toggle-line-first"></span>
+                            <span class="toggle-line toggle-line-middle"></span>
+                            <span class="toggle-line toggle-line-last"></span>
+                        </div>
+                    </div>
+                    <div class="site-meta">
+                        <a href="/" class="brand" rel="start">
+                            <span class="logo-line-before"><i></i></span>
+                            <h1 class="site-title">吴志鹏｜Payne-Wu </h1>
+                            <span class="logo-line-after"><i></i></span>
+                        </a>
+                    </div>
+                    <div class="site-nav-right">
+                        <div class="toggle popup-trigger">
+                            <i class="fa fa-search fa-fw fa-lg"></i>
+                        </div>
+                    </div>
+                </div>
+                <nav class="site-nav">
+                    <ul id="menu" class="main-menu menu">
+                        <li class="menu-item menu-item-home">
+                            <a href="/" rel="section">首页</a>
+                        </li>
+                        <li class="menu-item menu-item-archives">
+                            <a href="/archives/" rel="section">文章列表</a>
+                        </li>
+                        <li class="menu-item menu-item-tags">
+                            <a href="/tags/" rel="section">Tags Cloud</a>
+                        </li>
+                        <li class="menu-item menu-item-categories">
+                            <a href="/categories/" rel="section">文章集合</a>
+                        </li>
+                        <li class="menu-item menu-item-about">
+                            <a href="/about/" rel="section">关于我啊</a>
+                        </li>
+                        <li class="menu-item menu-item-message">
+                            <a href="/message/" rel="section">留言与我</a>
+                        </li>
+                        <li class="menu-item menu-item-search">
+                            <a role="button" class="popup-trigger">搜索 </a>
+                        </li>
+                    </ul>
+                </nav>
+                <div class="search-pop-overlay">
+                    <div class="popup search-popup">
+                        <div class="search-header">
+                            <span class="search-icon">
+                                <i class="fa fa-search"></i>
+                            </span>
+                            <div class="search-input-container">
+                                <input autocomplete="off" autocapitalize="off" placeholder="搜索..." spellcheck="false" type="search" class="search-input">
+                            </div>
+                            <span class="popup-btn-close">
+                                <i class="fa fa-times-circle"></i>
+                            </span>
+                        </div>
+                        <div id="search-result">
+                            <div id="no-result">
+                                <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="back-to-top">
+            <i class="fa fa-arrow-up"></i>
+            <span>0%</span>
+        </div>
+        <div class="reading-progress-bar"></div>
+        <main class="main">
+            <div class="main-inner">
+                <div class="content-wrap">
+                    <div class="content post posts-expand">
+                        <article itemscope itemtype="http://schema.org/Article" class="post-block single" lang="zh-CN">
+                            <link itemprop="mainEntityOfPage" href="https://paynewu.com/18675.html">
+                            <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <meta itemprop="image" content="/images/favicon/android-chrome-512x512.png">
+                                <meta itemprop="name" content="吴志鹏">
+                                <meta itemprop="description" content="Talk is free，please state clearly">
+                            </span>
+                            <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+                                <meta itemprop="name" content="吴志鹏｜Payne-Wu">
+                            </span>
+                            <header class="post-header">
+                                <h1 class="post-title" itemprop="name headline"> SQL,何必在忆之一(索引与执行计划篇) </h1>
+                                <div class="post-meta">
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-user"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">作者</span>
+                                        <span><a href="/authors/Payne" class="author" itemprop="url" rel="index">Payne</a></span>
+                                    </span>
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-calendar"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">发表于</span>
+                                        <time title="创建时间：2021-01-13 20:41:20" itemprop="dateCreated datePublished" datetime="2021-01-13T20:41:20+08:00">2021-01-13</time>
+                                    </span>
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-folder"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">分类于</span>
+                                        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                                            <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a>
+                                        </span> ， <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                                            <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/MySQL/" itemprop="url" rel="index"><span itemprop="name">MySQL</span></a>
+                                        </span>
+                                    </span>
+                                    <br>
+                                    <span class="post-meta-item" title="本文字数">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-file-word"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">本文字数：</span>
+                                        <span>3.4k</span>
+                                    </span>
+                                    <span class="post-meta-item" title="阅读时长">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-clock"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                                        <span>3 分钟</span>
+                                    </span>
+                                </div>
+                            </header>
+                            <div class="post-body" itemprop="articleBody">
+                                <h2 id="B-Tree"><a href="#B-Tree" class="headerlink" title="B Tree"></a>B Tree</h2>
+                                <h3 id="B树的种类"><a href="#B树的种类" class="headerlink" title="B树的种类"></a>B树的种类</h3>
+                                <ul>
+                                    <li>B Tree</li>
+                                    <li>B+ Tree</li>
+                                    <li>B* Tree</li>
+                                </ul>
+                                <h3 id="B-树的定义"><a href="#B-树的定义" class="headerlink" title="B 树的定义"></a>B 树的定义</h3>
+                                <a id="more"></a>
+                                <p><strong>B树</strong><br>（英语：B-tree）是一种自平衡的树，能够保持数据有序。这种数据结构能够让查找数据、顺序访问、插入数据及删除的动作，都在<a href="https://zh.wikipedia.org/wiki/时间复杂度#对数时间" target="_blank" rel="noopener">对数时间</a>内完成。B树，概括来说是一个一般化的<a href="https://zh.wikipedia.org/wiki/二元搜尋樹" target="_blank" rel="noopener">二叉查找树</a>（binary<br>search<br>tree）一个节点可以拥有2个以上的子节点。与<a href="https://zh.wikipedia.org/wiki/自平衡二叉查找树" target="_blank" rel="noopener">自平衡二叉查找树</a>不同，B树适用于读写相对大的数据块的存储系统，例如磁盘。B树减少定位记录时所经历的中间过程，从而加快存取速度。B树这种数据结构可以用来描述外部存储。这种数据结构常被应用在<a href="https://zh.wikipedia.org/wiki/数据库" target="_blank" rel="noopener">数据库</a>和<a href="https://zh.wikipedia.org/wiki/文件系统" target="_blank" rel="noopener">文件系统</a>的实现上。</p>
+                                <p>三阶B树如下图所示</p>
+                                <p><img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gmk5199byij313u0g6mzl.jpg" alt=""></p>
+                                <p>采用树形状结构，采用链表进行划分，这样就可以大量减少查询IO(且平均)，以上图为例子，等值的查询，需要三次IO，且仅要三次。</p>
+                                <p>增加、删除、插入、搜索其之间的关系如下表所示</p>
+                                <p>| 算法 | <strong>平均</strong> | <strong>最差</strong> | | :—: | :————: | :————: | | 空间 | O(<em>n</em>) | O(<em>n</em>) | | 搜索 | O(log <em>n</em>) | O(log <em><br>n</em>) | | 插入 | O(log <em>n</em>) | O(log <em>n</em>) | | 删除 | O(log <em>n</em>) | O(log <em>n</em>) |</p>
+                                <p><strong>B树运用的理念</strong></p>
+                                <ul>
+                                    <li>保持键值有序，以顺序遍历</li>
+                                    <li>使用层次化的索引来最小化磁盘读取</li>
+                                    <li>使用不完全填充的块来加速插入和删除</li>
+                                    <li>通过优雅的遍历算法来保持索引平衡</li>
+                                </ul>
+                                <p>另外，B树通过保证内部节点至少半满来最小化空间浪费。一棵B树可以处理任意数目的插入和删除。</p>
+                                <p><strong>B树的弊端</strong></p>
+                                <ul>
+                                    <li>除非完全重建数据库，否则无法改变键值的最大长度。这使得许多数据库系统将人名截断到70字符之内。</li>
+                                </ul>
+                                <h3 id="B-树"><a href="#B-树" class="headerlink" title="B+树"></a>B+树</h3>
+                                <p>B+树是B树的一种变形，比B树具有更广泛的应用，m阶 B+树有如下特征:</p>
+                                <ol>
+                                    <li>每个结点的关键字个数与孩子个数相等，所有非最下层的内层结点的关键字是对应子树上的最大关键字，最下层内部结点包含了全部关键字.</li>
+                                    <li>除根结点以外，每个内部结点有<code>M/2</code> 到m个孩子.</li>
+                                    <li>所有叶结点在树结构的同一层，并且不含任何信息(可看成是外部结点或查找失败的结点)，因此，树结构总是树高平衡的。</li>
+                                </ol>
+                                <p>在B+树，这些键值的拷贝被存储在内部节点；键值和记录存储在叶子节点；另外，一个叶子节点可以包含一个指针，指向另一个叶子节点以加速顺序存取。</p>
+                                <p>如图</p>
+                                <p><img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gmk5zbc02dj30ta0cmaa0.jpg" alt=""></p>
+                                <p>一颗m阶的B+树和m阶的B_树的差异在于：</p>
+                                <p>1.有n棵子树的结点中含有n个关键字； (而B树是n棵子树有n-1个关键字)</p>
+                                <p>2.所有的叶子结点中包含了全部关键字的信息，及指向含有这些关键字记录的指针，且叶子结点本身依关键字的大小自小而大的顺序链接。(而B树的叶子节点并没有包括全部需要查找的信息)</p>
+                                <p>3.<strong><em>\</em>所有的非终端结点可以看成是索引部分**</strong>，结点中仅含有其子树根结点中最大（或最小）关键字。 (而B 树的非终节点也包含需要查找的有效信息)</p>
+                                <blockquote>
+                                    <p>B＋树的主要优点：非终端结点仅仅起高层索引作用，而B树非终端结点的关键字除作子树分界外，本身还是实际记录的有效关键字（含记录指针），因此相同的结点空间，B＋树可以设计的阶树比B树大，相同的索引，B＋树的索引层数比B树少，因此检索速度比B树快。此外，B＋树叶子结点包含完整的索引信息，可以较方便地表示文件的稀疏索引。最后，B＋树的检索、插入和删除都在叶子结点进行，比B树相对简单</p>
+                                </blockquote>
+                                <h3 id="B-树比B树更适合数据库索引？"><a href="#B-树比B树更适合数据库索引？" class="headerlink" title="B+树比B树更适合数据库索引？"></a>B+树比B树更适合数据库索引？</h3>
+                                <p>1、B+树的磁盘读写代价更低：B+树的内部节点并没有指向关键字具体信息的指针，因此其内部节点相对B树更小，如果把所有同一内部节点的关键字存放在同一盘块中，那么盘块所能容纳的关键字数量也越多，一次性读入内存的需要查找的关键字也就越多，相对IO读写次数就降低了。</p>
+                                <p>2、B+树的查询效率更加稳定：由于非终结点并不是最终指向文件内容的结点，而只是叶子结点中关键字的索引。所以任何关键字的查找必须走一条从根结点到叶子结点的路。所有关键字查询的路径长度相同，导致每一个数据的查询效率相当。</p>
+                                <p>3、由于B+树的数据都存储在叶子结点中，分支结点均为索引，方便扫库，只需要扫一遍叶子结点即可，但是B树因为其分支结点同样存储着数据，我们要找到具体的数据，需要进行一次中序遍历按序来扫，所以B+树更加适合在区间查询的情况，所以通常B+树用于数据库索引。</p>
+                                <h3 id="B-树-1"><a href="#B-树-1" class="headerlink" title="B*树"></a>B*树</h3>
+                                <p><img src="http://static.oschina.net/uploads/space/2011/0509/171056_sAnR_135650.jpg" alt=""></p>
+                                <p>B<em>树是B+树的变体，在B+树的非根和非叶子结点再增加指向兄弟的指针；B</em>树定义了非叶子结点关键字个数至少为(2/3)*M，即块的最低使用率为2/3（代替B+树的1/2）。</p>
+                                <blockquote>
+                                    <p>B+树的分裂：当一个结点满时，分配一个新的结点，并将原结点中1/2的数据复制到新结点，最后在父结点中增加新结点的指针；B+树的分裂只影响原结点和父结点，而不会影响兄弟结点，所以它不需要指向兄弟的指针；</p>
+                                    <p>B*树的分裂：当一个结点满时，如果它的下一个兄弟结点未满，那么将一部分数据移到兄弟结点中，再在原结点插入关键字，最后修改父结点中兄弟结点的关键字（因为兄弟结点的关键字范围改变了）；如果兄弟也满了，则在原结点与兄弟结点之间增加新结点，并各复制1/3的数据到新结点，最后在父结点增加新结点的指针；</p>
+                                </blockquote>
+                                <h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3>
+                                <p>B树：二叉树，每个结点只存储一个关键字，等于则命中，小于走左结点，大于走右结点；</p>
+                                <p>B-树：多路搜索树，每个结点存储M/2到M个关键字，非叶子结点存储指向关键字范围的子结点；所有关键字在整颗树中出现，且只出现一次，非叶子结点可以命中；</p>
+                                <p>B+树：在B-树基础上，为叶子结点增加链表指针，所有关键字都在叶子结点中出现，非叶子结点作为叶子结点的索引；B+树总是到叶子结点才命中；</p>
+                                <p>B*树：在B+树基础上，为非叶子结点也增加链表指针，将结点的最低利用率从1/2提高到2/3</p>
+                                <blockquote>
+                                    <p>这里更加具体的有待探究，欢迎大佬批评与指点</p>
+                                </blockquote>
+                                <h2 id="索引"><a href="#索引" class="headerlink" title="索引"></a>索引</h2>
+                                <h3 id="索引的概念"><a href="#索引的概念" class="headerlink" title="索引的概念"></a>索引的概念</h3>
+                                <p>为了更快与查询，例如寻找书中的一页内容，我们可以先从目录进行塞选、从而加快查找的效率</p>
+                                <h3 id="索引的种类-算法"><a href="#索引的种类-算法" class="headerlink" title="索引的种类(算法)"></a>索引的种类(算法)</h3>
+                                <ul>
+                                    <li>B树索引 —&gt; B+Tree —&gt; B* Tree</li>
+                                    <li>Hash索引</li>
+                                    <li>R树</li>
+                                    <li>Full text</li>
+                                    <li>GIS</li>
+                                </ul>
+                                <h3 id="聚簇索引B树结构"><a href="#聚簇索引B树结构" class="headerlink" title="聚簇索引B树结构"></a>聚簇索引B树结构</h3>
+                                <p>区 extend =&gt; 簇 =&gt; 64 pages -&gt; 1MB</p>
+                                <p><strong>构建前提</strong></p>
+                                <ul>
+                                    <li>建表时，指定了主键列，MySQL InnoDB会将主键作为聚簇索引列，比如 ID NOT NULL Primary Key</li>
+                                    <li>如果没有主键,会选择唯一(unique)的列，作为聚集索引.</li>
+                                    <li>以上均没有会生成隐藏的聚簇索引</li>
+                                </ul>
+                                <p><strong>作用</strong></p>
+                                <ul>
+                                    <li>有了聚簇索引后，将插入的数据行，都会按照Id值的顺序，<code>有序</code>在磁盘存储数据</li>
+                                </ul>
+                                <h3 id="辅助索引B树结构"><a href="#辅助索引B树结构" class="headerlink" title="辅助索引B树结构"></a>辅助索引B树结构</h3>
+                                <blockquote>
+                                    <p>使用普通的列作为条件构建的索引，需要认为创建</p>
+                                </blockquote>
+                                <p><strong>种类</strong></p>
+                                <ul>
+                                    <li>
+                                        <p>普通的单列辅助索引</p>
+                                    </li>
+                                    <li>
+                                        <p>联合索引（多个列作为索引条件,生成索引树,理论上设计的好的,可以减少大量的回表查询)</p>
+                                        <ul>
+                                            <li>注意最左原则</li>
+                                            <li>建立联合索引时，选择重复值少的列。作为最左列</li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <p>唯一索引（索引列的值都是唯一的.）</p>
+                                    </li>
+                                </ul>
+                                <p><strong>作用</strong></p>
+                                <p>优化非聚簇索引列之外的查询优化</p>
+                                <p><strong>构建过程</strong></p>
+                                <ol>
+                                    <li>索引是基于表中,列(索引键)的值生成的B树结构</li>
+                                    <li>首先提取此列所有的值,进行自动排序</li>
+                                    <li>将排好序的值,均匀的分布到索引树的叶子节点中(16K)</li>
+                                    <li>然后生成此索引键值所对应得后端数据页的指针</li>
+                                    <li>生成枝节点和根节点,根据数据量级和索引键长度,生成合适的索引树高度</li>
+                                </ol>
+                                <p><strong>前缀索引</strong></p>
+                                <p>当选取的索引列值过长，造成索引树增高，此时我们就需要使用前缀索引</p>
+                                <h3 id="索引管理"><a href="#索引管理" class="headerlink" title="索引管理"></a>索引管理</h3>
+                                <p><strong>什么时候创建索引？</strong></p>
+                                <p>按业务所需创建合适的索引，并不是索引越多越好，将索引建立在经常<code>where</code>\<code>group by</code>\<code>order by</code>\<code>join on</code>的条件</p>
+                                <p><strong>为什么随意建立索引？</strong></p>
+                                <p>如果冗余索引过多，表的数据发生变化的时候，导致索引频繁更新，造成锁</p>
+                                <p>索引过多会造成优化器选择偏差</p>
+                                <figure class="highlight pgsql">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"># 查询表索引</span><br><span class="line"><span class="keyword">desc</span> <span class="built_in">table_name</span></span><br><span class="line"><span class="keyword">show</span> <span class="keyword">index</span> <span class="keyword">from</span> <span class="built_in">table_name</span></span><br><span class="line"># PRI 聚簇索引、MUL辅助索引、 UNI索引</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <figure class="highlight sql">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="comment"># 创建索引</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">index</span> idx_name1 <span class="keyword">on</span> city(<span class="keyword">name</span>);</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> student <span class="keyword">add</span> <span class="keyword">index</span> idx_name(<span class="keyword">name</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 联合索引</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> city <span class="keyword">add</span> <span class="keyword">index</span> idx_co_po(countrycode,population);</span><br><span class="line"><span class="comment"># 前缀索引</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> city <span class="keyword">add</span> <span class="keyword">index</span> idx_di(district(<span class="number">5</span>));</span><br><span class="line"><span class="comment"># 唯一索引</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> city <span class="keyword">add</span> <span class="keyword">unique</span> <span class="keyword">index</span> idx_uni1(<span class="keyword">name</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除索引</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> city <span class="keyword">drop</span> <span class="keyword">index</span> Index_Name</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h3 id="小结-1"><a href="#小结-1" class="headerlink" title="小结"></a>小结</h3>
+                                <ul>
+                                    <li>聚集索引只能有一个,非空唯一,一般时主键</li>
+                                    <li>辅助索引,可以有多个,时配合聚集索引使用的</li>
+                                    <li>聚集索引叶子节点,就是磁盘的数据行存储的数据页</li>
+                                    <li>MySQL是根据聚集索引,组织存储数据,数据存储时就是按照聚集索引的顺序进行存储数据</li>
+                                    <li>辅助索引,只会提取索引键值,进行自动排序生成B树结构</li>
+                                </ul>
+                                <p><strong>建索引原则</strong></p>
+                                <figure class="highlight csharp">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">(<span class="number">1</span>) 必须要有主键,如果没有可以做为主键条件的列,创建无关列</span><br><span class="line">(<span class="number">2</span>) 经常做为<span class="keyword">where</span>条件列  order <span class="keyword">by</span>  <span class="keyword">group</span> <span class="keyword">by</span>  <span class="keyword">join</span> <span class="keyword">on</span>, distinct 的条件(业务:产品功能+用户行为)</span><br><span class="line">(<span class="number">3</span>) 最好使用唯一值多的列作为索引,如果索引列重复值较多,可以考虑使用联合索引</span><br><span class="line">(<span class="number">4</span>) 列值长度较长的索引列,我们建议使用前缀索引.</span><br><span class="line">(<span class="number">5</span>) 降低索引条目,一方面不要创建没用索引,不常使用的索引清理,<span class="function">percona <span class="title">toolkit</span>(<span class="params">xxxxx</span>)</span></span><br><span class="line"><span class="function">(<span class="params"><span class="number">6</span></span>) 索引维护要避开业务繁忙期</span></span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p><strong>关于索引树的高度受什么影响</strong></p>
+                                <figure class="highlight csharp">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="number">1.</span> 数据量级, 解决方法:分表,分库,分布式</span><br><span class="line"><span class="number">2.</span> 索引列值过长 , 解决方法:前缀索引</span><br><span class="line"><span class="number">3.</span> 数据类型:</span><br><span class="line">变长长度字符串,使用了<span class="keyword">char</span>,解决方案:变长字符串使用varchar</span><br><span class="line"><span class="keyword">enum</span>类型的使用<span class="keyword">enum</span> (<span class="string">'山东'</span>,<span class="string">'河北'</span>,<span class="string">'黑龙江'</span>,<span class="string">'吉林'</span>,<span class="string">'辽宁'</span>,<span class="string">'陕西'</span>......)</span><br><span class="line">                                         <span class="number">1</span>      <span class="number">2</span>      <span class="number">3</span></span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h2 id="执行计划获取及分析"><a href="#执行计划获取及分析" class="headerlink" title="执行计划获取及分析"></a>执行计划获取及分析</h2>
+                                <blockquote>
+                                    <p>执行计划： 优化器按照内置的cost计算，选择执行的方案</p>
+                                    <p>cost：IO、CPU、MEM</p>
+                                </blockquote>
+                                <p>获取到的是优化器选择完成认为代价最小的执行计划. 作用: 语句执行前,先看执行计划信息,可以有效的防止性能较差的语句带来的性能问题. 如果业务中出现了慢语句，我们也需要借助此命令进行语句的评估，分析优化方案。</p>
+                                <p><strong>select 获取数据的方法</strong></p>
+                                <p>全表扫描(应当尽量避免,因为性能低)</p>
+                                <p>索引扫描</p>
+                                <p>获取不到数据</p>
+                                <figure class="highlight pgsql">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"># 查看执行计划</span><br><span class="line"><span class="keyword">desc</span> </span><br><span class="line"><span class="keyword">explain</span>  </span><br><span class="line"># <span class="keyword">desc</span>(<span class="keyword">explain</span>) <span class="keyword">select</span> * <span class="keyword">from</span> sr_paper</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p><img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gmlbo3s5wmj319e02sgln.jpg" alt=""></p>
+                                <figure class="highlight dart">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"># 需关注点</span><br><span class="line">table						：此次查询涉及的表</span><br><span class="line">type						: 查询类型：全表(一般来说有问题，重点关注)、索引(详细探究)</span><br><span class="line">possible_keys		：可能会用的索引</span><br><span class="line">key							: 最后选择的索引</span><br><span class="line">key_len					： 索引覆盖长度</span><br><span class="line">rows						: 此次查询需要扫描的行数</span><br><span class="line">Extra 					：额外的信息</span><br><span class="line"></span><br><span class="line"># 输出介绍</span><br><span class="line">type： ALL(全表扫描) &gt; index(全索引扫描) &gt; range(索引范围查询) &gt; ref(辅助索引等值查询\非唯一索引扫描) &gt; eq_ref(唯一索引扫描) &gt; <span class="keyword">const</span>(system)结果只有一条主键或唯一索引扫描</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p><img src="https://tva1.sinaimg.cn/large/e6c9d24egy1h0k838iw2ij223g0s6adu.jpg" alt="image-20220323231549044"></p>
+                                <p><a href="https://www.cnblogs.com/kerrycode/p/9909093.html" target="_blank" rel="noopener">https://www.cnblogs.com/kerrycode/p/9909093.html</a></p>
+                            </div>
+                            <div class="popular-posts-header">相关文章</div>
+                            <ul class="popular-posts">
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/507251385.html" rel="bookmark">MySQL优化</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/1336292242.html" rel="bookmark">MySQL存储引擎</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/1376532068.html" rel="bookmark">MySQL数据库一些概念</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/1647551827.html" rel="bookmark">MySQL数据库体系结构</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/1196530272.html" rel="bookmark">MySQL数据类型</a></div>
+                                </li>
+                            </ul>
+                            <footer class="post-footer">
+                                <div class="post-tags">
+                                    <a href="/tags/MySQL/" rel="tag"><i class="fa fa-tag"></i> MySQL</a>
+                                    <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="tag"><i class="fa fa-tag"></i> 数据库</a>
+                                </div>
+                                <div class="post-nav">
+                                    <div class="post-nav-item">
+                                        <a href="/9129.html" rel="prev" title="Supervisor-程序管理更加得心应手">
+                                            <i class="fa fa-chevron-left"></i> Supervisor-程序管理更加得心应手 </a>
+                                    </div>
+                                    <div class="post-nav-item">
+                                        <a href="/16021.html" rel="next" title="Redis概览与安装"> Redis概览与安装 <i class="fa fa-chevron-right"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </footer>
+                        </article>
+                    </div>
+                    <script>
+                        window.addEventListener('tabs:register', () =>
+                        {
+                            let
+                            {
+                                activeClass
+                            } = CONFIG.comments;
+                            if (CONFIG.comments.storage)
+                            {
+                                activeClass = localStorage.getItem('comments_active') || activeClass;
+                            }
+                            if (activeClass)
+                            {
+                                let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+                                if (activeTab)
+                                {
+                                    activeTab.click();
+                                }
+                            }
+                        });
+                        if (CONFIG.comments.storage)
+                        {
+                            window.addEventListener('tabs:click', event =>
+                            {
+                                if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+                                let commentClass = event.target.classList[1];
+                                localStorage.setItem('comments_active', commentClass);
+                            });
+                        }
+
+                    </script>
+                </div>
+                <div class="toggle sidebar-toggle">
+                    <span class="toggle-line toggle-line-first"></span>
+                    <span class="toggle-line toggle-line-middle"></span>
+                    <span class="toggle-line toggle-line-last"></span>
+                </div>
+                <aside class="sidebar">
+                    <div class="sidebar-inner">
+                        <ul class="sidebar-nav motion-element">
+                            <li class="sidebar-nav-toc"> 文章目录 </li>
+                            <li class="sidebar-nav-overview"> 站点概览 </li>
+                        </ul>
+                        <!--noindex-->
+                        <div class="post-toc-wrap sidebar-panel">
+                            <div class="post-toc motion-element">
+                                <ol class="nav">
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#B-Tree"><span class="nav-number">1.</span> <span class="nav-text">B Tree</span></a>
+                                        <ol class="nav-child">
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#B树的种类"><span class="nav-number">1.1.</span> <span class="nav-text">B树的种类</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#B-树的定义"><span class="nav-number">1.2.</span> <span class="nav-text">B 树的定义</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#B-树"><span class="nav-number">1.3.</span> <span class="nav-text">B+树</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#B-树比B树更适合数据库索引？"><span class="nav-number">1.4.</span> <span class="nav-text">B+树比B树更适合数据库索引？</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#B-树-1"><span class="nav-number">1.5.</span> <span class="nav-text">B*树</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#小结"><span class="nav-number">1.6.</span> <span class="nav-text">小结</span></a></li>
+                                        </ol>
+                                    </li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#索引"><span class="nav-number">2.</span> <span class="nav-text">索引</span></a>
+                                        <ol class="nav-child">
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#索引的概念"><span class="nav-number">2.1.</span> <span class="nav-text">索引的概念</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#索引的种类-算法"><span class="nav-number">2.2.</span> <span class="nav-text">索引的种类(算法)</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#聚簇索引B树结构"><span class="nav-number">2.3.</span> <span class="nav-text">聚簇索引B树结构</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#辅助索引B树结构"><span class="nav-number">2.4.</span> <span class="nav-text">辅助索引B树结构</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#索引管理"><span class="nav-number">2.5.</span> <span class="nav-text">索引管理</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#小结-1"><span class="nav-number">2.6.</span> <span class="nav-text">小结</span></a></li>
+                                        </ol>
+                                    </li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#执行计划获取及分析"><span class="nav-number">3.</span> <span class="nav-text">执行计划获取及分析</span></a></li>
+                                </ol>
+                            </div>
+                        </div>
+                        <!--/noindex-->
+                        <div class="site-overview-wrap sidebar-panel">
+                            <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <img class="site-author-image" itemprop="image" alt="吴志鹏" src="/images/favicon/android-chrome-512x512.png">
+                                <p class="site-author-name" itemprop="name">吴志鹏</p>
+                                <div class="site-description" itemprop="description">Talk is free，please state clearly</div>
+                            </div>
+                            <div class="site-state-wrap motion-element">
+                                <nav class="site-state">
+                                    <div class="site-state-item site-state-posts">
+                                        <a href="/archives/">
+                                            <span class="site-state-item-count">136</span>
+                                            <span class="site-state-item-name">日志</span>
+                                        </a>
+                                    </div>
+                                    <div class="site-state-item site-state-categories">
+                                        <a href="/categories/">
+                                            <span class="site-state-item-count">158</span>
+                                            <span class="site-state-item-name">分类</span></a>
+                                    </div>
+                                    <div class="site-state-item site-state-tags">
+                                        <a href="/tags/">
+                                            <span class="site-state-item-count">89</span>
+                                            <span class="site-state-item-name">标签</span></a>
+                                    </div>
+                                </nav>
+                            </div>
+                            <div class="links-of-author motion-element">
+                                <span class="links-of-author-item">
+                                    <a href="https://github.com/Payne-Wu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Payne-Wu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="mailto:wuzhipeng1289690157@gmail.com" title="E-Mail → mailto:wuzhipeng1289690157@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="https://www.zhihu.com/people/wu-zhi-peng-72-78" title="ZhiHu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;wu-zhi-peng-72-78" rel="noopener" target="_blank"><i class="fa fa-magic fa-fw"></i>ZhiHu</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="https://weibo.com/u/6987234483" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;6987234483" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+                <div id="sidebar-dimmer"></div>
+            </div>
+        </main>
+        <footer class="footer">
+            <div class="footer-inner">
+                <div class="copyright"> &copy; <span itemprop="copyrightYear">2022</span>
+                    <span class="with-love">
+                        <i class="fa fa-heart"></i>
+                    </span>
+                    <span class="author" itemprop="copyrightHolder">PayneWu</span>
+                    <span class="post-meta-divider">|</span>
+                    <span class="post-meta-item-icon">
+                        <i class="fa fa-chart-area"></i>
+                    </span>
+                    <span title="站点总字数">255k</span>
+                    <span class="post-meta-divider">|</span>
+                    <span class="post-meta-item-icon">
+                        <i class="fa fa-coffee"></i>
+                    </span>
+                    <span title="站点阅读时长">3:51</span>
+                </div>
+                <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">湘ICP备2021019893号-1 </a>
+                </div>
+                <div style="display: none;">
+                    <script src="//s95.cnzz.com/z_stat.php?id=true&web_id=true"></script>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+    <script src="/js/utils.js"></script>
+    <script src="/.js"></script>
+    <script src="/js/schemes/pisces.js"></script>
+    <script src="/.js"></script>
+    <script src="/js/next-boot.js"></script>
+    <script src="/.js"></script>
+    <script>
+        (function ()
+        {
+            var canonicalURL, curProtocol;
+            //Get the <link> tag
+            var x = document.getElementsByTagName("link");
+            //Find the last canonical URL
+            if (x.length > 0)
+            {
+                for (i = 0; i < x.length; i++)
+                {
+                    if (x[i].rel.toLowerCase() == 'canonical' && x[i].href)
+                    {
+                        canonicalURL = x[i].href;
+                    }
+                }
+            }
+            //Get protocol
+            if (!canonicalURL)
+            {
+                curProtocol = window.location.protocol.split(':')[0];
+            }
+            else
+            {
+                curProtocol = canonicalURL.split(':')[0];
+            }
+            //Get current URL if the canonical URL does not exist
+            if (!canonicalURL) canonicalURL = window.location.href;
+            //Assign script content. Replace current URL with the canonical URL
+            ! function ()
+            {
+                var e = /([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,
+                    r = canonicalURL,
+                    t = document.referrer;
+                if (!e.test(r))
+                {
+                    var n = (String(curProtocol).toLowerCase() === 'https') ? "https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif" : "//api.share.baidu.com/s.gif";
+                    t ? (n += "?r=" + encodeURIComponent(document.referrer), r && (n += "&l=" + r)) : r && (n += "?l=" + r);
+                    var i = new Image;
+                    i.src = n
+                }
+            }(window);
+        })();
+
+    </script>
+    <script src="/js/local-search.js"></script>
+    <script src="/.js"></script>
+</body>
+
+</html>

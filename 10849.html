@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+    <meta name="theme-color" content="#222">
+    <meta name="generator" content="Hexo 4.2.1">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16-next.png">
+    <link rel="mask-icon" href="/images/favicon/safari-pinned-tab.svg" color="#222">
+    <meta name="msapplication-config" content="/images/favicon/browserconfig.xml">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+    <link rel="stylesheet" href="/lib/pace/pace-theme-mac-osx.min.css">
+    <script src="/lib/pace/pace.min.js"></script>
+    <script id="hexo-configurations">
+        var NexT = window.NexT ||
+        {};
+        var CONFIG = {
+            "hostname": "paynewu.com",
+            "root": "/",
+            "scheme": "Gemini",
+            "version": "7.8.0",
+            "exturl": false,
+            "sidebar":
+            {
+                "position": "right",
+                "width": 240,
+                "display": "post",
+                "padding": 18,
+                "offset": 12,
+                "onmobile": false
+            },
+            "copycode":
+            {
+                "enable": true,
+                "show_result": true,
+                "style": "mac"
+            },
+            "back2top":
+            {
+                "enable": true,
+                "sidebar": false,
+                "scrollpercent": true
+            },
+            "bookmark":
+            {
+                "enable": false,
+                "color": "#222",
+                "save": "auto"
+            },
+            "fancybox": false,
+            "mediumzoom": true,
+            "lazyload": false,
+            "pangu": true,
+            "comments":
+            {
+                "style": "tabs",
+                "active": "valine",
+                "storage": true,
+                "lazyload": false,
+                "nav": null
+            },
+            "algolia":
+            {
+                "hits":
+                {
+                    "per_page": 10
+                },
+                "labels":
+                {
+                    "input_placeholder": "Search for Posts",
+                    "hits_empty": "We didn't find any results for the search: ${query}",
+                    "hits_stats": "${hits} results found in ${time} ms"
+                }
+            },
+            "localsearch":
+            {
+                "enable": true,
+                "trigger": "auto",
+                "top_n_per_article": 8,
+                "unescape": false,
+                "preload": false
+            },
+            "motion":
+            {
+                "enable": false,
+                "async": false,
+                "transition":
+                {
+                    "post_block": "bounceDownIn",
+                    "post_header": "slideDownIn",
+                    "post_body": "slideDownIn",
+                    "coll_header": "slideLeftIn",
+                    "sidebar": "slideUpIn"
+                }
+            },
+            "path": "search.xml"
+        };
+
+    </script>
+    <meta name="description" content="在爬虫调试的时候一个良好的调试习惯,正确的调试技巧。绝对能让您在抓包，定位及JS解密与JS逆向等各种方面事半功倍。">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="爬虫:有什么让人眼前一亮的调试习惯与技巧">
+    <meta property="og:url" content="https://paynewu.com/10849.html">
+    <meta property="og:site_name" content="吴志鹏｜Payne-Wu">
+    <meta property="og:description" content="在爬虫调试的时候一个良好的调试习惯,正确的调试技巧。绝对能让您在抓包，定位及JS解密与JS逆向等各种方面事半功倍。">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNgy1gqy39xz1a8j31hc0u077n.jpg">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNgy1gqvq9pigxwj312c0kqwfu.jpg">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNgy1gqxwjtd2efj30d60dv0t0.jpg">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNgy1gqvr9k38vtj30k90gmt8w.jpg">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNgy1gqw5udebogj30v80ggq2w.jpg">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNgy1gqw795aqmuj30n00oign0.jpg">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNgy1gqw7bttdw2j31cx0u00vm.jpg">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNgy1gqxflr7ihpj31gt0u0q54.jpg">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNgy1gqxfvabvc5j31wc0p2q5u.jpg">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNgy1gqxg88pojcj31110hqt90.jpg">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNgy1gqxg8o1vr1j305c01bdfm.jpg">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNgy1gqxgedm9qxj3060018dfm.jpg">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNgy1gqxgrt9q3sj30kv0j3wej.jpg">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNgy1gqxh7igr7sj307f03wmx0.jpg">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNgy1gqxhf2qvgnj30he03xglj.jpg">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNgy1gqxhxiph0mj305a0j5jrl.jpg">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNgy1gqxhxz28n1j30cx0budfw.jpg">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNgy1gqxia1wn4vj306s04ht8o.jpg">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNgy1gqxi9firu2j30gy02pq2t.jpg">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNgy1gqxigqz9fpj306o06vdfp.jpg">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNgy1gqy30zuc6nj31c20mgn13.jpg">
+    <meta property="article:published_time" content="2021-05-26T01:19:14.000Z">
+    <meta property="article:modified_time" content="2022-07-27T09:58:26.880Z">
+    <meta property="article:author" content="吴志鹏">
+    <meta property="article:tag" content="Crawler">
+    <meta property="article:tag" content="爬虫">
+    <meta property="article:tag" content="Web Spider">
+    <meta property="article:tag" content="数据采集">
+    <meta property="article:tag" content="JS">
+    <meta property="article:tag" content="Chrome">
+    <meta property="article:tag" content="JavaScript">
+    <meta property="article:tag" content="技巧">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:image" content="https://tva1.sinaimg.cn/large/008i3skNgy1gqy39xz1a8j31hc0u077n.jpg">
+    <link rel="canonical" href="https://paynewu.com/10849.html">
+    <script id="page-configurations">
+        // https://hexo.io/docs/variables.html
+        CONFIG.page = {
+            sidebar: "",
+            isHome: false,
+            isPost: true,
+            lang: 'zh-CN'
+        };
+
+    </script>
+    <title>爬虫:有什么让人眼前一亮的调试习惯与技巧 | 吴志鹏｜Payne-Wu</title>
+    <meta name="google-site-verification" content="p_bIcnvirkFzG2dYKuNDivKD8-STet5W7D-01woA2fc" />
+    <noscript>
+        <style>
+            .use-motion .brand,
+            .use-motion .menu-item,
+            .sidebar-inner,
+            .use-motion .post-block,
+            .use-motion .pagination,
+            .use-motion .comments,
+            .use-motion .post-header,
+            .use-motion .post-body,
+            .use-motion .collection-header
+            {
+                opacity: initial;
+            }
+
+            .use-motion .site-title,
+            .use-motion .site-subtitle
+            {
+                opacity: initial;
+                top: initial;
+            }
+
+            .use-motion .logo-line-before i
+            {
+                left: initial;
+            }
+
+            .use-motion .logo-line-after i
+            {
+                right: initial;
+            }
+
+        </style>
+    </noscript>
+    <link rel="alternate" href="/atom.xml" title="吴志鹏｜Payne-Wu" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+    <div class="container">
+        <div class="headband"></div>
+        <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+            <div class="header-inner">
+                <div class="site-brand-container">
+                    <div class="site-nav-toggle">
+                        <div class="toggle" aria-label="切换导航栏">
+                            <span class="toggle-line toggle-line-first"></span>
+                            <span class="toggle-line toggle-line-middle"></span>
+                            <span class="toggle-line toggle-line-last"></span>
+                        </div>
+                    </div>
+                    <div class="site-meta">
+                        <a href="/" class="brand" rel="start">
+                            <span class="logo-line-before"><i></i></span>
+                            <h1 class="site-title">吴志鹏｜Payne-Wu </h1>
+                            <span class="logo-line-after"><i></i></span>
+                        </a>
+                    </div>
+                    <div class="site-nav-right">
+                        <div class="toggle popup-trigger">
+                            <i class="fa fa-search fa-fw fa-lg"></i>
+                        </div>
+                    </div>
+                </div>
+                <nav class="site-nav">
+                    <ul id="menu" class="main-menu menu">
+                        <li class="menu-item menu-item-home">
+                            <a href="/" rel="section">首页</a>
+                        </li>
+                        <li class="menu-item menu-item-archives">
+                            <a href="/archives/" rel="section">文章列表</a>
+                        </li>
+                        <li class="menu-item menu-item-tags">
+                            <a href="/tags/" rel="section">Tags Cloud</a>
+                        </li>
+                        <li class="menu-item menu-item-categories">
+                            <a href="/categories/" rel="section">文章集合</a>
+                        </li>
+                        <li class="menu-item menu-item-about">
+                            <a href="/about/" rel="section">关于我啊</a>
+                        </li>
+                        <li class="menu-item menu-item-message">
+                            <a href="/message/" rel="section">留言与我</a>
+                        </li>
+                        <li class="menu-item menu-item-search">
+                            <a role="button" class="popup-trigger">搜索 </a>
+                        </li>
+                    </ul>
+                </nav>
+                <div class="search-pop-overlay">
+                    <div class="popup search-popup">
+                        <div class="search-header">
+                            <span class="search-icon">
+                                <i class="fa fa-search"></i>
+                            </span>
+                            <div class="search-input-container">
+                                <input autocomplete="off" autocapitalize="off" placeholder="搜索..." spellcheck="false" type="search" class="search-input">
+                            </div>
+                            <span class="popup-btn-close">
+                                <i class="fa fa-times-circle"></i>
+                            </span>
+                        </div>
+                        <div id="search-result">
+                            <div id="no-result">
+                                <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="back-to-top">
+            <i class="fa fa-arrow-up"></i>
+            <span>0%</span>
+        </div>
+        <div class="reading-progress-bar"></div>
+        <main class="main">
+            <div class="main-inner">
+                <div class="content-wrap">
+                    <div class="content post posts-expand">
+                        <article itemscope itemtype="http://schema.org/Article" class="post-block single" lang="zh-CN">
+                            <link itemprop="mainEntityOfPage" href="https://paynewu.com/10849.html">
+                            <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <meta itemprop="image" content="/images/favicon/android-chrome-512x512.png">
+                                <meta itemprop="name" content="吴志鹏">
+                                <meta itemprop="description" content="Talk is free，please state clearly">
+                            </span>
+                            <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+                                <meta itemprop="name" content="吴志鹏｜Payne-Wu">
+                            </span>
+                            <header class="post-header">
+                                <h1 class="post-title" itemprop="name headline"> 爬虫:有什么让人眼前一亮的调试习惯与技巧 </h1>
+                                <div class="post-meta">
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-user"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">作者</span>
+                                        <span><a href="/authors/Payne" class="author" itemprop="url" rel="index">Payne</a></span>
+                                    </span>
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-calendar"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">发表于</span>
+                                        <time title="创建时间：2021-05-26 09:19:14" itemprop="dateCreated datePublished" datetime="2021-05-26T09:19:14+08:00">2021-05-26</time>
+                                    </span>
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-folder"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">分类于</span>
+                                        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                                            <a href="/categories/%E7%88%AC%E8%99%AB/" itemprop="url" rel="index"><span itemprop="name">爬虫</span></a>
+                                        </span> ， <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                                            <a href="/categories/%E7%88%AC%E8%99%AB/Crawler/" itemprop="url" rel="index"><span itemprop="name">Crawler</span></a>
+                                        </span> ， <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                                            <a href="/categories/%E7%88%AC%E8%99%AB/Crawler/JavaScript/" itemprop="url" rel="index"><span itemprop="name">JavaScript</span></a>
+                                        </span> ， <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                                            <a href="/categories/%E7%88%AC%E8%99%AB/Crawler/JavaScript/%E6%8A%80%E5%B7%A7/" itemprop="url" rel="index"><span itemprop="name">技巧</span></a>
+                                        </span> ， <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                                            <a href="/categories/%E7%88%AC%E8%99%AB/Crawler/JavaScript/%E6%8A%80%E5%B7%A7/JS/" itemprop="url" rel="index"><span itemprop="name">JS</span></a>
+                                        </span>
+                                    </span>
+                                    <br>
+                                    <span class="post-meta-item" title="本文字数">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-file-word"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">本文字数：</span>
+                                        <span>4.6k</span>
+                                    </span>
+                                    <span class="post-meta-item" title="阅读时长">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-clock"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                                        <span>4 分钟</span>
+                                    </span>
+                                </div>
+                            </header>
+                            <div class="post-body" itemprop="articleBody">
+                                <p><img src="https://tva1.sinaimg.cn/large/008i3skNgy1gqy39xz1a8j31hc0u077n.jpg" alt=""></p>
+                                <p>在爬虫调试的时候一个良好的调试习惯,正确的调试技巧。绝对能让您在抓包，定位及JS解密与JS逆向等各种方面事半功倍。</p>
+                                <a id="more"></a>
+                                <h2 id="优秀的调试习惯"><a href="#优秀的调试习惯" class="headerlink" title="优秀的调试习惯"></a>优秀的调试习惯</h2>
+                                <h3 id="无痕模式"><a href="#无痕模式" class="headerlink" title="无痕模式"></a>无痕模式</h3>
+                                <p>无痕浏览（<a href="https://baike.baidu.com/item/隐私浏览模式" target="_blank" rel="noopener">隐私浏览模式</a>、隐身窗口、InPrevate），是指不留下上网浏览记录的互联网浏览方式。但是，用户下载的文件和建立的收藏夹或书签会保存下来。支持该模式的浏览器包括但不限于百度浏览器，Firefox火狐，搜狗浏览器，360安全浏览器，Avant<br>browser ，世界之窗浏览器，Google Chrome，Internet Explorer 8及更新版本，Edge，Safari.</p>
+                                <h4 id="主要特性"><a href="#主要特性" class="headerlink" title="主要特性"></a>主要特性</h4>
+                                <p>不记录上网痕迹，保护您的个人隐私</p>
+                                <p>不记录 Cookies</p>
+                                <p>不记录 Internet <a href="https://baike.baidu.com/item/临时文件" target="_blank" rel="noopener">临时文件</a></p>
+                                <p>不记录网页表单数据（用户名、密码、搜索关键词等）</p>
+                                <p>不记录撤销页面列表，即历史记录</p>
+                                <p>等等</p>
+                                <h4 id="特别提醒"><a href="#特别提醒" class="headerlink" title="特别提醒"></a>特别提醒</h4>
+                                <p><strong>通过无痕浏览不会影响其他用户、服务器或软件。但请谨防以下情况：</strong></p>
+                                <ul>
+                                    <li>进行无痕浏览时，您下载的文件、新收藏的网址、新修改的浏览器配置将仍然被保留。</li>
+                                    <li>因特网服务提供商或雇主还是可以追溯用户访问过的页面。</li>
+                                    <li>如果想要清除电脑中的网页浏览痕迹，可以使用安全软件（如360安全卫士）的清理痕迹按钮或手动删除历史记录和缓存文件。</li>
+                                    <li>因为是无痕浏览，同样浏览器原先保存的密码和账号同样无法使用，这也会给网络浏览带来不便之处。</li>
+                                    <li>网站收集或分享您的相关信息</li>
+                                    <li>以提供免费表情图片为名跟踪按键记录的恶意软件</li>
+                                    <li>在您浏览过程中的监视者</li>
+                                    <li>浏览器插件信息的窃取</li>
+                                </ul>
+                                <h4 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h4>
+                                <ul>
+                                    <li>IE 和 Chrome 都会在无痕浏览下默认关闭扩展功能，而 FireFox 不一样，在隐私模式下仍然可以使用插件，这无疑又给隐私泄露提供了另一个途径。</li>
+                                    <li>所以在关闭Firefox的隐私浏览模式后，您需要检查浏览器插件是否记录了浏览信息，或在隐私模式前暂时禁用不需要开启的插件，否则您的信息可能会被公开</li>
+                                    <li>部分插件（如Adobe Flash Player）拥有一套自己的Cookie系统，在隐私模式下 Cookies 仍然会正常工作，甚至在隐私模式下获取的 Cookies<br>一样是公开可读的。在退出无痕浏览后您需要手动清除Cookis才能做到完全无痕。</li>
+                                </ul>
+                                <h4 id="系统隔离技术"><a href="#系统隔离技术" class="headerlink" title="系统隔离技术"></a>系统隔离技术</h4>
+                                <p>通过一些轻量级的<a href="https://baike.baidu.com/item/虚拟系统" target="_blank" rel="noopener">虚拟系统</a>实现，具体原理：轻量级的虚拟系统可以实现与<a href="https://baike.baidu.com/item/主机系统" target="_blank" rel="noopener">主机系统</a>相互隔离目标，隔离的实现是通过<a href="https://baike.baidu.com/item/镜像" target="_blank" rel="noopener">镜像</a>主机系统环境生成独立的操作系统<a href="https://baike.baidu.com/item/桌面环境" target="_blank" rel="noopener">桌面环境</a>，用户可以在<a href="https://baike.baidu.com/item/虚拟环境" target="_blank" rel="noopener">虚拟环境</a>下安装和使用Internet<br>Explorer，遨游，<a href="https://baike.baidu.com/item/QQ浏览器" target="_blank" rel="noopener">QQ浏览器</a>，Firefox等等<a href="https://baike.baidu.com/item/第三方浏览器" target="_blank" rel="noopener">第三方浏览器</a>，轻量级虚拟系统具有启动资源占用率低，可移动便携方便。这类产品有：VMware<br>Workstation ，Prayaya v3虚拟系统，Ceedo，Macpac等等。</p>
+                                <h4 id="沙盒技术"><a href="#沙盒技术" class="headerlink" title="沙盒技术"></a>沙盒技术</h4>
+                                <p>所谓<a href="https://baike.baidu.com/item/沙盒技术" target="_blank" rel="noopener">沙盒技术</a>，具体见百科（<a href="https://baike.baidu.com/item/sandbox" target="_blank" rel="noopener">sandbox</a>)，沙盒技术可以重定向<a href="https://baike.baidu.com/item/主机系统" target="_blank" rel="noopener">主机系统</a>环境操作到其他的存储空间，以及重定向变量，同时沙盒退出后会自动消失原先的<a href="https://baike.baidu.com/item/虚拟环境" target="_blank" rel="noopener">虚拟环境</a>连接由此达到安装到沙盒中的应用程序不在主机系统中保留痕迹的目的。这类产品有：360安全浏览器，Google<br>浏览器，火狐浏览器，遨游浏览器等</p>
+                                <h4 id="为什么建议使用无痕模式进行调试"><a href="#为什么建议使用无痕模式进行调试" class="headerlink" title="为什么建议使用无痕模式进行调试"></a>为什么建议使用无痕模式进行调试</h4>
+                                <p>当我们使用浏览器访问的时候，难免会由于cookies未及时手动清理，JS缓存等各种情况存在造成调试误差。让人难以快速正确的调试出问题。</p>
+                                <h3 id="多浏览器"><a href="#多浏览器" class="headerlink" title="多浏览器"></a>多浏览器</h3>
+                                <p>多浏览器在这里指使用多个不同的浏览器进行调试，而非仅仅使用Chrome。其中的益处不言而喻，多浏览器能够快速的找到不同。</p>
+                                <h3 id="优秀的调试方式与技巧"><a href="#优秀的调试方式与技巧" class="headerlink" title="优秀的调试方式与技巧"></a>优秀的调试方式与技巧</h3>
+                                <blockquote>
+                                    <p>优秀的调试技巧，能够让你事半功倍，极大的降低调试难度。</p>
+                                </blockquote>
+                                <h4 id="巧用DevTools搜索工具快速定位数据接口"><a href="#巧用DevTools搜索工具快速定位数据接口" class="headerlink" title="巧用DevTools搜索工具快速定位数据接口"></a>巧用DevTools搜索工具快速定位数据接口</h4>
+                                <p>当我们确定了需要抓取数据的目标网站，往往是这种情况。里面参杂了不少不包含数据的包，例如这样。</p>
+                                <p><img src="https://tva1.sinaimg.cn/large/008i3skNgy1gqvq9pigxwj312c0kqwfu.jpg" alt=""></p>
+                                <p>那么如果需要过去该页面数据，就必须找到对应的数据包，一个一个去找明显不现实。有什么方法可以快的定位到该数据包呢？我们可以这样操作。</p>
+                                <p><img src="https://tva1.sinaimg.cn/large/008i3skNgy1gqxwjtd2efj30d60dv0t0.jpg" alt=""></p>
+                                <p>第一步：鼠标左键点击“放大镜”，呼出Search面板。</p>
+                                <p>第二步：搜索对应的内容，支持大小写敏感，正则</p>
+                                <p>第三步：根据结果，鼠标双击对应内容，即可直接跳至对应包位置</p>
+                                <h4 id="巧用重放攻击快速定位加密位置"><a href="#巧用重放攻击快速定位加密位置" class="headerlink" title="巧用重放攻击快速定位加密位置"></a>巧用重放攻击快速定位加密位置</h4>
+                                <p>当网站有相关的验证时，由于参数过多，无法快速的确定哪个参数才是真正决定是否为真实数据的时候，那么我们可以采用重放攻击的方式。进行测试从而快速定位加密位置。</p>
+                                <h5 id="重放攻击"><a href="#重放攻击" class="headerlink" title="重放攻击"></a>重放攻击</h5>
+                                <p>重放攻击(Replay Attacks)<br>又称重播攻击、回放攻击，是指攻击者发送一个目的<a href="https://baike.baidu.com/item/主机/455151" target="_blank" rel="noopener">主机</a>已接收过的包，来达到欺骗系统的目的，主要用于身份认证过程，破坏认证的正确性。重放攻击可以由发起者，也可以由拦截并重发该数据的敌方进行。攻击者利用<a href="https://baike.baidu.com/item/网络监听/10914318" target="_blank" rel="noopener">网络监听</a>或者其他方式盗取认证凭据，之后再把它重新发给<a href="https://baike.baidu.com/item/认证服务器" target="_blank" rel="noopener">认证服务器</a>。重放攻击在任何网络通过程中都可能发生，是计算机世界<a href="https://baike.baidu.com/item/黑客/118396" target="_blank" rel="noopener">黑客</a>常用的攻击方式之一。</p>
+                                <h5 id="重放攻击的原理"><a href="#重放攻击的原理" class="headerlink" title="重放攻击的原理"></a>重放攻击的原理</h5>
+                                <p>重放攻击的基本原理就是把以前<a href="https://baike.baidu.com/item/窃听/1624599" target="_blank" rel="noopener">窃听</a>到的数据原封不动地重新发送给接收方。很多时候，网络上传输的数据是<a href="https://baike.baidu.com/item/加密/752748" target="_blank" rel="noopener">加密</a>过的，此时窃听者无法得到数据的准确意义。但如果他知道这些数据的作用，就可以在不知道数据内容的情况下通过再次发送这些数据达到愚弄接收端的目的。例如，有的系统会将鉴别信息进行简单加密后进行传输，这时攻击者虽然无法窃听<a href="https://baike.baidu.com/item/密码/65553" target="_blank" rel="noopener">密码</a>，但他们却可以首先截取加密后的口令然后将其重放，从而利用这种方式进行有效的攻击。再比如，假设网上存款系统中，一条消息表示用户支取了一笔存款，攻击者完全可以多次发送这条消息而偷窃存款</p>
+                                <h5 id="重放攻击的类型"><a href="#重放攻击的类型" class="headerlink" title="重放攻击的类型"></a>重放攻击的类型</h5>
+                                <p><strong>1.根据重放消息的接收方与消息的原定接收方的关系，重放攻击可分为3种：</strong></p>
+                                <p>第一种是直接重放，即重放给原来的验证端，直接重放的发送方和接收方均不变。</p>
+                                <p>第二种是反向重放，将原本发给接收方的消息反向重放给发送方。</p>
+                                <p>第三种是第三方重放，将消息重放给域内的其他验证端。</p>
+                                <p><strong>2.基于重放法发生在什么回合，可以将重放攻击分为两类：</strong></p>
+                                <p>(1)在当前回合外攻击中，重放的消息来自协议当前回合之外，因此至少涉及协议的两个回合运行，可以并发也可以顺序地实现。</p>
+                                <p>①交错攻击需要两回合或多回合同时执行<a href="https://baike.baidu.com/item/协议/13020269" target="_blank" rel="noopener">协议</a>，著名的例子是Lowe对NSPK协议的攻击。 [5]</p>
+                                <p>②经典重放也涉及当前回合外执行协议，但不要求同时执行协议。攻击者存储在前面的回合中所传送的消息，并抓住机会重放它们，对协议的当前回合进行攻击。Denning和Sacco对NSSK协议的攻击，就是经典重放的一个著名例子。</p>
+                                <p>(2)在当前回合内攻击中，重放的消息来自协议当前回合。</p>
+                                <p><strong>3.考查攻击者对消息重定向，这种分类法称为目的地分类法。分类如下。 </strong></p>
+                                <p>(1)偏转重放攻击：重放消息重新定向，发送给不同于原接收者的第三方。这种情形可进一步分为如下子类：</p>
+                                <p>①重放消息重定向，发送给原发送者，称为反射重放攻击。</p>
+                                <p>②重放消息重定向，发送给第三方，即不同于原发送者和原接收方的第三方。</p>
+                                <p>(2)攻击者通过延时的方法(可能涉及不同的协议回合)，将消息传送给目的地，称为直接重放攻击。</p>
+                                <blockquote>
+                                    <p>以上信息来自<a href="https://baike.baidu.com/item/%E9%87%8D%E6%94%BE%E6%94%BB%E5%87%BB/2229240?fr=aladdin" target="_blank" rel="noopener">百度百科</a></p>
+                                </blockquote>
+                                <h5 id="简单操作流程如下"><a href="#简单操作流程如下" class="headerlink" title="简单操作流程如下"></a>简单操作流程如下</h5>
+                                <p>首先先确定数据包，获取该数据包中的URL。使用代码或脚本间隔一定时间发送网络请求。若根据时间到推移，手动对于请求参数的修改。进行多次验证。基本结构图如下：</p>
+                                <p><img src="https://tva1.sinaimg.cn/large/008i3skNgy1gqvr9k38vtj30k90gmt8w.jpg" alt=""></p>
+                                <p><strong>多次</strong>请求验证，确定加密处。</p>
+                                <h4 id="妙用中间人攻击进行抓包"><a href="#妙用中间人攻击进行抓包" class="headerlink" title="妙用中间人攻击进行抓包"></a>妙用中间人攻击进行抓包</h4>
+                                <p>在很多情况下一个DevTools解决所有，但也有很少部分针对此进行了限制。</p>
+                                <h4 id="中间人攻击"><a href="#中间人攻击" class="headerlink" title="中间人攻击"></a>中间人攻击</h4>
+                                <p>中间人攻击（Man-in-the-MiddleAttack，简称“<a href="https://baike.baidu.com/item/MITM攻击/15637385" target="_blank" rel="noopener">MITM攻击</a>”）是一种“间接”的入侵攻击，这种攻击模式是通过各种技术手段将受入侵者控制的一台计算机虚拟放置在网络连接中的两台通信计算机之间，这台计算机就称为“中间人”。</p>
+                                <p>中间人原理图，如下所示</p>
+                                <p><img src="https://tva1.sinaimg.cn/large/008i3skNgy1gqw5udebogj30v80ggq2w.jpg" alt=""></p>
+                                <p>使用中间人进行”代理“拦截和转发。从而实现抓包的目的.</p>
+                                <h5 id="进阶"><a href="#进阶" class="headerlink" title="进阶"></a>进阶</h5>
+                                <p>抓包抓不到？</p>
+                                <blockquote>
+                                    <p>多体现在Android抓包</p>
+                                </blockquote>
+                                <p>强制代理</p>
+                                <p>VPN转发</p>
+                                <h4 id="各种断点助力调试"><a href="#各种断点助力调试" class="headerlink" title="各种断点助力调试"></a>各种断点助力调试</h4>
+                                <blockquote>
+                                    <p>程序断点的相关概念便不在此过多赘述，若想了解请自行搜搜</p>
+                                </blockquote>
+                                <p><strong>DOM断点</strong></p>
+                                <p>DOM断点一般有三种方式，subtree modification、attribute modification、node removal。如下图所示，</p>
+                                <p><img src="https://tva1.sinaimg.cn/large/008i3skNgy1gqw795aqmuj30n00oign0.jpg" alt="">在这里使用下了一个node removal断点。那么当我们删除此节点的时候将触发断点。如下图所示</p>
+                                <p><img src="https://tva1.sinaimg.cn/large/008i3skNgy1gqw7bttdw2j31cx0u00vm.jpg" alt=""></p>
+                                <p>JS断点</p>
+                                <p>Js断点有两种，一种是Js运行断点，一种是Js调试断点。</p>
+                                <p>Js运行断点：当网页执行Js的时便会立即进入调试模式。操作方式如下</p>
+                                <p><img src="https://tva1.sinaimg.cn/large/008i3skNgy1gqxflr7ihpj31gt0u0q54.jpg" alt=""></p>
+                                <p>首先打开开发者工具，</p>
+                                <p>然后进入source选项卡</p>
+                                <p>然后进入右栏中 Event Listener Breakpoints中</p>
+                                <p>最后勾选Script</p>
+                                <p>即可开启，当网站运行时。便会进入debugger模式</p>
+                                <p>Js调试断点: 此断点需要开发者的去下</p>
+                                <p>首先打开开发者工具，</p>
+                                <p>然后进入source选项卡</p>
+                                <p>找到对应位置，鼠标左键点击。</p>
+                                <p>即可完成</p>
+                                <p><img src="https://tva1.sinaimg.cn/large/008i3skNgy1gqxfvabvc5j31wc0p2q5u.jpg" alt=""></p>
+                                <p>若网页运行到此处，便会触发断点。</p>
+                                <h4 id="XHR断点"><a href="#XHR断点" class="headerlink" title="XHR断点"></a>XHR断点</h4>
+                                <p><a href="https://developer.mozilla.org/zh-CN/docs/Web/API/XMLHttpRequest" target="_blank" rel="noopener"><code>XMLHttpRequest</code></a>（XHR）是一种创建<a href="https://developer.mozilla.org/zh-CN/docs/Glossary/AJAX" target="_blank" rel="noopener">AJAX</a>请求的<a href="https://developer.mozilla.org/zh-CN/docs/Glossary/JavaScript" target="_blank" rel="noopener">JavaScript </a><a href="https://developer.mozilla.org/zh-CN/docs/Glossary/API" target="_blank" rel="noopener">API</a>。它的方法提供了在<a href="https://developer.mozilla.org/zh-CN/docs/Glossary/Browser" target="_blank" rel="noopener">浏览器</a>和<a href="https://developer.mozilla.org/zh-CN/docs/Glossary/Server" target="_blank" rel="noopener">服务器</a>之间发送请求的能力。</p>
+                                <p>当网站是Ajax请求当时候，XHR断点将是一个非常不错的调试技巧。</p>
+                                <p>XHR断点也有两种，一种是发生任何XHR请求的时候都出发断点，另一种是特定条件的XHR断点。</p>
+                                <p>操作如下</p>
+                                <p><img src="https://tva1.sinaimg.cn/large/008i3skNgy1gqxg88pojcj31110hqt90.jpg" alt=""></p>
+                                <p>打开DevTools，进入source选项卡。点开XHR/fetch Breakpoints。</p>
+                                <p>鼠标左键点击旁边的“+”号，直接Enter即可完成。如下图所示：</p>
+                                <p><img src="https://tva1.sinaimg.cn/large/008i3skNgy1gqxg8o1vr1j305c01bdfm.jpg" alt=""></p>
+                                <p>特定XHR断点：</p>
+                                <p>鼠标左键点击旁边的“+”号，在输入栏中输入限定条件，如Id，输入完成后Enter</p>
+                                <p><img src="https://tva1.sinaimg.cn/large/008i3skNgy1gqxgedm9qxj3060018dfm.jpg" alt=""></p>
+                                <h4 id="Hook"><a href="#Hook" class="headerlink" title="Hook"></a>Hook</h4>
+                                <p>Hook<br>又叫作钩子技术，它就是在程序运行的过程中，对其中的某个方法进行重写，在原有的方法前后自定义的代码。相当于在系统没有调用该函数之前，钩子程序就先捕获该消息，可以先得到控制权，这时钩子函数便可以加工处理（改变）该函数的执行行为。执行函数后释放控制权限，继续运行原有逻辑。</p>
+                                <p>示意图如下，</p>
+                                <p><img src="https://tva1.sinaimg.cn/large/008i3skNgy1gqxgrt9q3sj30kv0j3wej.jpg" alt=""></p>
+                                <figure class="highlight javascript">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="comment">// Hook 逻辑</span></span><br><span class="line">    &#125;</span><br><span class="line">)()</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>常实现的有 Devtools Hook，本地文件映射Hook，插件Tempermonkey Hook</p>
+                                <p><strong>Devtools 直接注入:</strong></p>
+                                <p><img src="https://tva1.sinaimg.cn/large/008i3skNgy1gqxh7igr7sj307f03wmx0.jpg" alt=""></p>
+                                <p>Devtools 直接注入的优点：可以直接把Hook函数copy至console中，直接运行。简单便捷。</p>
+                                <p>缺点：比较难修改已经注入的Hook。难以复用。</p>
+                                <p><strong>文件映射Hook</strong></p>
+                                <p>在本地书写Hook函数，后使用DevTools中source选项卡中的Overrides进行文件映射。当网页运行满足Hook条件时候，便会触发Hook函数。</p>
+                                <p><img src="https://tva1.sinaimg.cn/large/008i3skNgy1gqxhf2qvgnj30he03xglj.jpg" alt=""></p>
+                                <p><strong>Tempermonkey Hook</strong></p>
+                                <p><em>Tampermonkey</em> 是第一个可以用来让 Chrome 支持更多 UserScript 的 Chrome 扩展，它可以加入更多的 Chrome 本身不支持的用户脚本功能。Tempermonkey下载与使用请自行搜索</p>
+                                <p>优点：可定制化，通用化。有针对的进行开发。</p>
+                                <p>缺点：需要下载，需要学习Tempermonkey 的使用</p>
+                                <h4 id="JS注入"><a href="#JS注入" class="headerlink" title="JS注入"></a>JS注入</h4>
+                                <p>当我们访问网站时候，一般情况下会将Js缓存到本地，进行相关运行。那么说如果我将本地的保存，修改其中逻辑，并覆盖其服务器下发的Js。这就是注入攻击</p>
+                                <p>其原理是保存服务器下发的Js文件形成类似于“缓存”的功能，修改并覆盖下发Js文件即可完成。</p>
+                                <p>常见的实现方法有三种</p>
+                                <ol>
+                                    <li>
+                                        <p>DevTools中source选项卡中的Overrides进行文件映射</p>
+                                    </li>
+                                    <li>
+                                        <p>Tempermonkey</p>
+                                        <blockquote>
+                                            <p>以上操作，请参考上文</p>
+                                        </blockquote>
+                                    </li>
+                                    <li>
+                                        <p>Charles或其他第三方工具</p>
+                                        <p><img src="https://tva1.sinaimg.cn/large/008i3skNgy1gqxhxiph0mj305a0j5jrl.jpg" alt=""></p>
+                                    </li>
+                                </ol>
+                                <p><img src="https://tva1.sinaimg.cn/large/008i3skNgy1gqxhxz28n1j30cx0budfw.jpg" alt=""></p>
+                                <h4 id="点位插桩调试"><a href="#点位插桩调试" class="headerlink" title="点位插桩调试"></a>点位插桩调试</h4>
+                                <p>其核心原理为：监听核心变量</p>
+                                <p>首先在对应位置鼠标右键呼出，选择add conditional break…</p>
+                                <p><img src="https://tva1.sinaimg.cn/large/008i3skNgy1gqxia1wn4vj306s04ht8o.jpg" alt=""></p>
+                                <p>输入监听值</p>
+                                <p><img src="https://tva1.sinaimg.cn/large/008i3skNgy1gqxi9firu2j30gy02pq2t.jpg" alt=""></p>
+                                <p>放入 Logpoint中。完成后运行js即可在对应级别内看到日志输出</p>
+                                <p><img src="https://tva1.sinaimg.cn/large/008i3skNgy1gqxigqz9fpj306o06vdfp.jpg" alt=""></p>
+                                <center>
+                                    <font color=red size=5px style="font-family: cursive">希望以上方法与技巧对你有所帮助</font>
+                                    <font color=red size=3px style="font-family: cursive">知道的越多，不知道的越多。</font>
+                                </center>
+                                <p><img src="https://tva1.sinaimg.cn/large/008i3skNgy1gqy30zuc6nj31c20mgn13.jpg" alt=""></p>
+                            </div>
+                            <div class="popular-posts-header">相关文章</div>
+                            <ul class="popular-posts">
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/2341116369.html" rel="bookmark">js调试小笔记</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/63324.html" rel="bookmark">常见安全产品(pc)</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/38968.html" rel="bookmark">浏览器指纹在反爬虫领域的应用</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/358032656.html" rel="bookmark">反爬虫常见策略总结</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/42803.html" rel="bookmark">爬虫优化之道</a></div>
+                                </li>
+                            </ul>
+                            <footer class="post-footer">
+                                <div class="post-tags">
+                                    <a href="/tags/Crawler/" rel="tag"><i class="fa fa-tag"></i> Crawler</a>
+                                    <a href="/tags/%E7%88%AC%E8%99%AB/" rel="tag"><i class="fa fa-tag"></i> 爬虫</a>
+                                    <a href="/tags/Web-Spider/" rel="tag"><i class="fa fa-tag"></i> Web Spider</a>
+                                    <a href="/tags/%E6%95%B0%E6%8D%AE%E9%87%87%E9%9B%86/" rel="tag"><i class="fa fa-tag"></i> 数据采集</a>
+                                    <a href="/tags/JS/" rel="tag"><i class="fa fa-tag"></i> JS</a>
+                                    <a href="/tags/Chrome/" rel="tag"><i class="fa fa-tag"></i> Chrome</a>
+                                    <a href="/tags/JavaScript/" rel="tag"><i class="fa fa-tag"></i> JavaScript</a>
+                                    <a href="/tags/%E6%8A%80%E5%B7%A7/" rel="tag"><i class="fa fa-tag"></i> 技巧</a>
+                                </div>
+                                <div class="post-nav">
+                                    <div class="post-nav-item">
+                                        <a href="/42803.html" rel="prev" title="爬虫优化之道">
+                                            <i class="fa fa-chevron-left"></i> 爬虫优化之道 </a>
+                                    </div>
+                                    <div class="post-nav-item">
+                                        <a href="/7658.html" rel="next" title="Tampermonkey安装与使用"> Tampermonkey安装与使用 <i class="fa fa-chevron-right"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </footer>
+                        </article>
+                    </div>
+                    <script>
+                        window.addEventListener('tabs:register', () =>
+                        {
+                            let
+                            {
+                                activeClass
+                            } = CONFIG.comments;
+                            if (CONFIG.comments.storage)
+                            {
+                                activeClass = localStorage.getItem('comments_active') || activeClass;
+                            }
+                            if (activeClass)
+                            {
+                                let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+                                if (activeTab)
+                                {
+                                    activeTab.click();
+                                }
+                            }
+                        });
+                        if (CONFIG.comments.storage)
+                        {
+                            window.addEventListener('tabs:click', event =>
+                            {
+                                if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+                                let commentClass = event.target.classList[1];
+                                localStorage.setItem('comments_active', commentClass);
+                            });
+                        }
+
+                    </script>
+                </div>
+                <div class="toggle sidebar-toggle">
+                    <span class="toggle-line toggle-line-first"></span>
+                    <span class="toggle-line toggle-line-middle"></span>
+                    <span class="toggle-line toggle-line-last"></span>
+                </div>
+                <aside class="sidebar">
+                    <div class="sidebar-inner">
+                        <ul class="sidebar-nav motion-element">
+                            <li class="sidebar-nav-toc"> 文章目录 </li>
+                            <li class="sidebar-nav-overview"> 站点概览 </li>
+                        </ul>
+                        <!--noindex-->
+                        <div class="post-toc-wrap sidebar-panel">
+                            <div class="post-toc motion-element">
+                                <ol class="nav">
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#优秀的调试习惯"><span class="nav-number">1.</span> <span class="nav-text">优秀的调试习惯</span></a>
+                                        <ol class="nav-child">
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#无痕模式"><span class="nav-number">1.1.</span> <span class="nav-text">无痕模式</span></a>
+                                                <ol class="nav-child">
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#主要特性"><span class="nav-number">1.1.1.</span> <span class="nav-text">主要特性</span></a></li>
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#特别提醒"><span class="nav-number">1.1.2.</span> <span class="nav-text">特别提醒</span></a></li>
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#注意事项"><span class="nav-number">1.1.3.</span> <span class="nav-text">注意事项</span></a></li>
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#系统隔离技术"><span class="nav-number">1.1.4.</span> <span class="nav-text">系统隔离技术</span></a></li>
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#沙盒技术"><span class="nav-number">1.1.5.</span> <span class="nav-text">沙盒技术</span></a></li>
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#为什么建议使用无痕模式进行调试"><span class="nav-number">1.1.6.</span> <span class="nav-text">为什么建议使用无痕模式进行调试</span></a></li>
+                                                </ol>
+                                            </li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#多浏览器"><span class="nav-number">1.2.</span> <span class="nav-text">多浏览器</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#优秀的调试方式与技巧"><span class="nav-number">1.3.</span> <span class="nav-text">优秀的调试方式与技巧</span></a>
+                                                <ol class="nav-child">
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#巧用DevTools搜索工具快速定位数据接口"><span class="nav-number">1.3.1.</span> <span class="nav-text">巧用DevTools搜索工具快速定位数据接口</span></a></li>
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#巧用重放攻击快速定位加密位置"><span class="nav-number">1.3.2.</span> <span class="nav-text">巧用重放攻击快速定位加密位置</span></a>
+                                                        <ol class="nav-child">
+                                                            <li class="nav-item nav-level-5"><a class="nav-link" href="#重放攻击"><span class="nav-number">1.3.2.1.</span> <span class="nav-text">重放攻击</span></a></li>
+                                                            <li class="nav-item nav-level-5"><a class="nav-link" href="#重放攻击的原理"><span class="nav-number">1.3.2.2.</span> <span class="nav-text">重放攻击的原理</span></a></li>
+                                                            <li class="nav-item nav-level-5"><a class="nav-link" href="#重放攻击的类型"><span class="nav-number">1.3.2.3.</span> <span class="nav-text">重放攻击的类型</span></a></li>
+                                                            <li class="nav-item nav-level-5"><a class="nav-link" href="#简单操作流程如下"><span class="nav-number">1.3.2.4.</span> <span class="nav-text">简单操作流程如下</span></a></li>
+                                                        </ol>
+                                                    </li>
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#妙用中间人攻击进行抓包"><span class="nav-number">1.3.3.</span> <span class="nav-text">妙用中间人攻击进行抓包</span></a></li>
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#中间人攻击"><span class="nav-number">1.3.4.</span> <span class="nav-text">中间人攻击</span></a>
+                                                        <ol class="nav-child">
+                                                            <li class="nav-item nav-level-5"><a class="nav-link" href="#进阶"><span class="nav-number">1.3.4.1.</span> <span class="nav-text">进阶</span></a></li>
+                                                        </ol>
+                                                    </li>
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#各种断点助力调试"><span class="nav-number">1.3.5.</span> <span class="nav-text">各种断点助力调试</span></a></li>
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#XHR断点"><span class="nav-number">1.3.6.</span> <span class="nav-text">XHR断点</span></a></li>
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#Hook"><span class="nav-number">1.3.7.</span> <span class="nav-text">Hook</span></a></li>
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#JS注入"><span class="nav-number">1.3.8.</span> <span class="nav-text">JS注入</span></a></li>
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#点位插桩调试"><span class="nav-number">1.3.9.</span> <span class="nav-text">点位插桩调试</span></a></li>
+                                                </ol>
+                                            </li>
+                                        </ol>
+                                    </li>
+                                </ol>
+                            </div>
+                        </div>
+                        <!--/noindex-->
+                        <div class="site-overview-wrap sidebar-panel">
+                            <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <img class="site-author-image" itemprop="image" alt="吴志鹏" src="/images/favicon/android-chrome-512x512.png">
+                                <p class="site-author-name" itemprop="name">吴志鹏</p>
+                                <div class="site-description" itemprop="description">Talk is free，please state clearly</div>
+                            </div>
+                            <div class="site-state-wrap motion-element">
+                                <nav class="site-state">
+                                    <div class="site-state-item site-state-posts">
+                                        <a href="/archives/">
+                                            <span class="site-state-item-count">136</span>
+                                            <span class="site-state-item-name">日志</span>
+                                        </a>
+                                    </div>
+                                    <div class="site-state-item site-state-categories">
+                                        <a href="/categories/">
+                                            <span class="site-state-item-count">158</span>
+                                            <span class="site-state-item-name">分类</span></a>
+                                    </div>
+                                    <div class="site-state-item site-state-tags">
+                                        <a href="/tags/">
+                                            <span class="site-state-item-count">89</span>
+                                            <span class="site-state-item-name">标签</span></a>
+                                    </div>
+                                </nav>
+                            </div>
+                            <div class="links-of-author motion-element">
+                                <span class="links-of-author-item">
+                                    <a href="https://github.com/Payne-Wu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Payne-Wu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="mailto:wuzhipeng1289690157@gmail.com" title="E-Mail → mailto:wuzhipeng1289690157@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="https://www.zhihu.com/people/wu-zhi-peng-72-78" title="ZhiHu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;wu-zhi-peng-72-78" rel="noopener" target="_blank"><i class="fa fa-magic fa-fw"></i>ZhiHu</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="https://weibo.com/u/6987234483" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;6987234483" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+                <div id="sidebar-dimmer"></div>
+            </div>
+        </main>
+        <footer class="footer">
+            <div class="footer-inner">
+                <div class="copyright"> &copy; <span itemprop="copyrightYear">2022</span>
+                    <span class="with-love">
+                        <i class="fa fa-heart"></i>
+                    </span>
+                    <span class="author" itemprop="copyrightHolder">PayneWu</span>
+                    <span class="post-meta-divider">|</span>
+                    <span class="post-meta-item-icon">
+                        <i class="fa fa-chart-area"></i>
+                    </span>
+                    <span title="站点总字数">255k</span>
+                    <span class="post-meta-divider">|</span>
+                    <span class="post-meta-item-icon">
+                        <i class="fa fa-coffee"></i>
+                    </span>
+                    <span title="站点阅读时长">3:51</span>
+                </div>
+                <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">湘ICP备2021019893号-1 </a>
+                </div>
+                <div style="display: none;">
+                    <script src="//s95.cnzz.com/z_stat.php?id=true&web_id=true"></script>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+    <script src="/js/utils.js"></script>
+    <script src="/.js"></script>
+    <script src="/js/schemes/pisces.js"></script>
+    <script src="/.js"></script>
+    <script src="/js/next-boot.js"></script>
+    <script src="/.js"></script>
+    <script>
+        (function ()
+        {
+            var canonicalURL, curProtocol;
+            //Get the <link> tag
+            var x = document.getElementsByTagName("link");
+            //Find the last canonical URL
+            if (x.length > 0)
+            {
+                for (i = 0; i < x.length; i++)
+                {
+                    if (x[i].rel.toLowerCase() == 'canonical' && x[i].href)
+                    {
+                        canonicalURL = x[i].href;
+                    }
+                }
+            }
+            //Get protocol
+            if (!canonicalURL)
+            {
+                curProtocol = window.location.protocol.split(':')[0];
+            }
+            else
+            {
+                curProtocol = canonicalURL.split(':')[0];
+            }
+            //Get current URL if the canonical URL does not exist
+            if (!canonicalURL) canonicalURL = window.location.href;
+            //Assign script content. Replace current URL with the canonical URL
+            ! function ()
+            {
+                var e = /([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,
+                    r = canonicalURL,
+                    t = document.referrer;
+                if (!e.test(r))
+                {
+                    var n = (String(curProtocol).toLowerCase() === 'https') ? "https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif" : "//api.share.baidu.com/s.gif";
+                    t ? (n += "?r=" + encodeURIComponent(document.referrer), r && (n += "&l=" + r)) : r && (n += "?l=" + r);
+                    var i = new Image;
+                    i.src = n
+                }
+            }(window);
+        })();
+
+    </script>
+    <script src="/js/local-search.js"></script>
+    <script src="/.js"></script>
+</body>
+
+</html>

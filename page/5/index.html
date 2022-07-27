@@ -1,0 +1,2083 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+    <meta name="theme-color" content="#222">
+    <meta name="generator" content="Hexo 4.2.1">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16-next.png">
+    <link rel="mask-icon" href="/images/favicon/safari-pinned-tab.svg" color="#222">
+    <meta name="msapplication-config" content="/images/favicon/browserconfig.xml">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+    <link rel="stylesheet" href="/lib/pace/pace-theme-mac-osx.min.css">
+    <script src="/lib/pace/pace.min.js"></script>
+    <script id="hexo-configurations">
+        var NexT = window.NexT ||
+        {};
+        var CONFIG = {
+            "hostname": "paynewu.com",
+            "root": "/",
+            "scheme": "Gemini",
+            "version": "7.8.0",
+            "exturl": false,
+            "sidebar":
+            {
+                "position": "right",
+                "width": 240,
+                "display": "post",
+                "padding": 18,
+                "offset": 12,
+                "onmobile": false
+            },
+            "copycode":
+            {
+                "enable": true,
+                "show_result": true,
+                "style": "mac"
+            },
+            "back2top":
+            {
+                "enable": true,
+                "sidebar": false,
+                "scrollpercent": true
+            },
+            "bookmark":
+            {
+                "enable": false,
+                "color": "#222",
+                "save": "auto"
+            },
+            "fancybox": false,
+            "mediumzoom": true,
+            "lazyload": false,
+            "pangu": true,
+            "comments":
+            {
+                "style": "tabs",
+                "active": "valine",
+                "storage": true,
+                "lazyload": false,
+                "nav": null
+            },
+            "algolia":
+            {
+                "hits":
+                {
+                    "per_page": 10
+                },
+                "labels":
+                {
+                    "input_placeholder": "Search for Posts",
+                    "hits_empty": "We didn't find any results for the search: ${query}",
+                    "hits_stats": "${hits} results found in ${time} ms"
+                }
+            },
+            "localsearch":
+            {
+                "enable": true,
+                "trigger": "auto",
+                "top_n_per_article": 8,
+                "unescape": false,
+                "preload": false
+            },
+            "motion":
+            {
+                "enable": false,
+                "async": false,
+                "transition":
+                {
+                    "post_block": "bounceDownIn",
+                    "post_header": "slideDownIn",
+                    "post_body": "slideDownIn",
+                    "coll_header": "slideLeftIn",
+                    "sidebar": "slideUpIn"
+                }
+            },
+            "path": "search.xml"
+        };
+
+    </script>
+    <meta name="description" content="Talk is free，please state clearly">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="吴志鹏｜Payne-Wu">
+    <meta property="og:url" content="https://paynewu.com/page/5/">
+    <meta property="og:site_name" content="吴志鹏｜Payne-Wu">
+    <meta property="og:description" content="Talk is free，please state clearly">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="article:author" content="吴志鹏">
+    <meta property="article:tag" content="吴志鹏">
+    <meta property="article:tag" content="Payne">
+    <meta property="article:tag" content="payne-wu">
+    <meta property="article:tag" content="Python">
+    <meta property="article:tag" content="Java">
+    <meta property="article:tag" content="Golang">
+    <meta property="article:tag" content="go">
+    <meta property="article:tag" content="spider">
+    <meta property="article:tag" content="crawler">
+    <meta property="article:tag" content="js">
+    <meta property="article:tag" content="爬虫">
+    <meta property="article:tag" content=" CloudNative">
+    <meta name="twitter:card" content="summary">
+    <link rel="canonical" href="https://paynewu.com/page/5/">
+    <script id="page-configurations">
+        // https://hexo.io/docs/variables.html
+        CONFIG.page = {
+            sidebar: "",
+            isHome: true,
+            isPost: false,
+            lang: 'zh-CN'
+        };
+
+    </script>
+    <title>吴志鹏｜Payne-Wu</title>
+    <meta name="google-site-verification" content="p_bIcnvirkFzG2dYKuNDivKD8-STet5W7D-01woA2fc" />
+    <noscript>
+        <style>
+            .use-motion .brand,
+            .use-motion .menu-item,
+            .sidebar-inner,
+            .use-motion .post-block,
+            .use-motion .pagination,
+            .use-motion .comments,
+            .use-motion .post-header,
+            .use-motion .post-body,
+            .use-motion .collection-header
+            {
+                opacity: initial;
+            }
+
+            .use-motion .site-title,
+            .use-motion .site-subtitle
+            {
+                opacity: initial;
+                top: initial;
+            }
+
+            .use-motion .logo-line-before i
+            {
+                left: initial;
+            }
+
+            .use-motion .logo-line-after i
+            {
+                right: initial;
+            }
+
+        </style>
+    </noscript>
+    <link rel="alternate" href="/atom.xml" title="吴志鹏｜Payne-Wu" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+    <div class="container">
+        <div class="headband"></div>
+        <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+            <div class="header-inner">
+                <div class="site-brand-container">
+                    <div class="site-nav-toggle">
+                        <div class="toggle" aria-label="切换导航栏">
+                            <span class="toggle-line toggle-line-first"></span>
+                            <span class="toggle-line toggle-line-middle"></span>
+                            <span class="toggle-line toggle-line-last"></span>
+                        </div>
+                    </div>
+                    <div class="site-meta">
+                        <a href="/" class="brand" rel="start">
+                            <span class="logo-line-before"><i></i></span>
+                            <h1 class="site-title">吴志鹏｜Payne-Wu </h1>
+                            <span class="logo-line-after"><i></i></span>
+                        </a>
+                    </div>
+                    <div class="site-nav-right">
+                        <div class="toggle popup-trigger">
+                            <i class="fa fa-search fa-fw fa-lg"></i>
+                        </div>
+                    </div>
+                </div>
+                <nav class="site-nav">
+                    <ul id="menu" class="main-menu menu">
+                        <li class="menu-item menu-item-home">
+                            <a href="/" rel="section">首页</a>
+                        </li>
+                        <li class="menu-item menu-item-archives">
+                            <a href="/archives/" rel="section">文章列表</a>
+                        </li>
+                        <li class="menu-item menu-item-tags">
+                            <a href="/tags/" rel="section">Tags Cloud</a>
+                        </li>
+                        <li class="menu-item menu-item-categories">
+                            <a href="/categories/" rel="section">文章集合</a>
+                        </li>
+                        <li class="menu-item menu-item-about">
+                            <a href="/about/" rel="section">关于我啊</a>
+                        </li>
+                        <li class="menu-item menu-item-message">
+                            <a href="/message/" rel="section">留言与我</a>
+                        </li>
+                        <li class="menu-item menu-item-search">
+                            <a role="button" class="popup-trigger">搜索 </a>
+                        </li>
+                    </ul>
+                </nav>
+                <div class="search-pop-overlay">
+                    <div class="popup search-popup">
+                        <div class="search-header">
+                            <span class="search-icon">
+                                <i class="fa fa-search"></i>
+                            </span>
+                            <div class="search-input-container">
+                                <input autocomplete="off" autocapitalize="off" placeholder="搜索..." spellcheck="false" type="search" class="search-input">
+                            </div>
+                            <span class="popup-btn-close">
+                                <i class="fa fa-times-circle"></i>
+                            </span>
+                        </div>
+                        <div id="search-result">
+                            <div id="no-result">
+                                <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="back-to-top">
+            <i class="fa fa-arrow-up"></i>
+            <span>0%</span>
+        </div>
+        <div class="reading-progress-bar"></div>
+        <main class="main">
+            <div class="main-inner">
+                <div class="content-wrap">
+                    <div class="content index posts-expand">
+                        <div class="carousel">
+                            <div id="wowslider-container">
+                                <div class="ws_images">
+                                    <ul>
+                                    </ul>
+                                </div>
+                                <div class="ws_thumbs">
+                                    <div>
+                                    </div>
+                                </div>
+                                <div class="ws_shadow"></div>
+                            </div>
+                        </div>
+                        <article itemscope itemtype="http://schema.org/Article" class="post-block index" lang="zh-CN">
+                            <link itemprop="mainEntityOfPage" href="https://paynewu.com/38968.html">
+                            <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <meta itemprop="image" content="/images/favicon/android-chrome-512x512.png">
+                                <meta itemprop="name" content="吴志鹏">
+                                <meta itemprop="description" content="Talk is free，please state clearly">
+                            </span>
+                            <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+                                <meta itemprop="name" content="吴志鹏｜Payne-Wu">
+                            </span>
+                            <header class="post-header">
+                                <h2 class="post-title" itemprop="name headline">
+                                    <a class="label"> 爬虫 <i class="label-arrow"></i>
+                                    </a>
+                                    <a href="/38968.html" class="post-title-link" itemprop="url">浏览器指纹在反爬虫领域的应用</a>
+                                </h2>
+                            </header>
+                            <div class="post-body" itemprop="articleBody">
+                                <div class="thumb">
+                                    <img itemprop="contentUrl" class="random">
+                                </div>
+                                <div class="excerpt">
+                                    <p>
+                                    <p>在上文中较为详细的介绍了指纹、设备指纹的常规获取与获取指纹环境监测，本节将详细的了解一下</p>
+                                    <p>浏览器指纹在反爬虫领域的应用，Android分析暂且搁置（其实是我也并不精通，pc端比较熟悉一点）</p>
+                                    </p>
+                                    <!--noindex-->
+                                    <div class="post-button">
+                                        <a class="btn" href="/38968.html#more" rel="contents"> 阅读全文 &raquo; </a>
+                                    </div>
+                                    <!--/noindex-->
+                                </div>
+                            </div>
+                            <div class="post-meta">
+                                <span class="post-meta-item">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-user"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">作者</span>
+                                    <span><a href="/authors/Payne" class="author" itemprop="url" rel="index">Payne</a></span>
+                                </span>
+                                <span class="post-meta-item">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-calendar"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">发表于</span>
+                                    <time title="创建时间：2021-07-14 16:07:22" itemprop="dateCreated datePublished" datetime="2021-07-14T16:07:22+08:00">2021-07-14</time>
+                                </span>
+                                <br>
+                                <span class="post-meta-item" title="本文字数">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-file-word"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">本文字数：</span>
+                                    <span>662</span>
+                                </span>
+                                <span class="post-meta-item" title="阅读时长">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-clock"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                                    <span>1 分钟</span>
+                                </span>
+                            </div>
+                        </article>
+                        <article itemscope itemtype="http://schema.org/Article" class="post-block index" lang="zh-CN">
+                            <link itemprop="mainEntityOfPage" href="https://paynewu.com/15990.html">
+                            <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <meta itemprop="image" content="/images/favicon/android-chrome-512x512.png">
+                                <meta itemprop="name" content="吴志鹏">
+                                <meta itemprop="description" content="Talk is free，please state clearly">
+                            </span>
+                            <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+                                <meta itemprop="name" content="吴志鹏｜Payne-Wu">
+                            </span>
+                            <header class="post-header">
+                                <h2 class="post-title" itemprop="name headline">
+                                    <a class="label"> 爬虫 <i class="label-arrow"></i>
+                                    </a>
+                                    <a href="/15990.html" class="post-title-link" itemprop="url">认识设备指纹</a>
+                                </h2>
+                            </header>
+                            <div class="post-body" itemprop="articleBody">
+                                <div class="thumb">
+                                    <img itemprop="contentUrl" class="random">
+                                </div>
+                                <div class="excerpt">
+                                    <p>
+                                    <h2 id="认识指纹"><a href="#认识指纹" class="headerlink" title="认识指纹"></a>认识指纹</h2>
+                                    <h3 id="什么是指纹"><a href="#什么是指纹" class="headerlink" title="什么是指纹"></a>什么是指纹</h3>
+                                    <p>设备指纹、浏览器指纹也是同理根据软硬件信息，设备版本、设备操作系统等差异性从而生成唯一的设备指纹。</p>
+                                    <blockquote>
+                                        <p>人的手有手指、手掌握纹，通过凹凸规则、分布状态的差异造就了<strong>相对</strong>其独一无二的特征。</p>
+                                    </blockquote>
+                                    </p>
+                                    <!--noindex-->
+                                    <div class="post-button">
+                                        <a class="btn" href="/15990.html#more" rel="contents"> 阅读全文 &raquo; </a>
+                                    </div>
+                                    <!--/noindex-->
+                                </div>
+                            </div>
+                            <div class="post-meta">
+                                <span class="post-meta-item">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-user"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">作者</span>
+                                    <span><a href="/authors/Payne" class="author" itemprop="url" rel="index">Payne</a></span>
+                                </span>
+                                <span class="post-meta-item">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-calendar"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">发表于</span>
+                                    <time title="创建时间：2021-07-12 22:09:17" itemprop="dateCreated datePublished" datetime="2021-07-12T22:09:17+08:00">2021-07-12</time>
+                                </span>
+                                <br>
+                                <span class="post-meta-item" title="本文字数">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-file-word"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">本文字数：</span>
+                                    <span>2.9k</span>
+                                </span>
+                                <span class="post-meta-item" title="阅读时长">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-clock"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                                    <span>3 分钟</span>
+                                </span>
+                            </div>
+                        </article>
+                        <article itemscope itemtype="http://schema.org/Article" class="post-block index" lang="zh-CN">
+                            <link itemprop="mainEntityOfPage" href="https://paynewu.com/63324.html">
+                            <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <meta itemprop="image" content="/images/favicon/android-chrome-512x512.png">
+                                <meta itemprop="name" content="吴志鹏">
+                                <meta itemprop="description" content="Talk is free，please state clearly">
+                            </span>
+                            <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+                                <meta itemprop="name" content="吴志鹏｜Payne-Wu">
+                            </span>
+                            <header class="post-header">
+                                <h2 class="post-title" itemprop="name headline">
+                                    <a class="label"> 爬虫 <i class="label-arrow"></i>
+                                    </a>
+                                    <a href="/63324.html" class="post-title-link" itemprop="url">常见安全产品(pc)</a>
+                                </h2>
+                            </header>
+                            <div class="post-body" itemprop="articleBody">
+                                <div class="thumb">
+                                    <img itemprop="contentUrl" class="random">
+                                </div>
+                                <div class="excerpt">
+                                    <p>
+                                    <p>在做爬虫的时候，很多时候都会遇到较成熟成体系的安全产品。更好的”认识”它，对于解决有至关重要的帮助。以下一起来了解一下网站常见防护产品及特征</p>
+                                    <blockquote>
+                                        <p>声明：本节不涉猎任何实际的产品破解，仅介绍其特征与辨别方式或思路。以下仅根据个人现所了解暂划分为一线、二线等。</p>
+                                    </blockquote>
+                                    <h3 id="一线"><a href="#一线" class="headerlink" title="一线"></a>一线</h3>
+                                    <blockquote>
+                                        <p>学习的对象，自研产品。安全系数高，分析较困难</p>
+                                    </blockquote>
+                                    <p>ali、akamai、jd、pdd、google(含无感验证码)、各大银行支付接口</p>
+                                    <h4 id="ali滑块"><a href="#ali滑块" class="headerlink" title="ali滑块"></a>ali滑块</h4>
+                                    <p>阿里云验证码: <a href="https://help.aliyun.com/product/28308.html" target="_blank" rel="noopener">https://help.aliyun.com/product/28308.html</a></p>
+                                    <p>控制台中有g.alicdn.com字样，其中/后为版本号</p>
+                                    <h4 id="akamai"><a href="#akamai" class="headerlink" title="akamai"></a>akamai</h4>
+                                    <blockquote>
+                                        <p>主要在tls指纹进行相关加密</p>
+                                    </blockquote>
+                                    <h4 id="jd"><a href="#jd" class="headerlink" title="jd"></a>jd</h4>
+                                    <blockquote>
+                                        <p>自写的虚拟机</p>
+                                    </blockquote>
+                                    <h4 id="pdd"><a href="#pdd" class="headerlink" title="pdd"></a>pdd</h4>
+                                    <blockquote>
+                                        <p>Web pack 打包 + 风控</p>
+                                    </blockquote>
+                                    <h4 id="google-含无感验证码"><a href="#google-含无感验证码" class="headerlink" title="google(含无感验证码)"></a>google(含无感验证码)</h4>
+                                    <p>5s 盾 + 谷歌验证码</p>
+                                    <p>绕过方案与线索</p>
+                                    <ul>
+                                        <li>5秒盾 <a href="https://mp.weixin.qq.com/s/zwmatF3yTgSyS0gz8sinaA" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/zwmatF3yTgSyS0gz8sinaA</a></li>
+                                        <li>谷歌验证码打码绕过方案<a href="https://cuiqingcai.com/30026.html" target="_blank" rel="noopener">https://cuiqingcai.com/30026.html</a></li>
+                                    </ul>
+                                    <p><img src="https://tva1.sinaimg.cn/large/008i3skNgy1gtseloz24yj61d60naaca02.jpg" alt="image-20210825014317964"></p>
+                                    <h3 id="二线"><a href="#二线" class="headerlink" title="二线"></a>二线</h3>
+                                    <blockquote>
+                                        <p>可敬的对象</p>
+                                    </blockquote>
+                                    <p>加密与代码保护：瑞数信息（瑞数）、创宇超防（加速乐）、</p>
+                                    <p>验证码：极验、数美、五秒盾、易盾、顶象</p>
+                                    <h4 id="加密与代码保护"><a href="#加密与代码保护" class="headerlink" title="加密与代码保护"></a>加密与代码保护</h4>
+                                    <h5 id="瑞数信息（瑞数）"><a href="#瑞数信息（瑞数）" class="headerlink" title="瑞数信息（瑞数）"></a>瑞数信息（瑞数）</h5>
+                                    <ol>
+                                        <li>未带cookie访问首先是一段神奇的页面，如下图所示</li>
+                                    </ol>
+                                    <p>特征：</p>
+                                    <p>1.</p>
+                                    <p>一长段的：content。有点类似于ob的大数组</p>
+                                    <p>script标签中带有 r=“m”的字样</p>
+                                    <p>执行加密函数1，函数名为 <code>_$xx(xxx)</code></p>
+                                    <p>执行加密函数2（实际加密处）</p>
+                                    <ol>
+                                        <li>无比恶心的乱码</li>
+                                    </ol>
+                                    <p><img src="https://tva1.sinaimg.cn/large/008i3skNgy1gsd76unofcj30sp02qt8m.jpg" alt="ddddd"></p>
+                                    <ol>
+                                        <li>
+                                            <p>动态js</p>
+                                        </li>
+                                        <li>
+                                            <p>版本号</p>
+                                            <p><img src="https://tva1.sinaimg.cn/large/008i3skNgy1gsd8b8qfa3j305y00i0si.jpg" alt=""></p>
+                                        </li>
+                                    </ol>
+                                    <p>首数字开头的编号，编号常见的有4、5、6代</p>
+                                    <h5 id="创宇超防（加速乐）"><a href="#创宇超防（加速乐）" class="headerlink" title="创宇超防（加速乐）"></a>创宇超防（加速乐）</h5>
+                                    <ol>
+                                        <li>未带cookies访问，先是一段神奇的JS，设置cookie。如下图所示</li>
+                                    </ol>
+                                    <p>实际内容如下图所示</p>
+                                    <p><img src="https://tva1.sinaimg.cn/large/008i3skNgy1gsd6qt4brnj311b02qjrj.jpg" alt=""></p>
+                                    <ol>
+                                        <li>
+                                            <p>魔改ob</p>
+                                            <p>用于cookies拼接</p>
+                                            <p><img src="https://tva1.sinaimg.cn/large/008i3skNgy1gsd6wykikcj31lf0u0n36.jpg" alt=""></p>
+                                        </li>
+                                    </ol>
+                                    <h4 id="验证码"><a href="#验证码" class="headerlink" title="验证码"></a>验证码</h4>
+                                    <h5 id="极验"><a href="#极验" class="headerlink" title="极验"></a>极验</h5>
+                                    <p>geetest(极验)官网：<a href="https://www.geetest.com/" target="_blank" rel="noopener">https://www.geetest.com/</a></p>
+                                    <p>demo：<a href="https://www.geetest.com/demo/" target="_blank" rel="noopener">https://www.geetest.com/demo/</a></p>
+                                    <!---------->
+                                    <h5 id="数美"><a href="#数美" class="headerlink" title="数美"></a>数美</h5>
+                                    <p>官网：<a href="https://www.ishumei.com/" target="_blank" rel="noopener">https://www.ishumei.com/</a></p>
+                                    <p>体验：<a href="https://www.ishumei.com/trial/captcha.html" target="_blank" rel="noopener">https://www.ishumei.com/trial/captcha.html</a></p>
+                                    <h5 id="网易易盾"><a href="#网易易盾" class="headerlink" title="网易易盾"></a>网易易盾</h5>
+                                    <p>官网：<a href="https://dun.163.com/" target="_blank" rel="noopener">https://dun.163.com/</a></p>
+                                    <p>Demo：<a href="https://dun.163.com/trial/space-inference" target="_blank" rel="noopener">https://dun.163.com/trial/space-inference</a></p>
+                                    <h5 id="Vaptcha"><a href="#Vaptcha" class="headerlink" title="Vaptcha"></a>Vaptcha</h5>
+                                    <p><a href="https://www.vaptcha.com/" target="_blank" rel="noopener">https://www.vaptcha.com/</a></p>
+                                    <p><img src="https://tva1.sinaimg.cn/large/008i3skNgy1gsd8xpb30oj30vc0g1afq.jpg" alt=""></p>
+                                    <h5 id="顶象"><a href="#顶象" class="headerlink" title="顶象"></a>顶象</h5>
+                                    <h3 id="三线"><a href="#三线" class="headerlink" title="三线"></a>三线</h3>
+                                    <blockquote>
+                                        <p>主要来源于开源框架</p>
+                                    </blockquote>
+                                    <p>Ob混淆系（obfuscator、sojson、Jsaham）、Jsfuck、JJEncode、AAEncode、eval等、</p>
+                                    <p>obfuscator: <a href="https://obfuscator.io/" target="_blank" rel="noopener">https://obfuscator.io/</a></p>
+                                    <p>sojson：<a href="https://www.sojson.com/jsjiemi.html" target="_blank" rel="noopener">https://www.sojson.com/jsjiemi.html</a></p>
+                                    <p>Jsaham：<a href="http://www.jshaman.com/#section2" target="_blank" rel="noopener">http://www.jshaman.com/#section2</a></p>
+                                    <p>jstuck:<a href="http://www.jsfuck.com/" target="_blank" rel="noopener">http://www.jsfuck.com/</a> GitHub:<a href="https://github.com/aemkei/jsfuck" target="_blank" rel="noopener">https://github.com/aemkei/jsfuck</a></p>
+                                    <p>JJEncode:<a href="http://www.atoolbox.net/Tool.php?Id=704" target="_blank" rel="noopener">http://www.atoolbox.net/Tool.php?Id=704</a></p>
+                                    <p>JJEncode:<a href="http://www.atoolbox.net/Tool.php?Id=703" target="_blank" rel="noopener">http://www.atoolbox.net/Tool.php?Id=703</a></p>
+                                    <p>Eval:<a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/eval" target="_blank" rel="noopener">https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/eval</a>;</p>
+                                    <p>分析：eval换为console.log()(前提：console.log未改写)</p>
+                                    <h4 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h4>
+                                    <h5 id="ob系列"><a href="#ob系列" class="headerlink" title="ob系列"></a>ob系列</h5>
+                                    <p>特点</p>
+                                    <ol>
+                                        <li>大数组</li>
+                                        <li>数据移位（常见regex内存检测，建议不format绕过或remove regex）</li>
+                                        <li>解密函数（常见regex内存检测，建议不format绕过或remove regex）</li>
+                                        <li>定时器setInterval() 、setTimeout() + 无限debugger （可能含有）</li>
+                                        <li><strong>业务代码 + 控制流平坦化：（ob强度90%取决于此代码强度、这里是加密前的逻辑）</strong></li>
+                                        <li>控制流平坦化 + 无限debugger + 僵尸代码注入（一般不含有业务逻辑）</li>
+                                    </ol>
+                                    <p>Example:</p>
+                                    <ol>
+                                        <li>找到实际处（ob）</li>
+                                        <li>找前三段（数组、数组移位、解密函数），剪切出去</li>
+                                        <li>格式化控制流平坦化、实际逻辑。放回前剪切出去的内容</li>
+                                        <li>定位加密函数</li>
+                                    </ol>
+                                    <h5 id="Jsfuck、JJEncode、AAEncode"><a href="#Jsfuck、JJEncode、AAEncode" class="headerlink" title="Jsfuck、JJEncode、AAEncode"></a>Jsfuck、JJEncode、AAEncode</h5>
+                                    <p>配合eval类型防护：</p>
+                                    <blockquote>
+                                        <ol>
+                                            <li>直接放控制台console执行(报非unsafe错误)；点击错位堆栈直接完成脱壳</li>
+                                        </ol>
+                                    </blockquote>
+                                    <p><img src="https://tva1.sinaimg.cn/large/008i3skNgy1gsdbgkbq35j30ix0bjwet.jpg" alt=""></p>
+                                    <p><img src="https://tva1.sinaimg.cn/large/008i3skNgy1gsdbfu2amkj31ae02maa0.jpg" alt=""></p>
+                                    <blockquote>
+                                        <p>2.控制台不报错，构建强制报错。删除一些代码（为了不干扰原本代码，建议删除括号或加无意义代码）</p>
+                                        <p>3。控制台报unsafe错误，自写html文件运行。参考以上</p>
+                                    </blockquote>
+                                    <p>混淆部分数字：</p>
+                                    <h3 id="四线"><a href="#四线" class="headerlink" title="四线"></a>四线</h3>
+                                    <blockquote>
+                                        <p>工程化工具、各种加密函数魔改、辅助作用</p>
+                                    </blockquote>
+                                    <p>webpack、vue、react、angular</p>
+                                    <p>webpack：<a href="https://webpack.docschina.org/" target="_blank" rel="noopener">https://webpack.docschina.org/</a></p>
+                                    <p>关键点：加载器（也叫分发器）</p>
+                                    <p>经典绕过方案：点位插桩</p>
+                                    <p>扣取思路：找到加载器、扣出加载器构建自己的加载器（网站与关键参数（函数））、补环境</p>
+                                    <h3 id="验证码汇总"><a href="#验证码汇总" class="headerlink" title="验证码汇总"></a>验证码汇总</h3>
+                                    <p><a href="https://help.aliyun.com/product/28308.html" target="_blank" rel="noopener">ali</a></p>
+                                    <p><a href="https://007.qq.com/" target="_blank" rel="noopener">tencent</a></p>
+                                    <p><a href="https://www.google.com/recaptcha/about/" target="_blank" rel="noopener">reCAPTCHA (google.com)</a></p>
+                                    <p><a href="https://dun.163.com/trial/sense" target="_blank" rel="noopener">163</a>:<a href="https://dun.163.com/" target="_blank" rel="noopener">网易易盾-数字内容风控-内容安全|业务安全|移动安全 (163.com)</a></p>
+                                    <p><a href="http://cdn.dingxiang-inc.com/ctu-group/captcha-ui/demo/" target="_blank" rel="noopener">dingxiang</a>：<a href="https://www.dingxiang-inc.com/" target="_blank" rel="noopener">顶象-业务安全引领者，让数字世界无风险 (<br>dingxiang-inc.com)</a></p>
+                                    <p><a href="https://www.geetest.com/demo/" target="_blank" rel="noopener">geetest</a></p>
+                                    <p><a href="https://www.vaptcha.com/" target="_blank" rel="noopener">vaptcha</a></p>
+                                    <p><a href="https://www.ishumei.com/trial/captcha.html" target="_blank" rel="noopener">ishumei</a></p>
+                                    <p><a href="http://www.yescaptcha.com/" target="_blank" rel="noopener">yescaptch</a></p>
+                                    <p><a href="https://2captcha.com/" target="_blank" rel="noopener">2captcha</a></p>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="post-meta">
+                                <span class="post-meta-item">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-user"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">作者</span>
+                                    <span><a href="/authors/Payne" class="author" itemprop="url" rel="index">Payne</a></span>
+                                </span>
+                                <span class="post-meta-item">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-calendar"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">发表于</span>
+                                    <time title="创建时间：2021-07-11 21:36:28" itemprop="dateCreated datePublished" datetime="2021-07-11T21:36:28+08:00">2021-07-11</time>
+                                </span>
+                                <br>
+                                <span class="post-meta-item" title="本文字数">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-file-word"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">本文字数：</span>
+                                    <span>2.2k</span>
+                                </span>
+                                <span class="post-meta-item" title="阅读时长">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-clock"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                                    <span>2 分钟</span>
+                                </span>
+                            </div>
+                        </article>
+                        <article itemscope itemtype="http://schema.org/Article" class="post-block index" lang="zh-CN">
+                            <link itemprop="mainEntityOfPage" href="https://paynewu.com/14277.html">
+                            <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <meta itemprop="image" content="/images/favicon/android-chrome-512x512.png">
+                                <meta itemprop="name" content="吴志鹏">
+                                <meta itemprop="description" content="Talk is free，please state clearly">
+                            </span>
+                            <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+                                <meta itemprop="name" content="吴志鹏｜Payne-Wu">
+                            </span>
+                            <header class="post-header">
+                                <h2 class="post-title" itemprop="name headline">
+                                    <a class="label"> 爬虫 <i class="label-arrow"></i>
+                                    </a>
+                                    <a href="/14277.html" class="post-title-link" itemprop="url">网页调试干扰总结</a>
+                                </h2>
+                            </header>
+                            <div class="post-body" itemprop="articleBody">
+                                <div class="thumb">
+                                    <img itemprop="contentUrl" class="random">
+                                </div>
+                                <div class="excerpt">
+                                    <p>
+                                    <h2 id="网页反调试总结"><a href="#网页反调试总结" class="headerlink" title="网页反调试总结"></a>网页反调试总结</h2>
+                                    <p>网站除了对代码进行加密进行保护，还时常携带了反调试手段。例如无限debugger；内存爆破，控制台检测。</p>
+                                    <p>相关无限debugger进行反调试阻挠请参考上文，不在此过多赘述。本节主要学习内存爆破原理与绕过思想、控制台检测原理与绕过，</p>
+                                    </p>
+                                    <!--noindex-->
+                                    <div class="post-button">
+                                        <a class="btn" href="/14277.html#more" rel="contents"> 阅读全文 &raquo; </a>
+                                    </div>
+                                    <!--/noindex-->
+                                </div>
+                            </div>
+                            <div class="post-meta">
+                                <span class="post-meta-item">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-user"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">作者</span>
+                                    <span><a href="/authors/Payne" class="author" itemprop="url" rel="index">Payne</a></span>
+                                </span>
+                                <span class="post-meta-item">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-calendar"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">发表于</span>
+                                    <time title="创建时间：2021-07-03 23:42:42" itemprop="dateCreated datePublished" datetime="2021-07-03T23:42:42+08:00">2021-07-03</time>
+                                </span>
+                                <br>
+                                <span class="post-meta-item" title="本文字数">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-file-word"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">本文字数：</span>
+                                    <span>990</span>
+                                </span>
+                                <span class="post-meta-item" title="阅读时长">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-clock"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                                    <span>1 分钟</span>
+                                </span>
+                            </div>
+                        </article>
+                        <article itemscope itemtype="http://schema.org/Article" class="post-block index" lang="zh-CN">
+                            <link itemprop="mainEntityOfPage" href="https://paynewu.com/63974.html">
+                            <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <meta itemprop="image" content="/images/favicon/android-chrome-512x512.png">
+                                <meta itemprop="name" content="吴志鹏">
+                                <meta itemprop="description" content="Talk is free，please state clearly">
+                            </span>
+                            <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+                                <meta itemprop="name" content="吴志鹏｜Payne-Wu">
+                            </span>
+                            <header class="post-header">
+                                <h2 class="post-title" itemprop="name headline">
+                                    <a class="label"> 爬虫 <i class="label-arrow"></i>
+                                    </a>
+                                    <a href="/63974.html" class="post-title-link" itemprop="url">网站防护总结之pc</a>
+                                </h2>
+                            </header>
+                            <div class="post-body" itemprop="articleBody">
+                                <div class="thumb">
+                                    <img itemprop="contentUrl" class="random">
+                                </div>
+                                <div class="excerpt">
+                                    <p>
+                                    <h2 id="为什么需要数据防护？"><a href="#为什么需要数据防护？" class="headerlink" title="为什么需要数据防护？"></a>为什么需要数据防护？</h2>
+                                    <p>当今如今大数据时代，数据重要不言而喻，网页和 App 作为主流的数据载体，如果其数据没有任何的保护措施，在爬虫工程师解决了一些基本的反爬如User-Agent、cookies、验证码等的防护措施之后，那么数据依旧可被轻易的获取。</p>
+                                    <h2 id="数据防护主要体现在何处？"><a href="#数据防护主要体现在何处？" class="headerlink" title="数据防护主要体现在何处？"></a>数据防护主要体现在何处？</h2>
+                                    </p>
+                                    <!--noindex-->
+                                    <div class="post-button">
+                                        <a class="btn" href="/63974.html#more" rel="contents"> 阅读全文 &raquo; </a>
+                                    </div>
+                                    <!--/noindex-->
+                                </div>
+                            </div>
+                            <div class="post-meta">
+                                <span class="post-meta-item">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-user"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">作者</span>
+                                    <span><a href="/authors/Payne" class="author" itemprop="url" rel="index">Payne</a></span>
+                                </span>
+                                <span class="post-meta-item">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-calendar"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">发表于</span>
+                                    <time title="创建时间：2021-07-02 17:25:18" itemprop="dateCreated datePublished" datetime="2021-07-02T17:25:18+08:00">2021-07-02</time>
+                                </span>
+                                <br>
+                                <span class="post-meta-item" title="本文字数">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-file-word"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">本文字数：</span>
+                                    <span>1.9k</span>
+                                </span>
+                                <span class="post-meta-item" title="阅读时长">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-clock"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                                    <span>2 分钟</span>
+                                </span>
+                            </div>
+                        </article>
+                        <article itemscope itemtype="http://schema.org/Article" class="post-block index" lang="zh-CN">
+                            <link itemprop="mainEntityOfPage" href="https://paynewu.com/33650.html">
+                            <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <meta itemprop="image" content="/images/favicon/android-chrome-512x512.png">
+                                <meta itemprop="name" content="吴志鹏">
+                                <meta itemprop="description" content="Talk is free，please state clearly">
+                            </span>
+                            <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+                                <meta itemprop="name" content="吴志鹏｜Payne-Wu">
+                            </span>
+                            <header class="post-header">
+                                <h2 class="post-title" itemprop="name headline">
+                                    <a class="label"> 爬虫 <i class="label-arrow"></i>
+                                    </a>
+                                    <a href="/33650.html" class="post-title-link" itemprop="url">网页调试之JSHook</a>
+                                </h2>
+                            </header>
+                            <div class="post-body" itemprop="articleBody">
+                                <div class="thumb">
+                                    <img itemprop="contentUrl" class="random">
+                                </div>
+                                <div class="excerpt">
+                                    <p>
+                                    <h2 id="网页调试之JSHook"><a href="#网页调试之JSHook" class="headerlink" title="网页调试之JSHook"></a>网页调试之JSHook</h2>
+                                    <h3 id="什么是Hook？"><a href="#什么是Hook？" class="headerlink" title="什么是Hook？"></a>什么是Hook？</h3>
+                                    <p>Hook<br>又叫作钩子技术，它就是在程序运行的过程中，对其中的某个方法进行重写，在原有的方法前后自定义的代码。相当于在系统没有调用该函数之前，钩子程序就先捕获该消息，可以先得到控制权，这时钩子函数便可以加工处理（改变）该函数的执行行为。执行函数后释放控制权限，继续运行原有逻辑。</p>
+                                    </p>
+                                    <!--noindex-->
+                                    <div class="post-button">
+                                        <a class="btn" href="/33650.html#more" rel="contents"> 阅读全文 &raquo; </a>
+                                    </div>
+                                    <!--/noindex-->
+                                </div>
+                            </div>
+                            <div class="post-meta">
+                                <span class="post-meta-item">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-user"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">作者</span>
+                                    <span><a href="/authors/Payne" class="author" itemprop="url" rel="index">Payne</a></span>
+                                </span>
+                                <span class="post-meta-item">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-calendar"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">发表于</span>
+                                    <time title="创建时间：2021-06-12 22:25:29" itemprop="dateCreated datePublished" datetime="2021-06-12T22:25:29+08:00">2021-06-12</time>
+                                </span>
+                                <br>
+                                <span class="post-meta-item" title="本文字数">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-file-word"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">本文字数：</span>
+                                    <span>1.1k</span>
+                                </span>
+                                <span class="post-meta-item" title="阅读时长">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-clock"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                                    <span>1 分钟</span>
+                                </span>
+                            </div>
+                        </article>
+                        <article itemscope itemtype="http://schema.org/Article" class="post-block index" lang="zh-CN">
+                            <link itemprop="mainEntityOfPage" href="https://paynewu.com/2477.html">
+                            <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <meta itemprop="image" content="/images/favicon/android-chrome-512x512.png">
+                                <meta itemprop="name" content="吴志鹏">
+                                <meta itemprop="description" content="Talk is free，please state clearly">
+                            </span>
+                            <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+                                <meta itemprop="name" content="吴志鹏｜Payne-Wu">
+                            </span>
+                            <header class="post-header">
+                                <h2 class="post-title" itemprop="name headline">
+                                    <a class="label"> 爬虫 <i class="label-arrow"></i>
+                                    </a>
+                                    <a href="/2477.html" class="post-title-link" itemprop="url">网页调试之debugger原理与绕过</a>
+                                </h2>
+                            </header>
+                            <div class="post-body" itemprop="articleBody">
+                                <div class="thumb">
+                                    <img itemprop="contentUrl" class="random">
+                                </div>
+                                <div class="excerpt">
+                                    <p>
+                                    <h2 id="网页调试之debugger原理与绕过"><a href="#网页调试之debugger原理与绕过" class="headerlink" title="网页调试之debugger原理与绕过"></a>网页调试之debugger原理与绕过</h2>
+                                    <p>debugger 语句用于停止执行 JavaScript(以下简称JS)，并调用 (如果可用) 调试函数。</p>
+                                    <p>使用 debugger 语句类似于在代码中设置断点。</p>
+                                    </p>
+                                    <!--noindex-->
+                                    <div class="post-button">
+                                        <a class="btn" href="/2477.html#more" rel="contents"> 阅读全文 &raquo; </a>
+                                    </div>
+                                    <!--/noindex-->
+                                </div>
+                            </div>
+                            <div class="post-meta">
+                                <span class="post-meta-item">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-user"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">作者</span>
+                                    <span><a href="/authors/Payne" class="author" itemprop="url" rel="index">Payne</a></span>
+                                </span>
+                                <span class="post-meta-item">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-calendar"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">发表于</span>
+                                    <time title="创建时间：2021-06-09 09:02:14" itemprop="dateCreated datePublished" datetime="2021-06-09T09:02:14+08:00">2021-06-09</time>
+                                </span>
+                                <br>
+                                <span class="post-meta-item" title="本文字数">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-file-word"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">本文字数：</span>
+                                    <span>1.5k</span>
+                                </span>
+                                <span class="post-meta-item" title="阅读时长">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-clock"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                                    <span>1 分钟</span>
+                                </span>
+                            </div>
+                        </article>
+                        <article itemscope itemtype="http://schema.org/Article" class="post-block index" lang="zh-CN">
+                            <link itemprop="mainEntityOfPage" href="https://paynewu.com/38075.html">
+                            <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <meta itemprop="image" content="/images/favicon/android-chrome-512x512.png">
+                                <meta itemprop="name" content="吴志鹏">
+                                <meta itemprop="description" content="Talk is free，please state clearly">
+                            </span>
+                            <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+                                <meta itemprop="name" content="吴志鹏｜Payne-Wu">
+                            </span>
+                            <header class="post-header">
+                                <h2 class="post-title" itemprop="name headline">
+                                    <a class="label"> Redis <i class="label-arrow"></i>
+                                    </a>
+                                    <a href="/38075.html" class="post-title-link" itemprop="url">Redis:在集合中复制键</a>
+                                </h2>
+                            </header>
+                            <div class="post-body" itemprop="articleBody">
+                                <div class="thumb">
+                                    <img itemprop="contentUrl" class="random">
+                                </div>
+                                <div class="excerpt">
+                                    <p>
+                                    <p><strong>问题描述: 由于某种原因，我必须需要将某个集合的键（Key）复制一份副本。并移动到目标库</strong></p>
+                                    <p>拿到这个问题，脑海里一共有两种方式</p>
+                                    <ul>
+                                        <li>将所有的此集合中的所有的值从redis里面读取出来，然后再存进去。</li>
+                                        <li>使用集合的思想进行取差集或并集。如果二者有一个且仅有一个为空那么他们返回的结果为有值的集合</li>
+                                    </ul>
+                                    </p>
+                                    <!--noindex-->
+                                    <div class="post-button">
+                                        <a class="btn" href="/38075.html#more" rel="contents"> 阅读全文 &raquo; </a>
+                                    </div>
+                                    <!--/noindex-->
+                                </div>
+                            </div>
+                            <div class="post-meta">
+                                <span class="post-meta-item">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-user"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">作者</span>
+                                    <span><a href="/authors/Payne" class="author" itemprop="url" rel="index">Payne</a></span>
+                                </span>
+                                <span class="post-meta-item">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-calendar"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">发表于</span>
+                                    <time title="创建时间：2021-06-03 19:06:09" itemprop="dateCreated datePublished" datetime="2021-06-03T19:06:09+08:00">2021-06-03</time>
+                                </span>
+                                <br>
+                                <span class="post-meta-item" title="本文字数">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-file-word"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">本文字数：</span>
+                                    <span>587</span>
+                                </span>
+                                <span class="post-meta-item" title="阅读时长">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-clock"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                                    <span>1 分钟</span>
+                                </span>
+                            </div>
+                        </article>
+                        <article itemscope itemtype="http://schema.org/Article" class="post-block index" lang="zh-CN">
+                            <link itemprop="mainEntityOfPage" href="https://paynewu.com/7658.html">
+                            <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <meta itemprop="image" content="/images/favicon/android-chrome-512x512.png">
+                                <meta itemprop="name" content="吴志鹏">
+                                <meta itemprop="description" content="Talk is free，please state clearly">
+                            </span>
+                            <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+                                <meta itemprop="name" content="吴志鹏｜Payne-Wu">
+                            </span>
+                            <header class="post-header">
+                                <h2 class="post-title" itemprop="name headline">
+                                    <a class="label"> Tampermonkey <i class="label-arrow"></i>
+                                    </a>
+                                    <a href="/7658.html" class="post-title-link" itemprop="url">Tampermonkey安装与使用</a>
+                                </h2>
+                            </header>
+                            <div class="post-body" itemprop="articleBody">
+                                <div class="thumb">
+                                    <img itemprop="contentUrl" class="random">
+                                </div>
+                                <div class="excerpt">
+                                    <p>
+                                    <h2 id="Tampermonkey"><a href="#Tampermonkey" class="headerlink" title="Tampermonkey"></a>Tampermonkey</h2>
+                                    <p><strong>Tampermonkey</strong> 是一款免费的浏览器扩展和最为流行的用户脚本管理器，虽然有些受支持的浏览器拥有原生的用户脚本支持，但 Tampermonkey 将在您的用户脚本管理方面提供更多的便利。<br>它提供了诸如便捷脚本安装、自动更新检查、标签中的脚本运行状况速览、内置的编辑器等众多功能， 同时Tampermonkey还有可能正常运行原本并不兼容的脚本。</p>
+                                    </p>
+                                    <!--noindex-->
+                                    <div class="post-button">
+                                        <a class="btn" href="/7658.html#more" rel="contents"> 阅读全文 &raquo; </a>
+                                    </div>
+                                    <!--/noindex-->
+                                </div>
+                            </div>
+                            <div class="post-meta">
+                                <span class="post-meta-item">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-user"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">作者</span>
+                                    <span><a href="/authors/Payne" class="author" itemprop="url" rel="index">Payne</a></span>
+                                </span>
+                                <span class="post-meta-item">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-calendar"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">发表于</span>
+                                    <time title="创建时间：2021-06-03 18:52:47" itemprop="dateCreated datePublished" datetime="2021-06-03T18:52:47+08:00">2021-06-03</time>
+                                </span>
+                                <br>
+                                <span class="post-meta-item" title="本文字数">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-file-word"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">本文字数：</span>
+                                    <span>3.1k</span>
+                                </span>
+                                <span class="post-meta-item" title="阅读时长">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-clock"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                                    <span>3 分钟</span>
+                                </span>
+                            </div>
+                        </article>
+                        <article itemscope itemtype="http://schema.org/Article" class="post-block index" lang="zh-CN">
+                            <link itemprop="mainEntityOfPage" href="https://paynewu.com/10849.html">
+                            <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <meta itemprop="image" content="/images/favicon/android-chrome-512x512.png">
+                                <meta itemprop="name" content="吴志鹏">
+                                <meta itemprop="description" content="Talk is free，please state clearly">
+                            </span>
+                            <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+                                <meta itemprop="name" content="吴志鹏｜Payne-Wu">
+                            </span>
+                            <header class="post-header">
+                                <h2 class="post-title" itemprop="name headline">
+                                    <a class="label"> 爬虫 <i class="label-arrow"></i>
+                                    </a>
+                                    <a href="/10849.html" class="post-title-link" itemprop="url">爬虫:有什么让人眼前一亮的调试习惯与技巧</a>
+                                </h2>
+                            </header>
+                            <div class="post-body" itemprop="articleBody">
+                                <div class="thumb">
+                                    <img itemprop="contentUrl" class="random">
+                                </div>
+                                <div class="excerpt">
+                                    <p>
+                                    <p><img src="https://tva1.sinaimg.cn/large/008i3skNgy1gqy39xz1a8j31hc0u077n.jpg" alt=""></p>
+                                    <p>在爬虫调试的时候一个良好的调试习惯,正确的调试技巧。绝对能让您在抓包，定位及JS解密与JS逆向等各种方面事半功倍。</p>
+                                    </p>
+                                    <!--noindex-->
+                                    <div class="post-button">
+                                        <a class="btn" href="/10849.html#more" rel="contents"> 阅读全文 &raquo; </a>
+                                    </div>
+                                    <!--/noindex-->
+                                </div>
+                            </div>
+                            <div class="post-meta">
+                                <span class="post-meta-item">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-user"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">作者</span>
+                                    <span><a href="/authors/Payne" class="author" itemprop="url" rel="index">Payne</a></span>
+                                </span>
+                                <span class="post-meta-item">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-calendar"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">发表于</span>
+                                    <time title="创建时间：2021-05-26 09:19:14" itemprop="dateCreated datePublished" datetime="2021-05-26T09:19:14+08:00">2021-05-26</time>
+                                </span>
+                                <br>
+                                <span class="post-meta-item" title="本文字数">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-file-word"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">本文字数：</span>
+                                    <span>4.6k</span>
+                                </span>
+                                <span class="post-meta-item" title="阅读时长">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-clock"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                                    <span>4 分钟</span>
+                                </span>
+                            </div>
+                        </article>
+                        <article itemscope itemtype="http://schema.org/Article" class="post-block index" lang="zh-CN">
+                            <link itemprop="mainEntityOfPage" href="https://paynewu.com/42803.html">
+                            <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <meta itemprop="image" content="/images/favicon/android-chrome-512x512.png">
+                                <meta itemprop="name" content="吴志鹏">
+                                <meta itemprop="description" content="Talk is free，please state clearly">
+                            </span>
+                            <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+                                <meta itemprop="name" content="吴志鹏｜Payne-Wu">
+                            </span>
+                            <header class="post-header">
+                                <h2 class="post-title" itemprop="name headline">
+                                    <a class="label"> 爬虫 <i class="label-arrow"></i>
+                                    </a>
+                                    <a href="/42803.html" class="post-title-link" itemprop="url">爬虫优化之道</a>
+                                </h2>
+                            </header>
+                            <div class="post-body" itemprop="articleBody">
+                                <div class="thumb">
+                                    <img itemprop="contentUrl" class="random">
+                                </div>
+                                <div class="excerpt">
+                                    <p>
+                                    <h2 id="网络爬虫"><a href="#网络爬虫" class="headerlink" title="网络爬虫"></a>网络爬虫</h2>
+                                    <h3 id="网络爬虫的定义"><a href="#网络爬虫的定义" class="headerlink" title="网络爬虫的定义"></a>网络爬虫的定义</h3>
+                                    <p>爬虫又称为网络蜘蛛、网页追逐者。是一种按照一定的规则，自动地抓取万维网信息的程序或脚本</p>
+                                    <p>同时还有很多种说法,但我个人认为最通俗的理解就是，模拟用户访问的程序或脚本。</p>
+                                    </p>
+                                    <!--noindex-->
+                                    <div class="post-button">
+                                        <a class="btn" href="/42803.html#more" rel="contents"> 阅读全文 &raquo; </a>
+                                    </div>
+                                    <!--/noindex-->
+                                </div>
+                            </div>
+                            <div class="post-meta">
+                                <span class="post-meta-item">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-user"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">作者</span>
+                                    <span><a href="/authors/Payne" class="author" itemprop="url" rel="index">Payne</a></span>
+                                </span>
+                                <span class="post-meta-item">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-calendar"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">发表于</span>
+                                    <time title="创建时间：2021-05-26 09:05:26" itemprop="dateCreated datePublished" datetime="2021-05-26T09:05:26+08:00">2021-05-26</time>
+                                </span>
+                                <br>
+                                <span class="post-meta-item" title="本文字数">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-file-word"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">本文字数：</span>
+                                    <span>2k</span>
+                                </span>
+                                <span class="post-meta-item" title="阅读时长">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-clock"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                                    <span>2 分钟</span>
+                                </span>
+                            </div>
+                        </article>
+                        <article itemscope itemtype="http://schema.org/Article" class="post-block index" lang="zh-CN">
+                            <link itemprop="mainEntityOfPage" href="https://paynewu.com/34489.html">
+                            <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <meta itemprop="image" content="/images/favicon/android-chrome-512x512.png">
+                                <meta itemprop="name" content="吴志鹏">
+                                <meta itemprop="description" content="Talk is free，please state clearly">
+                            </span>
+                            <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+                                <meta itemprop="name" content="吴志鹏｜Payne-Wu">
+                            </span>
+                            <header class="post-header">
+                                <h2 class="post-title" itemprop="name headline">
+                                    <a class="label"> Mac <i class="label-arrow"></i>
+                                    </a>
+                                    <a href="/34489.html" class="post-title-link" itemprop="url">新mac使用技巧入门指北</a>
+                                </h2>
+                            </header>
+                            <div class="post-body" itemprop="articleBody">
+                                <div class="thumb">
+                                    <img itemprop="contentUrl" class="random">
+                                </div>
+                                <div class="excerpt">
+                                    <p>
+                                    <h2 id="HomeBrew"><a href="#HomeBrew" class="headerlink" title="HomeBrew"></a>HomeBrew</h2>
+                                    <p><a href="https://brew.sh/" target="_blank" rel="noopener">HomeBrew官方地址</a></p>
+                                    <p><a href="https://brew.idayer.com/" target="_blank" rel="noopener">brew.idayer</a></p>
+                                    <p>简单来说他是类似于<code>yum、apt</code>,mac的包管理工具，使用它我们可以非常简单、丝滑的下载大部分的包、或者软件</p>
+                                    <p>第一次可以尝试使用如下命令进行安装</p>
+                                    <figure class="highlight shell">
+                                        <table>
+                                            <tr>
+                                                <td class="gutter">
+                                                    <pre><span class="line">1</span><br></pre>
+                                                </td>
+                                                <td class="code">
+                                                    <pre><span class="line">/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"</span><br></pre>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </figure>
+                                    <p>由于种种原因，如果安装不上，可以使用华科大的源进行安装</p>
+                                    <figure class="highlight shell">
+                                        <table>
+                                            <tr>
+                                                <td class="gutter">
+                                                    <pre><span class="line">1</span><br></pre>
+                                                </td>
+                                                <td class="code">
+                                                    <pre><span class="line">/bin/bash -c "$(curl -fsSL https://cdn.jsdelivr.net/gh/ineo6/homebrew-install/install.sh)"</span><br></pre>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </figure>
+                                    <p>安装完成后，检查一下</p>
+                                    <figure class="highlight bash">
+                                        <table>
+                                            <tr>
+                                                <td class="gutter">
+                                                    <pre><span class="line">1</span><br></pre>
+                                                </td>
+                                                <td class="code">
+                                                    <pre><span class="line">brew update &amp;&amp; brew upgrade &amp;&amp; brew doctor</span><br></pre>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </figure>
+                                    <p>设置</p>
+                                    <figure class="highlight bash">
+                                        <table>
+                                            <tr>
+                                                <td class="gutter">
+                                                    <pre><span class="line">1</span><br></pre>
+                                                </td>
+                                                <td class="code">
+                                                    <pre><span class="line">git -C <span class="string">"/usr/local/Homebrew/Library/Taps/homebrew/homebrew-core"</span> remote <span class="built_in">set</span>-url origin https://github.com/Homebrew/homebrew-core</span><br></pre>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </figure>
+                                    <h2 id="定制zsh编辑器"><a href="#定制zsh编辑器" class="headerlink" title="定制zsh编辑器"></a>定制zsh编辑器</h2>
+                                    <p>原生的mac，zsh是没有命令提示的，以及显示也并没有那么好看。自定制一下,终端建议使用<code>iterm2</code></p>
+                                    <p>下载<code>iterm2</code></p>
+                                    <figure class="highlight bash">
+                                        <table>
+                                            <tr>
+                                                <td class="gutter">
+                                                    <pre><span class="line">1</span><br></pre>
+                                                </td>
+                                                <td class="code">
+                                                    <pre><span class="line">brew install --cask iterm2</span><br></pre>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </figure>
+                                    <h4 id="下载oh-my-zsh"><a href="#下载oh-my-zsh" class="headerlink" title="下载oh-my-zsh"></a>下载oh-my-zsh</h4>
+                                    <figure class="highlight sh">
+                                        <table>
+                                            <tr>
+                                                <td class="gutter">
+                                                    <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre>
+                                                </td>
+                                                <td class="code">
+                                                    <pre><span class="line"><span class="comment"># curl 安装方式</span></span><br><span class="line">sh -c <span class="string">"<span class="variable">$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)</span>"</span></span><br><span class="line"><span class="comment"># wget 安装方式</span></span><br><span class="line">sh -c <span class="string">"<span class="variable">$(wget https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)</span>"</span></span><br></pre>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </figure>
+                                    <h4 id="复制-zshrc"><a href="#复制-zshrc" class="headerlink" title="复制 .zshrc"></a>复制 .zshrc</h4>
+                                    <figure class="highlight shell">
+                                        <table>
+                                            <tr>
+                                                <td class="gutter">
+                                                    <pre><span class="line">1</span><br></pre>
+                                                </td>
+                                                <td class="code">
+                                                    <pre><span class="line">cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc</span><br></pre>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </figure>
+                                    <h4 id="修改默认-shell-可选"><a href="#修改默认-shell-可选" class="headerlink" title="修改默认 shell(可选)"></a>修改默认 shell(可选)</h4>
+                                    <figure class="highlight sh">
+                                        <table>
+                                            <tr>
+                                                <td class="gutter">
+                                                    <pre><span class="line">1</span><br></pre>
+                                                </td>
+                                                <td class="code">
+                                                    <pre><span class="line">chsh -s /bin/zsh</span><br></pre>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </figure>
+                                    <p>在终端中新建一个窗口(快捷键：command + n），你就发现不一样的shell，如下图所示</p>
+                                    <p><img src="https://tva1.sinaimg.cn/large/008i3skNly1gpxd433qdsj317o0e0wes.jpg" alt="image-20210426191816929"></p>
+                                    <h4 id="安装插件"><a href="#安装插件" class="headerlink" title="安装插件"></a>安装插件</h4>
+                                    <figure class="highlight shell">
+                                        <table>
+                                            <tr>
+                                                <td class="gutter">
+                                                    <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre>
+                                                </td>
+                                                <td class="code">
+                                                    <pre><span class="line"><span class="meta">#</span><span class="bash"> zsh-autosuggestions 提供自动补全功能</span></span><br><span class="line">git clone git://github.com/zsh-users/zsh-autosuggestions $ZSH_CUSTOM/plugins/zsh-autosuggestions</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> zsh-syntax-highlighting 语法高亮</span></span><br><span class="line">git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $ZSH_CUSTOM/plugins/zsh-syntax-highlighting</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> git-open 插件 提供 快捷打开远程地址 git open</span></span><br><span class="line">git clone https://github.com/paulirish/git-open.git $ZSH_CUSTOM/plugins/git-open</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> zsh-z z -h</span></span><br><span class="line">git clone https://github.com/agkozak/zsh-z $ZSH_CUSTOM/plugins/zsh-z</span><br></pre>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </figure>
+                                    <p><code>.zshrc</code> 文件如下</p>
+                                    <figure class="highlight bash">
+                                        <table>
+                                            <tr>
+                                                <td class="gutter">
+                                                    <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br></pre>
+                                                </td>
+                                                <td class="code">
+                                                    <pre><span class="line"><span class="comment"># If you come from bash you might have to change your $PATH.</span></span><br><span class="line"><span class="comment"># export PATH=$HOME/bin:/usr/local/bin:$PATH</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Path to your oh-my-zsh installation.</span></span><br><span class="line"><span class="built_in">export</span> ZSH=<span class="string">"<span class="variable">$HOME</span>/.oh-my-zsh"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Set name of the theme to load --- if set to "random", it will</span></span><br><span class="line"><span class="comment"># load a random theme each time oh-my-zsh is loaded, in which case,</span></span><br><span class="line"><span class="comment"># to know which specific one was loaded, run: echo $RANDOM_THEME</span></span><br><span class="line"><span class="comment"># See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes</span></span><br><span class="line"><span class="comment"># ZSH_THEME="robbyrussell"</span></span><br><span class="line">ZSH_THEME=<span class="string">"random"</span></span><br><span class="line"><span class="built_in">export</span> HISTSIZE=999999</span><br><span class="line"><span class="built_in">export</span> HISTFILESIZE=999999</span><br><span class="line">ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE=<span class="string">"fg=#ff00ff,bg=cyan,bold,underline"</span></span><br><span class="line"><span class="comment"># Set list of themes to pick from when loading at random</span></span><br><span class="line"><span class="comment"># Setting this variable when ZSH_THEME=random will cause zsh to load</span></span><br><span class="line"><span class="comment"># a theme from this variable instead of looking in $ZSH/themes/</span></span><br><span class="line"><span class="comment"># If set to an empty array, this variable will have no effect.</span></span><br><span class="line"><span class="comment"># ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Uncomment the following line to use case-sensitive completion.</span></span><br><span class="line"><span class="comment"># CASE_SENSITIVE="true"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Uncomment the following line to use hyphen-insensitive completion.</span></span><br><span class="line"><span class="comment"># Case-sensitive completion must be off. _ and - will be interchangeable.</span></span><br><span class="line"><span class="comment"># HYPHEN_INSENSITIVE="true"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Uncomment one of the following lines to change the auto-update behavior</span></span><br><span class="line"><span class="comment"># zstyle ':omz:update' mode disabled  # disable automatic updates</span></span><br><span class="line"><span class="comment"># zstyle ':omz:update' mode auto      # update automatically without asking</span></span><br><span class="line"><span class="comment"># zstyle ':omz:update' mode reminder  # just remind me to update when it's time</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Uncomment the following line to change how often to auto-update (in days).</span></span><br><span class="line"><span class="comment"># zstyle ':omz:update' frequency 13</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Uncomment the following line if pasting URLs and other text is messed up.</span></span><br><span class="line"><span class="comment"># DISABLE_MAGIC_FUNCTIONS="true"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Uncomment the following line to disable colors in ls.</span></span><br><span class="line"><span class="comment"># DISABLE_LS_COLORS="true"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Uncomment the following line to disable auto-setting terminal title.</span></span><br><span class="line"><span class="comment"># DISABLE_AUTO_TITLE="true"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Uncomment the following line to enable command auto-correction.</span></span><br><span class="line"><span class="comment"># ENABLE_CORRECTION="true"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Uncomment the following line to display red dots whilst waiting for completion.</span></span><br><span class="line"><span class="comment"># You can also set it to another string to have that shown instead of the default red dots.</span></span><br><span class="line"><span class="comment"># e.g. COMPLETION_WAITING_DOTS="%F&#123;yellow&#125;waiting...%f"</span></span><br><span class="line"><span class="comment"># Caution: this setting can cause issues with multiline prompts in zsh &lt; 5.7.1 (see #5765)</span></span><br><span class="line"><span class="comment"># COMPLETION_WAITING_DOTS="true"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Uncomment the following line if you want to disable marking untracked files</span></span><br><span class="line"><span class="comment"># under VCS as dirty. This makes repository status check for large repositories</span></span><br><span class="line"><span class="comment"># much, much faster.</span></span><br><span class="line"><span class="comment"># DISABLE_UNTRACKED_FILES_DIRTY="true"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Uncomment the following line if you want to change the command execution time</span></span><br><span class="line"><span class="comment"># stamp shown in the history command output.</span></span><br><span class="line"><span class="comment"># You can set one of the optional three formats:</span></span><br><span class="line"><span class="comment"># "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"</span></span><br><span class="line"><span class="comment"># or set a custom format using the strftime function format specifications,</span></span><br><span class="line"><span class="comment"># see 'man strftime' for details.</span></span><br><span class="line"><span class="comment"># HIST_STAMPS="mm/dd/yyyy"</span></span><br><span class="line">HIST_STAMPS=<span class="string">"yyyy-mm-dd"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Would you like to use another custom folder than $ZSH/custom?</span></span><br><span class="line"><span class="comment"># ZSH_CUSTOM=/path/to/new-custom-folder</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Which plugins would you like to load?</span></span><br><span class="line"><span class="comment"># Standard plugins can be found in $ZSH/plugins/</span></span><br><span class="line"><span class="comment"># Custom plugins may be added to $ZSH_CUSTOM/plugins/</span></span><br><span class="line"><span class="comment"># Example format: plugins=(rails git textmate ruby lighthouse)</span></span><br><span class="line"><span class="comment"># Add wisely, as too many plugins slow down shell startup.</span></span><br><span class="line">plugins=(</span><br><span class="line">    rails</span><br><span class="line">    git</span><br><span class="line">    adb</span><br><span class="line">    textmate</span><br><span class="line">    lighthouse</span><br><span class="line">    bundler</span><br><span class="line">    dotenv</span><br><span class="line">    macos</span><br><span class="line">    rake</span><br><span class="line">    rbenv</span><br><span class="line">    git-open</span><br><span class="line">    zsh-z</span><br><span class="line">    zsh-autosuggestions</span><br><span class="line">    zsh-syntax-highlighting</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="built_in">source</span> <span class="variable">$ZSH</span>/oh-my-zsh.sh</span><br><span class="line"></span><br><span class="line"><span class="comment"># User configuration</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># export MANPATH="/usr/local/man:$MANPATH"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># You may need to manually set your language environment</span></span><br><span class="line"><span class="built_in">export</span> LANG=en_US.UTF-8</span><br><span class="line"></span><br><span class="line"><span class="comment"># Preferred editor for local and remote sessions</span></span><br><span class="line"><span class="comment"># if [[ -n $SSH_CONNECTION ]]; then</span></span><br><span class="line"><span class="comment">#   export EDITOR='vim'</span></span><br><span class="line"><span class="comment"># else</span></span><br><span class="line"><span class="comment">#   export EDITOR='mvim'</span></span><br><span class="line"><span class="comment"># fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Compilation flags</span></span><br><span class="line"><span class="comment"># export ARCHFLAGS="-arch x86_64"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Set personal aliases, overriding those provided by oh-my-zsh libs,</span></span><br><span class="line"><span class="comment"># plugins, and themes. Aliases can be placed here, though oh-my-zsh</span></span><br><span class="line"><span class="comment"># users are encouraged to define aliases within the ZSH_CUSTOM folder.</span></span><br><span class="line"><span class="comment"># For a full list of active aliases, run `alias`.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Example aliases</span></span><br><span class="line"><span class="built_in">alias</span> zshconfig=<span class="string">"mate ~/.zshrc"</span></span><br><span class="line"><span class="built_in">alias</span> ohmyzsh=<span class="string">"mate ~/.oh-my-zsh"</span></span><br><span class="line"><span class="built_in">alias</span> cp=<span class="string">'cp -i'</span></span><br><span class="line"><span class="built_in">alias</span> mv=<span class="string">'mv -i'</span></span><br><span class="line"><span class="built_in">alias</span> brewski=<span class="string">'brew update; brew upgrade; brew cleanup; brew doctor'</span></span><br><span class="line"><span class="built_in">alias</span> pyfmt=<span class="string">'fd . -e py | xargs black'</span></span><br><span class="line"><span class="built_in">alias</span> gofmtl=<span class="string">'fd . -e go | xargs gofmt -w'</span></span><br><span class="line"><span class="built_in">alias</span> cls=<span class="string">'clear'</span></span><br><span class="line"><span class="built_in">alias</span> ccnpm=<span class="string">"npm --registry=https://registry.npmmirror.com \</span></span><br><span class="line"><span class="string">--cache=<span class="variable">$HOME</span>/.npm/.cache/cnpm \</span></span><br><span class="line"><span class="string">--disturl=https://npmmirror.com/mirrors/node \</span></span><br><span class="line"><span class="string">--userconfig=<span class="variable">$HOME</span>/.cnpmrc"</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> GOPATH=<span class="string">"/Users/payne/WorkSpace/Go"</span></span><br><span class="line"><span class="built_in">export</span> GOBIN=<span class="string">"<span class="variable">$&#123;GOPATH&#125;</span>/bin"</span></span><br><span class="line"><span class="built_in">export</span> GOPROXY=<span class="string">"https://goproxy.cn,direct"</span></span><br><span class="line"><span class="built_in">export</span> PATH=<span class="string">"<span class="variable">$&#123;GOBIN&#125;</span>:<span class="variable">$&#123;GOPATH&#125;</span>:<span class="variable">$PATH</span>"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># &gt;&gt;&gt; conda initialize &gt;&gt;&gt;</span></span><br><span class="line"><span class="comment"># !! Contents within this block are managed by 'conda init' !!</span></span><br><span class="line">__conda_setup=<span class="string">"<span class="variable">$('/opt/homebrew/Caskroom/miniconda/base/bin/conda' 'shell.zsh' 'hook' 2&gt; /dev/null)</span>"</span></span><br><span class="line"><span class="keyword">if</span> [ $? -eq 0 ]; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">eval</span> <span class="string">"<span class="variable">$__conda_setup</span>"</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    <span class="keyword">if</span> [ -f <span class="string">"/opt/homebrew/Caskroom/miniconda/base/etc/profile.d/conda.sh"</span> ]; <span class="keyword">then</span></span><br><span class="line">        . <span class="string">"/opt/homebrew/Caskroom/miniconda/base/etc/profile.d/conda.sh"</span></span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="built_in">export</span> PATH=<span class="string">"/opt/homebrew/Caskroom/miniconda/base/bin:<span class="variable">$PATH</span>"</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"><span class="built_in">unset</span> __conda_setup</span><br><span class="line"><span class="comment"># &lt;&lt;&lt; conda initialize &lt;&lt;&lt;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">source</span> &lt;(kubectl completion zsh)</span><br><span class="line"><span class="built_in">source</span> &lt;(helm completion zsh)</span><br><span class="line"></span><br><span class="line"><span class="comment">## HOMEBREW</span></span><br><span class="line"><span class="built_in">export</span> HOMEBREW_BOTTLE_DOMAIN=https://mirrors.aliyun.com/homebrew/homebrew-bottles</span><br></pre>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </figure>
+                                    <h3 id="自动补全"><a href="#自动补全" class="headerlink" title="自动补全"></a>自动补全</h3>
+                                    <figure class="highlight shell">
+                                        <table>
+                                            <tr>
+                                                <td class="gutter">
+                                                    <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre>
+                                                </td>
+                                                <td class="code">
+                                                    <pre><span class="line"><span class="meta">#</span><span class="bash"> zsh</span></span><br><span class="line">source &lt;(kubectl completion zsh)</span><br><span class="line"><span class="meta">#</span><span class="bash"> bash (需要下载bash-completion)</span></span><br><span class="line">source /usr/share/bash-completion/bash_completion</span><br><span class="line">source &lt;(kubectl completion bash)</span><br></pre>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </figure>
+                                    <h2 id="font"><a href="#font" class="headerlink" title="font"></a>font</h2>
+                                    <ul>
+                                        <li>
+                                            <p><a href="https://github.com/romkatv/powerlevel10k" target="_blank" rel="noopener">https://github.com/romkatv/powerlevel10k</a></p>
+                                        </li>
+                                        <li>
+                                            <p><a href="https://github.com/powerline/fonts" target="_blank" rel="noopener">https://github.com/powerline/fonts</a></p>
+                                        </li>
+                                    </ul>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="post-meta">
+                                <span class="post-meta-item">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-user"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">作者</span>
+                                    <span><a href="/authors/Payne" class="author" itemprop="url" rel="index">Payne</a></span>
+                                </span>
+                                <span class="post-meta-item">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-calendar"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">发表于</span>
+                                    <time title="创建时间：2021-04-26 19:59:17" itemprop="dateCreated datePublished" datetime="2021-04-26T19:59:17+08:00">2021-04-26</time>
+                                </span>
+                                <br>
+                                <span class="post-meta-item" title="本文字数">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-file-word"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">本文字数：</span>
+                                    <span>380</span>
+                                </span>
+                                <span class="post-meta-item" title="阅读时长">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-clock"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                                    <span>1 分钟</span>
+                                </span>
+                            </div>
+                        </article>
+                        <article itemscope itemtype="http://schema.org/Article" class="post-block index" lang="zh-CN">
+                            <link itemprop="mainEntityOfPage" href="https://paynewu.com/65092.html">
+                            <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <meta itemprop="image" content="/images/favicon/android-chrome-512x512.png">
+                                <meta itemprop="name" content="吴志鹏">
+                                <meta itemprop="description" content="Talk is free，please state clearly">
+                            </span>
+                            <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+                                <meta itemprop="name" content="吴志鹏｜Payne-Wu">
+                            </span>
+                            <header class="post-header">
+                                <h2 class="post-title" itemprop="name headline">
+                                    <a class="label"> Go <i class="label-arrow"></i>
+                                    </a>
+                                    <a href="/65092.html" class="post-title-link" itemprop="url">go代码测试与调优</a>
+                                </h2>
+                            </header>
+                            <div class="post-body" itemprop="articleBody">
+                                <div class="thumb">
+                                    <img itemprop="contentUrl" class="random">
+                                </div>
+                                <div class="excerpt">
+                                    <p>
+                                    <p>在了解golang的测试之前，先了解一下go语言自带的测试工具-go test</p>
+                                    <h2 id="go-test工具"><a href="#go-test工具" class="headerlink" title="go test工具"></a>go test工具</h2>
+                                    <p>Go语言中的测试依赖<code>go test</code>命令。编写测试代码和编写普通的Go代码过程是类似的，并不需要学习新的语法、规则或工具。</p>
+                                    </p>
+                                    <!--noindex-->
+                                    <div class="post-button">
+                                        <a class="btn" href="/65092.html#more" rel="contents"> 阅读全文 &raquo; </a>
+                                    </div>
+                                    <!--/noindex-->
+                                </div>
+                            </div>
+                            <div class="post-meta">
+                                <span class="post-meta-item">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-user"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">作者</span>
+                                    <span><a href="/authors/Payne" class="author" itemprop="url" rel="index">Payne</a></span>
+                                </span>
+                                <span class="post-meta-item">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-calendar"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">发表于</span>
+                                    <time title="创建时间：2021-04-14 00:54:33" itemprop="dateCreated datePublished" datetime="2021-04-14T00:54:33+08:00">2021-04-14</time>
+                                </span>
+                                <br>
+                                <span class="post-meta-item" title="本文字数">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-file-word"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">本文字数：</span>
+                                    <span>7.7k</span>
+                                </span>
+                                <span class="post-meta-item" title="阅读时长">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-clock"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                                    <span>7 分钟</span>
+                                </span>
+                            </div>
+                        </article>
+                        <article itemscope itemtype="http://schema.org/Article" class="post-block index" lang="zh-CN">
+                            <link itemprop="mainEntityOfPage" href="https://paynewu.com/16882.html">
+                            <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <meta itemprop="image" content="/images/favicon/android-chrome-512x512.png">
+                                <meta itemprop="name" content="吴志鹏">
+                                <meta itemprop="description" content="Talk is free，please state clearly">
+                            </span>
+                            <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+                                <meta itemprop="name" content="吴志鹏｜Payne-Wu">
+                            </span>
+                            <header class="post-header">
+                                <h2 class="post-title" itemprop="name headline">
+                                    <a class="label"> Go <i class="label-arrow"></i>
+                                    </a>
+                                    <a href="/16882.html" class="post-title-link" itemprop="url">golang第三方包发布详细流程</a>
+                                </h2>
+                            </header>
+                            <div class="post-body" itemprop="articleBody">
+                                <div class="thumb">
+                                    <img itemprop="contentUrl" class="random">
+                                </div>
+                                <div class="excerpt">
+                                    <p>
+                                    <h3 id="发布golang第三方包"><a href="#发布golang第三方包" class="headerlink" title="发布golang第三方包"></a>发布golang第三方包</h3>
+                                    <p>事情是这样的，随着公司的业务的增长。各种重复的工作越来约多。CV久了就想在进一步的那啥，毕竟我懒，不是。我就想着能不能把那些重复cv的干脆写成一个第三方包，进行调用。咱不谈那些啥封装啥的，我也想过，我也做过。但无论咋封装，总不可能跨项目吧,还是需要。。。</p>
+                                    <p>所幸，还是有方法的，来吧，让我们发表第一个golang工具包</p>
+                                    </p>
+                                    <!--noindex-->
+                                    <div class="post-button">
+                                        <a class="btn" href="/16882.html#more" rel="contents"> 阅读全文 &raquo; </a>
+                                    </div>
+                                    <!--/noindex-->
+                                </div>
+                            </div>
+                            <div class="post-meta">
+                                <span class="post-meta-item">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-user"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">作者</span>
+                                    <span><a href="/authors/Payne" class="author" itemprop="url" rel="index">Payne</a></span>
+                                </span>
+                                <span class="post-meta-item">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-calendar"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">发表于</span>
+                                    <time title="创建时间：2021-03-31 03:13:58" itemprop="dateCreated datePublished" datetime="2021-03-31T03:13:58+08:00">2021-03-31</time>
+                                </span>
+                                <br>
+                                <span class="post-meta-item" title="本文字数">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-file-word"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">本文字数：</span>
+                                    <span>1.1k</span>
+                                </span>
+                                <span class="post-meta-item" title="阅读时长">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-clock"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                                    <span>1 分钟</span>
+                                </span>
+                            </div>
+                        </article>
+                        <article itemscope itemtype="http://schema.org/Article" class="post-block index" lang="zh-CN">
+                            <link itemprop="mainEntityOfPage" href="https://paynewu.com/60366.html">
+                            <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <meta itemprop="image" content="/images/favicon/android-chrome-512x512.png">
+                                <meta itemprop="name" content="吴志鹏">
+                                <meta itemprop="description" content="Talk is free，please state clearly">
+                            </span>
+                            <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+                                <meta itemprop="name" content="吴志鹏｜Payne-Wu">
+                            </span>
+                            <header class="post-header">
+                                <h2 class="post-title" itemprop="name headline">
+                                    <a class="label"> 计算机基础 <i class="label-arrow"></i>
+                                    </a>
+                                    <a href="/60366.html" class="post-title-link" itemprop="url">位运算</a>
+                                </h2>
+                            </header>
+                            <div class="post-body" itemprop="articleBody">
+                                <div class="thumb">
+                                    <img itemprop="contentUrl" class="random">
+                                </div>
+                                <div class="excerpt">
+                                    <p>
+                                    <h2 id="进制与位运算"><a href="#进制与位运算" class="headerlink" title="进制与位运算"></a>进制与位运算</h2>
+                                    <p>在我们编程的领域，进制的重要性不言而喻。为什么我的世界只有0与1，这之间到底有什么不可不知的秘密</p>
+                                    <p>为什么旁边的“高级工程师”，天天学框架、学架构，反而给他学废了。这一切的一切究竟是计算机的计算扭曲，还是计算机的道德沦丧。今天让我们进入哪个传说中只有0与1的世界。</p>
+                                    </p>
+                                    <!--noindex-->
+                                    <div class="post-button">
+                                        <a class="btn" href="/60366.html#more" rel="contents"> 阅读全文 &raquo; </a>
+                                    </div>
+                                    <!--/noindex-->
+                                </div>
+                            </div>
+                            <div class="post-meta">
+                                <span class="post-meta-item">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-user"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">作者</span>
+                                    <span><a href="/authors/Payne" class="author" itemprop="url" rel="index">Payne</a></span>
+                                </span>
+                                <span class="post-meta-item">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-calendar"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">发表于</span>
+                                    <time title="创建时间：2021-03-26 00:55:26" itemprop="dateCreated datePublished" datetime="2021-03-26T00:55:26+08:00">2021-03-26</time>
+                                </span>
+                                <br>
+                                <span class="post-meta-item" title="本文字数">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-file-word"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">本文字数：</span>
+                                    <span>771</span>
+                                </span>
+                                <span class="post-meta-item" title="阅读时长">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-clock"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                                    <span>1 分钟</span>
+                                </span>
+                            </div>
+                        </article>
+                        <article itemscope itemtype="http://schema.org/Article" class="post-block index" lang="zh-CN">
+                            <link itemprop="mainEntityOfPage" href="https://paynewu.com/41600.html">
+                            <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <meta itemprop="image" content="/images/favicon/android-chrome-512x512.png">
+                                <meta itemprop="name" content="吴志鹏">
+                                <meta itemprop="description" content="Talk is free，please state clearly">
+                            </span>
+                            <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+                                <meta itemprop="name" content="吴志鹏｜Payne-Wu">
+                            </span>
+                            <header class="post-header">
+                                <h2 class="post-title" itemprop="name headline">
+                                    <a class="label"> Go <i class="label-arrow"></i>
+                                    </a>
+                                    <a href="/41600.html" class="post-title-link" itemprop="url">golang并发模式</a>
+                                </h2>
+                            </header>
+                            <div class="post-body" itemprop="articleBody">
+                                <div class="thumb">
+                                    <img itemprop="contentUrl" class="random">
+                                </div>
+                                <div class="excerpt">
+                                    <p>
+                                    <p>并发模式并不是一种函数的运用、亦或者实际存在的东西。他是前人对于并发场景的运用总结与经验。他与23中设计模式一样。好啦，话不多说。开干</p>
+                                    <p>无论是如何厉害的架构还是编程方式，我始终相信都是从零开始，不断的抽象，不断的迭代的。抽象思维对于我们尤为重要。那么我们也带着这样的一个疑问。思考到底什么是抽象</p>
+                                    <p>首先我们将要学习的是<code>work pool</code>模式</p>
+                                    </p>
+                                    <!--noindex-->
+                                    <div class="post-button">
+                                        <a class="btn" href="/41600.html#more" rel="contents"> 阅读全文 &raquo; </a>
+                                    </div>
+                                    <!--/noindex-->
+                                </div>
+                            </div>
+                            <div class="post-meta">
+                                <span class="post-meta-item">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-user"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">作者</span>
+                                    <span><a href="/authors/Payne" class="author" itemprop="url" rel="index">Payne</a></span>
+                                </span>
+                                <span class="post-meta-item">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-calendar"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">发表于</span>
+                                    <time title="创建时间：2021-02-12 23:31:07" itemprop="dateCreated datePublished" datetime="2021-02-12T23:31:07+08:00">2021-02-12</time>
+                                </span>
+                                <br>
+                                <span class="post-meta-item" title="本文字数">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-file-word"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">本文字数：</span>
+                                    <span>1.8k</span>
+                                </span>
+                                <span class="post-meta-item" title="阅读时长">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-clock"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                                    <span>2 分钟</span>
+                                </span>
+                            </div>
+                        </article>
+                        <article itemscope itemtype="http://schema.org/Article" class="post-block index" lang="zh-CN">
+                            <link itemprop="mainEntityOfPage" href="https://paynewu.com/2392.html">
+                            <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <meta itemprop="image" content="/images/favicon/android-chrome-512x512.png">
+                                <meta itemprop="name" content="吴志鹏">
+                                <meta itemprop="description" content="Talk is free，please state clearly">
+                            </span>
+                            <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+                                <meta itemprop="name" content="吴志鹏｜Payne-Wu">
+                            </span>
+                            <header class="post-header">
+                                <h2 class="post-title" itemprop="name headline">
+                                    <a class="label"> Go <i class="label-arrow"></i>
+                                    </a>
+                                    <a href="/2392.html" class="post-title-link" itemprop="url">golang并发铁索连环-context</a>
+                                </h2>
+                            </header>
+                            <div class="post-body" itemprop="articleBody">
+                                <div class="thumb">
+                                    <img itemprop="contentUrl" class="random">
+                                </div>
+                                <div class="excerpt">
+                                    <p>
+                                    <p>在本文中，我首先会介绍context是什么，它有什么作用，以及如何使用，其中还会参杂一点个人的理解，以及部分源码的了解。What are you waiting for?</p>
+                                    </p>
+                                    <!--noindex-->
+                                    <div class="post-button">
+                                        <a class="btn" href="/2392.html#more" rel="contents"> 阅读全文 &raquo; </a>
+                                    </div>
+                                    <!--/noindex-->
+                                </div>
+                            </div>
+                            <div class="post-meta">
+                                <span class="post-meta-item">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-user"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">作者</span>
+                                    <span><a href="/authors/Payne" class="author" itemprop="url" rel="index">Payne</a></span>
+                                </span>
+                                <span class="post-meta-item">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-calendar"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">发表于</span>
+                                    <time title="创建时间：2021-02-12 23:31:00" itemprop="dateCreated datePublished" datetime="2021-02-12T23:31:00+08:00">2021-02-12</time>
+                                </span>
+                                <br>
+                                <span class="post-meta-item" title="本文字数">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-file-word"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">本文字数：</span>
+                                    <span>4k</span>
+                                </span>
+                                <span class="post-meta-item" title="阅读时长">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-clock"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                                    <span>4 分钟</span>
+                                </span>
+                            </div>
+                        </article>
+                        <article itemscope itemtype="http://schema.org/Article" class="post-block index" lang="zh-CN">
+                            <link itemprop="mainEntityOfPage" href="https://paynewu.com/18864.html">
+                            <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <meta itemprop="image" content="/images/favicon/android-chrome-512x512.png">
+                                <meta itemprop="name" content="吴志鹏">
+                                <meta itemprop="description" content="Talk is free，please state clearly">
+                            </span>
+                            <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+                                <meta itemprop="name" content="吴志鹏｜Payne-Wu">
+                            </span>
+                            <header class="post-header">
+                                <h2 class="post-title" itemprop="name headline">
+                                    <a class="label"> Kubernetes <i class="label-arrow"></i>
+                                    </a>
+                                    <a href="/18864.html" class="post-title-link" itemprop="url">Kubernetes集群搭建</a>
+                                </h2>
+                            </header>
+                            <div class="post-body" itemprop="articleBody">
+                                <div class="thumb">
+                                    <img itemprop="contentUrl" class="random">
+                                </div>
+                                <div class="excerpt">
+                                    <p>
+                                    <p>其实本节的文章我在很久之前就已经发过了一次，但不够详细，层次不轻。我今天部署的时候看的够呛(虽然也是部署成功了)<br>，也算是对以前的坑，做个忏悔吧。本文可能会比较boring，但请相信这并不是我的本意。这一定是最精简的笔记之一，相信我这绝对不是混水。</p>
+                                    <p>本文主要分三大部分，他们分别是系统初始化、安装docker、安装Kubernetes，测试验证与删库跑路</p>
+                                    </p>
+                                    <!--noindex-->
+                                    <div class="post-button">
+                                        <a class="btn" href="/18864.html#more" rel="contents"> 阅读全文 &raquo; </a>
+                                    </div>
+                                    <!--/noindex-->
+                                </div>
+                            </div>
+                            <div class="post-meta">
+                                <span class="post-meta-item">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-user"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">作者</span>
+                                    <span><a href="/authors/Payne" class="author" itemprop="url" rel="index">Payne</a></span>
+                                </span>
+                                <span class="post-meta-item">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-calendar"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">发表于</span>
+                                    <time title="创建时间：2021-02-07 01:59:26" itemprop="dateCreated datePublished" datetime="2021-02-07T01:59:26+08:00">2021-02-07</time>
+                                </span>
+                                <br>
+                                <span class="post-meta-item" title="本文字数">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-file-word"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">本文字数：</span>
+                                    <span>784</span>
+                                </span>
+                                <span class="post-meta-item" title="阅读时长">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-clock"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                                    <span>1 分钟</span>
+                                </span>
+                            </div>
+                        </article>
+                        <article itemscope itemtype="http://schema.org/Article" class="post-block index" lang="zh-CN">
+                            <link itemprop="mainEntityOfPage" href="https://paynewu.com/37640.html">
+                            <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <meta itemprop="image" content="/images/favicon/android-chrome-512x512.png">
+                                <meta itemprop="name" content="吴志鹏">
+                                <meta itemprop="description" content="Talk is free，please state clearly">
+                            </span>
+                            <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+                                <meta itemprop="name" content="吴志鹏｜Payne-Wu">
+                            </span>
+                            <header class="post-header">
+                                <h2 class="post-title" itemprop="name headline">
+                                    <a class="label"> Go <i class="label-arrow"></i>
+                                    </a>
+                                    <a href="/37640.html" class="post-title-link" itemprop="url">盘点go并发那些事儿之二-并发控制得心应手</a>
+                                </h2>
+                            </header>
+                            <div class="post-body" itemprop="articleBody">
+                                <div class="thumb">
+                                    <img itemprop="contentUrl" class="random">
+                                </div>
+                                <div class="excerpt">
+                                    <p>
+                                    <h2 id="盘点Golang并发那些事儿之二"><a href="#盘点Golang并发那些事儿之二" class="headerlink" title="盘点Golang并发那些事儿之二"></a>盘点Golang并发那些事儿之二</h2>
+                                    <p>上一节提到，golang中直接使用关键字<code>go</code>创建<code>goroutine</code>,无法满足我们的需求。主要问题如下</p>
+                                    <ul>
+                                        <li>无法有效的并发执行完成</li>
+                                        <li>无法有效的控制并发</li>
+                                    </ul>
+                                    <p>首先我们再来看看下面这个栗子，代码如下</p>
+                                    </p>
+                                    <!--noindex-->
+                                    <div class="post-button">
+                                        <a class="btn" href="/37640.html#more" rel="contents"> 阅读全文 &raquo; </a>
+                                    </div>
+                                    <!--/noindex-->
+                                </div>
+                            </div>
+                            <div class="post-meta">
+                                <span class="post-meta-item">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-user"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">作者</span>
+                                    <span><a href="/authors/Payne" class="author" itemprop="url" rel="index">Payne</a></span>
+                                </span>
+                                <span class="post-meta-item">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-calendar"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">发表于</span>
+                                    <time title="创建时间：2021-02-04 22:27:25" itemprop="dateCreated datePublished" datetime="2021-02-04T22:27:25+08:00">2021-02-04</time>
+                                </span>
+                                <br>
+                                <span class="post-meta-item" title="本文字数">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-file-word"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">本文字数：</span>
+                                    <span>7.6k</span>
+                                </span>
+                                <span class="post-meta-item" title="阅读时长">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-clock"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                                    <span>7 分钟</span>
+                                </span>
+                            </div>
+                        </article>
+                        <article itemscope itemtype="http://schema.org/Article" class="post-block index" lang="zh-CN">
+                            <link itemprop="mainEntityOfPage" href="https://paynewu.com/9672.html">
+                            <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <meta itemprop="image" content="/images/favicon/android-chrome-512x512.png">
+                                <meta itemprop="name" content="吴志鹏">
+                                <meta itemprop="description" content="Talk is free，please state clearly">
+                            </span>
+                            <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+                                <meta itemprop="name" content="吴志鹏｜Payne-Wu">
+                            </span>
+                            <header class="post-header">
+                                <h2 class="post-title" itemprop="name headline">
+                                    <a class="label"> Go <i class="label-arrow"></i>
+                                    </a>
+                                    <a href="/9672.html" class="post-title-link" itemprop="url">盘点go并发那些事儿</a>
+                                </h2>
+                            </header>
+                            <div class="post-body" itemprop="articleBody">
+                                <div class="thumb">
+                                    <img itemprop="contentUrl" class="random">
+                                </div>
+                                <div class="excerpt">
+                                    <p>
+                                    <h2 id="盘点Golang并发那些事儿之一"><a href="#盘点Golang并发那些事儿之一" class="headerlink" title="盘点Golang并发那些事儿之一"></a>盘点Golang并发那些事儿之一</h2>
+                                    <blockquote>
+                                        <p>一生很短，Let’s Go</p>
+                                        <p>人生苦短，我用Python</p>
+                                    </blockquote>
+                                    <p>Golang、Golang、Golang 真的够浪，今天我们一起盘点一下<code>Golang</code>并发那些事儿，准确来说是<code>goroutine</code>,关于多线程并发，咱们暂时先放一放(主要是俺现在还不太会，不敢出来瞎搞)。关于<code>golang</code><br>优点如何，咱们也不扯那些虚的。反正都是大佬在说，俺只是个吃瓜群众，偶尔打打酱油，逃～。</p>
+                                    </p>
+                                    <!--noindex-->
+                                    <div class="post-button">
+                                        <a class="btn" href="/9672.html#more" rel="contents"> 阅读全文 &raquo; </a>
+                                    </div>
+                                    <!--/noindex-->
+                                </div>
+                            </div>
+                            <div class="post-meta">
+                                <span class="post-meta-item">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-user"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">作者</span>
+                                    <span><a href="/authors/Payne" class="author" itemprop="url" rel="index">Payne</a></span>
+                                </span>
+                                <span class="post-meta-item">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-calendar"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">发表于</span>
+                                    <time title="创建时间：2021-02-03 20:56:48" itemprop="dateCreated datePublished" datetime="2021-02-03T20:56:48+08:00">2021-02-03</time>
+                                </span>
+                                <br>
+                                <span class="post-meta-item" title="本文字数">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-file-word"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">本文字数：</span>
+                                    <span>6.3k</span>
+                                </span>
+                                <span class="post-meta-item" title="阅读时长">
+                                    <span class="post-meta-item-icon">
+                                        <i class="far fa-clock"></i>
+                                    </span>
+                                    <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                                    <span>6 分钟</span>
+                                </span>
+                            </div>
+                        </article>
+                        <script>
+                            document.querySelectorAll('.random').forEach(item => item.src = "https://picsum.photos/id/" + Math.floor(Math.random() * Math.floor(300)) + "/200/133")
+
+                        </script>
+                        <nav class="pagination">
+                            <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+                        </nav>
+                    </div>
+                    <script>
+                        window.addEventListener('tabs:register', () =>
+                        {
+                            let
+                            {
+                                activeClass
+                            } = CONFIG.comments;
+                            if (CONFIG.comments.storage)
+                            {
+                                activeClass = localStorage.getItem('comments_active') || activeClass;
+                            }
+                            if (activeClass)
+                            {
+                                let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+                                if (activeTab)
+                                {
+                                    activeTab.click();
+                                }
+                            }
+                        });
+                        if (CONFIG.comments.storage)
+                        {
+                            window.addEventListener('tabs:click', event =>
+                            {
+                                if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+                                let commentClass = event.target.classList[1];
+                                localStorage.setItem('comments_active', commentClass);
+                            });
+                        }
+
+                    </script>
+                </div>
+                <div class="toggle sidebar-toggle">
+                    <span class="toggle-line toggle-line-first"></span>
+                    <span class="toggle-line toggle-line-middle"></span>
+                    <span class="toggle-line toggle-line-last"></span>
+                </div>
+                <aside class="sidebar">
+                    <div class="sidebar-inner">
+                        <ul class="sidebar-nav motion-element">
+                            <li class="sidebar-nav-toc"> 文章目录 </li>
+                            <li class="sidebar-nav-overview"> 站点概览 </li>
+                        </ul>
+                        <!--noindex-->
+                        <div class="post-toc-wrap sidebar-panel">
+                        </div>
+                        <!--/noindex-->
+                        <div class="site-overview-wrap sidebar-panel">
+                            <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <img class="site-author-image" itemprop="image" alt="吴志鹏" src="/images/favicon/android-chrome-512x512.png">
+                                <p class="site-author-name" itemprop="name">吴志鹏</p>
+                                <div class="site-description" itemprop="description">Talk is free，please state clearly</div>
+                            </div>
+                            <div class="site-state-wrap motion-element">
+                                <nav class="site-state">
+                                    <div class="site-state-item site-state-posts">
+                                        <a href="/archives/">
+                                            <span class="site-state-item-count">136</span>
+                                            <span class="site-state-item-name">日志</span>
+                                        </a>
+                                    </div>
+                                    <div class="site-state-item site-state-categories">
+                                        <a href="/categories/">
+                                            <span class="site-state-item-count">158</span>
+                                            <span class="site-state-item-name">分类</span></a>
+                                    </div>
+                                    <div class="site-state-item site-state-tags">
+                                        <a href="/tags/">
+                                            <span class="site-state-item-count">89</span>
+                                            <span class="site-state-item-name">标签</span></a>
+                                    </div>
+                                </nav>
+                            </div>
+                            <div class="links-of-author motion-element">
+                                <span class="links-of-author-item">
+                                    <a href="https://github.com/Payne-Wu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Payne-Wu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="mailto:wuzhipeng1289690157@gmail.com" title="E-Mail → mailto:wuzhipeng1289690157@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="https://www.zhihu.com/people/wu-zhi-peng-72-78" title="ZhiHu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;wu-zhi-peng-72-78" rel="noopener" target="_blank"><i class="fa fa-magic fa-fw"></i>ZhiHu</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="https://weibo.com/u/6987234483" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;6987234483" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+                <div id="sidebar-dimmer"></div>
+            </div>
+        </main>
+        <footer class="footer">
+            <div class="footer-inner">
+                <div class="copyright"> &copy; <span itemprop="copyrightYear">2022</span>
+                    <span class="with-love">
+                        <i class="fa fa-heart"></i>
+                    </span>
+                    <span class="author" itemprop="copyrightHolder">PayneWu</span>
+                    <span class="post-meta-divider">|</span>
+                    <span class="post-meta-item-icon">
+                        <i class="fa fa-chart-area"></i>
+                    </span>
+                    <span title="站点总字数">255k</span>
+                    <span class="post-meta-divider">|</span>
+                    <span class="post-meta-item-icon">
+                        <i class="fa fa-coffee"></i>
+                    </span>
+                    <span title="站点阅读时长">3:51</span>
+                </div>
+                <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">湘ICP备2021019893号-1 </a>
+                </div>
+                <div style="display: none;">
+                    <script src="//s95.cnzz.com/z_stat.php?id=true&web_id=true"></script>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+    <script src="/js/utils.js"></script>
+    <script src="/.js"></script>
+    <script src="/js/schemes/pisces.js"></script>
+    <script src="/.js"></script>
+    <script src="/js/next-boot.js"></script>
+    <script src="/.js"></script>
+    <script>
+        (function ()
+        {
+            var canonicalURL, curProtocol;
+            //Get the <link> tag
+            var x = document.getElementsByTagName("link");
+            //Find the last canonical URL
+            if (x.length > 0)
+            {
+                for (i = 0; i < x.length; i++)
+                {
+                    if (x[i].rel.toLowerCase() == 'canonical' && x[i].href)
+                    {
+                        canonicalURL = x[i].href;
+                    }
+                }
+            }
+            //Get protocol
+            if (!canonicalURL)
+            {
+                curProtocol = window.location.protocol.split(':')[0];
+            }
+            else
+            {
+                curProtocol = canonicalURL.split(':')[0];
+            }
+            //Get current URL if the canonical URL does not exist
+            if (!canonicalURL) canonicalURL = window.location.href;
+            //Assign script content. Replace current URL with the canonical URL
+            ! function ()
+            {
+                var e = /([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,
+                    r = canonicalURL,
+                    t = document.referrer;
+                if (!e.test(r))
+                {
+                    var n = (String(curProtocol).toLowerCase() === 'https') ? "https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif" : "//api.share.baidu.com/s.gif";
+                    t ? (n += "?r=" + encodeURIComponent(document.referrer), r && (n += "&l=" + r)) : r && (n += "?l=" + r);
+                    var i = new Image;
+                    i.src = n
+                }
+            }(window);
+        })();
+
+    </script>
+    <script src="/js/local-search.js"></script>
+    <script src="/.js"></script>
+</body>
+
+</html>

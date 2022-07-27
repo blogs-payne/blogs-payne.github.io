@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+    <meta name="theme-color" content="#222">
+    <meta name="generator" content="Hexo 4.2.1">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16-next.png">
+    <link rel="mask-icon" href="/images/favicon/safari-pinned-tab.svg" color="#222">
+    <meta name="msapplication-config" content="/images/favicon/browserconfig.xml">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+    <link rel="stylesheet" href="/lib/pace/pace-theme-mac-osx.min.css">
+    <script src="/lib/pace/pace.min.js"></script>
+    <script id="hexo-configurations">
+        var NexT = window.NexT ||
+        {};
+        var CONFIG = {
+            "hostname": "paynewu.com",
+            "root": "/",
+            "scheme": "Gemini",
+            "version": "7.8.0",
+            "exturl": false,
+            "sidebar":
+            {
+                "position": "right",
+                "width": 240,
+                "display": "post",
+                "padding": 18,
+                "offset": 12,
+                "onmobile": false
+            },
+            "copycode":
+            {
+                "enable": true,
+                "show_result": true,
+                "style": "mac"
+            },
+            "back2top":
+            {
+                "enable": true,
+                "sidebar": false,
+                "scrollpercent": true
+            },
+            "bookmark":
+            {
+                "enable": false,
+                "color": "#222",
+                "save": "auto"
+            },
+            "fancybox": false,
+            "mediumzoom": true,
+            "lazyload": false,
+            "pangu": true,
+            "comments":
+            {
+                "style": "tabs",
+                "active": "valine",
+                "storage": true,
+                "lazyload": false,
+                "nav": null
+            },
+            "algolia":
+            {
+                "hits":
+                {
+                    "per_page": 10
+                },
+                "labels":
+                {
+                    "input_placeholder": "Search for Posts",
+                    "hits_empty": "We didn't find any results for the search: ${query}",
+                    "hits_stats": "${hits} results found in ${time} ms"
+                }
+            },
+            "localsearch":
+            {
+                "enable": true,
+                "trigger": "auto",
+                "top_n_per_article": 8,
+                "unescape": false,
+                "preload": false
+            },
+            "motion":
+            {
+                "enable": false,
+                "async": false,
+                "transition":
+                {
+                    "post_block": "bounceDownIn",
+                    "post_header": "slideDownIn",
+                    "post_body": "slideDownIn",
+                    "coll_header": "slideLeftIn",
+                    "sidebar": "slideUpIn"
+                }
+            },
+            "path": "search.xml"
+        };
+
+    </script>
+    <meta name="description" content="常量：一旦声明即不可被改变     变量：声明后可以发生改变。若初始化后未赋值则为初始值     例如：     int -&gt; 0     Bool -&gt; false     String -&gt; 空  关键字与保留字 关键字是指编程语言中预先定义好的具有特殊含义的标识符。 关键字和保留字都不建议用作变量名。">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Golang常量-变量-匿名变量">
+    <meta property="og:url" content="https://paynewu.com/29980.html">
+    <meta property="og:site_name" content="吴志鹏｜Payne-Wu">
+    <meta property="og:description" content="常量：一旦声明即不可被改变     变量：声明后可以发生改变。若初始化后未赋值则为初始值     例如：     int -&gt; 0     Bool -&gt; false     String -&gt; 空  关键字与保留字 关键字是指编程语言中预先定义好的具有特殊含义的标识符。 关键字和保留字都不建议用作变量名。">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="article:published_time" content="2020-11-21T14:13:59.000Z">
+    <meta property="article:modified_time" content="2022-07-27T09:58:26.872Z">
+    <meta property="article:author" content="吴志鹏">
+    <meta property="article:tag" content="Go">
+    <meta name="twitter:card" content="summary">
+    <link rel="canonical" href="https://paynewu.com/29980.html">
+    <script id="page-configurations">
+        // https://hexo.io/docs/variables.html
+        CONFIG.page = {
+            sidebar: "",
+            isHome: false,
+            isPost: true,
+            lang: 'zh-CN'
+        };
+
+    </script>
+    <title>Golang常量-变量-匿名变量 | 吴志鹏｜Payne-Wu</title>
+    <meta name="google-site-verification" content="p_bIcnvirkFzG2dYKuNDivKD8-STet5W7D-01woA2fc" />
+    <noscript>
+        <style>
+            .use-motion .brand,
+            .use-motion .menu-item,
+            .sidebar-inner,
+            .use-motion .post-block,
+            .use-motion .pagination,
+            .use-motion .comments,
+            .use-motion .post-header,
+            .use-motion .post-body,
+            .use-motion .collection-header
+            {
+                opacity: initial;
+            }
+
+            .use-motion .site-title,
+            .use-motion .site-subtitle
+            {
+                opacity: initial;
+                top: initial;
+            }
+
+            .use-motion .logo-line-before i
+            {
+                left: initial;
+            }
+
+            .use-motion .logo-line-after i
+            {
+                right: initial;
+            }
+
+        </style>
+    </noscript>
+    <link rel="alternate" href="/atom.xml" title="吴志鹏｜Payne-Wu" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+    <div class="container">
+        <div class="headband"></div>
+        <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+            <div class="header-inner">
+                <div class="site-brand-container">
+                    <div class="site-nav-toggle">
+                        <div class="toggle" aria-label="切换导航栏">
+                            <span class="toggle-line toggle-line-first"></span>
+                            <span class="toggle-line toggle-line-middle"></span>
+                            <span class="toggle-line toggle-line-last"></span>
+                        </div>
+                    </div>
+                    <div class="site-meta">
+                        <a href="/" class="brand" rel="start">
+                            <span class="logo-line-before"><i></i></span>
+                            <h1 class="site-title">吴志鹏｜Payne-Wu </h1>
+                            <span class="logo-line-after"><i></i></span>
+                        </a>
+                    </div>
+                    <div class="site-nav-right">
+                        <div class="toggle popup-trigger">
+                            <i class="fa fa-search fa-fw fa-lg"></i>
+                        </div>
+                    </div>
+                </div>
+                <nav class="site-nav">
+                    <ul id="menu" class="main-menu menu">
+                        <li class="menu-item menu-item-home">
+                            <a href="/" rel="section">首页</a>
+                        </li>
+                        <li class="menu-item menu-item-archives">
+                            <a href="/archives/" rel="section">文章列表</a>
+                        </li>
+                        <li class="menu-item menu-item-tags">
+                            <a href="/tags/" rel="section">Tags Cloud</a>
+                        </li>
+                        <li class="menu-item menu-item-categories">
+                            <a href="/categories/" rel="section">文章集合</a>
+                        </li>
+                        <li class="menu-item menu-item-about">
+                            <a href="/about/" rel="section">关于我啊</a>
+                        </li>
+                        <li class="menu-item menu-item-message">
+                            <a href="/message/" rel="section">留言与我</a>
+                        </li>
+                        <li class="menu-item menu-item-search">
+                            <a role="button" class="popup-trigger">搜索 </a>
+                        </li>
+                    </ul>
+                </nav>
+                <div class="search-pop-overlay">
+                    <div class="popup search-popup">
+                        <div class="search-header">
+                            <span class="search-icon">
+                                <i class="fa fa-search"></i>
+                            </span>
+                            <div class="search-input-container">
+                                <input autocomplete="off" autocapitalize="off" placeholder="搜索..." spellcheck="false" type="search" class="search-input">
+                            </div>
+                            <span class="popup-btn-close">
+                                <i class="fa fa-times-circle"></i>
+                            </span>
+                        </div>
+                        <div id="search-result">
+                            <div id="no-result">
+                                <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="back-to-top">
+            <i class="fa fa-arrow-up"></i>
+            <span>0%</span>
+        </div>
+        <div class="reading-progress-bar"></div>
+        <main class="main">
+            <div class="main-inner">
+                <div class="content-wrap">
+                    <div class="content post posts-expand">
+                        <article itemscope itemtype="http://schema.org/Article" class="post-block single" lang="zh-CN">
+                            <link itemprop="mainEntityOfPage" href="https://paynewu.com/29980.html">
+                            <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <meta itemprop="image" content="/images/favicon/android-chrome-512x512.png">
+                                <meta itemprop="name" content="吴志鹏">
+                                <meta itemprop="description" content="Talk is free，please state clearly">
+                            </span>
+                            <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+                                <meta itemprop="name" content="吴志鹏｜Payne-Wu">
+                            </span>
+                            <header class="post-header">
+                                <h1 class="post-title" itemprop="name headline"> Golang常量-变量-匿名变量 </h1>
+                                <div class="post-meta">
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-user"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">作者</span>
+                                        <span><a href="/authors/Payne" class="author" itemprop="url" rel="index">Payne</a></span>
+                                    </span>
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-calendar"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">发表于</span>
+                                        <time title="创建时间：2020-11-21 22:13:59" itemprop="dateCreated datePublished" datetime="2020-11-21T22:13:59+08:00">2020-11-21</time>
+                                    </span>
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-folder"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">分类于</span>
+                                        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                                            <a href="/categories/Go/" itemprop="url" rel="index"><span itemprop="name">Go</span></a>
+                                        </span>
+                                    </span>
+                                    <br>
+                                    <span class="post-meta-item" title="本文字数">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-file-word"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">本文字数：</span>
+                                        <span>916</span>
+                                    </span>
+                                    <span class="post-meta-item" title="阅读时长">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-clock"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                                        <span>1 分钟</span>
+                                    </span>
+                                </div>
+                            </header>
+                            <div class="post-body" itemprop="articleBody">
+                                <blockquote>
+                                    <p>常量：一旦声明即不可被改变</p>
+                                    <p>变量：声明后可以发生改变。若初始化后未赋值则为初始值</p>
+                                    <p>例如：</p>
+                                    <p>int -&gt; 0</p>
+                                    <p>Bool -&gt; false</p>
+                                    <p>String -&gt; 空</p>
+                                </blockquote>
+                                <h2 id="关键字与保留字"><a href="#关键字与保留字" class="headerlink" title="关键字与保留字"></a>关键字与保留字</h2>
+                                <p>关键字是指编程语言中预先定义好的具有特殊含义的标识符。 关键字和保留字都不建议用作变量名。</p>
+                                <a id="more"></a>
+                                <p>关键字</p>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="keyword">break</span>        <span class="keyword">default</span>      <span class="function"><span class="keyword">func</span>         <span class="title">interface</span>    <span class="title">select</span></span></span><br><span class="line">   <span class="keyword">case</span>         <span class="keyword">defer</span>        <span class="keyword">go</span>           <span class="keyword">map</span>          <span class="keyword">struct</span></span><br><span class="line">   <span class="keyword">chan</span>         <span class="keyword">else</span>         <span class="keyword">goto</span>         <span class="keyword">package</span>      <span class="keyword">switch</span></span><br><span class="line">   <span class="keyword">const</span>        <span class="keyword">fallthrough</span>  <span class="keyword">if</span>           <span class="keyword">range</span>        <span class="keyword">type</span></span><br><span class="line">   <span class="keyword">continue</span>     <span class="keyword">for</span>          <span class="keyword">import</span>       <span class="keyword">return</span>       <span class="keyword">var</span></span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>保留字</p>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">Constants:    <span class="literal">true</span>  <span class="literal">false</span>  <span class="literal">iota</span>  <span class="literal">nil</span></span><br><span class="line"></span><br><span class="line">    Types:    <span class="keyword">int</span>  <span class="keyword">int8</span>  <span class="keyword">int16</span>  <span class="keyword">int32</span>  <span class="keyword">int64</span>  </span><br><span class="line">              <span class="keyword">uint</span>  <span class="keyword">uint8</span>  <span class="keyword">uint16</span>  <span class="keyword">uint32</span>  <span class="keyword">uint64</span>  <span class="keyword">uintptr</span></span><br><span class="line">              <span class="keyword">float32</span>  <span class="keyword">float64</span>  <span class="keyword">complex128</span>  <span class="keyword">complex64</span></span><br><span class="line">              <span class="keyword">bool</span>  <span class="keyword">byte</span>  <span class="keyword">rune</span>  <span class="keyword">string</span>  error</span><br><span class="line"></span><br><span class="line">Functions:   <span class="built_in">make</span>  <span class="built_in">len</span>  <span class="built_in">cap</span>  <span class="built_in">new</span>  <span class="built_in">append</span>  <span class="built_in">copy</span>  <span class="built_in">close</span>  <span class="built_in">delete</span></span><br><span class="line">             <span class="built_in">complex</span>  <span class="built_in">real</span>  <span class="built_in">imag</span></span><br><span class="line">             <span class="built_in">panic</span>  <span class="built_in">recover</span></span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h2 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h2>
+                                <h3 id="变量的来历"><a href="#变量的来历" class="headerlink" title="变量的来历"></a>变量的来历</h3>
+                                <p>程序运行过程中的数据都是保存在内存中，我们想要在代码中操作某个数据时就需要去内存上找到这个变量，但是如果我们直接在代码中通过内存地址去操作变量的话，代码的可读性会非常差而且还容易出错，所以我们就利用变量将这个数据的内存地址保存起来，以后直接通过这个变量就能找到内存上对应的数据了。</p>
+                                <blockquote>
+                                    <p>相当于开辟相对应的内存，并对此内存取了个别名。</p>
+                                    <figure class="highlight go">
+                                        <table>
+                                            <tr>
+                                                <td class="gutter">
+                                                    <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre>
+                                                </td>
+                                                <td class="code">
+                                                    <pre><span class="line"><span class="comment">// 例如：</span></span><br><span class="line"><span class="keyword">var</span> a <span class="keyword">string</span> = <span class="string">"hello"</span></span><br><span class="line"><span class="comment">// 申请一块内存，把字符串hello放进去</span></span><br><span class="line">并它的地址为指向变量名 a</span><br></pre>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </figure>
+                                </blockquote>
+                                <h3 id="变量类型"><a href="#变量类型" class="headerlink" title="变量类型"></a>变量类型</h3>
+                                <p>变量（Variable）的功能是存储数据。不同的变量保存的数据类型可能会不一样。经过半个多世纪的发展，编程语言已经基本形成了一套固定的类型，常见变量的数据类型有：整型、浮点型、布尔型等。</p>
+                                <p>Go语言中的每一个变量都有自己的类型，并且变量必须经过声明才能开始使用。</p>
+                                <h3 id="变量声明"><a href="#变量声明" class="headerlink" title="变量声明"></a>变量声明</h3>
+                                <p>Go语言中的变量需要声明后才能使用，同一作用域内不支持重复声明。 并且Go语言的变量声明后必须使用。</p>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="comment">// 标准声明</span></span><br><span class="line"><span class="keyword">var</span> 变量名 类型</span><br><span class="line"><span class="comment">// 类型推到声明，必须有初始值， 否则声明失败</span></span><br><span class="line"><span class="keyword">var</span> 变量名 = 值</span><br><span class="line"><span class="comment">// 简短声明（必须在函数中）</span></span><br><span class="line">变量名 := 值</span><br><span class="line"></span><br><span class="line"><span class="comment">// 批量声明(多用于全局变量声明)，类型为必须</span></span><br><span class="line"><span class="keyword">var</span> (</span><br><span class="line"> 	变量名 类型</span><br><span class="line">  	变量名 类型</span><br><span class="line">  	变量名 类型</span><br><span class="line">  。。。</span><br><span class="line">)</span><br><span class="line"><span class="comment">// 同类型批量声明</span></span><br><span class="line"><span class="keyword">var</span> 变量名<span class="number">1</span>，变量名<span class="number">2</span>，变量名<span class="number">3</span> 类型</span><br><span class="line">或</span><br><span class="line"><span class="keyword">var</span> (</span><br><span class="line">	变量名<span class="number">1</span>,</span><br><span class="line">	变量名<span class="number">2</span>, </span><br><span class="line">	变量名<span class="number">3</span> <span class="keyword">string</span> </span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 简短批量声明 注意必须在函数中</span></span><br><span class="line">变量名<span class="number">1</span>,变量名<span class="number">2</span>, 变量名<span class="number">3</span> := 值<span class="number">1</span>，值<span class="number">2</span>， 值<span class="number">3</span></span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 标准声明</span></span><br><span class="line"><span class="keyword">var</span> name <span class="keyword">string</span> = <span class="string">"Payne"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 类型推到声明</span></span><br><span class="line"><span class="keyword">var</span> age = <span class="number">20</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//批量声明</span></span><br><span class="line"><span class="keyword">var</span> (</span><br><span class="line">	x <span class="keyword">string</span></span><br><span class="line">	y <span class="keyword">string</span></span><br><span class="line">	j <span class="keyword">bool</span></span><br><span class="line">	k <span class="keyword">byte</span></span><br><span class="line">	z <span class="keyword">int</span></span><br><span class="line">	</span><br><span class="line">)</span><br><span class="line"><span class="comment">// 同类型批量声明</span></span><br><span class="line"><span class="keyword">var</span> a, b, c, d <span class="keyword">int</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="comment">// 简短声明</span></span><br><span class="line">	hobby := <span class="string">"programming"</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">//测试输入</span></span><br><span class="line">	fmt.Println(<span class="string">"Name is :"</span>, name) <span class="comment">// Name is : Payne</span></span><br><span class="line">	fmt.Println(<span class="string">"Age is :"</span>, age)	<span class="comment">// Age is : 20</span></span><br><span class="line">	fmt.Println(<span class="string">"hobby "</span>, hobby)	<span class="comment">// hobby  programming</span></span><br><span class="line">	fmt.Print(a)	<span class="comment">// 0 声明未赋值采用初始值。int 类型初始值为0</span></span><br><span class="line">	<span class="comment">// 批量简短声明</span></span><br><span class="line">	a, b := <span class="number">1</span>, <span class="string">"string"</span></span><br><span class="line">	fmt.Print(a, b)</span><br><span class="line">&#125;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h3 id="匿名变量"><a href="#匿名变量" class="headerlink" title="匿名变量"></a>匿名变量</h3>
+                                <blockquote>
+                                    <p>匿名变量不占用命名空间，不会分配内存，所以匿名变量之间不存在重复声明。 (在<code>Lua</code>等编程语言里，匿名变量也被叫做哑元变量。)</p>
+                                </blockquote>
+                                <p>在使用多重赋值时，如果想要忽略某个值，可以使用<code>匿名变量（anonymous variable）</code>。 匿名变量用一个下划线<code>_</code>表示，例如：</p>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="comment">// 这里可能会有点绕，仅仅是为了使用“_”，而使用_</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">foo</span><span class="params">()</span> <span class="params">(<span class="keyword">string</span>, <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">	<span class="keyword">return</span>  <span class="string">"payne"</span>, <span class="number">20</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	name, _ := foo()</span><br><span class="line">	_, age := foo()</span><br><span class="line">	fmt.Println(<span class="string">"name="</span>, name) <span class="comment">//name= payne</span></span><br><span class="line">	fmt.Println(<span class="string">"age="</span>, age)	<span class="comment">//age= 20</span></span><br><span class="line">&#125;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <blockquote>
+                                    <p>注意事项：</p>
+                                    <ol>
+                                        <li>函数外的每个语句都必须以关键字开始（var、const、func等）</li>
+                                        <li><code>_</code>多用于占位，表示忽略值。</li>
+                                    </ol>
+                                </blockquote>
+                                <h2 id="常量"><a href="#常量" class="headerlink" title="常量"></a>常量</h2>
+                                <p>常量与变量的声明基本一致，类型一致。若有声明变化的话那就是将关键字<code>var</code>， 替换成了<code>const</code>.增加了<code>iota</code>，减少了简短声明</p>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="comment">// 常量声明声明时必须给值，否则则定义失败</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 标准声明</span></span><br><span class="line"><span class="keyword">const</span> 变量名 类型 = 值</span><br><span class="line"><span class="comment">// 类型推导</span></span><br><span class="line"><span class="keyword">const</span> 变量名  = 值</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> a <span class="keyword">int</span> = <span class="number">1</span></span><br><span class="line"><span class="keyword">const</span> b = <span class="string">"2"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	fmt.Println(a) <span class="comment">// 1</span></span><br><span class="line">	fmt.Println(b) <span class="comment">// 2</span></span><br><span class="line">&#125;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h3 id="Iota"><a href="#Iota" class="headerlink" title="Iota"></a>Iota</h3>
+                                <p><code>iota</code>是go语言的常量计数器，只能在常量的表达式中使用。</p>
+                                <p><code>iota</code>在const关键字出现时将被重置为0。const中每新增一行常量声明将使<code>iota</code>计数一次(iota可理解为const语句块中的行索引)。 使用iota能简化定义，在定义枚举时很有用。</p>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="comment">// `iota`在const关键字出现时将被重置为0,请牢记！！</span></span><br><span class="line"><span class="keyword">const</span> (</span><br><span class="line">		n1 = <span class="literal">iota</span> <span class="comment">//0</span></span><br><span class="line">		n2        <span class="comment">//1</span></span><br><span class="line">		n3        <span class="comment">//2</span></span><br><span class="line">		n4        <span class="comment">//3</span></span><br><span class="line">	)</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// 使用_跳过某些值</span></span><br><span class="line">	<span class="keyword">const</span> (</span><br><span class="line">		n1 = <span class="literal">iota</span> <span class="comment">//0</span></span><br><span class="line">		n2        <span class="comment">//1</span></span><br><span class="line">		_</span><br><span class="line">		n4        <span class="comment">//3</span></span><br><span class="line">	)</span><br><span class="line"><span class="comment">// iota声明中间插队</span></span><br><span class="line"><span class="keyword">const</span> (</span><br><span class="line">		n1 = <span class="literal">iota</span> <span class="comment">//0</span></span><br><span class="line">		n2 = <span class="number">100</span>  <span class="comment">//100</span></span><br><span class="line">		n3 = <span class="literal">iota</span> <span class="comment">//2</span></span><br><span class="line">		n4        <span class="comment">//3</span></span><br><span class="line">	)</span><br><span class="line">	<span class="keyword">const</span> n5 = <span class="literal">iota</span> <span class="comment">// 0</span></span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h2 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h2>
+                                <h3 id="常量与变量的对比示例"><a href="#常量与变量的对比示例" class="headerlink" title="常量与变量的对比示例"></a>常量与变量的对比示例</h3>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="comment">// 主要体现为 变量可以被修改</span></span><br><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> a = <span class="number">1</span></span><br><span class="line">	fmt.Println(a)	<span class="comment">// 1</span></span><br><span class="line">	a = <span class="number">2</span></span><br><span class="line">	fmt.Println(a)	<span class="comment">// 2</span></span><br><span class="line">	<span class="keyword">const</span> b = <span class="number">3</span></span><br><span class="line">	fmt.Println(b) <span class="comment">// 3</span></span><br><span class="line">	b = <span class="number">4</span></span><br><span class="line">	fmt.Print(b)	<span class="comment">// Error: cannot assign to b</span></span><br><span class="line">	</span><br><span class="line">&#125;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h3 id="函数的初探"><a href="#函数的初探" class="headerlink" title="函数的初探"></a>函数的初探</h3>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="comment">//  函数的定义</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> 函数名<span class="params">(形参)</span> <span class="params">(返回值类型)</span></span> &#123;</span><br><span class="line">	表达式</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 调用函数</span></span><br><span class="line">函数名(实参)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 另一种方式（匿名函数）</span></span><br><span class="line"><span class="keyword">var</span> 函数名 = <span class="function"><span class="keyword">func</span> <span class="params">()</span></span> &#123;</span><br><span class="line">	表达式</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 调用函数</span></span><br><span class="line">函数名(实参)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 匿名立即执行函数</span></span><br><span class="line"><span class="keyword">var</span> 函数名 = <span class="function"><span class="keyword">func</span> <span class="params">()</span></span> &#123;</span><br><span class="line">	表达式</span><br><span class="line">&#125;()</span><br><span class="line"><span class="comment">// 此时的函数为结果的值</span></span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h3 id="函数的调用的顺序"><a href="#函数的调用的顺序" class="headerlink" title="函数的调用的顺序"></a>函数的调用的顺序</h3>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="keyword">var</span> a = <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	a = <span class="number">2</span></span><br><span class="line">	fmt.Print(a) <span class="comment">//  2</span></span><br><span class="line">&#125;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <blockquote>
+                                    <p>思考：</p>
+                                    <p>为什么打印的是2？</p>
+                                    <p>原因为<code>函数</code>参数的调用采用<code>就近的原则</code></p>
+                                </blockquote>
+                            </div>
+                            <div class="popular-posts-header">相关文章</div>
+                            <ul class="popular-posts">
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/62372.html" rel="bookmark">Golang-Array</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/17571.html" rel="bookmark">Golang-Defer详解</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/3744.html" rel="bookmark">Golang-Map</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/45903.html" rel="bookmark">Golang-匿名函数与闭包</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/1962.html" rel="bookmark">Golang-接口(interface)</a></div>
+                                </li>
+                            </ul>
+                            <footer class="post-footer">
+                                <div class="post-tags">
+                                    <a href="/tags/Go/" rel="tag"><i class="fa fa-tag"></i> Go</a>
+                                </div>
+                                <div class="post-nav">
+                                    <div class="post-nav-item">
+                                        <a href="/10091.html" rel="prev" title="Golang指针-pointer">
+                                            <i class="fa fa-chevron-left"></i> Golang指针-pointer </a>
+                                    </div>
+                                    <div class="post-nav-item">
+                                        <a href="/11541.html" rel="next" title="Golang基础数据类型"> Golang基础数据类型 <i class="fa fa-chevron-right"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </footer>
+                        </article>
+                    </div>
+                    <script>
+                        window.addEventListener('tabs:register', () =>
+                        {
+                            let
+                            {
+                                activeClass
+                            } = CONFIG.comments;
+                            if (CONFIG.comments.storage)
+                            {
+                                activeClass = localStorage.getItem('comments_active') || activeClass;
+                            }
+                            if (activeClass)
+                            {
+                                let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+                                if (activeTab)
+                                {
+                                    activeTab.click();
+                                }
+                            }
+                        });
+                        if (CONFIG.comments.storage)
+                        {
+                            window.addEventListener('tabs:click', event =>
+                            {
+                                if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+                                let commentClass = event.target.classList[1];
+                                localStorage.setItem('comments_active', commentClass);
+                            });
+                        }
+
+                    </script>
+                </div>
+                <div class="toggle sidebar-toggle">
+                    <span class="toggle-line toggle-line-first"></span>
+                    <span class="toggle-line toggle-line-middle"></span>
+                    <span class="toggle-line toggle-line-last"></span>
+                </div>
+                <aside class="sidebar">
+                    <div class="sidebar-inner">
+                        <ul class="sidebar-nav motion-element">
+                            <li class="sidebar-nav-toc"> 文章目录 </li>
+                            <li class="sidebar-nav-overview"> 站点概览 </li>
+                        </ul>
+                        <!--noindex-->
+                        <div class="post-toc-wrap sidebar-panel">
+                            <div class="post-toc motion-element">
+                                <ol class="nav">
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#关键字与保留字"><span class="nav-number">1.</span> <span class="nav-text">关键字与保留字</span></a></li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#变量"><span class="nav-number">2.</span> <span class="nav-text">变量</span></a>
+                                        <ol class="nav-child">
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#变量的来历"><span class="nav-number">2.1.</span> <span class="nav-text">变量的来历</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#变量类型"><span class="nav-number">2.2.</span> <span class="nav-text">变量类型</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#变量声明"><span class="nav-number">2.3.</span> <span class="nav-text">变量声明</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#匿名变量"><span class="nav-number">2.4.</span> <span class="nav-text">匿名变量</span></a></li>
+                                        </ol>
+                                    </li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#常量"><span class="nav-number">3.</span> <span class="nav-text">常量</span></a>
+                                        <ol class="nav-child">
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#Iota"><span class="nav-number">3.1.</span> <span class="nav-text">Iota</span></a></li>
+                                        </ol>
+                                    </li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#补充"><span class="nav-number">4.</span> <span class="nav-text">补充</span></a>
+                                        <ol class="nav-child">
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#常量与变量的对比示例"><span class="nav-number">4.1.</span> <span class="nav-text">常量与变量的对比示例</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#函数的初探"><span class="nav-number">4.2.</span> <span class="nav-text">函数的初探</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#函数的调用的顺序"><span class="nav-number">4.3.</span> <span class="nav-text">函数的调用的顺序</span></a></li>
+                                        </ol>
+                                    </li>
+                                </ol>
+                            </div>
+                        </div>
+                        <!--/noindex-->
+                        <div class="site-overview-wrap sidebar-panel">
+                            <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <img class="site-author-image" itemprop="image" alt="吴志鹏" src="/images/favicon/android-chrome-512x512.png">
+                                <p class="site-author-name" itemprop="name">吴志鹏</p>
+                                <div class="site-description" itemprop="description">Talk is free，please state clearly</div>
+                            </div>
+                            <div class="site-state-wrap motion-element">
+                                <nav class="site-state">
+                                    <div class="site-state-item site-state-posts">
+                                        <a href="/archives/">
+                                            <span class="site-state-item-count">136</span>
+                                            <span class="site-state-item-name">日志</span>
+                                        </a>
+                                    </div>
+                                    <div class="site-state-item site-state-categories">
+                                        <a href="/categories/">
+                                            <span class="site-state-item-count">158</span>
+                                            <span class="site-state-item-name">分类</span></a>
+                                    </div>
+                                    <div class="site-state-item site-state-tags">
+                                        <a href="/tags/">
+                                            <span class="site-state-item-count">89</span>
+                                            <span class="site-state-item-name">标签</span></a>
+                                    </div>
+                                </nav>
+                            </div>
+                            <div class="links-of-author motion-element">
+                                <span class="links-of-author-item">
+                                    <a href="https://github.com/Payne-Wu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Payne-Wu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="mailto:wuzhipeng1289690157@gmail.com" title="E-Mail → mailto:wuzhipeng1289690157@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="https://www.zhihu.com/people/wu-zhi-peng-72-78" title="ZhiHu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;wu-zhi-peng-72-78" rel="noopener" target="_blank"><i class="fa fa-magic fa-fw"></i>ZhiHu</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="https://weibo.com/u/6987234483" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;6987234483" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+                <div id="sidebar-dimmer"></div>
+            </div>
+        </main>
+        <footer class="footer">
+            <div class="footer-inner">
+                <div class="copyright"> &copy; <span itemprop="copyrightYear">2022</span>
+                    <span class="with-love">
+                        <i class="fa fa-heart"></i>
+                    </span>
+                    <span class="author" itemprop="copyrightHolder">PayneWu</span>
+                    <span class="post-meta-divider">|</span>
+                    <span class="post-meta-item-icon">
+                        <i class="fa fa-chart-area"></i>
+                    </span>
+                    <span title="站点总字数">255k</span>
+                    <span class="post-meta-divider">|</span>
+                    <span class="post-meta-item-icon">
+                        <i class="fa fa-coffee"></i>
+                    </span>
+                    <span title="站点阅读时长">3:51</span>
+                </div>
+                <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">湘ICP备2021019893号-1 </a>
+                </div>
+                <div style="display: none;">
+                    <script src="//s95.cnzz.com/z_stat.php?id=true&web_id=true"></script>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+    <script src="/js/utils.js"></script>
+    <script src="/.js"></script>
+    <script src="/js/schemes/pisces.js"></script>
+    <script src="/.js"></script>
+    <script src="/js/next-boot.js"></script>
+    <script src="/.js"></script>
+    <script>
+        (function ()
+        {
+            var canonicalURL, curProtocol;
+            //Get the <link> tag
+            var x = document.getElementsByTagName("link");
+            //Find the last canonical URL
+            if (x.length > 0)
+            {
+                for (i = 0; i < x.length; i++)
+                {
+                    if (x[i].rel.toLowerCase() == 'canonical' && x[i].href)
+                    {
+                        canonicalURL = x[i].href;
+                    }
+                }
+            }
+            //Get protocol
+            if (!canonicalURL)
+            {
+                curProtocol = window.location.protocol.split(':')[0];
+            }
+            else
+            {
+                curProtocol = canonicalURL.split(':')[0];
+            }
+            //Get current URL if the canonical URL does not exist
+            if (!canonicalURL) canonicalURL = window.location.href;
+            //Assign script content. Replace current URL with the canonical URL
+            ! function ()
+            {
+                var e = /([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,
+                    r = canonicalURL,
+                    t = document.referrer;
+                if (!e.test(r))
+                {
+                    var n = (String(curProtocol).toLowerCase() === 'https') ? "https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif" : "//api.share.baidu.com/s.gif";
+                    t ? (n += "?r=" + encodeURIComponent(document.referrer), r && (n += "&l=" + r)) : r && (n += "?l=" + r);
+                    var i = new Image;
+                    i.src = n
+                }
+            }(window);
+        })();
+
+    </script>
+    <script src="/js/local-search.js"></script>
+    <script src="/.js"></script>
+</body>
+
+</html>

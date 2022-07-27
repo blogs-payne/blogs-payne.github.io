@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+    <meta name="theme-color" content="#222">
+    <meta name="generator" content="Hexo 4.2.1">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16-next.png">
+    <link rel="mask-icon" href="/images/favicon/safari-pinned-tab.svg" color="#222">
+    <meta name="msapplication-config" content="/images/favicon/browserconfig.xml">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+    <link rel="stylesheet" href="/lib/pace/pace-theme-mac-osx.min.css">
+    <script src="/lib/pace/pace.min.js"></script>
+    <script id="hexo-configurations">
+        var NexT = window.NexT ||
+        {};
+        var CONFIG = {
+            "hostname": "paynewu.com",
+            "root": "/",
+            "scheme": "Gemini",
+            "version": "7.8.0",
+            "exturl": false,
+            "sidebar":
+            {
+                "position": "right",
+                "width": 240,
+                "display": "post",
+                "padding": 18,
+                "offset": 12,
+                "onmobile": false
+            },
+            "copycode":
+            {
+                "enable": true,
+                "show_result": true,
+                "style": "mac"
+            },
+            "back2top":
+            {
+                "enable": true,
+                "sidebar": false,
+                "scrollpercent": true
+            },
+            "bookmark":
+            {
+                "enable": false,
+                "color": "#222",
+                "save": "auto"
+            },
+            "fancybox": false,
+            "mediumzoom": true,
+            "lazyload": false,
+            "pangu": true,
+            "comments":
+            {
+                "style": "tabs",
+                "active": "valine",
+                "storage": true,
+                "lazyload": false,
+                "nav": null
+            },
+            "algolia":
+            {
+                "hits":
+                {
+                    "per_page": 10
+                },
+                "labels":
+                {
+                    "input_placeholder": "Search for Posts",
+                    "hits_empty": "We didn't find any results for the search: ${query}",
+                    "hits_stats": "${hits} results found in ${time} ms"
+                }
+            },
+            "localsearch":
+            {
+                "enable": true,
+                "trigger": "auto",
+                "top_n_per_article": 8,
+                "unescape": false,
+                "preload": false
+            },
+            "motion":
+            {
+                "enable": false,
+                "async": false,
+                "transition":
+                {
+                    "post_block": "bounceDownIn",
+                    "post_header": "slideDownIn",
+                    "post_body": "slideDownIn",
+                    "coll_header": "slideLeftIn",
+                    "sidebar": "slideUpIn"
+                }
+            },
+            "path": "search.xml"
+        };
+
+    </script>
+    <meta name="description" content="uiautomator2 简介 UiAutomator是Google提供的用来做安卓自动化测试的一个Java库，基于Accessibility服务。功能很强，可以对第三方App进行测试，获取屏幕上任意一个APP的任意一个控件属性，并对其进行任意操作。而uiautomator2便是UiAutomator的Python实现 除了对原有的库的bug进行了修复，还增加了很多新的Feature。主要有以下部">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="uiautomator2使用笔记">
+    <meta property="og:url" content="https://paynewu.com/1235432439.html">
+    <meta property="og:site_name" content="吴志鹏｜Payne-Wu">
+    <meta property="og:description" content="uiautomator2 简介 UiAutomator是Google提供的用来做安卓自动化测试的一个Java库，基于Accessibility服务。功能很强，可以对第三方App进行测试，获取屏幕上任意一个APP的任意一个控件属性，并对其进行任意操作。而uiautomator2便是UiAutomator的Python实现 除了对原有的库的bug进行了修复，还增加了很多新的Feature。主要有以下部">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNgy1gx45djlejbj30mr01e0sq.jpg">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNgy1gx45jkcixoj30d906qmxa.jpg">
+    <meta property="article:published_time" content="2021-12-06T06:51:53.000Z">
+    <meta property="article:modified_time" content="2022-07-27T09:58:26.880Z">
+    <meta property="article:author" content="吴志鹏">
+    <meta property="article:tag" content="uiautomator2">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:image" content="https://tva1.sinaimg.cn/large/008i3skNgy1gx45djlejbj30mr01e0sq.jpg">
+    <link rel="canonical" href="https://paynewu.com/1235432439.html">
+    <script id="page-configurations">
+        // https://hexo.io/docs/variables.html
+        CONFIG.page = {
+            sidebar: "",
+            isHome: false,
+            isPost: true,
+            lang: 'zh-CN'
+        };
+
+    </script>
+    <title>uiautomator2使用笔记 | 吴志鹏｜Payne-Wu</title>
+    <meta name="google-site-verification" content="p_bIcnvirkFzG2dYKuNDivKD8-STet5W7D-01woA2fc" />
+    <noscript>
+        <style>
+            .use-motion .brand,
+            .use-motion .menu-item,
+            .sidebar-inner,
+            .use-motion .post-block,
+            .use-motion .pagination,
+            .use-motion .comments,
+            .use-motion .post-header,
+            .use-motion .post-body,
+            .use-motion .collection-header
+            {
+                opacity: initial;
+            }
+
+            .use-motion .site-title,
+            .use-motion .site-subtitle
+            {
+                opacity: initial;
+                top: initial;
+            }
+
+            .use-motion .logo-line-before i
+            {
+                left: initial;
+            }
+
+            .use-motion .logo-line-after i
+            {
+                right: initial;
+            }
+
+        </style>
+    </noscript>
+    <link rel="alternate" href="/atom.xml" title="吴志鹏｜Payne-Wu" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+    <div class="container">
+        <div class="headband"></div>
+        <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+            <div class="header-inner">
+                <div class="site-brand-container">
+                    <div class="site-nav-toggle">
+                        <div class="toggle" aria-label="切换导航栏">
+                            <span class="toggle-line toggle-line-first"></span>
+                            <span class="toggle-line toggle-line-middle"></span>
+                            <span class="toggle-line toggle-line-last"></span>
+                        </div>
+                    </div>
+                    <div class="site-meta">
+                        <a href="/" class="brand" rel="start">
+                            <span class="logo-line-before"><i></i></span>
+                            <h1 class="site-title">吴志鹏｜Payne-Wu </h1>
+                            <span class="logo-line-after"><i></i></span>
+                        </a>
+                    </div>
+                    <div class="site-nav-right">
+                        <div class="toggle popup-trigger">
+                            <i class="fa fa-search fa-fw fa-lg"></i>
+                        </div>
+                    </div>
+                </div>
+                <nav class="site-nav">
+                    <ul id="menu" class="main-menu menu">
+                        <li class="menu-item menu-item-home">
+                            <a href="/" rel="section">首页</a>
+                        </li>
+                        <li class="menu-item menu-item-archives">
+                            <a href="/archives/" rel="section">文章列表</a>
+                        </li>
+                        <li class="menu-item menu-item-tags">
+                            <a href="/tags/" rel="section">Tags Cloud</a>
+                        </li>
+                        <li class="menu-item menu-item-categories">
+                            <a href="/categories/" rel="section">文章集合</a>
+                        </li>
+                        <li class="menu-item menu-item-about">
+                            <a href="/about/" rel="section">关于我啊</a>
+                        </li>
+                        <li class="menu-item menu-item-message">
+                            <a href="/message/" rel="section">留言与我</a>
+                        </li>
+                        <li class="menu-item menu-item-search">
+                            <a role="button" class="popup-trigger">搜索 </a>
+                        </li>
+                    </ul>
+                </nav>
+                <div class="search-pop-overlay">
+                    <div class="popup search-popup">
+                        <div class="search-header">
+                            <span class="search-icon">
+                                <i class="fa fa-search"></i>
+                            </span>
+                            <div class="search-input-container">
+                                <input autocomplete="off" autocapitalize="off" placeholder="搜索..." spellcheck="false" type="search" class="search-input">
+                            </div>
+                            <span class="popup-btn-close">
+                                <i class="fa fa-times-circle"></i>
+                            </span>
+                        </div>
+                        <div id="search-result">
+                            <div id="no-result">
+                                <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="back-to-top">
+            <i class="fa fa-arrow-up"></i>
+            <span>0%</span>
+        </div>
+        <div class="reading-progress-bar"></div>
+        <main class="main">
+            <div class="main-inner">
+                <div class="content-wrap">
+                    <div class="content post posts-expand">
+                        <article itemscope itemtype="http://schema.org/Article" class="post-block single" lang="zh-CN">
+                            <link itemprop="mainEntityOfPage" href="https://paynewu.com/1235432439.html">
+                            <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <meta itemprop="image" content="/images/favicon/android-chrome-512x512.png">
+                                <meta itemprop="name" content="吴志鹏">
+                                <meta itemprop="description" content="Talk is free，please state clearly">
+                            </span>
+                            <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+                                <meta itemprop="name" content="吴志鹏｜Payne-Wu">
+                            </span>
+                            <header class="post-header">
+                                <h1 class="post-title" itemprop="name headline"> uiautomator2使用笔记 </h1>
+                                <div class="post-meta">
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-user"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">作者</span>
+                                        <span><a href="/authors/Payne" class="author" itemprop="url" rel="index">Payne</a></span>
+                                    </span>
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-calendar"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">发表于</span>
+                                        <time title="创建时间：2021-12-06 14:51:53" itemprop="dateCreated datePublished" datetime="2021-12-06T14:51:53+08:00">2021-12-06</time>
+                                    </span>
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-folder"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">分类于</span>
+                                        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                                            <a href="/categories/uiautomator2/" itemprop="url" rel="index"><span itemprop="name">uiautomator2</span></a>
+                                        </span> ， <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                                            <a href="/categories/uiautomator2/crawler/" itemprop="url" rel="index"><span itemprop="name">crawler</span></a>
+                                        </span> ， <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                                            <a href="/categories/uiautomator2/crawler/mobile-phone/" itemprop="url" rel="index"><span itemprop="name">mobile phone</span></a>
+                                        </span>
+                                    </span>
+                                    <br>
+                                    <span class="post-meta-item" title="本文字数">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-file-word"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">本文字数：</span>
+                                        <span>1.8k</span>
+                                    </span>
+                                    <span class="post-meta-item" title="阅读时长">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-clock"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                                        <span>2 分钟</span>
+                                    </span>
+                                </div>
+                            </header>
+                            <div class="post-body" itemprop="articleBody">
+                                <h2 id="uiautomator2-简介"><a href="#uiautomator2-简介" class="headerlink" title="uiautomator2 简介"></a>uiautomator2 简介</h2>
+                                <p>UiAutomator是Google提供的用来做安卓自动化测试的一个Java库，基于Accessibility服务。功能很强，可以对第三方App进行测试，获取屏幕上任意一个APP的任意一个控件属性，并对其进行任意操作。而uiautomator2便是UiAutomator的Python实现</p>
+                                <p>除了对原有的库的bug进行了修复，还增加了很多新的Feature。主要有以下部分：</p>
+                                <ul>
+                                    <li>设备和开发机可以脱离数据线，通过WiFi互联（基于<a href="https://github.com/openatx/atx-agent" target="_blank" rel="noopener">atx-agent</a>）</li>
+                                    <li>集成了<a href="https://github.com/openstf/minicap" target="_blank" rel="noopener">openstf/minicap</a>达到实时屏幕投频，以及实时截图</li>
+                                    <li>集成了<a href="https://github.com/openstf/minitouch" target="_blank" rel="noopener">openstf/minitouch</a>达到精确实时控制设备</li>
+                                    <li>修复了<a href="https://github.com/xiaocong/uiautomator" target="_blank" rel="noopener">xiaocong/uiautomator</a>经常性退出的问题</li>
+                                    <li>代码进行了重构和精简，方便维护</li>
+                                    <li>实现了一个设备管理平台(也支持iOS) <a href="https://github.com/openatx/atxserver2" target="_blank" rel="noopener">atxserver2</a></li>
+                                    <li>扩充了toast获取和展示的功能</li>
+                                </ul>
+                                <p>相关链接如下：</p>
+                                <p><a href="https://developer.android.com/training/testing/ui-automator.html" target="_blank" rel="noopener">UiAutomator</a>：<a href="https://developer.android.com/training/testing/ui-automator.html" target="_blank" rel="noopener">https://developer.android.com/training/testing/ui-automator.html</a></p>
+                                <p><a href="https://github.com/openatx/uiautomator2" target="_blank" rel="noopener">uiautomator2</a>： <a href="https://github.com/openatx/uiautomator2" target="_blank" rel="noopener">https://github.com/openatx/uiautomator2</a></p>
+                                <p><a href="https://github.com/openatx/uiautomator2/blob/master/QUICK_REFERENCE.md" target="_blank" rel="noopener">QUICK_REFERENCE</a>： <a href="https://github.com/openatx/uiautomator2/blob/master/QUICK_REFERENCE.md" target="_blank" rel="noopener">https://github.com/openatx/uiautomator2/blob/master/QUICK_REFERENCE.md</a></p>
+                                <h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2>
+                                <p>由于python实现的，在此可以使用<code>pip</code> 直接安装即可，命令如下</p>
+                                <figure class="highlight bash">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="comment"># # 如果是在Windows平台下，未做`python3` 与 `python` 的link，在这里使用`python` 而不是`python3`</span></span><br><span class="line">python3 -m pip install --upgrade uiautomator2</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <blockquote>
+                                    <p>Tips： 建议使用虚拟环境</p>
+                                </blockquote>
+                                <p>开发版安装</p>
+                                <figure class="highlight bash">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">python3 -m pip install --upgrade --pre uiautomator2</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>源码安装</p>
+                                <blockquote>
+                                    <p>需要git客户端，若未安装git，可移步<code>https://git-scm.com/downloads</code>进行下载，</p>
+                                    <p>当然，源码也可以使用zip的方式进行下载，请自行探索</p>
+                                </blockquote>
+                                <figure class="highlight bash">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">git <span class="built_in">clone</span> https://github.com/openatx/uiautomator2</span><br><span class="line">python3 -m pip install -e uiautomator2</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h3 id="校验"><a href="#校验" class="headerlink" title="校验"></a>校验</h3>
+                                <p>先准备一台（不要两台）开启了<code>开发者选项</code>的安卓手机，连接上电脑，确保执行<code>adb devices</code>可以看到连接上的设备。如下图所示</p>
+                                <p><img src="https://tva1.sinaimg.cn/large/008i3skNgy1gx45djlejbj30mr01e0sq.jpg" alt="image-20211206153159233"></p>
+                                <p>运行<code>python3 -m uiautomator2 init</code>安装包含httprpc服务的apk到手机+<code>atx-agent, minicap, minitouch</code></p>
+                                <blockquote>
+                                    <p>在过去的版本中，这一步是必须执行的，但是从1.3.0之后的版本，当运行python代码<code>u2.connect()</code>时就会自动推送这些文件了</p>
+                                </blockquote>
+                                <figure class="highlight python">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="keyword">import</span> uiautomator2 <span class="keyword">as</span> u2</span><br><span class="line"></span><br><span class="line"><span class="comment"># 连接设备(当只有只有一台设备的时候可以为空，当有多台设备可以是设备号或ip地址)</span></span><br><span class="line">device = u2.connect()</span><br><span class="line"><span class="comment"># get uiautomator2 device info</span></span><br><span class="line">pprint(device.info)</span><br><span class="line"><span class="comment"># get device info</span></span><br><span class="line">pprint(device.device_info)</span><br><span class="line"><span class="comment"># get device windows size</span></span><br><span class="line">print(device.window_size())</span><br><span class="line"><span class="comment"># get device wlan ip</span></span><br><span class="line">pprint(device.wlan_ip)</span><br><span class="line"><span class="comment"># get serial id</span></span><br><span class="line">pprint(device.serial)</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p><img src="https://tva1.sinaimg.cn/large/008i3skNgy1gx45jkcixoj30d906qmxa.jpg" alt="image-20211206153746081"></p>
+                                <h2 id="app开启与关闭"><a href="#app开启与关闭" class="headerlink" title="app开启与关闭"></a>app开启与关闭</h2>
+                                <p>当我们需要打开对应的app时，需要知道对应设备的包名。获取包名有两种方式</p>
+                                <ul>
+                                    <li>在设备上打开对应的app，获取当前app包名(<code>app_current()</code>)</li>
+                                    <li>获取全部的应用包(<code>app_list_running()</code>)</li>
+                                </ul>
+                                <figure class="highlight bash">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="comment"># 开启app</span></span><br><span class="line">app_start</span><br><span class="line"><span class="comment"># 关闭app</span></span><br><span class="line">app_stop</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h3 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h3>
+                                <blockquote>
+                                    <p>此时笔者的测试手机在已经打开app</p>
+                                </blockquote>
+                                <figure class="highlight python">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="comment"># @Date         : 07-12-2021 </span></span><br><span class="line"><span class="comment"># @Author       : Payne</span></span><br><span class="line"><span class="comment"># @Email        : wuzhipeng1289690157@gmail.com</span></span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">from</span> loguru <span class="keyword">import</span> logger</span><br><span class="line"><span class="keyword">import</span> uiautomator2 <span class="keyword">as</span> u2</span><br><span class="line"></span><br><span class="line"><span class="comment"># content device</span></span><br><span class="line">device = u2.connect()</span><br><span class="line">logger.info(<span class="string">f"DEVICE INFO:<span class="subst">&#123;device.info&#125;</span>"</span>)</span><br><span class="line"><span class="comment"># check current app</span></span><br><span class="line">current_app = device.app_current()</span><br><span class="line"><span class="comment"># get the package</span></span><br><span class="line">device.app_start(current_app.get(<span class="string">'package'</span>), stop=<span class="literal">True</span>)</span><br><span class="line"><span class="comment"># 正态分布休眠,模拟操作</span></span><br><span class="line">time.sleep(random.uniform(<span class="number">10</span>, <span class="number">20</span>))</span><br><span class="line"><span class="comment"># stop all app</span></span><br><span class="line">device.app_stop_all()</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <blockquote>
+                                    <p>Tips: 复习一下adb command</p>
+                                </blockquote>
+                                <figure class="highlight bash">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="comment"># adb 命令 -- 获取报包名</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># current （需要打开app）</span></span><br><span class="line">adb -s &#123;device_serial&#125; shell dumpsys activity | grep mFocusedActivity</span><br><span class="line"><span class="comment"># all</span></span><br><span class="line">adb -s &#123;device_serial&#125; shell pm list packages</span><br><span class="line"></span><br><span class="line"><span class="comment"># 根据关键字过滤包</span></span><br><span class="line">adb -s &#123;device_serial&#125; shell pm list packages | grep “keyword”</span><br><span class="line"><span class="comment"># 查看包安装位置 </span></span><br><span class="line">adb -s &#123;device_serial&#125; shell pm list packages -f</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h2 id="点击"><a href="#点击" class="headerlink" title="点击"></a>点击</h2>
+                                <ul>
+                                    <li>
+                                        <p>Turn on/off screen</p>
+                                        <figure class="highlight routeros">
+                                            <table>
+                                                <tr>
+                                                    <td class="gutter">
+                                                        <pre><span class="line">1</span><br><span class="line">2</span><br></pre>
+                                                    </td>
+                                                    <td class="code">
+                                                        <pre><span class="line">d.screen_on() # turn on the screen</span><br><span class="line">d.screen_off() # turn off the screen</span><br></pre>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </figure>
+                                    </li>
+                                    <li>
+                                        <p>Press hard/soft key</p>
+                                        <figure class="highlight lsl">
+                                            <table>
+                                                <tr>
+                                                    <td class="gutter">
+                                                        <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre>
+                                                    </td>
+                                                    <td class="code">
+                                                        <pre><span class="line">d.press(<span class="string">"home"</span>) # press the home <span class="type">key</span>, with <span class="type">key</span> name</span><br><span class="line">d.press(<span class="string">"back"</span>) # press the back <span class="type">key</span>, with <span class="type">key</span> name</span><br><span class="line">d.press(<span class="number">0x07</span>, <span class="number">0x02</span>) # press keycode <span class="number">0x07</span>('<span class="number">0</span>') with META ALT(<span class="number">0x02</span>)</span><br></pre>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </figure>
+                                    </li>
+                                    <li>
+                                        <p>These key names are currently supported:</p>
+                                        <ul>
+                                            <li>
+                                                <p>home、back、</p>
+                                            </li>
+                                            <li>
+                                                <p>left、right、up、down</p>
+                                            </li>
+                                            <li>
+                                                <p>center、menu、search</p>
+                                            </li>
+                                            <li>
+                                                <p>enter、delete ( or del)</p>
+                                            </li>
+                                            <li>
+                                                <p>recent (recent apps)</p>
+                                            </li>
+                                            <li>
+                                                <p>volume_up、volume_down、volume_mute</p>
+                                            </li>
+                                            <li>
+                                                <p>camera、power</p>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <p>Click on the screen</p>
+                                    </li>
+                                </ul>
+                                <figure class="highlight bash">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">d.click(x, y)</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <ul>
+                                    <li>Double click</li>
+                                </ul>
+                                <figure class="highlight bash">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">d.double_click(x, y)</span><br><span class="line">d.double_click(x, y, 0.1) <span class="comment"># default duration between two click is 0.1s</span></span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <ul>
+                                    <li>long_click</li>
+                                </ul>
+                                <figure class="highlight bash">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">d.long_click(x, y)</span><br><span class="line">d.long_click(x, y, 0.5) <span class="comment"># long click 0.5s (default)</span></span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h2 id="滑动"><a href="#滑动" class="headerlink" title="滑动"></a>滑动</h2>
+                                <p><strong>Swipe</strong></p>
+                                <figure class="highlight python">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="comment"># Swipe</span></span><br><span class="line">swipe(self, fx, fy, tx, ty, duration: Optional[float] = <span class="literal">None</span>, steps: Optional[int] = <span class="literal">None</span>)</span><br><span class="line">fx, fy：起始坐标</span><br><span class="line">tx, ty：目标坐标</span><br><span class="line">duration： 持续时间（力度）</span><br><span class="line">steps： 分开滑动次数</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p><strong>swipe_ext</strong></p>
+                                <figure class="highlight bash">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">d.swipe_ext(<span class="string">"right"</span>) <span class="comment"># 手指右滑，4选1 "left", "right", "up", "down"</span></span><br><span class="line">d.swipe_ext(<span class="string">"right"</span>, scale=0.9) <span class="comment"># 默认0.9, 滑动距离为屏幕宽度的90%</span></span><br><span class="line">d.swipe_ext(<span class="string">"right"</span>, box=(0, 0, 100, 100)) <span class="comment"># 在 (0,0) -&gt; (100, 100) 这个区域做滑动</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 实践发现上滑或下滑的时候，从中点开始滑动成功率会高一些</span></span><br><span class="line">d.swipe_ext(<span class="string">"up"</span>, scale=0.8) <span class="comment"># 代码会vkk</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 还可以使用Direction作为参数</span></span><br><span class="line">from uiautomator2 import Direction</span><br><span class="line"></span><br><span class="line">d.swipe_ext(Direction.FORWARD) <span class="comment"># 页面下翻, 等价于 d.swipe_ext("up"), 只是更好理解</span></span><br><span class="line">d.swipe_ext(Direction.BACKWARD) <span class="comment"># 页面上翻</span></span><br><span class="line">d.swipe_ext(Direction.HORIZ_FORWARD) <span class="comment"># 页面水平右翻</span></span><br><span class="line">d.swipe_ext(Direction.HORIZ_BACKWARD) <span class="comment"># 页面水平左翻</span></span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p><strong>Drag</strong></p>
+                                <figure class="highlight vim">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">d.drag(sx, <span class="keyword">sy</span>, <span class="keyword">ex</span>, ey)</span><br><span class="line">d.drag(sx, <span class="keyword">sy</span>, <span class="keyword">ex</span>, ey, <span class="number">0.5</span>) </span><br><span class="line"></span><br><span class="line">sx, <span class="keyword">sy</span>：起始坐标</span><br><span class="line"><span class="keyword">ex</span>, ey：目标坐标</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p><strong>Swipe points</strong></p>
+                                <figure class="highlight python">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="comment"># swipe from point(x0, y0) to point(x1, y1) then to point(x2, y2)</span></span><br><span class="line"><span class="comment"># time will speed 0.2s bwtween two points</span></span><br><span class="line"><span class="comment"># swipe_points(self, points, duration: float = 0.5)</span></span><br><span class="line">d.swipe_points([(x0, y0), (x1, y1), (x2, y2)], <span class="number">0.2</span>))</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h2 id="选择器"><a href="#选择器" class="headerlink" title="选择器"></a>选择器</h2>
+                                <p>选择器是一种在当前窗口中识别特定 UI 对象的便捷机制, 很多时候仅按照坐标时点击并不精确，通用型不强。</p>
+                                <p>选择器支持以下参数。有关详细信息，请参阅<a href="http://developer.android.com/tools/help/uiautomator/UiSelector.html" target="_blank" rel="noopener">UiSelector Java 文档</a>。</p>
+                                <ul>
+                                    <li><code>text</code>, <code>textContains</code>, <code>textMatches</code>,<code>textStartsWith</code></li>
+                                    <li><code>className</code>, <code>classNameMatches</code></li>
+                                    <li><code>description</code>, <code>descriptionContains</code>, <code>descriptionMatches</code>,<code>descriptionStartsWith</code></li>
+                                    <li><code>checkable</code>, <code>checked</code>, <code>clickable</code>,<code>longClickable</code></li>
+                                    <li><code>scrollable</code>, <code>enabled</code>, <code>focusable</code>, <code>focused</code>,<code>selected</code></li>
+                                    <li><code>packageName</code>, <code>packageNameMatches</code></li>
+                                    <li><code>resourceId</code>, <code>resourceIdMatches</code></li>
+                                    <li><code>index</code>, <code>instance</code></li>
+                                </ul>
+                            </div>
+                            <footer class="post-footer">
+                                <div class="post-tags">
+                                    <a href="/tags/uiautomator2/" rel="tag"><i class="fa fa-tag"></i> uiautomator2</a>
+                                </div>
+                                <div class="post-nav">
+                                    <div class="post-nav-item">
+                                        <a href="/882995737.html" rel="prev" title="redis持久化那些事儿">
+                                            <i class="fa fa-chevron-left"></i> redis持久化那些事儿 </a>
+                                    </div>
+                                    <div class="post-nav-item">
+                                        <a href="/1813580861.html" rel="next" title="vim文本基础操作"> vim文本基础操作 <i class="fa fa-chevron-right"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </footer>
+                        </article>
+                    </div>
+                    <script>
+                        window.addEventListener('tabs:register', () =>
+                        {
+                            let
+                            {
+                                activeClass
+                            } = CONFIG.comments;
+                            if (CONFIG.comments.storage)
+                            {
+                                activeClass = localStorage.getItem('comments_active') || activeClass;
+                            }
+                            if (activeClass)
+                            {
+                                let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+                                if (activeTab)
+                                {
+                                    activeTab.click();
+                                }
+                            }
+                        });
+                        if (CONFIG.comments.storage)
+                        {
+                            window.addEventListener('tabs:click', event =>
+                            {
+                                if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+                                let commentClass = event.target.classList[1];
+                                localStorage.setItem('comments_active', commentClass);
+                            });
+                        }
+
+                    </script>
+                </div>
+                <div class="toggle sidebar-toggle">
+                    <span class="toggle-line toggle-line-first"></span>
+                    <span class="toggle-line toggle-line-middle"></span>
+                    <span class="toggle-line toggle-line-last"></span>
+                </div>
+                <aside class="sidebar">
+                    <div class="sidebar-inner">
+                        <ul class="sidebar-nav motion-element">
+                            <li class="sidebar-nav-toc"> 文章目录 </li>
+                            <li class="sidebar-nav-overview"> 站点概览 </li>
+                        </ul>
+                        <!--noindex-->
+                        <div class="post-toc-wrap sidebar-panel">
+                            <div class="post-toc motion-element">
+                                <ol class="nav">
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#uiautomator2-简介"><span class="nav-number">1.</span> <span class="nav-text">uiautomator2 简介</span></a></li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#安装"><span class="nav-number">2.</span> <span class="nav-text">安装</span></a>
+                                        <ol class="nav-child">
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#校验"><span class="nav-number">2.1.</span> <span class="nav-text">校验</span></a></li>
+                                        </ol>
+                                    </li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#app开启与关闭"><span class="nav-number">3.</span> <span class="nav-text">app开启与关闭</span></a>
+                                        <ol class="nav-child">
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#Example"><span class="nav-number">3.1.</span> <span class="nav-text">Example</span></a></li>
+                                        </ol>
+                                    </li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#点击"><span class="nav-number">4.</span> <span class="nav-text">点击</span></a></li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#滑动"><span class="nav-number">5.</span> <span class="nav-text">滑动</span></a></li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#选择器"><span class="nav-number">6.</span> <span class="nav-text">选择器</span></a></li>
+                                </ol>
+                            </div>
+                        </div>
+                        <!--/noindex-->
+                        <div class="site-overview-wrap sidebar-panel">
+                            <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <img class="site-author-image" itemprop="image" alt="吴志鹏" src="/images/favicon/android-chrome-512x512.png">
+                                <p class="site-author-name" itemprop="name">吴志鹏</p>
+                                <div class="site-description" itemprop="description">Talk is free，please state clearly</div>
+                            </div>
+                            <div class="site-state-wrap motion-element">
+                                <nav class="site-state">
+                                    <div class="site-state-item site-state-posts">
+                                        <a href="/archives/">
+                                            <span class="site-state-item-count">136</span>
+                                            <span class="site-state-item-name">日志</span>
+                                        </a>
+                                    </div>
+                                    <div class="site-state-item site-state-categories">
+                                        <a href="/categories/">
+                                            <span class="site-state-item-count">158</span>
+                                            <span class="site-state-item-name">分类</span></a>
+                                    </div>
+                                    <div class="site-state-item site-state-tags">
+                                        <a href="/tags/">
+                                            <span class="site-state-item-count">89</span>
+                                            <span class="site-state-item-name">标签</span></a>
+                                    </div>
+                                </nav>
+                            </div>
+                            <div class="links-of-author motion-element">
+                                <span class="links-of-author-item">
+                                    <a href="https://github.com/Payne-Wu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Payne-Wu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="mailto:wuzhipeng1289690157@gmail.com" title="E-Mail → mailto:wuzhipeng1289690157@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="https://www.zhihu.com/people/wu-zhi-peng-72-78" title="ZhiHu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;wu-zhi-peng-72-78" rel="noopener" target="_blank"><i class="fa fa-magic fa-fw"></i>ZhiHu</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="https://weibo.com/u/6987234483" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;6987234483" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+                <div id="sidebar-dimmer"></div>
+            </div>
+        </main>
+        <footer class="footer">
+            <div class="footer-inner">
+                <div class="copyright"> &copy; <span itemprop="copyrightYear">2022</span>
+                    <span class="with-love">
+                        <i class="fa fa-heart"></i>
+                    </span>
+                    <span class="author" itemprop="copyrightHolder">PayneWu</span>
+                    <span class="post-meta-divider">|</span>
+                    <span class="post-meta-item-icon">
+                        <i class="fa fa-chart-area"></i>
+                    </span>
+                    <span title="站点总字数">255k</span>
+                    <span class="post-meta-divider">|</span>
+                    <span class="post-meta-item-icon">
+                        <i class="fa fa-coffee"></i>
+                    </span>
+                    <span title="站点阅读时长">3:51</span>
+                </div>
+                <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">湘ICP备2021019893号-1 </a>
+                </div>
+                <div style="display: none;">
+                    <script src="//s95.cnzz.com/z_stat.php?id=true&web_id=true"></script>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+    <script src="/js/utils.js"></script>
+    <script src="/.js"></script>
+    <script src="/js/schemes/pisces.js"></script>
+    <script src="/.js"></script>
+    <script src="/js/next-boot.js"></script>
+    <script src="/.js"></script>
+    <script>
+        (function ()
+        {
+            var canonicalURL, curProtocol;
+            //Get the <link> tag
+            var x = document.getElementsByTagName("link");
+            //Find the last canonical URL
+            if (x.length > 0)
+            {
+                for (i = 0; i < x.length; i++)
+                {
+                    if (x[i].rel.toLowerCase() == 'canonical' && x[i].href)
+                    {
+                        canonicalURL = x[i].href;
+                    }
+                }
+            }
+            //Get protocol
+            if (!canonicalURL)
+            {
+                curProtocol = window.location.protocol.split(':')[0];
+            }
+            else
+            {
+                curProtocol = canonicalURL.split(':')[0];
+            }
+            //Get current URL if the canonical URL does not exist
+            if (!canonicalURL) canonicalURL = window.location.href;
+            //Assign script content. Replace current URL with the canonical URL
+            ! function ()
+            {
+                var e = /([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,
+                    r = canonicalURL,
+                    t = document.referrer;
+                if (!e.test(r))
+                {
+                    var n = (String(curProtocol).toLowerCase() === 'https') ? "https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif" : "//api.share.baidu.com/s.gif";
+                    t ? (n += "?r=" + encodeURIComponent(document.referrer), r && (n += "&l=" + r)) : r && (n += "?l=" + r);
+                    var i = new Image;
+                    i.src = n
+                }
+            }(window);
+        })();
+
+    </script>
+    <script src="/js/local-search.js"></script>
+    <script src="/.js"></script>
+</body>
+
+</html>

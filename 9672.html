@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+    <meta name="theme-color" content="#222">
+    <meta name="generator" content="Hexo 4.2.1">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16-next.png">
+    <link rel="mask-icon" href="/images/favicon/safari-pinned-tab.svg" color="#222">
+    <meta name="msapplication-config" content="/images/favicon/browserconfig.xml">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+    <link rel="stylesheet" href="/lib/pace/pace-theme-mac-osx.min.css">
+    <script src="/lib/pace/pace.min.js"></script>
+    <script id="hexo-configurations">
+        var NexT = window.NexT ||
+        {};
+        var CONFIG = {
+            "hostname": "paynewu.com",
+            "root": "/",
+            "scheme": "Gemini",
+            "version": "7.8.0",
+            "exturl": false,
+            "sidebar":
+            {
+                "position": "right",
+                "width": 240,
+                "display": "post",
+                "padding": 18,
+                "offset": 12,
+                "onmobile": false
+            },
+            "copycode":
+            {
+                "enable": true,
+                "show_result": true,
+                "style": "mac"
+            },
+            "back2top":
+            {
+                "enable": true,
+                "sidebar": false,
+                "scrollpercent": true
+            },
+            "bookmark":
+            {
+                "enable": false,
+                "color": "#222",
+                "save": "auto"
+            },
+            "fancybox": false,
+            "mediumzoom": true,
+            "lazyload": false,
+            "pangu": true,
+            "comments":
+            {
+                "style": "tabs",
+                "active": "valine",
+                "storage": true,
+                "lazyload": false,
+                "nav": null
+            },
+            "algolia":
+            {
+                "hits":
+                {
+                    "per_page": 10
+                },
+                "labels":
+                {
+                    "input_placeholder": "Search for Posts",
+                    "hits_empty": "We didn't find any results for the search: ${query}",
+                    "hits_stats": "${hits} results found in ${time} ms"
+                }
+            },
+            "localsearch":
+            {
+                "enable": true,
+                "trigger": "auto",
+                "top_n_per_article": 8,
+                "unescape": false,
+                "preload": false
+            },
+            "motion":
+            {
+                "enable": false,
+                "async": false,
+                "transition":
+                {
+                    "post_block": "bounceDownIn",
+                    "post_header": "slideDownIn",
+                    "post_body": "slideDownIn",
+                    "coll_header": "slideLeftIn",
+                    "sidebar": "slideUpIn"
+                }
+            },
+            "path": "search.xml"
+        };
+
+    </script>
+    <meta name="description" content="盘点Golang并发那些事儿之一      一生很短，Let’s Go     人生苦短，我用Python  Golang、Golang、Golang 真的够浪，今天我们一起盘点一下Golang并发那些事儿，准确来说是goroutine,关于多线程并发，咱们暂时先放一放(主要是俺现在还不太会，不敢出来瞎搞)。关于golang优点如何，咱们也不扯那些虚的。反正都是大佬在说，俺只是个吃瓜群众，偶尔打打">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="盘点go并发那些事儿">
+    <meta property="og:url" content="https://paynewu.com/9672.html">
+    <meta property="og:site_name" content="吴志鹏｜Payne-Wu">
+    <meta property="og:description" content="盘点Golang并发那些事儿之一      一生很短，Let’s Go     人生苦短，我用Python  Golang、Golang、Golang 真的够浪，今天我们一起盘点一下Golang并发那些事儿，准确来说是goroutine,关于多线程并发，咱们暂时先放一放(主要是俺现在还不太会，不敢出来瞎搞)。关于golang优点如何，咱们也不扯那些虚的。反正都是大佬在说，俺只是个吃瓜群众，偶尔打打">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gn9kz2montj301i01aa9t.jpg">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gn9l4ovbrdj31u70u0jsv.jpg">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gn9ldqess0j31ds0sogmr.jpg">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gnalxc9lv8j31hk0oet9n.jpg">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gnalzq72m1j30zk0u0q56.jpg">
+    <meta property="article:published_time" content="2021-02-03T12:56:48.000Z">
+    <meta property="article:modified_time" content="2022-07-27T09:58:26.880Z">
+    <meta property="article:author" content="吴志鹏">
+    <meta property="article:tag" content="Go">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1gn9kz2montj301i01aa9t.jpg">
+    <link rel="canonical" href="https://paynewu.com/9672.html">
+    <script id="page-configurations">
+        // https://hexo.io/docs/variables.html
+        CONFIG.page = {
+            sidebar: "",
+            isHome: false,
+            isPost: true,
+            lang: 'zh-CN'
+        };
+
+    </script>
+    <title>盘点go并发那些事儿 | 吴志鹏｜Payne-Wu</title>
+    <meta name="google-site-verification" content="p_bIcnvirkFzG2dYKuNDivKD8-STet5W7D-01woA2fc" />
+    <noscript>
+        <style>
+            .use-motion .brand,
+            .use-motion .menu-item,
+            .sidebar-inner,
+            .use-motion .post-block,
+            .use-motion .pagination,
+            .use-motion .comments,
+            .use-motion .post-header,
+            .use-motion .post-body,
+            .use-motion .collection-header
+            {
+                opacity: initial;
+            }
+
+            .use-motion .site-title,
+            .use-motion .site-subtitle
+            {
+                opacity: initial;
+                top: initial;
+            }
+
+            .use-motion .logo-line-before i
+            {
+                left: initial;
+            }
+
+            .use-motion .logo-line-after i
+            {
+                right: initial;
+            }
+
+        </style>
+    </noscript>
+    <link rel="alternate" href="/atom.xml" title="吴志鹏｜Payne-Wu" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+    <div class="container">
+        <div class="headband"></div>
+        <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+            <div class="header-inner">
+                <div class="site-brand-container">
+                    <div class="site-nav-toggle">
+                        <div class="toggle" aria-label="切换导航栏">
+                            <span class="toggle-line toggle-line-first"></span>
+                            <span class="toggle-line toggle-line-middle"></span>
+                            <span class="toggle-line toggle-line-last"></span>
+                        </div>
+                    </div>
+                    <div class="site-meta">
+                        <a href="/" class="brand" rel="start">
+                            <span class="logo-line-before"><i></i></span>
+                            <h1 class="site-title">吴志鹏｜Payne-Wu </h1>
+                            <span class="logo-line-after"><i></i></span>
+                        </a>
+                    </div>
+                    <div class="site-nav-right">
+                        <div class="toggle popup-trigger">
+                            <i class="fa fa-search fa-fw fa-lg"></i>
+                        </div>
+                    </div>
+                </div>
+                <nav class="site-nav">
+                    <ul id="menu" class="main-menu menu">
+                        <li class="menu-item menu-item-home">
+                            <a href="/" rel="section">首页</a>
+                        </li>
+                        <li class="menu-item menu-item-archives">
+                            <a href="/archives/" rel="section">文章列表</a>
+                        </li>
+                        <li class="menu-item menu-item-tags">
+                            <a href="/tags/" rel="section">Tags Cloud</a>
+                        </li>
+                        <li class="menu-item menu-item-categories">
+                            <a href="/categories/" rel="section">文章集合</a>
+                        </li>
+                        <li class="menu-item menu-item-about">
+                            <a href="/about/" rel="section">关于我啊</a>
+                        </li>
+                        <li class="menu-item menu-item-message">
+                            <a href="/message/" rel="section">留言与我</a>
+                        </li>
+                        <li class="menu-item menu-item-search">
+                            <a role="button" class="popup-trigger">搜索 </a>
+                        </li>
+                    </ul>
+                </nav>
+                <div class="search-pop-overlay">
+                    <div class="popup search-popup">
+                        <div class="search-header">
+                            <span class="search-icon">
+                                <i class="fa fa-search"></i>
+                            </span>
+                            <div class="search-input-container">
+                                <input autocomplete="off" autocapitalize="off" placeholder="搜索..." spellcheck="false" type="search" class="search-input">
+                            </div>
+                            <span class="popup-btn-close">
+                                <i class="fa fa-times-circle"></i>
+                            </span>
+                        </div>
+                        <div id="search-result">
+                            <div id="no-result">
+                                <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="back-to-top">
+            <i class="fa fa-arrow-up"></i>
+            <span>0%</span>
+        </div>
+        <div class="reading-progress-bar"></div>
+        <main class="main">
+            <div class="main-inner">
+                <div class="content-wrap">
+                    <div class="content post posts-expand">
+                        <article itemscope itemtype="http://schema.org/Article" class="post-block single" lang="zh-CN">
+                            <link itemprop="mainEntityOfPage" href="https://paynewu.com/9672.html">
+                            <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <meta itemprop="image" content="/images/favicon/android-chrome-512x512.png">
+                                <meta itemprop="name" content="吴志鹏">
+                                <meta itemprop="description" content="Talk is free，please state clearly">
+                            </span>
+                            <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+                                <meta itemprop="name" content="吴志鹏｜Payne-Wu">
+                            </span>
+                            <header class="post-header">
+                                <h1 class="post-title" itemprop="name headline"> 盘点go并发那些事儿 </h1>
+                                <div class="post-meta">
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-user"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">作者</span>
+                                        <span><a href="/authors/Payne" class="author" itemprop="url" rel="index">Payne</a></span>
+                                    </span>
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-calendar"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">发表于</span>
+                                        <time title="创建时间：2021-02-03 20:56:48" itemprop="dateCreated datePublished" datetime="2021-02-03T20:56:48+08:00">2021-02-03</time>
+                                    </span>
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-folder"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">分类于</span>
+                                        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                                            <a href="/categories/Go/" itemprop="url" rel="index"><span itemprop="name">Go</span></a>
+                                        </span>
+                                    </span>
+                                    <br>
+                                    <span class="post-meta-item" title="本文字数">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-file-word"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">本文字数：</span>
+                                        <span>6.3k</span>
+                                    </span>
+                                    <span class="post-meta-item" title="阅读时长">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-clock"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                                        <span>6 分钟</span>
+                                    </span>
+                                </div>
+                            </header>
+                            <div class="post-body" itemprop="articleBody">
+                                <h2 id="盘点Golang并发那些事儿之一"><a href="#盘点Golang并发那些事儿之一" class="headerlink" title="盘点Golang并发那些事儿之一"></a>盘点Golang并发那些事儿之一</h2>
+                                <blockquote>
+                                    <p>一生很短，Let’s Go</p>
+                                    <p>人生苦短，我用Python</p>
+                                </blockquote>
+                                <p>Golang、Golang、Golang 真的够浪，今天我们一起盘点一下<code>Golang</code>并发那些事儿，准确来说是<code>goroutine</code>,关于多线程并发，咱们暂时先放一放(主要是俺现在还不太会，不敢出来瞎搞)。关于<code>golang</code><br>优点如何，咱们也不扯那些虚的。反正都是大佬在说，俺只是个吃瓜群众，偶尔打打酱油，逃～。</p>
+                                <a id="more"></a>
+                                <p>说到并发，等等一系列的骚概念就出来了，为了做个照顾一下自己的菜，顺便复习一下</p>
+                                <h2 id="基础概念"><a href="#基础概念" class="headerlink" title="基础概念"></a>基础概念</h2>
+                                <h3 id="进程"><a href="#进程" class="headerlink" title="进程"></a>进程</h3>
+                                <h4 id="进程的定义"><a href="#进程的定义" class="headerlink" title="进程的定义"></a>进程的定义</h4>
+                                <p><strong>进程</strong>（英语：process），是指计算机中已运行的<code>程序</code>。进程曾经是<code>`分时系统</code>的基本运作单位。在面向进程设计的系统（如早期的<code>UNIX</code>，<code>Linux 2.4</code>及更早的版本）中，进程是程序的基本执行实体；在面向线程设计的系统（如当代多数操作系统、<code>Linux</code> 2.6及更新的版本）中，进程本身不是基本运行单位，而是<strong>线程</strong>的容器。</p>
+                                <p>程序本身只是指令、数据及其组织形式的描述，相当于一个名词，进程才是程序（那些指令和数据）的真正运行实例，可以想像说是现在进行式。若干进程有可能与同一个程序相关系，且每个进程皆可以同步或<strong>异步</strong>的方式独立运行。现代<strong>计算机系统</strong><br>可在同一段时间内以进程的形式将多个程序加载到存储器中，并借由时间共享（或称<strong>时分复用</strong>），以在一个<strong>处理器</strong>上表现出同时<strong>平行性</strong><br>运行的感觉。同样的，使用多线程技术（多线程即每一个线程都代表一个进程内的一个独立执行上下文）的操作系统或计算机体系结构，同样程序的<strong>平行</strong>线程，可在多CPU主机或网络上真正<strong>同时</strong>运行（在不同的CPU上）。</p>
+                                <h4 id="进程的创建"><a href="#进程的创建" class="headerlink" title="进程的创建"></a>进程的创建</h4>
+                                <p>操作系统需要有一种方式来创建进程。</p>
+                                <p>以下4种主要事件会创建进程</p>
+                                <ol>
+                                    <li>系统初始化 （简单可理解为关机后的开机）</li>
+                                    <li>正在运行的程序执行了创建进程的系统调用（例如：朋友发了一个网址，你点击后开启浏览器进入网页中）</li>
+                                    <li>用户请求创建一个新进程（例如：打开一个程序，打开QQ、微信）</li>
+                                    <li>一个批量作业的初始化</li>
+                                </ol>
+                                <h4 id="进程的终止"><a href="#进程的终止" class="headerlink" title="进程的终止"></a>进程的终止</h4>
+                                <p>进程在创建后，开始运行与处理相关任务。但并不会永恒存在，终究会完成或退出。那么以下四种情况会发生进程的终止</p>
+                                <ol>
+                                    <li>正常退出（自愿）</li>
+                                    <li>错误退出（自愿）</li>
+                                    <li>崩溃退出（非自愿）</li>
+                                    <li>被其他杀死（非自愿）</li>
+                                </ol>
+                                <p>正常退出：你退出浏览器，你点了一下它<img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gn9kz2montj301i01aa9t.jpg" alt=""></p>
+                                <p>错误退出：你此时正在津津有味的看着电视剧，突然程序内部发生bug，导致退出<img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gn9l4ovbrdj31u70u0jsv.jpg" alt=""></p>
+                                <p>崩溃退出：你程序崩溃了<img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gn9ldqess0j31ds0sogmr.jpg" alt=""></p>
+                                <p>被其他杀死：例如在windows上，使用任务管理器关闭进程</p>
+                                <h4 id="进程的状态"><a href="#进程的状态" class="headerlink" title="进程的状态"></a>进程的状态</h4>
+                                <ol>
+                                    <li>运行态(实际占用CPU)</li>
+                                    <li>就绪态(可运行、但其他进程正在运行而暂停)</li>
+                                    <li>阻塞态(除非某种外部的时间发生，否则进程不能运行)</li>
+                                </ol>
+                                <p>前两种状态在逻辑上是类似的。处于这两种状态的进程都可以运行，只是对于第二种状态暂时没有分配CPU，一旦分配到了CPU即可运行</p>
+                                <p>第三种状态与前两种不同，处于该状态的进程不能运行，即是CPU空闲也不行。</p>
+                                <blockquote>
+                                    <p>如有兴趣，可进一步了解进程的实现、多进程设计模型</p>
+                                </blockquote>
+                                <h4 id="进程池"><a href="#进程池" class="headerlink" title="进程池"></a>进程池</h4>
+                                <p>进程池技术的应用至少由以下两部分组成：</p>
+                                <p><strong>资源进程</strong></p>
+                                <p>预先创建好的空闲进程，管理进程会把工作分发到空闲进程来处理。</p>
+                                <p><strong>管理进程</strong></p>
+                                <p>管理进程负责创建资源进程，把工作交给空闲资源进程处理，回收已经处理完工作的资源进程。</p>
+                                <p>资源进程跟管理进程的概念很好理解，管理进程如何有效的管理资源进程，分配任务给资源进程，回收空闲资源进程，管理进程要有效的管理资源进程，那么管理进程跟资源进程间必然需要交互，通过IPC，信号，<a href="https://baike.baidu.com/item/信号量" target="_blank" rel="noopener">信号量</a>，<a href="https://baike.baidu.com/item/消息队列" target="_blank" rel="noopener">消息队列</a>，管道等进行交互。</p>
+                                <blockquote>
+                                    <p>进程池：准确来说它并不实际存在于我们的操作系统中，而是IPC，信号，<a href="https://baike.baidu.com/item/信号量" target="_blank" rel="noopener">信号量</a>，<a href="https://baike.baidu.com/item/消息队列" target="_blank" rel="noopener">消息队列</a>，管道等对多进程进行管理，从而减少不断的开启、关闭等操作。以求达到减少不必要的资源损耗</p>
+                                </blockquote>
+                                <h3 id="线程"><a href="#线程" class="headerlink" title="线程"></a>线程</h3>
+                                <h4 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h4>
+                                <p><strong>线程</strong>（英语：thread）是<strong>操作系统</strong>能够进行运算<strong>调度</strong>的最小单位。大部分情况下，它被包含在<strong>进程</strong>之中，是<strong>进程</strong>中的实际运作单位。一条线程指的是<strong>进程</strong><br>中一个单一顺序的控制流，一个进程中可以并发多个线程，每条线程并行执行不同的任务。在<strong>Unix System V</strong>及<strong>SunOS</strong>中也被称为轻量进程（lightweight processes），但轻量进程更多指内核线程（kernel<br>thread），而把用户线程（user thread）称为线程。</p>
+                                <p>线程是独立调度和分派的基本单位。线程可以为操作系统内核调度的内核线程</p>
+                                <p>同一进程中的多条线程将共享该进程中的全部系统资源，如虚拟地址空间，<strong>文件描述符</strong>和<strong>信号处理</strong>等等。但同一进程中的多个线程有各自的<code>调用栈</code>（call stack），自己的<code>寄存器环境</code>（register<br>context），自己的线程本地存储（thread-local storage）。</p>
+                                <p>一个进程可以有很多线程来处理，每条线程并行执行不同的任务。如果进程要完成的任务很多，这样需很多线程，也要调用很多核心，在多核或多<strong>CPU</strong>，或支持<strong>Hyper-threading</strong><br>的CPU上使用多线程程序设计的好处是显而易见的，即提高了程序的执行吞吐率。以人工作的样子想像，核心相当于人，人越多则能同时处理的事情越多，而线程相当于手，手越多则工作效率越高。在单CPU单核的计算机上，使用多线程技术，也可以把进程中负责I/O处理、人机交互而常被阻塞的部分与密集计算的部分分开来执行，编写专门的workhorse线程执行密集计算，虽然多任务比不上多核，但因为具备多线程的能力，从而提高了程序的执行效率。</p>
+                                <h4 id="线程池"><a href="#线程池" class="headerlink" title="线程池"></a>线程池</h4>
+                                <p><strong>线程池</strong>（英语：thread<br>pool）：一种<a href="https://zh.wikipedia.org/wiki/线程" target="_blank" rel="noopener">线程</a>使用模式。线程过多会带来调度开销，进而影响缓存局部性和整体性能。而线程池维护着多个线程，等待着监督管理者分配可并发执行的任务。这避免了在处理短时间任务时创建与销毁线程的代价。线程池不仅能够保证内核的充分利用，还能防止过分调度。可用线程数量应该取决于可用的并发处理器、处理器内核、内存、网络sockets等的数量。<br>例如，线程数一般取cpu数量+2比较合适，线程数过多会导致额外的线程切换开销。</p>
+                                <p>任务调度以执行线程的常见方法是使用同步队列，称作任务队列。池中的线程等待队列中的任务，并把执行完的任务放入完成队列中。</p>
+                                <p>线程池模式一般分为两种：HS/HA半同步/半异步模式、L/F领导者与跟随者模式。</p>
+                                <p>-</p>
+                                <p>半同步/半异步模式又称为生产者消费者模式，是比较常见的实现方式，比较简单。分为同步层、队列层、异步层三层。同步层的主线程处理工作任务并存入工作队列，工作线程从工作队列取出任务进行处理，如果工作队列为空，则取不到任务的工作线程进入挂起状态。由于线程间有数据通信，因此不适于大数据量交换的场合。<br>-<br>领导者跟随者模式，在线程池中的线程可处在3种状态之一：领导者leader、追随者follower或工作者processor。任何时刻线程池只有一个领导者线程。事件到达时，领导者线程负责消息分离，并从处于追随者线程中选出一个来当继任领导者，然后将自身设置为工作者状态去处置该事件。处理完毕后工作者线程将自身的状态置为追随者。这一模式实现复杂，但避免了线程间交换任务数据，提高了CPU<br>cache相似性。在<a href="https://zh.wikipedia.org/wiki/ACE自适配通信环境" target="_blank" rel="noopener">ACE</a>(Adaptive Communication Environment)中，提供了领导者跟随者模式实现。</p>
+                                <p>线程池的<strong>伸缩性</strong>对性能有较大的影响。</p>
+                                <ul>
+                                    <li>创建太多线程，将会浪费一定的资源，有些线程未被充分使用。</li>
+                                    <li>销毁太多线程，将导致之后浪费时间再次创建它们。</li>
+                                    <li>创建线程太慢，将会导致长时间的等待，性能变差。</li>
+                                    <li>销毁线程太慢，导致其它线程<strong>资源</strong>饥饿。</li>
+                                </ul>
+                                <h3 id="协程"><a href="#协程" class="headerlink" title="协程"></a>协程</h3>
+                                <p>协程，英文叫作 Coroutine，又称微线程、纤程，协程是一种用户态的轻量级线程。</p>
+                                <p>协程拥有自己的寄存器上下文和栈。协程调度切换时，将寄存器上下文和栈保存到其他地方，在切回来的时候，恢复先前保存的寄存器上下文和栈。因此协程能保留上一次调用时的状态，即所有局部状态的一个特定组合，每次过程重入时，就相当于进入上一次调用的状态。</p>
+                                <p>协程本质上是个单进程，协程相对于多进程来说，无需线程上下文切换的开销，无需原子操作锁定及同步的开销，编程模型也非常简单。</p>
+                                <h3 id="串行"><a href="#串行" class="headerlink" title="串行"></a>串行</h3>
+                                <p>多个任务，执行完毕后再执行另一个。</p>
+                                <p>例如：吃完饭后散步(先坐下吃饭、吃完后去散步)</p>
+                                <h3 id="并行"><a href="#并行" class="headerlink" title="并行"></a>并行</h3>
+                                <p>多个任务、交替执行</p>
+                                <p>例如：做饭，一会放水洗菜、一会吸收(菜比较脏，洗下菜写下手，傲娇～)</p>
+                                <h3 id="并发"><a href="#并发" class="headerlink" title="并发"></a>并发</h3>
+                                <p>共同出发</p>
+                                <p>边吃饭、边看电视</p>
+                                <h3 id="阻塞与非阻塞"><a href="#阻塞与非阻塞" class="headerlink" title="阻塞与非阻塞"></a>阻塞与非阻塞</h3>
+                                <h4 id="阻塞"><a href="#阻塞" class="headerlink" title="阻塞"></a>阻塞</h4>
+                                <p>阻塞状态指程序未得到所需计算资源时被挂起的状态。程序在等待某个操作完成期间，自身无法继续处理其他的事情，则称该程序在该操作上是阻塞的。</p>
+                                <p>常见的阻塞形式有：网络 I/O 阻塞、磁盘 I/O 阻塞、用户输入阻塞等。阻塞是无处不在的，包括 CPU 切换上下文时，所有的进程都无法真正处理事情，它们也会被阻塞。如果是多核 CPU 则正在执行上下文切换操作的核不可被利用。</p>
+                                <h4 id="非阻塞"><a href="#非阻塞" class="headerlink" title="非阻塞"></a>非阻塞</h4>
+                                <p>程序在等待某操作过程中，自身不被阻塞，可以继续处理其他的事情，则称该程序在该操作上是非阻塞的。</p>
+                                <p>非阻塞并不是在任何程序级别、任何情况下都可以存在的。仅当程序封装的级别可以囊括独立的子程序单元时，它才可能存在非阻塞状态。</p>
+                                <p>非阻塞的存在是因为阻塞存在，正因为某个操作阻塞导致的耗时与效率低下，我们才要把它变成非阻塞的。</p>
+                                <h3 id="同步与异步"><a href="#同步与异步" class="headerlink" title="同步与异步"></a>同步与异步</h3>
+                                <h4 id="同步"><a href="#同步" class="headerlink" title="同步"></a>同步</h4>
+                                <p>不同程序单元为了完成某个任务，在执行过程中需靠某种通信方式以协调一致，我们称这些程序单元是同步执行的。</p>
+                                <p>例如购物系统中更新商品库存，需要用“行锁”作为通信信号，让不同的更新请求强制排队顺序执行，那更新库存的操作是同步的。</p>
+                                <p>简言之，同步意味着有序。</p>
+                                <h4 id="异步"><a href="#异步" class="headerlink" title="异步"></a>异步</h4>
+                                <p>为完成某个任务，不同程序单元之间过程中无需通信协调，也能完成任务的方式，不相关的程序单元之间可以是异步的。</p>
+                                <p>例如，爬虫下载网页。调度程序调用下载程序后，即可调度其他任务，而无需与该下载任务保持通信以协调行为。不同网页的下载、保存等操作都是无关的，也无需相互通知协调。这些异步操作的完成时刻并不确定。</p>
+                                <h2 id="可异步与不可异步"><a href="#可异步与不可异步" class="headerlink" title="可异步与不可异步"></a>可异步与不可异步</h2>
+                                <p>经过以上了解，又是进程、又是线程、等等一系列的骚东西，那是真的难受。不过相信你已经有个初步的概率，那么这里我们将更加深入的去了解<code>可异步</code>与<code>不可异步</code>。</p>
+                                <p>在此之前先总结一下，以上各种演进的路线，其实加速无非就是一句话，提高效率。（废话～）</p>
+                                <p>那么提高效率的是两大因素，增加投入以求增加产出、尽可能避免不必要的损耗（例如：减少上下文切换等等）。</p>
+                                <p>如何区分它是可异步代码还是不可异步呢，其实很简单那就是，它是否能够自主完成不需要我们参与的部分。</p>
+                                <p>我们从结果反向思考，</p>
+                                <p>例如我们发送一个网络请求，这之间拥有网络I/O阻塞，那么测试我们将它挂起、转而去做其他事情，等他响应了，我们在进行此阶段的下一步的操作。那么这个是可异步的</p>
+                                <p>另外：写作业与上洗手间，我此时正在写着作业，突然，我想上洗手间了，走。上完洗手间后又回来继续写作业，在我去洗手间这段时间作业是不会有任何进展，所以我们可以理解为这是非异步</p>
+                                <h2 id="goroutine"><a href="#goroutine" class="headerlink" title="goroutine"></a>goroutine</h2>
+                                <p>东扯一句，西扯一句，终于该上真家伙了，废话不多说。</p>
+                                <p>如何实现只需定义很多个任务，让系统去帮助我们把这些任务分配到CPU上实现并发执行。</p>
+                                <p>Go语言中的<code>goroutine</code>就是这样一种机制，<code>goroutine</code>的概念类似于线程，但 <code>goroutine</code>是由Go的运行时（runtime）调度和管理的。Go程序会智能地将 goroutine<br>中的任务合理地分配给每个CPU。Go语言之所以被称为现代化的编程语言，就是因为它在语言层面已经内置了调度和上下文切换的机制。</p>
+                                <p>在Go语言编程中你不需要去自己写进程、线程、协程，你的技能包里只有一个技能–<code>goroutine</code>，当你需要让某个任务并发执行的时候，你只需要把这个任务包装成一个函数，开启一个<code>goroutine</code>去执行这个函数就可以了</p>
+                                <h2 id="goroutine与线程"><a href="#goroutine与线程" class="headerlink" title="goroutine与线程"></a>goroutine与线程</h2>
+                                <h3 id="可增长的栈"><a href="#可增长的栈" class="headerlink" title="可增长的栈"></a>可增长的栈</h3>
+                                <p>OS线程（操作系统线程）一般都有固定的栈内存（通常为2MB）,一个<code>goroutine</code>的栈在其生命周期开始时只有很小的栈（典型情况下2KB），<code>goroutine</code>的栈不是固定的，他可以按需增大和缩小，<code>goroutine</code><br>的栈大小限制可以达到1GB，虽然极少会用到这么大。所以在Go语言中一次创建十万左右的<code>goroutine</code>也是可以的。</p>
+                                <h3 id="goroutine模型"><a href="#goroutine模型" class="headerlink" title="goroutine模型"></a>goroutine模型</h3>
+                                <p><code>GPM</code>是Go语言运行时（runtime）层面的实现，是go语言自己实现的一套调度系统。区别于操作系统调度OS线程。</p>
+                                <ul>
+                                    <li><code>G</code>很好理解，就是个goroutine的，里面除了存放本goroutine信息外 还有与所在P的绑定等信息。</li>
+                                    <li><code>P</code><br>管理着一组goroutine队列，P里面会存储当前goroutine运行的上下文环境（函数指针，堆栈地址及地址边界），P会对自己管理的goroutine队列做一些调度（比如把占用CPU时间较长的goroutine暂停、运行后续的goroutine等等）当自己的队列消费完了就去全局队列里取，如果全局队列里也消费完了会去其他P的队列里抢任务。</li>
+                                    <li><code>M（machine）</code>是Go运行时（runtime）对操作系统内核线程的虚拟， M与内核线程一般是一一映射的关系， 一个groutine最终是要放到M上执行的；</li>
+                                </ul>
+                                <p>P与M一般也是一一对应的。他们关系是： P管理着一组G挂载在M上运行。当一个G长久阻塞在一个M上时，runtime会新建一个M，阻塞G所在的P会把其他的G 挂载在新建的M上。当旧的G阻塞完成或者认为其已经死掉时 回收旧的M。</p>
+                                <p>P的个数是通过<code>runtime.GOMAXPROCS</code>设定（最大256），Go1.5版本之后默认为物理线程数。 在并发量大的时候会增加一些P和M，但不会太多，切换太频繁的话得不偿失。</p>
+                                <p>单从线程调度讲，Go语言相比起其他语言的优势在于OS线程是由OS内核来调度的，<code>goroutine</code>则是由Go运行时（runtime）自己的调度器调度的，这个调度器使用一个称为m:<br>n调度的技术（复用/调度m个goroutine到n个OS线程）。 其一大特点是goroutine的调度是在用户态下完成的， 不涉及内核态与用户态之间的频繁切换，包括内存的分配与释放，都是在用户态维护着一块大的内存池，<br>不直接调用系统的malloc函数（除非内存池需要改变），成本比调度OS线程低很多。 另一方面充分利用了多核的硬件资源，近似的把若干goroutine均分在物理线程上， 再加上本身goroutine的超轻量，以上种种保证了go调度方面的性能。</p>
+                                <h3 id="GOMAXPROCS"><a href="#GOMAXPROCS" class="headerlink" title="GOMAXPROCS"></a>GOMAXPROCS</h3>
+                                <p>Go运行时的调度器使用<code>GOMAXPROCS</code>参数来确定需要使用多少个OS线程来同时执行Go代码。默认值是机器上的CPU核心数。例如在一个8核心的机器上，调度器会把Go代码同时调度到8个OS线程上（GOMAXPROCS是m:n调度中的n）。</p>
+                                <p>Go语言中可以通过<code>runtime.GOMAXPROCS()</code>函数设置当前程序并发时占用的CPU逻辑核心数。</p>
+                                <p>Go1.5版本之前，默认使用的是单核心执行。Go1.5版本之后，默认使用全部的CPU逻辑核心数。</p>
+                                <h2 id="goroutine的创建"><a href="#goroutine的创建" class="headerlink" title="goroutine的创建"></a>goroutine的创建</h2>
+                                <p>使用<code>goroutine</code>非常简单，只需要在调用函数的时在函数名前面加上<code>go</code>关键字，就可以为一个函数创建一个<code>goroutine</code>。</p>
+                                <p>一个<code>goroutine</code>必定对应一个函数，当然也可以创建多个<code>goroutine</code>去执行相同的函数。</p>
+                                <p>语法如下</p>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">go</span> 函数()[普通函数和匿名函数即可]</span><br><span class="line">&#125;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <p>如果你此时兴致勃勃的想立马试试，我只想和你说，“少侠，请稍等～”，我话还没说完。以上我只说了如何创建<code>goroutine</code>，可没说这样就是这样用的。嘻嘻～</p>
+                                <p>首先我们先看看不用<code>goroutine</code>的代码，示例如下</p>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"># example</span><br><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">	<span class="string">"time"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">example</span><span class="params">(i <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">	<span class="comment">//fmt.Println("HelloWord~, stamp is", i)</span></span><br><span class="line">	time.Sleep(time.Second)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// normal</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	startTime := time.Now()</span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">10</span>; i++ &#123;</span><br><span class="line">		example(i)</span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Println(<span class="string">"Main~"</span>)</span><br><span class="line">	spendTime := time.Since(startTime)</span><br><span class="line">	fmt.Println(<span class="string">"Spend Time:"</span>, spendTime)</span><br><span class="line">&#125;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <blockquote>
+                                    <p>输入结果如下</p>
+                                    <p><img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gnalxc9lv8j31hk0oet9n.jpg" alt=""></p>
+                                </blockquote>
+                                <p>那么我们来使用<code>goroutine</code>，运行</p>
+                                <p>示例代码如下：</p>
+                                <figure class="highlight go">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">	<span class="string">"time"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">example</span><span class="params">(i <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">	fmt.Println(<span class="string">"HelloWord~, stamp is"</span>, i)</span><br><span class="line">	time.Sleep(time.Second)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// normal</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	startTime := time.Now()</span><br><span class="line">	<span class="comment">// 创建十个goroutine</span></span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">10</span>; i++ &#123;</span><br><span class="line">		<span class="keyword">go</span> example(i)</span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Println(<span class="string">"Main~"</span>)</span><br><span class="line">	spendTime := time.Since(startTime)</span><br><span class="line">	fmt.Println(<span class="string">"Spend Time:"</span>, spendTime)</span><br><span class="line">&#125;</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <blockquote>
+                                    <p>输出如下</p>
+                                    <p><img src="https://tva1.sinaimg.cn/large/008eGmZEgy1gnalzq72m1j30zk0u0q56.jpg" style="zoom:50%;" /></p>
+                                </blockquote>
+                                <p>乍一看，好家伙速度提升了简直不是一个量级啊，秒啊～</p>
+                                <p>仔细看你会发现，7,9 跑去哪儿呢？不见了，盯～</p>
+                                <p>谜底在下一篇揭晓～</p>
+                                <p>期待下一篇，盘点Golang并发那些事儿之二，<code>goroutine</code>并发控制得心应手</p>
+                            </div>
+                            <div class="popular-posts-header">相关文章</div>
+                            <ul class="popular-posts">
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/62372.html" rel="bookmark">Golang-Array</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/17571.html" rel="bookmark">Golang-Defer详解</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/3744.html" rel="bookmark">Golang-Map</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/45903.html" rel="bookmark">Golang-匿名函数与闭包</a></div>
+                                </li>
+                                <li class="popular-posts-item">
+                                    <div class="popular-posts-title"><a href="/1962.html" rel="bookmark">Golang-接口(interface)</a></div>
+                                </li>
+                            </ul>
+                            <footer class="post-footer">
+                                <div class="post-tags">
+                                    <a href="/tags/Go/" rel="tag"><i class="fa fa-tag"></i> Go</a>
+                                </div>
+                                <div class="post-nav">
+                                    <div class="post-nav-item">
+                                        <a href="/19099.html" rel="prev" title="Book List">
+                                            <i class="fa fa-chevron-left"></i> Book List </a>
+                                    </div>
+                                    <div class="post-nav-item">
+                                        <a href="/37640.html" rel="next" title="盘点go并发那些事儿之二-并发控制得心应手"> 盘点go并发那些事儿之二-并发控制得心应手 <i class="fa fa-chevron-right"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </footer>
+                        </article>
+                    </div>
+                    <script>
+                        window.addEventListener('tabs:register', () =>
+                        {
+                            let
+                            {
+                                activeClass
+                            } = CONFIG.comments;
+                            if (CONFIG.comments.storage)
+                            {
+                                activeClass = localStorage.getItem('comments_active') || activeClass;
+                            }
+                            if (activeClass)
+                            {
+                                let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+                                if (activeTab)
+                                {
+                                    activeTab.click();
+                                }
+                            }
+                        });
+                        if (CONFIG.comments.storage)
+                        {
+                            window.addEventListener('tabs:click', event =>
+                            {
+                                if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+                                let commentClass = event.target.classList[1];
+                                localStorage.setItem('comments_active', commentClass);
+                            });
+                        }
+
+                    </script>
+                </div>
+                <div class="toggle sidebar-toggle">
+                    <span class="toggle-line toggle-line-first"></span>
+                    <span class="toggle-line toggle-line-middle"></span>
+                    <span class="toggle-line toggle-line-last"></span>
+                </div>
+                <aside class="sidebar">
+                    <div class="sidebar-inner">
+                        <ul class="sidebar-nav motion-element">
+                            <li class="sidebar-nav-toc"> 文章目录 </li>
+                            <li class="sidebar-nav-overview"> 站点概览 </li>
+                        </ul>
+                        <!--noindex-->
+                        <div class="post-toc-wrap sidebar-panel">
+                            <div class="post-toc motion-element">
+                                <ol class="nav">
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#盘点Golang并发那些事儿之一"><span class="nav-number">1.</span> <span class="nav-text">盘点Golang并发那些事儿之一</span></a></li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#基础概念"><span class="nav-number">2.</span> <span class="nav-text">基础概念</span></a>
+                                        <ol class="nav-child">
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#进程"><span class="nav-number">2.1.</span> <span class="nav-text">进程</span></a>
+                                                <ol class="nav-child">
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#进程的定义"><span class="nav-number">2.1.1.</span> <span class="nav-text">进程的定义</span></a></li>
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#进程的创建"><span class="nav-number">2.1.2.</span> <span class="nav-text">进程的创建</span></a></li>
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#进程的终止"><span class="nav-number">2.1.3.</span> <span class="nav-text">进程的终止</span></a></li>
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#进程的状态"><span class="nav-number">2.1.4.</span> <span class="nav-text">进程的状态</span></a></li>
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#进程池"><span class="nav-number">2.1.5.</span> <span class="nav-text">进程池</span></a></li>
+                                                </ol>
+                                            </li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#线程"><span class="nav-number">2.2.</span> <span class="nav-text">线程</span></a>
+                                                <ol class="nav-child">
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#定义"><span class="nav-number">2.2.1.</span> <span class="nav-text">定义</span></a></li>
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#线程池"><span class="nav-number">2.2.2.</span> <span class="nav-text">线程池</span></a></li>
+                                                </ol>
+                                            </li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#协程"><span class="nav-number">2.3.</span> <span class="nav-text">协程</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#串行"><span class="nav-number">2.4.</span> <span class="nav-text">串行</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#并行"><span class="nav-number">2.5.</span> <span class="nav-text">并行</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#并发"><span class="nav-number">2.6.</span> <span class="nav-text">并发</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#阻塞与非阻塞"><span class="nav-number">2.7.</span> <span class="nav-text">阻塞与非阻塞</span></a>
+                                                <ol class="nav-child">
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#阻塞"><span class="nav-number">2.7.1.</span> <span class="nav-text">阻塞</span></a></li>
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#非阻塞"><span class="nav-number">2.7.2.</span> <span class="nav-text">非阻塞</span></a></li>
+                                                </ol>
+                                            </li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#同步与异步"><span class="nav-number">2.8.</span> <span class="nav-text">同步与异步</span></a>
+                                                <ol class="nav-child">
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#同步"><span class="nav-number">2.8.1.</span> <span class="nav-text">同步</span></a></li>
+                                                    <li class="nav-item nav-level-4"><a class="nav-link" href="#异步"><span class="nav-number">2.8.2.</span> <span class="nav-text">异步</span></a></li>
+                                                </ol>
+                                            </li>
+                                        </ol>
+                                    </li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#可异步与不可异步"><span class="nav-number">3.</span> <span class="nav-text">可异步与不可异步</span></a></li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#goroutine"><span class="nav-number">4.</span> <span class="nav-text">goroutine</span></a></li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#goroutine与线程"><span class="nav-number">5.</span> <span class="nav-text">goroutine与线程</span></a>
+                                        <ol class="nav-child">
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#可增长的栈"><span class="nav-number">5.1.</span> <span class="nav-text">可增长的栈</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#goroutine模型"><span class="nav-number">5.2.</span> <span class="nav-text">goroutine模型</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#GOMAXPROCS"><span class="nav-number">5.3.</span> <span class="nav-text">GOMAXPROCS</span></a></li>
+                                        </ol>
+                                    </li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#goroutine的创建"><span class="nav-number">6.</span> <span class="nav-text">goroutine的创建</span></a></li>
+                                </ol>
+                            </div>
+                        </div>
+                        <!--/noindex-->
+                        <div class="site-overview-wrap sidebar-panel">
+                            <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <img class="site-author-image" itemprop="image" alt="吴志鹏" src="/images/favicon/android-chrome-512x512.png">
+                                <p class="site-author-name" itemprop="name">吴志鹏</p>
+                                <div class="site-description" itemprop="description">Talk is free，please state clearly</div>
+                            </div>
+                            <div class="site-state-wrap motion-element">
+                                <nav class="site-state">
+                                    <div class="site-state-item site-state-posts">
+                                        <a href="/archives/">
+                                            <span class="site-state-item-count">136</span>
+                                            <span class="site-state-item-name">日志</span>
+                                        </a>
+                                    </div>
+                                    <div class="site-state-item site-state-categories">
+                                        <a href="/categories/">
+                                            <span class="site-state-item-count">158</span>
+                                            <span class="site-state-item-name">分类</span></a>
+                                    </div>
+                                    <div class="site-state-item site-state-tags">
+                                        <a href="/tags/">
+                                            <span class="site-state-item-count">89</span>
+                                            <span class="site-state-item-name">标签</span></a>
+                                    </div>
+                                </nav>
+                            </div>
+                            <div class="links-of-author motion-element">
+                                <span class="links-of-author-item">
+                                    <a href="https://github.com/Payne-Wu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Payne-Wu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="mailto:wuzhipeng1289690157@gmail.com" title="E-Mail → mailto:wuzhipeng1289690157@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="https://www.zhihu.com/people/wu-zhi-peng-72-78" title="ZhiHu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;wu-zhi-peng-72-78" rel="noopener" target="_blank"><i class="fa fa-magic fa-fw"></i>ZhiHu</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="https://weibo.com/u/6987234483" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;6987234483" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+                <div id="sidebar-dimmer"></div>
+            </div>
+        </main>
+        <footer class="footer">
+            <div class="footer-inner">
+                <div class="copyright"> &copy; <span itemprop="copyrightYear">2022</span>
+                    <span class="with-love">
+                        <i class="fa fa-heart"></i>
+                    </span>
+                    <span class="author" itemprop="copyrightHolder">PayneWu</span>
+                    <span class="post-meta-divider">|</span>
+                    <span class="post-meta-item-icon">
+                        <i class="fa fa-chart-area"></i>
+                    </span>
+                    <span title="站点总字数">255k</span>
+                    <span class="post-meta-divider">|</span>
+                    <span class="post-meta-item-icon">
+                        <i class="fa fa-coffee"></i>
+                    </span>
+                    <span title="站点阅读时长">3:51</span>
+                </div>
+                <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">湘ICP备2021019893号-1 </a>
+                </div>
+                <div style="display: none;">
+                    <script src="//s95.cnzz.com/z_stat.php?id=true&web_id=true"></script>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+    <script src="/js/utils.js"></script>
+    <script src="/.js"></script>
+    <script src="/js/schemes/pisces.js"></script>
+    <script src="/.js"></script>
+    <script src="/js/next-boot.js"></script>
+    <script src="/.js"></script>
+    <script>
+        (function ()
+        {
+            var canonicalURL, curProtocol;
+            //Get the <link> tag
+            var x = document.getElementsByTagName("link");
+            //Find the last canonical URL
+            if (x.length > 0)
+            {
+                for (i = 0; i < x.length; i++)
+                {
+                    if (x[i].rel.toLowerCase() == 'canonical' && x[i].href)
+                    {
+                        canonicalURL = x[i].href;
+                    }
+                }
+            }
+            //Get protocol
+            if (!canonicalURL)
+            {
+                curProtocol = window.location.protocol.split(':')[0];
+            }
+            else
+            {
+                curProtocol = canonicalURL.split(':')[0];
+            }
+            //Get current URL if the canonical URL does not exist
+            if (!canonicalURL) canonicalURL = window.location.href;
+            //Assign script content. Replace current URL with the canonical URL
+            ! function ()
+            {
+                var e = /([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,
+                    r = canonicalURL,
+                    t = document.referrer;
+                if (!e.test(r))
+                {
+                    var n = (String(curProtocol).toLowerCase() === 'https') ? "https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif" : "//api.share.baidu.com/s.gif";
+                    t ? (n += "?r=" + encodeURIComponent(document.referrer), r && (n += "&l=" + r)) : r && (n += "?l=" + r);
+                    var i = new Image;
+                    i.src = n
+                }
+            }(window);
+        })();
+
+    </script>
+    <script src="/js/local-search.js"></script>
+    <script src="/.js"></script>
+</body>
+
+</html>

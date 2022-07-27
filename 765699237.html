@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+    <meta name="theme-color" content="#222">
+    <meta name="generator" content="Hexo 4.2.1">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16-next.png">
+    <link rel="mask-icon" href="/images/favicon/safari-pinned-tab.svg" color="#222">
+    <meta name="msapplication-config" content="/images/favicon/browserconfig.xml">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+    <link rel="stylesheet" href="/lib/pace/pace-theme-mac-osx.min.css">
+    <script src="/lib/pace/pace.min.js"></script>
+    <script id="hexo-configurations">
+        var NexT = window.NexT ||
+        {};
+        var CONFIG = {
+            "hostname": "paynewu.com",
+            "root": "/",
+            "scheme": "Gemini",
+            "version": "7.8.0",
+            "exturl": false,
+            "sidebar":
+            {
+                "position": "right",
+                "width": 240,
+                "display": "post",
+                "padding": 18,
+                "offset": 12,
+                "onmobile": false
+            },
+            "copycode":
+            {
+                "enable": true,
+                "show_result": true,
+                "style": "mac"
+            },
+            "back2top":
+            {
+                "enable": true,
+                "sidebar": false,
+                "scrollpercent": true
+            },
+            "bookmark":
+            {
+                "enable": false,
+                "color": "#222",
+                "save": "auto"
+            },
+            "fancybox": false,
+            "mediumzoom": true,
+            "lazyload": false,
+            "pangu": true,
+            "comments":
+            {
+                "style": "tabs",
+                "active": "valine",
+                "storage": true,
+                "lazyload": false,
+                "nav": null
+            },
+            "algolia":
+            {
+                "hits":
+                {
+                    "per_page": 10
+                },
+                "labels":
+                {
+                    "input_placeholder": "Search for Posts",
+                    "hits_empty": "We didn't find any results for the search: ${query}",
+                    "hits_stats": "${hits} results found in ${time} ms"
+                }
+            },
+            "localsearch":
+            {
+                "enable": true,
+                "trigger": "auto",
+                "top_n_per_article": 8,
+                "unescape": false,
+                "preload": false
+            },
+            "motion":
+            {
+                "enable": false,
+                "async": false,
+                "transition":
+                {
+                    "post_block": "bounceDownIn",
+                    "post_header": "slideDownIn",
+                    "post_body": "slideDownIn",
+                    "coll_header": "slideLeftIn",
+                    "sidebar": "slideUpIn"
+                }
+            },
+            "path": "search.xml"
+        };
+
+    </script>
+    <meta name="description" content="MitmProxy是一组优秀的网络代理拦截工具，可为 HTTP&#x2F;1、HTTP&#x2F;2 和 WebSockets 提供交互式、支持 SSL&#x2F;TLS 的拦截代理。它提供 拦截 HTTP 和 HTTPS 请求和响应并动态修改它们、保存完整的 HTTP会话，以供重放攻击和分析、反向代理模式将流量转发到指定服务器、macOS 和 Linux 上的透明代理、对 HTTP 流量进行脚本化更改等功能。      官方">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="mitmproxy的使用">
+    <meta property="og:url" content="https://paynewu.com/765699237.html">
+    <meta property="og:site_name" content="吴志鹏｜Payne-Wu">
+    <meta property="og:description" content="MitmProxy是一组优秀的网络代理拦截工具，可为 HTTP&#x2F;1、HTTP&#x2F;2 和 WebSockets 提供交互式、支持 SSL&#x2F;TLS 的拦截代理。它提供 拦截 HTTP 和 HTTPS 请求和响应并动态修改它们、保存完整的 HTTP会话，以供重放攻击和分析、反向代理模式将流量转发到指定服务器、macOS 和 Linux 上的透明代理、对 HTTP 流量进行脚本化更改等功能。      官方">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24egy1h00od9mq9lj21js0u0qls.jpg">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24egy1h00oeqi65tj21hp0u0tf3.jpg">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24egy1h00olhfb8lj21hn0u0goo.jpg">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24egy1h00omjcg24j21c40u0ady.jpg">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24egy1h00ooh970tj21go0u0gnd.jpg">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24egy1h00ojylhwpj215g0u0tc4.jpg">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24egy1h00oraucocj21bz0u0ai3.jpg">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24egy1h00otmz81bj21kd0u0wke.jpg">
+    <meta property="og:image" content="https://tva1.sinaimg.cn/large/e6c9d24egy1h00ovqurflj21em0u0792.jpg">
+    <meta property="article:published_time" content="2022-03-06T16:38:21.000Z">
+    <meta property="article:modified_time" content="2022-07-27T09:58:26.880Z">
+    <meta property="article:author" content="吴志鹏">
+    <meta property="article:tag" content="mitmproxy">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:image" content="https://tva1.sinaimg.cn/large/e6c9d24egy1h00od9mq9lj21js0u0qls.jpg">
+    <link rel="canonical" href="https://paynewu.com/765699237.html">
+    <script id="page-configurations">
+        // https://hexo.io/docs/variables.html
+        CONFIG.page = {
+            sidebar: "",
+            isHome: false,
+            isPost: true,
+            lang: 'zh-CN'
+        };
+
+    </script>
+    <title>mitmproxy的使用 | 吴志鹏｜Payne-Wu</title>
+    <meta name="google-site-verification" content="p_bIcnvirkFzG2dYKuNDivKD8-STet5W7D-01woA2fc" />
+    <noscript>
+        <style>
+            .use-motion .brand,
+            .use-motion .menu-item,
+            .sidebar-inner,
+            .use-motion .post-block,
+            .use-motion .pagination,
+            .use-motion .comments,
+            .use-motion .post-header,
+            .use-motion .post-body,
+            .use-motion .collection-header
+            {
+                opacity: initial;
+            }
+
+            .use-motion .site-title,
+            .use-motion .site-subtitle
+            {
+                opacity: initial;
+                top: initial;
+            }
+
+            .use-motion .logo-line-before i
+            {
+                left: initial;
+            }
+
+            .use-motion .logo-line-after i
+            {
+                right: initial;
+            }
+
+        </style>
+    </noscript>
+    <link rel="alternate" href="/atom.xml" title="吴志鹏｜Payne-Wu" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+    <div class="container">
+        <div class="headband"></div>
+        <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+            <div class="header-inner">
+                <div class="site-brand-container">
+                    <div class="site-nav-toggle">
+                        <div class="toggle" aria-label="切换导航栏">
+                            <span class="toggle-line toggle-line-first"></span>
+                            <span class="toggle-line toggle-line-middle"></span>
+                            <span class="toggle-line toggle-line-last"></span>
+                        </div>
+                    </div>
+                    <div class="site-meta">
+                        <a href="/" class="brand" rel="start">
+                            <span class="logo-line-before"><i></i></span>
+                            <h1 class="site-title">吴志鹏｜Payne-Wu </h1>
+                            <span class="logo-line-after"><i></i></span>
+                        </a>
+                    </div>
+                    <div class="site-nav-right">
+                        <div class="toggle popup-trigger">
+                            <i class="fa fa-search fa-fw fa-lg"></i>
+                        </div>
+                    </div>
+                </div>
+                <nav class="site-nav">
+                    <ul id="menu" class="main-menu menu">
+                        <li class="menu-item menu-item-home">
+                            <a href="/" rel="section">首页</a>
+                        </li>
+                        <li class="menu-item menu-item-archives">
+                            <a href="/archives/" rel="section">文章列表</a>
+                        </li>
+                        <li class="menu-item menu-item-tags">
+                            <a href="/tags/" rel="section">Tags Cloud</a>
+                        </li>
+                        <li class="menu-item menu-item-categories">
+                            <a href="/categories/" rel="section">文章集合</a>
+                        </li>
+                        <li class="menu-item menu-item-about">
+                            <a href="/about/" rel="section">关于我啊</a>
+                        </li>
+                        <li class="menu-item menu-item-message">
+                            <a href="/message/" rel="section">留言与我</a>
+                        </li>
+                        <li class="menu-item menu-item-search">
+                            <a role="button" class="popup-trigger">搜索 </a>
+                        </li>
+                    </ul>
+                </nav>
+                <div class="search-pop-overlay">
+                    <div class="popup search-popup">
+                        <div class="search-header">
+                            <span class="search-icon">
+                                <i class="fa fa-search"></i>
+                            </span>
+                            <div class="search-input-container">
+                                <input autocomplete="off" autocapitalize="off" placeholder="搜索..." spellcheck="false" type="search" class="search-input">
+                            </div>
+                            <span class="popup-btn-close">
+                                <i class="fa fa-times-circle"></i>
+                            </span>
+                        </div>
+                        <div id="search-result">
+                            <div id="no-result">
+                                <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="back-to-top">
+            <i class="fa fa-arrow-up"></i>
+            <span>0%</span>
+        </div>
+        <div class="reading-progress-bar"></div>
+        <main class="main">
+            <div class="main-inner">
+                <div class="content-wrap">
+                    <div class="content post posts-expand">
+                        <article itemscope itemtype="http://schema.org/Article" class="post-block single" lang="zh-CN">
+                            <link itemprop="mainEntityOfPage" href="https://paynewu.com/765699237.html">
+                            <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <meta itemprop="image" content="/images/favicon/android-chrome-512x512.png">
+                                <meta itemprop="name" content="吴志鹏">
+                                <meta itemprop="description" content="Talk is free，please state clearly">
+                            </span>
+                            <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+                                <meta itemprop="name" content="吴志鹏｜Payne-Wu">
+                            </span>
+                            <header class="post-header">
+                                <h1 class="post-title" itemprop="name headline"> mitmproxy的使用 </h1>
+                                <div class="post-meta">
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-user"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">作者</span>
+                                        <span><a href="/authors/Payne" class="author" itemprop="url" rel="index">Payne</a></span>
+                                    </span>
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-calendar"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">发表于</span>
+                                        <time title="创建时间：2022-03-07 00:38:21" itemprop="dateCreated datePublished" datetime="2022-03-07T00:38:21+08:00">2022-03-07</time>
+                                    </span>
+                                    <span class="post-meta-item">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-folder"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">分类于</span>
+                                        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                                            <a href="/categories/mitmproxy/" itemprop="url" rel="index"><span itemprop="name">mitmproxy</span></a>
+                                        </span> ， <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                                            <a href="/categories/mitmproxy/mitmweb/" itemprop="url" rel="index"><span itemprop="name">mitmweb</span></a>
+                                        </span> ， <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                                            <a href="/categories/mitmproxy/mitmweb/mitmdump/" itemprop="url" rel="index"><span itemprop="name">mitmdump</span></a>
+                                        </span>
+                                    </span>
+                                    <br>
+                                    <span class="post-meta-item" title="本文字数">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-file-word"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">本文字数：</span>
+                                        <span>2.1k</span>
+                                    </span>
+                                    <span class="post-meta-item" title="阅读时长">
+                                        <span class="post-meta-item-icon">
+                                            <i class="far fa-clock"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                                        <span>2 分钟</span>
+                                    </span>
+                                </div>
+                            </header>
+                            <div class="post-body" itemprop="articleBody">
+                                <p>MitmProxy是一组优秀的网络代理拦截工具，可为 HTTP/1、HTTP/2 和 WebSockets 提供交互式、支持 SSL/TLS 的拦截代理。它提供 拦截 HTTP 和 HTTPS 请求和响应并动态修改它们、保存完整的 HTTP<br>会话，以供重放攻击和分析、反向代理模式将流量转发到指定服务器、macOS 和 Linux 上的透明代理、对 HTTP 流量进行脚本化更改等功能。</p>
+                                <ul>
+                                    <li>官方地址：<a href="https://mitmproxy.org/" target="_blank" rel="noopener">https://mitmproxy.org/</a></li>
+                                    <li>官方文档：<a href="https://docs.mitmproxy.org" target="_blank" rel="noopener">https://docs.mitmproxy.org</a></li>
+                                    <li>官方博客：<a href="https://mitmproxy.org/posts/" target="_blank" rel="noopener">https://mitmproxy.org/posts/</a></li>
+                                    <li>插件: <a href="https://docs.mitmproxy.org/stable/addons-overview/" target="_blank" rel="noopener">https://docs.mitmproxy.org/stable/addons-overview/</a></li>
+                                    <li>Github: <a href="https://github.com/mitmproxy/mitmproxy" target="_blank" rel="noopener">https://github.com/mitmproxy/mitmproxy</a></li>
+                                    <li>Releases：<a href="https://github.com/mitmproxy/mitmproxy/releases" target="_blank" rel="noopener">https://github.com/mitmproxy/mitmproxy/releases</a></li>
+                                    <li>DockerHub：<a href="https://hub.docker.com/r/mitmproxy/mitmproxy/" target="_blank" rel="noopener">https://hub.docker.com/r/mitmproxy/mitmproxy</a></li>
+                                    <li>证书安装: <a href="http://mitm.it/" target="_blank" rel="noopener">http://mitm.it/</a></li>
+                                </ul>
+                                <h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2>
+                                <h3 id="Python3安装"><a href="#Python3安装" class="headerlink" title="Python3安装"></a>Python3安装</h3>
+                                <p>直接使用pip即可，使用如下命令进行安装</p>
+                                <figure class="highlight bash">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line"><span class="comment"># 升级pip</span></span><br><span class="line">python3 -m pip install -U pip</span><br><span class="line"><span class="comment"># 安装</span></span><br><span class="line">python3 -m pip install -U mitmproxy</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <blockquote>
+                                    <p>由于windows话默认是没有python3的（如果你没做兼容也就是将python复制一份副本并重命名为python3），使用python即可</p>
+                                </blockquote>
+                                <h3 id="Mac"><a href="#Mac" class="headerlink" title="Mac"></a>Mac</h3>
+                                <p>Mac 下推荐使用 <code>homebrew</code>安装，尤其是<code>m1</code>的，注意啦！！！</p>
+                                <p>别问我怎么知道的，说多了都是泪</p>
+                                <figure class="highlight bash">
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><span class="line">1</span><br></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><span class="line">brew install mitmproxy</span><br></pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </figure>
+                                <h2 id="mitmproxy组成"><a href="#mitmproxy组成" class="headerlink" title="mitmproxy组成"></a>mitmproxy组成</h2>
+                                <p>mitmproxy 由mitmproxy、mitmdump、mitmweb组成</p>
+                                <h3 id="mitmproxy"><a href="#mitmproxy" class="headerlink" title="mitmproxy"></a>mitmproxy</h3>
+                                <p>mitmproxy是用于调试、测试、隐私测量和渗透测试的瑞士军刀。它可用于拦截、检查、修改和重放 Web 流量，例如 HTTP/1、HTTP/2、WebSockets 或任何其他受 SSL/TLS 保护的协议。您可以美化和解码从 HTML<br>到 Protobuf 的各种消息类型，即时截取特定消息，在它们到达目的地之前对其进行修改，并稍后将它们重播到客户端或服务器。</p>
+                                <h3 id="mitmdump"><a href="#mitmdump" class="headerlink" title="mitmdump"></a>mitmdump</h3>
+                                <p>强大的插件功能与python api集成，提供了对mitmproxy的完全控制，可以自动修改消息、重定向流量、可视化消息或实现自定义命令。基于mitmdump可实现拓展，完全自由定制。实现基于此的流量转发代理中间件。</p>
+                                <h3 id="mitmproxy-1"><a href="#mitmproxy-1" class="headerlink" title="mitmproxy"></a>mitmproxy</h3>
+                                <p>在图形界面中使用 mitmproxy 的主要功能 mitmweb。mitmweb 为您提供任何其他应用程序或设备的类似体验，以及请求拦截和重放等附加功能。</p>
+                                <h2 id="证书安装与配置"><a href="#证书安装与配置" class="headerlink" title="证书安装与配置"></a>证书安装与配置</h2>
+                                <p>对于任何中间人抓包工具来说，若需要完整的捕获HTTPS请求，必须需要配置HTTPS证书。由于mitmproxy的证书在安装时便已经自带了，所以不必多次安装。只需配置证书即可。</p>
+                                <p>手机上需要下载直接进入 <a href="http://mitm.it/" target="_blank" rel="noopener">http://mitm.it/</a> 即可（需要先连接上mitmproxy的代理）</p>
+                                <h2 id="mitmproxy界面"><a href="#mitmproxy界面" class="headerlink" title="mitmproxy界面"></a>mitmproxy界面</h2>
+                                <p>mitmproxy有许多的功能界面主要有以下几个</p>
+                                <h3 id="index"><a href="#index" class="headerlink" title="index"></a>index</h3>
+                                <p>打开代理时的index界面，此界面为中心界面，一进来就是这个，简要的介绍了包</p>
+                                <p><img src="https://tva1.sinaimg.cn/large/e6c9d24egy1h00od9mq9lj21js0u0qls.jpg" alt="image-20220307012744921"></p>
+                                <h3 id="包详情界面"><a href="#包详情界面" class="headerlink" title="包详情界面"></a>包详情界面</h3>
+                                <p>使用<code>j</code>、<code>k</code> （或者上下方向键）实现包之间的移动，enter（回车）进入包的详情界面，可以使用tab进行切换。如下图所示</p>
+                                <blockquote>
+                                    <p>当然是要大写的 <code>P</code> 也可以进入这里</p>
+                                </blockquote>
+                                <p><img src="https://tva1.sinaimg.cn/large/e6c9d24egy1h00oeqi65tj21hp0u0tf3.jpg" alt="image-20220307012909484"></p>
+                                <h3 id="帮助界面"><a href="#帮助界面" class="headerlink" title="帮助界面"></a>帮助界面</h3>
+                                <p>每个CLI基本上都有help，而mitmproxy自然也有， 如下</p>
+                                <blockquote>
+                                    <p><code>?</code>: 进入</p>
+                                </blockquote>
+                                <p><img src="https://tva1.sinaimg.cn/large/e6c9d24egy1h00olhfb8lj21hn0u0goo.jpg" alt="image-20220307013538512"></p>
+                                <p>还有过滤帮助，可以使用<code>TAB</code> 实现切换。如下所示</p>
+                                <p><img src="https://tva1.sinaimg.cn/large/e6c9d24egy1h00omjcg24j21c40u0ady.jpg" alt="image-20220307013639677"></p>
+                                <p>当使用<code>f</code> 快速进入过滤命令中 再加上过滤语法即可实现过滤，并在其中输入 <code>~u baidu</code>如下所示</p>
+                                <p><img src="https://tva1.sinaimg.cn/large/e6c9d24egy1h00ooh970tj21go0u0gnd.jpg" alt="image-20220307013812180"></p>
+                                <p>实现对url为 <code>baidu</code> 的实现过滤展示</p>
+                                <h3 id="Key-Bindings界面"><a href="#Key-Bindings界面" class="headerlink" title="Key Bindings界面"></a>Key Bindings界面</h3>
+                                <p><code>shift + k</code> 也就是大写的K进入此界面</p>
+                                <p>按键绑定界面，这里展示了所有的按键在mitmproxy中的功能，当然也可以修改其绑定，其界面如下所示。</p>
+                                <p><img src="https://tva1.sinaimg.cn/large/e6c9d24egy1h00ojylhwpj215g0u0tc4.jpg" alt="image-20220307013411247"></p>
+                                <h3 id="Events界面"><a href="#Events界面" class="headerlink" title="Events界面"></a>Events界面</h3>
+                                <p>此界面可以查看捕获流量的所有事件，使用<code>E</code> 进入，如下所示</p>
+                                <p><img src="https://tva1.sinaimg.cn/large/e6c9d24egy1h00oraucocj21bz0u0ai3.jpg" alt="image-20220307014113646"></p>
+                                <h3 id="Command-Reference界面"><a href="#Command-Reference界面" class="headerlink" title="Command Reference界面"></a>Command Reference界面</h3>
+                                <p>所有的输入的命令都可以在这里找到，当然需要一些英文的识别能力， 如下所示</p>
+                                <blockquote>
+                                    <p><code>shift + c</code> ：进入Command Reference界面</p>
+                                    <p><code>:</code> 进入命令输入状态</p>
+                                </blockquote>
+                                <p><img src="https://tva1.sinaimg.cn/large/e6c9d24egy1h00otmz81bj21kd0u0wke.jpg" alt="image-20220307014328724"></p>
+                                <h3 id="Options界面"><a href="#Options界面" class="headerlink" title="Options界面"></a>Options界面</h3>
+                                <p>参数选项界面，可以认为这是mitmproxy设置界面， 如下所示</p>
+                                <blockquote>
+                                    <p>大写的<code>o</code> 进入</p>
+                                </blockquote>
+                                <p><img src="https://tva1.sinaimg.cn/large/e6c9d24egy1h00ovqurflj21em0u0792.jpg" alt="image-20220307014527641"></p>
+                                <h2 id="一些常用的按键"><a href="#一些常用的按键" class="headerlink" title="一些常用的按键"></a>一些常用的按键</h2>
+                                <h3 id="移动"><a href="#移动" class="headerlink" title="移动"></a>移动</h3>
+                                <div class="table-container">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>快捷键</th>
+                                                <th>command</th>
+                                                <th>说明</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>q</td>
+                                                <td>console.view.pop</td>
+                                                <td>返回：界面间的返回</td>
+                                            </tr>
+                                            <tr>
+                                                <td>g</td>
+                                                <td>console.nav.start</td>
+                                                <td>跳到第一行</td>
+                                            </tr>
+                                            <tr>
+                                                <td>G</td>
+                                                <td>console.nav.end</td>
+                                                <td>跳到最后一行</td>
+                                            </tr>
+                                            <tr>
+                                                <td>h</td>
+                                                <td>console.nav.left</td>
+                                                <td>跳到左面</td>
+                                            </tr>
+                                            <tr>
+                                                <td>j</td>
+                                                <td>console.nav.down</td>
+                                                <td>跳到下一行</td>
+                                            </tr>
+                                            <tr>
+                                                <td>k</td>
+                                                <td>console.nav.up</td>
+                                                <td>跳到上一行</td>
+                                            </tr>
+                                            <tr>
+                                                <td>l</td>
+                                                <td>console.nav.right</td>
+                                                <td>跳到右面</td>
+                                            </tr>
+                                            <tr>
+                                                <td>space</td>
+                                                <td>console.nav.pagedown</td>
+                                                <td>跳到本页最后一行</td>
+                                            </tr>
+                                            <tr>
+                                                <td>ctrl b</td>
+                                                <td>console.nav.pageup</td>
+                                                <td>跳到本页第一行</td>
+                                            </tr>
+                                            <tr>
+                                                <td>ctrl f</td>
+                                                <td>console.nav.pagedown</td>
+                                                <td>跳到本页最后一行</td>
+                                            </tr>
+                                            <tr>
+                                                <td>tab</td>
+                                                <td>console.nav.next</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <p>可参考 help 界面</p>
+                                <p>e: 快速生成请求</p>
+                                <h2 id="mitmdump具体实现"><a href="#mitmdump具体实现" class="headerlink" title="mitmdump具体实现"></a>mitmdump具体实现</h2>
+                                <p>一个基于mitmdump 实现的流式流量转发处理平台: <a href="https://github.com/WebSpiderSuperStar/MitmDumpMan" target="_blank" rel="noopener">mitmdumpMan</a></p>
+                                <h2 id="抓包tips"><a href="#抓包tips" class="headerlink" title="抓包tips"></a>抓包tips</h2>
+                                <ul>
+                                    <li>使用类似与SwitchyOmega实现端口塞选效果更佳</li>
+                                </ul>
+                            </div>
+                            <footer class="post-footer">
+                                <div class="post-tags">
+                                    <a href="/tags/mitmproxy/" rel="tag"><i class="fa fa-tag"></i> mitmproxy</a>
+                                </div>
+                                <div class="post-nav">
+                                    <div class="post-nav-item">
+                                        <a href="/1492784679.html" rel="prev" title="初探nginx">
+                                            <i class="fa fa-chevron-left"></i> 初探nginx </a>
+                                    </div>
+                                    <div class="post-nav-item">
+                                        <a href="/2204086615.html" rel="next" title="有人爱有人恨-GIL"> 有人爱有人恨-GIL <i class="fa fa-chevron-right"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </footer>
+                        </article>
+                    </div>
+                    <script>
+                        window.addEventListener('tabs:register', () =>
+                        {
+                            let
+                            {
+                                activeClass
+                            } = CONFIG.comments;
+                            if (CONFIG.comments.storage)
+                            {
+                                activeClass = localStorage.getItem('comments_active') || activeClass;
+                            }
+                            if (activeClass)
+                            {
+                                let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+                                if (activeTab)
+                                {
+                                    activeTab.click();
+                                }
+                            }
+                        });
+                        if (CONFIG.comments.storage)
+                        {
+                            window.addEventListener('tabs:click', event =>
+                            {
+                                if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+                                let commentClass = event.target.classList[1];
+                                localStorage.setItem('comments_active', commentClass);
+                            });
+                        }
+
+                    </script>
+                </div>
+                <div class="toggle sidebar-toggle">
+                    <span class="toggle-line toggle-line-first"></span>
+                    <span class="toggle-line toggle-line-middle"></span>
+                    <span class="toggle-line toggle-line-last"></span>
+                </div>
+                <aside class="sidebar">
+                    <div class="sidebar-inner">
+                        <ul class="sidebar-nav motion-element">
+                            <li class="sidebar-nav-toc"> 文章目录 </li>
+                            <li class="sidebar-nav-overview"> 站点概览 </li>
+                        </ul>
+                        <!--noindex-->
+                        <div class="post-toc-wrap sidebar-panel">
+                            <div class="post-toc motion-element">
+                                <ol class="nav">
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#安装"><span class="nav-number">1.</span> <span class="nav-text">安装</span></a>
+                                        <ol class="nav-child">
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#Python3安装"><span class="nav-number">1.1.</span> <span class="nav-text">Python3安装</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#Mac"><span class="nav-number">1.2.</span> <span class="nav-text">Mac</span></a></li>
+                                        </ol>
+                                    </li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#mitmproxy组成"><span class="nav-number">2.</span> <span class="nav-text">mitmproxy组成</span></a>
+                                        <ol class="nav-child">
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#mitmproxy"><span class="nav-number">2.1.</span> <span class="nav-text">mitmproxy</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#mitmdump"><span class="nav-number">2.2.</span> <span class="nav-text">mitmdump</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#mitmproxy-1"><span class="nav-number">2.3.</span> <span class="nav-text">mitmproxy</span></a></li>
+                                        </ol>
+                                    </li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#证书安装与配置"><span class="nav-number">3.</span> <span class="nav-text">证书安装与配置</span></a></li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#mitmproxy界面"><span class="nav-number">4.</span> <span class="nav-text">mitmproxy界面</span></a>
+                                        <ol class="nav-child">
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#index"><span class="nav-number">4.1.</span> <span class="nav-text">index</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#包详情界面"><span class="nav-number">4.2.</span> <span class="nav-text">包详情界面</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#帮助界面"><span class="nav-number">4.3.</span> <span class="nav-text">帮助界面</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#Key-Bindings界面"><span class="nav-number">4.4.</span> <span class="nav-text">Key Bindings界面</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#Events界面"><span class="nav-number">4.5.</span> <span class="nav-text">Events界面</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#Command-Reference界面"><span class="nav-number">4.6.</span> <span class="nav-text">Command Reference界面</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#Options界面"><span class="nav-number">4.7.</span> <span class="nav-text">Options界面</span></a></li>
+                                        </ol>
+                                    </li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#一些常用的按键"><span class="nav-number">5.</span> <span class="nav-text">一些常用的按键</span></a>
+                                        <ol class="nav-child">
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#移动"><span class="nav-number">5.1.</span> <span class="nav-text">移动</span></a></li>
+                                        </ol>
+                                    </li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#mitmdump具体实现"><span class="nav-number">6.</span> <span class="nav-text">mitmdump具体实现</span></a></li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#抓包tips"><span class="nav-number">7.</span> <span class="nav-text">抓包tips</span></a></li>
+                                </ol>
+                            </div>
+                        </div>
+                        <!--/noindex-->
+                        <div class="site-overview-wrap sidebar-panel">
+                            <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                                <img class="site-author-image" itemprop="image" alt="吴志鹏" src="/images/favicon/android-chrome-512x512.png">
+                                <p class="site-author-name" itemprop="name">吴志鹏</p>
+                                <div class="site-description" itemprop="description">Talk is free，please state clearly</div>
+                            </div>
+                            <div class="site-state-wrap motion-element">
+                                <nav class="site-state">
+                                    <div class="site-state-item site-state-posts">
+                                        <a href="/archives/">
+                                            <span class="site-state-item-count">136</span>
+                                            <span class="site-state-item-name">日志</span>
+                                        </a>
+                                    </div>
+                                    <div class="site-state-item site-state-categories">
+                                        <a href="/categories/">
+                                            <span class="site-state-item-count">158</span>
+                                            <span class="site-state-item-name">分类</span></a>
+                                    </div>
+                                    <div class="site-state-item site-state-tags">
+                                        <a href="/tags/">
+                                            <span class="site-state-item-count">89</span>
+                                            <span class="site-state-item-name">标签</span></a>
+                                    </div>
+                                </nav>
+                            </div>
+                            <div class="links-of-author motion-element">
+                                <span class="links-of-author-item">
+                                    <a href="https://github.com/Payne-Wu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Payne-Wu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="mailto:wuzhipeng1289690157@gmail.com" title="E-Mail → mailto:wuzhipeng1289690157@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="https://www.zhihu.com/people/wu-zhi-peng-72-78" title="ZhiHu → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;wu-zhi-peng-72-78" rel="noopener" target="_blank"><i class="fa fa-magic fa-fw"></i>ZhiHu</a>
+                                </span>
+                                <span class="links-of-author-item">
+                                    <a href="https://weibo.com/u/6987234483" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;6987234483" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+                <div id="sidebar-dimmer"></div>
+            </div>
+        </main>
+        <footer class="footer">
+            <div class="footer-inner">
+                <div class="copyright"> &copy; <span itemprop="copyrightYear">2022</span>
+                    <span class="with-love">
+                        <i class="fa fa-heart"></i>
+                    </span>
+                    <span class="author" itemprop="copyrightHolder">PayneWu</span>
+                    <span class="post-meta-divider">|</span>
+                    <span class="post-meta-item-icon">
+                        <i class="fa fa-chart-area"></i>
+                    </span>
+                    <span title="站点总字数">255k</span>
+                    <span class="post-meta-divider">|</span>
+                    <span class="post-meta-item-icon">
+                        <i class="fa fa-coffee"></i>
+                    </span>
+                    <span title="站点阅读时长">3:51</span>
+                </div>
+                <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">湘ICP备2021019893号-1 </a>
+                </div>
+                <div style="display: none;">
+                    <script src="//s95.cnzz.com/z_stat.php?id=true&web_id=true"></script>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+    <script src="/js/utils.js"></script>
+    <script src="/.js"></script>
+    <script src="/js/schemes/pisces.js"></script>
+    <script src="/.js"></script>
+    <script src="/js/next-boot.js"></script>
+    <script src="/.js"></script>
+    <script>
+        (function ()
+        {
+            var canonicalURL, curProtocol;
+            //Get the <link> tag
+            var x = document.getElementsByTagName("link");
+            //Find the last canonical URL
+            if (x.length > 0)
+            {
+                for (i = 0; i < x.length; i++)
+                {
+                    if (x[i].rel.toLowerCase() == 'canonical' && x[i].href)
+                    {
+                        canonicalURL = x[i].href;
+                    }
+                }
+            }
+            //Get protocol
+            if (!canonicalURL)
+            {
+                curProtocol = window.location.protocol.split(':')[0];
+            }
+            else
+            {
+                curProtocol = canonicalURL.split(':')[0];
+            }
+            //Get current URL if the canonical URL does not exist
+            if (!canonicalURL) canonicalURL = window.location.href;
+            //Assign script content. Replace current URL with the canonical URL
+            ! function ()
+            {
+                var e = /([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,
+                    r = canonicalURL,
+                    t = document.referrer;
+                if (!e.test(r))
+                {
+                    var n = (String(curProtocol).toLowerCase() === 'https') ? "https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif" : "//api.share.baidu.com/s.gif";
+                    t ? (n += "?r=" + encodeURIComponent(document.referrer), r && (n += "&l=" + r)) : r && (n += "?l=" + r);
+                    var i = new Image;
+                    i.src = n
+                }
+            }(window);
+        })();
+
+    </script>
+    <script src="/js/local-search.js"></script>
+    <script src="/.js"></script>
+</body>
+
+</html>
